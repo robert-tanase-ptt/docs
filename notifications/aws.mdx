@@ -1,0 +1,140 @@
+---
+title: "AWS integration"
+description: "Integrate with AWS services for notifications and data storage"
+---
+
+## Overview
+
+The AWS integration allows you to send security data to AWS services like SNS, S3, and Security Hub.
+
+## Available Integrations
+
+<CardGroup cols={2}>
+  <Card title="SNS" icon="bell">
+    Send notifications via Amazon SNS.
+  </Card>
+  <Card title="S3" icon="bucket">
+    Store scan results in S3 buckets.
+  </Card>
+  <Card title="Security Hub" icon="shield">
+    Send findings to AWS Security Hub.
+  </Card>
+  <Card title="Lambda" icon="bolt">
+    Trigger Lambda functions.
+  </Card>
+</CardGroup>
+
+## SNS Integration
+
+Send notifications through Amazon Simple Notification Service.
+
+### Setup
+
+<Steps>
+  <Step title="Create SNS Topic">
+    In AWS Console, create an SNS topic for notifications.
+  </Step>
+  <Step title="Get Topic ARN">
+    Copy the Topic ARN.
+  </Step>
+  <Step title="Configure IAM">
+    Create an IAM user/role with SNS publish permissions.
+  </Step>
+  <Step title="Add to Platform">
+    Configure the SNS integration in Settings.
+  </Step>
+</Steps>
+
+### IAM Policy
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Action": "sns:Publish",
+    "Resource": "arn:aws:sns:region:account:topic-name"
+  }]
+}
+```
+
+## S3 Integration
+
+Store scan results and reports in S3.
+
+### Use Cases
+
+- Archive scan results
+- Share reports with stakeholders
+- Long-term data retention
+
+### Configuration
+
+Provide:
+- Bucket name
+- Region
+- Access credentials (Access Key ID and Secret)
+- Optional: prefix for organization
+
+## Security Hub Integration
+
+Send findings to AWS Security Hub for centralized security management.
+
+### Benefits
+
+- Unified security view across AWS
+- Integration with other AWS security services
+- Compliance reporting
+
+### Finding Format
+
+Findings are formatted according to AWS Security Finding Format (ASFF):
+
+```json
+{
+  "SchemaVersion": "2018-10-08",
+  "Id": "finding-123",
+  "ProductArn": "arn:aws:securityhub:...",
+  "GeneratorId": "pentest-tools",
+  "Types": ["Software and Configuration Checks/Vulnerabilities"],
+  "Severity": {
+    "Label": "HIGH"
+  },
+  "Title": "SQL Injection Vulnerability",
+  "Description": "..."
+}
+```
+
+## Lambda Triggers
+
+Trigger Lambda functions for custom processing.
+
+### Example Use Cases
+
+- Custom alerting logic
+- Data transformation
+- Integration with other systems
+
+<Tip>
+Use Lambda for complex notification logic that goes beyond standard integrations.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Permission denied">
+    - Verify IAM credentials
+    - Check policy permissions
+    - Confirm resource ARNs
+  </Accordion>
+  <Accordion title="Data not appearing">
+    - Check region configuration
+    - Verify bucket/topic exists
+    - Review CloudWatch logs
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Webhooks](/notifications/webhooks/overview)
+- [Notifications Overview](/notifications/overview)

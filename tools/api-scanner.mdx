@@ -1,0 +1,105 @@
+---
+title: "API scanner"
+description: "Test REST and GraphQL APIs for security vulnerabilities"
+---
+
+## Overview
+
+The API Scanner tests REST APIs and GraphQL endpoints for security issues, authentication flaws, and configuration problems.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key">
+    Auth bypass, weak tokens
+  </Card>
+  <Card title="Authorization" icon="shield">
+    BOLA, privilege escalation
+  </Card>
+  <Card title="Injection" icon="syringe">
+    SQLi, NoSQLi, command injection
+  </Card>
+  <Card title="Data Exposure" icon="eye">
+    Excessive data in responses
+  </Card>
+</CardGroup>
+
+## Supported API Types
+
+| Type | Support |
+|------|---------|
+| REST API | Full |
+| GraphQL | Full |
+| SOAP | Limited |
+
+## How to Use
+
+<Steps>
+  <Step title="Import API Spec">
+    Upload OpenAPI/Swagger spec or GraphQL schema.
+  </Step>
+  <Step title="Configure Authentication">
+    Provide API keys or tokens.
+  </Step>
+  <Step title="Run Scan">
+    Execute API security testing.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered vulnerabilities.
+  </Step>
+</Steps>
+
+## API Specification Support
+
+- OpenAPI 3.0/3.1
+- Swagger 2.0
+- GraphQL introspection
+- Postman collections
+- Manual endpoint definition
+
+## Vulnerability Categories
+
+### OWASP API Security Top 10
+
+- API1: Broken Object Level Authorization
+- API2: Broken Authentication
+- API3: Broken Object Property Level Authorization
+- API4: Unrestricted Resource Consumption
+- API5: Broken Function Level Authorization
+- API6: Server Side Request Forgery
+- API7: Security Misconfiguration
+- API8: Lack of Protection from Automated Threats
+- API9: Improper Inventory Management
+- API10: Unsafe Consumption of APIs
+
+## Configuration Options
+
+### Authentication
+
+```
+Authorization: Bearer <token>
+X-API-Key: <key>
+```
+
+### Rate Limiting
+
+Adjust request rate to avoid:
+- Triggering API rate limits
+- Being blocked
+- Overwhelming the API
+
+<Tip>
+Start with a slower scan rate and increase if the API handles it well.
+</Tip>
+
+## GraphQL-Specific Testing
+
+- Introspection enabled check
+- Query depth limits
+- Batch query abuse
+- Field suggestion exploitation
+
+## Related Tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [SQL Injection Scanner](/tools/sql-injection-scanner)

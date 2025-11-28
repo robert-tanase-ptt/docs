@@ -1,0 +1,91 @@
+---
+title: "Working with technology fingerprints"
+description: "Identify and analyze technologies running on your assets"
+---
+
+## What Is Technology Fingerprinting?
+
+Technology fingerprinting identifies the software, frameworks, and services running on your assets. This information helps you:
+
+- Understand your technology stack
+- Identify potentially vulnerable software
+- Plan targeted security testing
+- Track technology changes over time
+
+## Fingerprint Categories
+
+<CardGroup cols={3}>
+  <Card title="Web Technologies" icon="globe">
+    CMS, frameworks, JavaScript libraries
+  </Card>
+  <Card title="Infrastructure" icon="server">
+    Web servers, operating systems
+  </Card>
+  <Card title="Services" icon="gears">
+    Databases, caches, message queues
+  </Card>
+</CardGroup>
+
+## Understanding Fingerprint Data
+
+Each fingerprint includes:
+
+| Field | Description |
+|-------|-------------|
+| **Technology** | Name of the detected software |
+| **Version** | Detected version (when available) |
+| **Category** | Type of technology |
+| **Confidence** | How certain the detection is |
+| **Asset** | Where it was detected |
+
+## Using Fingerprints for Security
+
+### Vulnerability Correlation
+
+When versions are detected, you can:
+
+1. Check for known CVEs
+2. Identify outdated software
+3. Prioritize updates
+
+<Warning>
+Detected versions may be inaccurate if applications hide or modify version banners.
+</Warning>
+
+### Targeted Testing
+
+Use fingerprint data to select appropriate scanners:
+
+| Technology Detected | Recommended Scanner |
+|--------------------|---------------------|
+| WordPress | WordPress Scanner |
+| Drupal | Drupal Scanner |
+| Custom Application | Website Vulnerability Scanner |
+| SSL/TLS | SSL/TLS Scanner |
+
+## Filtering and Searching
+
+Find specific technologies across your assets:
+
+- **By Technology**: Find all assets running a specific software
+- **By Version**: Identify assets with specific versions
+- **By Category**: Filter by technology type
+- **By Risk**: Focus on technologies with known issues
+
+## Tracking Changes
+
+Monitor technology changes over time:
+
+- New technologies deployed
+- Version updates (or lack thereof)
+- Removed technologies
+- Configuration changes
+
+<Tip>
+Set up alerts for technology changes, especially in production environments.
+</Tip>
+
+## Related Topics
+
+- [Attack Surface Overview](/using/attack-surface/attack-surface-overview)
+- [Website Recon Tool](/tools/website-recon)

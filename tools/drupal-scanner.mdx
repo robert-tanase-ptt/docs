@@ -1,0 +1,93 @@
+---
+title: "Drupal scanner"
+description: "Specialized security testing for Drupal installations"
+---
+
+## Overview
+
+The Drupal Scanner performs targeted security assessments of Drupal CMS installations, identifying core, module, and configuration vulnerabilities.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="Drupal Core" icon="drupal">
+    Version and known vulnerabilities
+  </Card>
+  <Card title="Modules" icon="puzzle-piece">
+    Installed module security
+  </Card>
+  <Card title="Configuration" icon="gear">
+    Security settings analysis
+  </Card>
+  <Card title="Users" icon="users">
+    User enumeration checks
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Drupal URL">
+    Provide the Drupal site URL.
+  </Step>
+  <Step title="Configure Scan">
+    Select scanning options.
+  </Step>
+  <Step title="Run Scan">
+    Execute the security assessment.
+  </Step>
+  <Step title="Review Findings">
+    Analyze discovered issues.
+  </Step>
+</Steps>
+
+## Checks Performed
+
+### Core Analysis
+
+- Drupal version detection
+- Known CVE matching
+- Security advisory checks
+- Update status
+
+### Module Analysis
+
+| Check | Description |
+|-------|-------------|
+| Module enumeration | List enabled modules |
+| Version detection | Identify module versions |
+| Vulnerability check | Match against vuln database |
+| Contrib vs Core | Differentiate module types |
+
+### Configuration Checks
+
+- User registration settings
+- Error message exposure
+- Private file handling
+- PHP execution in uploads
+- Update module status
+
+## Notable Drupal Vulnerabilities
+
+| CVE | Name | Impact |
+|-----|------|--------|
+| CVE-2018-7600 | Drupalgeddon 2 | RCE |
+| CVE-2019-6340 | REST RCE | RCE |
+| Various | SA-CORE advisories | Variable |
+
+<Warning>
+Drupal has had several critical RCE vulnerabilities. Keeping Drupal core updated is essential.
+</Warning>
+
+## Results Include
+
+- Drupal version information
+- Vulnerable core/modules
+- Configuration issues
+- Security recommendations
+
+## Related Tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [WordPress Scanner](/tools/wordpress-scanner)
+- [Joomla Scanner](/tools/joomla-scanner)

@@ -1,0 +1,83 @@
+---
+title: "Website recon"
+description: "Fingerprint technologies and gather intelligence about web applications"
+---
+
+## Overview
+
+Website Recon performs reconnaissance on web applications, identifying technologies, frameworks, and configuration details.
+
+## What It Discovers
+
+<CardGroup cols={2}>
+  <Card title="Technologies" icon="layer-group">
+    CMS, frameworks, libraries
+  </Card>
+  <Card title="Server Info" icon="server">
+    Web server, OS details
+  </Card>
+  <Card title="Security Headers" icon="shield">
+    Security configuration analysis
+  </Card>
+  <Card title="Meta Information" icon="info">
+    Site metadata and structure
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter URL">
+    Provide the website URL to analyze.
+  </Step>
+  <Step title="Run Recon">
+    Execute the reconnaissance scan.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered information.
+  </Step>
+</Steps>
+
+## Information Gathered
+
+### Technology Detection
+
+| Category | Examples |
+|----------|----------|
+| CMS | WordPress, Drupal, Joomla |
+| Frameworks | React, Angular, Laravel |
+| Web Servers | nginx, Apache, IIS |
+| Languages | PHP, Python, Java |
+| JavaScript | jQuery, Bootstrap |
+
+### Security Analysis
+
+- HTTP security headers
+- Cookie attributes
+- SSL/TLS configuration
+- Content Security Policy
+
+### Meta Information
+
+- Page titles and descriptions
+- robots.txt content
+- sitemap.xml
+- Interesting paths
+
+## Why Recon Matters
+
+Technology fingerprinting helps:
+- Select appropriate scanners
+- Identify version-specific vulnerabilities
+- Understand the application architecture
+- Plan targeted testing
+
+<Tip>
+Use Website Recon results to choose which specialized scanners to run (WordPress Scanner for WordPress sites, etc.)
+</Tip>
+
+## Related Tools
+
+- [WAF Detector](/tools/waf-detector)
+- [URL Fuzzer](/tools/url-fuzzer)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)

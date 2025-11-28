@@ -1,0 +1,132 @@
+---
+title: "Docker agent"
+description: "Deploy the VPN agent as a Docker container for internal network scanning"
+---
+
+## Overview
+
+The Docker agent is a containerized VPN agent ideal for environments already using Docker or Kubernetes.
+
+## Prerequisites
+
+- Docker installed and running
+- Outbound internet access from the Docker host
+- Network access to internal targets from the Docker host
+
+## Quick Start
+
+<Steps>
+  <Step title="Get Agent Token">
+    Generate an agent token from your Pentest-Tools.com dashboard.
+  </Step>
+  <Step title="Pull Image">
+    Download the agent Docker image.
+  </Step>
+  <Step title="Run Container">
+    Start the agent container with your token.
+  </Step>
+  <Step title="Verify Connection">
+    Confirm the agent is connected in your dashboard.
+  </Step>
+</Steps>
+
+## Installation
+
+### Pull the Image
+
+```bash
+docker pull pentesttools/vpn-agent:latest
+```
+
+### Run the Agent
+
+```bash
+docker run -d \
+  --name pentest-agent \
+  --restart unless-stopped \
+  --cap-add NET_ADMIN \
+  -e AGENT_TOKEN="your-agent-token" \
+  pentesttools/vpn-agent:latest
+```
+
+<Note>
+Replace `your-agent-token` with the token from your dashboard.
+</Note>
+
+## Configuration Options
+
+| Environment Variable | Description | Required |
+|---------------------|-------------|----------|
+| `AGENT_TOKEN` | Authentication token from dashboard | Yes |
+| `LOG_LEVEL` | Logging verbosity (debug, info, warn, error) | No |
+
+## Network Modes
+
+### Host Network Mode
+
+For direct access to the host network:
+
+```bash
+docker run -d \
+  --name pentest-agent \
+  --network host \
+  -e AGENT_TOKEN="your-token" \
+  pentesttools/vpn-agent:latest
+```
+
+### Custom Network
+
+To scan containers in a specific Docker network:
+
+```bash
+docker run -d \
+  --name pentest-agent \
+  --network your-internal-network \
+  -e AGENT_TOKEN="your-token" \
+  pentesttools/vpn-agent:latest
+```
+
+## Docker Compose
+
+```yaml
+version: '3'
+services:
+  vpn-agent:
+    image: pentesttools/vpn-agent:latest
+    container_name: pentest-agent
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - AGENT_TOKEN=your-agent-token
+    network_mode: host
+```
+
+## Managing the Agent
+
+```bash
+# View logs
+docker logs pentest-agent
+
+# Stop agent
+docker stop pentest-agent
+
+# Start agent
+docker start pentest-agent
+
+# Remove agent
+docker rm -f pentest-agent
+```
+
+## Kubernetes Deployment
+
+For Kubernetes environments, deploy as a DaemonSet or Deployment depending on your needs.
+
+<Tip>
+Use Kubernetes secrets to manage the agent token securely.
+</Tip>
+
+## Related Topics
+
+- [VPN Profiles Overview](/using/vpn/overview)
+- [Troubleshooting](/using/vpn/troubleshooting)

@@ -1,0 +1,60 @@
+---
+title: "Scans and statuses"
+description: "Understand scan lifecycle and status indicators in Pentest-Tools.com"
+---
+
+## Scan Lifecycle
+
+Every scan goes through a defined lifecycle from initiation to completion.
+
+## Scan Statuses
+
+| Status | Description |
+|--------|-------------|
+| **Queued** | Scan is waiting to be processed |
+| **Running** | Scan is actively in progress |
+| **Completed** | Scan finished successfully |
+| **Failed** | Scan encountered an error |
+| **Stopped** | Scan was manually stopped by user |
+| **Paused** | Scan is temporarily paused |
+
+## Status Flow
+
+```
+Queued → Running → Completed
+                 → Failed
+                 → Stopped
+```
+
+## Understanding Scan Results
+
+When a scan completes, you'll see:
+
+- **Findings count**: Number of vulnerabilities discovered
+- **Severity breakdown**: Distribution by severity level
+- **Scan duration**: How long the scan took
+- **Coverage**: What was tested
+
+<Note>
+A completed scan with zero findings doesn't mean the target is secure—it means the scanner didn't detect vulnerabilities with its current checks.
+</Note>
+
+## Common Issues
+
+<AccordionGroup>
+  <Accordion title="Scan stuck in Queued">
+    This may occur during high platform usage. Scans are processed in order.
+  </Accordion>
+  <Accordion title="Scan Failed">
+    Check if the target is reachable and that your asset verification is still valid.
+  </Accordion>
+  <Accordion title="Incomplete Results">
+    Some scans may timeout on large targets. Consider adjusting scan settings.
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Running Web Scans](/using/scans/running-web-scans)
+- [Running Network Scans](/using/scans/running-network-scans)
+- [Scan Limits and Behavior](/using/scans/scan-limits-and-behavior)

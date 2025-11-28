@@ -1,0 +1,81 @@
+---
+title: "UDP port scanner"
+description: "Discover open UDP ports and services on target hosts"
+---
+
+## Overview
+
+The UDP Port Scanner identifies open UDP ports, which often host critical services that TCP scanning misses.
+
+## Why Scan UDP?
+
+UDP services are frequently overlooked but can be highly vulnerable:
+
+- DNS (53)
+- SNMP (161, 162)
+- NTP (123)
+- TFTP (69)
+- VPN services
+
+## What It Finds
+
+<CardGroup cols={2}>
+  <Card title="Open UDP Ports" icon="door-open">
+    Ports responding to UDP probes
+  </Card>
+  <Card title="UDP Services" icon="gears">
+    DNS, SNMP, NTP, and more
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide IP address or hostname.
+  </Step>
+  <Step title="Select Ports">
+    Choose UDP ports to scan.
+  </Step>
+  <Step title="Run Scan">
+    Execute the UDP port scan.
+  </Step>
+  <Step title="Review Results">
+    Analyze open UDP services.
+  </Step>
+</Steps>
+
+## UDP vs TCP Scanning
+
+| Aspect | TCP | UDP |
+|--------|-----|-----|
+| Connection | Stateful | Stateless |
+| Speed | Faster | Slower |
+| Reliability | High | Variable |
+| Response | Clear open/closed | Often no response |
+
+<Note>
+UDP scanning is inherently slower and less reliable than TCP scanning because UDP doesn't acknowledge packets.
+</Note>
+
+## Common UDP Ports
+
+| Port | Service | Security Concern |
+|------|---------|------------------|
+| 53 | DNS | Zone transfers, amplification |
+| 67/68 | DHCP | Rogue DHCP servers |
+| 69 | TFTP | Unauthenticated file access |
+| 123 | NTP | Amplification attacks |
+| 161 | SNMP | Information disclosure |
+| 500 | IKE | VPN vulnerabilities |
+
+## Scan Considerations
+
+<Warning>
+UDP scanning takes significantly longer than TCP scanning. Plan accordingly for comprehensive UDP assessments.
+</Warning>
+
+## Related Tools
+
+- [Port Scanner](/tools/port-scanner)
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)

@@ -1,0 +1,98 @@
+---
+title: "URL fuzzer"
+description: "Discover hidden files, directories, and paths on web servers"
+---
+
+## Overview
+
+The URL Fuzzer discovers hidden or unlinked content on web servers by testing common file and directory names.
+
+## What It Finds
+
+<CardGroup cols={2}>
+  <Card title="Hidden Directories" icon="folder">
+    Admin panels, backup folders
+  </Card>
+  <Card title="Sensitive Files" icon="file">
+    Configuration files, backups
+  </Card>
+  <Card title="Unlinked Pages" icon="link-slash">
+    Development and test pages
+  </Card>
+  <Card title="API Endpoints" icon="plug">
+    Undocumented API paths
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target URL">
+    Provide the base URL to fuzz.
+  </Step>
+  <Step title="Select Wordlist">
+    Choose the discovery wordlist.
+  </Step>
+  <Step title="Configure Options">
+    Set extensions, recursion depth.
+  </Step>
+  <Step title="Run Fuzzer">
+    Start the fuzzing process.
+  </Step>
+</Steps>
+
+## Wordlist Options
+
+| Wordlist | Size | Use Case |
+|----------|------|----------|
+| Small | ~1,000 | Quick discovery |
+| Medium | ~10,000 | Standard testing |
+| Large | ~50,000+ | Comprehensive |
+| Custom | Variable | Specific targets |
+
+## Common Discoveries
+
+| Path | Description |
+|------|-------------|
+| `/admin` | Admin interfaces |
+| `/backup` | Backup files |
+| `/config` | Configuration files |
+| `/api` | API endpoints |
+| `/.git` | Git repository exposure |
+| `/phpinfo.php` | PHP configuration |
+
+## Configuration Options
+
+### Extensions
+
+Test for specific file types:
+```
+.php, .asp, .aspx, .jsp, .html, .bak, .old, .txt
+```
+
+### Recursion
+
+- **Off**: Scan base path only
+- **Level 1**: Scan discovered directories
+- **Level 2+**: Deep recursive scanning
+
+<Warning>
+Deep recursive scanning can generate significant traffic. Use thoughtfully in production environments.
+</Warning>
+
+## Filtering Results
+
+Filter by response code:
+- **200**: Success (found)
+- **301/302**: Redirects
+- **403**: Forbidden (exists but restricted)
+- **404**: Not found (ignore)
+
+<Tip>
+403 Forbidden responses can be interesting—the path exists but access is denied.
+</Tip>
+
+## Related Tools
+
+- [Website Recon](/tools/website-recon)
+- [Google Hacking](/tools/google-hacking)

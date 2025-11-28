@@ -1,0 +1,91 @@
+---
+title: "Cloud scanner"
+description: "Identify security issues in cloud infrastructure and services"
+---
+
+## Overview
+
+The Cloud Scanner identifies security misconfigurations and vulnerabilities in cloud environments and cloud-hosted resources.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="Storage" icon="bucket">
+    S3 buckets, blob storage exposure
+  </Card>
+  <Card title="Services" icon="cloud">
+    Exposed cloud services
+  </Card>
+  <Card title="Configuration" icon="gear">
+    Security misconfigurations
+  </Card>
+  <Card title="Metadata" icon="info">
+    Cloud metadata exposure
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide cloud resource URLs or identifiers.
+  </Step>
+  <Step title="Select Checks">
+    Choose which cloud checks to run.
+  </Step>
+  <Step title="Run Scan">
+    Execute cloud security assessment.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered issues.
+  </Step>
+</Steps>
+
+## Cloud Storage Checks
+
+### Amazon S3
+
+- Public bucket detection
+- ACL misconfigurations
+- Bucket policy issues
+- Listing enabled
+
+### Azure Blob Storage
+
+- Public container access
+- Anonymous read permissions
+- SAS token exposure
+
+### Google Cloud Storage
+
+- Public bucket access
+- IAM misconfigurations
+
+## Common Findings
+
+| Finding | Risk | Description |
+|---------|------|-------------|
+| Public S3 Bucket | Critical | Data exposed to internet |
+| Directory Listing | High | Can enumerate contents |
+| Weak ACLs | Medium | Overly permissive access |
+| Metadata Exposure | Low | Information disclosure |
+
+<Warning>
+Publicly accessible cloud storage has caused numerous data breaches. Always verify storage permissions.
+</Warning>
+
+## Best Practices
+
+<Tip>
+Regularly scan your cloud resources for public exposure, especially after infrastructure changes.
+</Tip>
+
+- Enable bucket/container logging
+- Use private by default
+- Implement least privilege
+- Monitor for configuration drift
+
+## Related Tools
+
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
+- [Subdomain Finder](/tools/subdomain-finder)

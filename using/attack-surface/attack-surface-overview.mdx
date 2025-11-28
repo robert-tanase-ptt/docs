@@ -1,0 +1,84 @@
+---
+title: "Attack surface overview"
+description: "Discover and manage your organization's attack surface with Pentest-Tools.com"
+---
+
+## What Is Attack Surface Management?
+
+Attack Surface Management (ASM) is the continuous process of discovering, cataloging, and monitoring your external-facing assets to understand and reduce security risks.
+
+## The Attack Surface Dashboard
+
+The Attack Surface view provides a comprehensive overview of your discovered assets:
+
+<CardGroup cols={2}>
+  <Card title="Asset Discovery" icon="magnifying-glass">
+    Automatically find subdomains, IPs, and services.
+  </Card>
+  <Card title="Technology Stack" icon="layer-group">
+    Identify technologies running on your assets.
+  </Card>
+  <Card title="Risk Indicators" icon="gauge">
+    See which assets pose the greatest risk.
+  </Card>
+  <Card title="Change Tracking" icon="clock-rotate-left">
+    Monitor changes to your attack surface over time.
+  </Card>
+</CardGroup>
+
+## Key Features
+
+### Asset Discovery
+
+Automatically discover assets you may not know about:
+
+- **Subdomains**: Find all subdomains of your domains
+- **IP Addresses**: Discover associated IP addresses
+- **Services**: Identify running services and open ports
+- **Certificates**: Track SSL/TLS certificates
+
+### Risk Assessment
+
+Each discovered asset is assessed for risk based on:
+
+| Factor | Description |
+|--------|-------------|
+| Exposure | How accessible is the asset from the internet? |
+| Technology | Are there known vulnerabilities in detected software? |
+| Configuration | Are there misconfigurations or weak settings? |
+| Age | Is the asset using outdated software? |
+
+### Continuous Monitoring
+
+<Note>
+Attack surfaces change constantly. New assets are deployed, configurations change, and new vulnerabilities are discovered. Continuous monitoring helps you stay aware.
+</Note>
+
+## Getting Started
+
+<Steps>
+  <Step title="Add Root Assets">
+    Start by adding your primary domains to the platform.
+  </Step>
+  <Step title="Run Discovery">
+    Launch discovery scans to find related assets.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered assets and their risk levels.
+  </Step>
+  <Step title="Take Action">
+    Address high-risk items and add assets to your inventory.
+  </Step>
+</Steps>
+
+## Best Practices
+
+<Tip>
+Run discovery scans regularly—monthly at minimum—to catch newly deployed assets and changes.
+</Tip>
+
+## Related Topics
+
+- [Working with Technology Fingerprints](/using/attack-surface/working-with-technology-fingerprints)
+- [Attack Surface Concept](/concepts/attack-surface)
+- [Subdomain Finder](/tools/subdomain-finder)

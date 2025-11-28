@@ -1,0 +1,76 @@
+---
+title: "Google hacking"
+description: "Find exposed data and security issues using Google dorks"
+---
+
+## Overview
+
+The Google Hacking tool uses advanced search operators (Google dorks) to discover exposed sensitive information, misconfigurations, and security issues indexed by search engines.
+
+## What It Finds
+
+<CardGroup cols={2}>
+  <Card title="Exposed Files" icon="file">
+    Documents, backups, configuration files
+  </Card>
+  <Card title="Login Pages" icon="door-open">
+    Admin panels, login forms
+  </Card>
+  <Card title="Directory Listings" icon="folder-open">
+    Open directory indexes
+  </Card>
+  <Card title="Error Messages" icon="triangle-exclamation">
+    Debug info, stack traces
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Specify the domain you want to investigate.
+  </Step>
+  <Step title="Select Dork Categories">
+    Choose which types of searches to run.
+  </Step>
+  <Step title="Run Scan">
+    Execute the Google hacking queries.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered items and assess risk.
+  </Step>
+</Steps>
+
+## Dork Categories
+
+| Category | Examples |
+|----------|----------|
+| Sensitive Files | Passwords, configs, backups |
+| Exposed Directories | Open indexes |
+| Login Pages | Admin panels |
+| Error Pages | Debug information |
+| Database Files | SQL dumps |
+| Log Files | Access and error logs |
+
+## Example Findings
+
+- Exposed configuration files with credentials
+- Publicly accessible admin panels
+- Backup files left on web servers
+- Directory listings revealing site structure
+- Debug pages exposing system information
+
+<Warning>
+Google Hacking searches public indexes. The information found is already publicly accessible, but it may reveal sensitive data that should be protected.
+</Warning>
+
+## Best Practices
+
+<Tip>
+Run Google Hacking scans regularly to detect accidentally exposed files before attackers do.
+</Tip>
+
+## Related Tools
+
+- [Website Recon](/tools/website-recon)
+- [URL Fuzzer](/tools/url-fuzzer)

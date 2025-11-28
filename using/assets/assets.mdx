@@ -1,0 +1,259 @@
+---
+title: "Assets"
+description: "Add, import, and manage assets and targets for your security testing"
+---
+
+## Assets and targets
+
+Pentest-Tools.com uses two related concepts for organizing what you scan:
+
+| Concept | Description | Example |
+|---------|-------------|---------|
+| **Asset** | A top-level resource you add to the platform. Assets are the unit for subscription limits. | `example.com`, `192.168.1.1` |
+| **Target** | A specific scannable item derived from an asset. Tools run scans against targets. | `https://example.com/app`, `https://example.com/api/v1` |
+
+<Info>
+Your subscription's asset limit determines how many assets you can add. One asset can have multiple targets, all counted under that single asset.
+</Info>
+
+When you add a target, the platform automatically creates or associates it with the appropriate asset:
+
+1. **You provide a target** – For example, `https://example.com/app`
+2. **The system extracts the asset** – The hostname `example.com` becomes the asset
+3. **Target links to asset** – The URL target is associated with the `example.com` asset
+4. **Scans run on the target** – Tools scan the specific URL you provided
+
+### Example: One asset, multiple targets
+
+For the asset `example.com`, you might have these targets:
+
+| Target | Type |
+|--------|------|
+| `example.com` | Hostname |
+| `https://example.com/` | URL |
+| `https://example.com/app` | URL |
+| `https://example.com/api/v1` | URL |
+
+All of these targets belong to the single `example.com` asset, counting as **one asset** toward your subscription limit.
+
+## Adding a single target
+
+<Steps>
+  <Step title="Navigate to Assets">
+    Go to **Assets** from the main navigation.
+  </Step>
+  <Step title="Click Add target">
+    Click the **Add target** button in the top right.
+  </Step>
+  <Step title="Enter target details">
+    Provide the target (domain, IP address, or URL) and an optional description.
+  </Step>
+  <Step title="Configure alive check (optional)">
+    Enable **Include only alive targets** to verify the target is reachable before adding it. See [Check alive](#check-alive) for details.
+  </Step>
+  <Step title="Add the target">
+    Click **Add** to create the target. The asset is created automatically.
+  </Step>
+</Steps>
+
+### Supported target formats
+
+| Format | Example | Asset created |
+|--------|---------|---------------|
+| Domain | `example.com` | `example.com` |
+| Subdomain | `api.example.com` | `api.example.com` |
+| IP address | `192.168.1.1` | `192.168.1.1` |
+| URL | `https://example.com/app` | `example.com` |
+| URL with port | `https://example.com:8443/admin` | `example.com` |
+| IP range (CIDR) | `192.168.1.0/24` | Individual IPs |
+
+<Note>
+Different tools accept different target types. For example, the Website Vulnerability Scanner requires a URL, while the Port Scanner accepts hostnames or IP addresses.
+</Note>
+
+## Importing multiple targets
+
+For bulk operations, you can import targets from a file or cloud provider.
+
+### Import from file
+
+Import targets from a `.txt` file with one target per line. Optionally include descriptions after a comma.
+
+<Steps>
+  <Step title="Open import dialog">
+    Click the **Import** button and select **From file**.
+  </Step>
+  <Step title="Prepare your file">
+    Create a text file with targets and optional descriptions:
+
+    ```
+    www.example.com, Production website
+    dev.example.com, Development server
+    staging.example.com, Pre-prod environment
+    192.168.1.0/24, Production network range
+    10.10.0.1-255, Internal servers
+    ```
+  </Step>
+  <Step title="Upload and configure">
+    Select your file and optionally enable **Include only alive targets** to filter unreachable hosts. See [Check alive](#check-alive) for details.
+  </Step>
+  <Step title="Import">
+    Click **Import**. You'll receive a notification when the import completes.
+  </Step>
+</Steps>
+
+<Tip>
+For IP ranges, enable the [alive check](#check-alive) to avoid adding offline hosts. This takes longer but keeps your asset list cleaner.
+</Tip>
+
+### Import from AWS
+
+If you have an AWS integration configured, you can import targets directly from your AWS infrastructure.
+
+1. Click **Import** and select **From AWS**
+2. Choose your AWS integration
+3. Select the resource types to import
+4. Click **Import**
+
+<Info>
+AWS import requires a configured AWS integration. See [AWS integration](/notifications/aws) for setup instructions.
+</Info>
+
+## Managing assets and targets
+
+### Editing targets
+
+You can update the description of existing targets:
+
+1. Find the target in your asset list
+2. Click the **Edit description** button
+3. Update the description
+4. Click **Save**
+
+### Moving targets between workspaces
+
+Move targets to a different workspace to reorganize your work:
+
+1. Select one or more targets
+2. Click **Move**
+3. Choose the destination workspace
+4. Confirm the move
+
+<Note>
+Moving a target also moves its associated scan history and findings to the new workspace.
+</Note>
+
+### Deleting assets and targets
+
+<Warning>
+Deleting an asset removes all associated targets, scans, and findings permanently. This action cannot be undone.
+</Warning>
+
+**To delete targets (keeping the asset):**
+1. Select the specific targets you want to remove
+2. Click **Delete**
+3. Confirm the deletion
+
+**To delete an entire asset:**
+1. Select the asset
+2. Click **Delete**
+3. Confirm that you want to delete the asset and all its targets
+
+## Asset discovery
+
+Some tools discover additional targets during scanning:
+
+- **Subdomain Finder** discovers subdomains under your domain asset
+- **Website Recon** identifies linked pages and endpoints
+- **Port Scanner** finds services that may expose web interfaces
+
+When new targets are discovered, they're automatically associated with the appropriate asset. Discovered subdomains of `example.com` count under the `example.com` asset—you don't consume additional asset slots.
+
+<Tip>
+Use the attack surface view to see all targets discovered under each asset.
+</Tip>
+
+## Check alive
+
+When adding or importing targets, you can enable the **Include only alive targets** option to filter out unreachable hosts before they're added to your workspace.
+
+### When to use it
+
+The alive check is particularly useful when:
+
+- **Importing IP ranges** – Avoid cluttering your asset list with offline hosts
+- **Scanning internal networks** – Filter out unused IP addresses in a CIDR block
+- **Validating targets** – Confirm hosts are reachable before adding them
+
+<Note>
+The alive check takes longer than adding targets directly, but results in a cleaner asset list with only reachable hosts.
+</Note>
+
+### How it works
+
+The platform uses a customized version of Nmap's host discovery to determine if a target is alive. Multiple probe types are sent to maximize detection accuracy, as different network configurations and firewalls may block certain traffic.
+
+<AccordionGroup>
+  <Accordion title="ICMP probes">
+    - **Echo request** – Sends ICMP type 8 packets expecting echo replies. Often blocked by firewalls but reliable on internal networks.
+    - **Timestamp request** – Sends ICMP queries expecting reply code 14. Useful when echo requests are blocked.
+    - **Netmask request** – Sends ICMP queries expecting reply code 18. Another alternative when echo requests are blocked.
+  </Accordion>
+  <Accordion title="TCP probes">
+    - **SYN probes** – Sends empty TCP packets with the SYN flag to the top 100 ports.
+    - **ACK probes** – Sends TCP packets with ACK flags, expecting RST responses.
+  </Accordion>
+  <Accordion title="UDP probes">
+    Sends UDP packets to common ports (53, 113, 161, 162, 497, 40125). An ICMP "port unreachable" response indicates the host is alive. This bypasses firewalls that only filter TCP traffic.
+  </Accordion>
+  <Accordion title="IP protocol ping">
+    Sends IP packets with various protocol numbers (ICMP, IGMP, IP-in-IP, TCP, SCTP) to detect hosts that respond to specific protocols.
+  </Accordion>
+  <Accordion title="Source port spoofing">
+    Uses port 53 (DNS) as the source port to bypass poorly configured firewalls that permit traffic based on source port.
+  </Accordion>
+</AccordionGroup>
+
+## Asset limits
+
+Your subscription includes a maximum number of assets. This limit:
+
+- Applies across all your workspaces
+- Is shared among all team members on your account
+- Counts unique assets (not targets)
+
+### Checking your usage
+
+View your current asset usage in **My account → Plan details & billing → Scanned assets**.
+
+### When you reach your limit
+
+If you reach your asset limit, you can:
+
+- **Add targets to existing assets** – New URL targets on domains you already have don't consume additional asset slots
+- **Delete unused assets** – Remove assets you no longer need to free up capacity
+- **Upgrade your plan** – Increase your asset tier for more capacity
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Use descriptive names">
+    Add meaningful descriptions to targets so you and your team can quickly identify what each one represents.
+  </Accordion>
+  <Accordion title="Organize with workspaces">
+    Group related assets in workspaces by project, client, or environment. This makes it easier to manage large inventories.
+  </Accordion>
+  <Accordion title="Clean up regularly">
+    Remove decommissioned targets and assets to keep your inventory current and make room for new additions.
+  </Accordion>
+  <Accordion title="Use alive checks for imports">
+    When importing large lists (especially IP ranges), enable the [alive check](#check-alive) to filter out unreachable hosts automatically.
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Assets and scan cycles](/plans-and-limits/assets-scan-cycles) – How assets affect your subscription
+- [Workspaces](/using/workspaces/organize-work) – Group assets by project or client
+- [Attack surface overview](/using/attack-surface/attack-surface-overview) – View all discovered targets
+- [AWS integration](/notifications/aws) – Import targets from AWS

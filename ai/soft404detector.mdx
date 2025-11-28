@@ -1,0 +1,114 @@
+---
+title: "Soft 404 detector"
+description: "AI-powered detection of soft 404 error pages for cleaner scan results"
+---
+
+## Overview
+
+The Soft 404 detector uses machine learning to identify pages that return a 200 OK status code but actually represent error or non-existent content. This helps eliminate false positives and delivers cleaner, more actionable scan results.
+
+## What is a soft 404?
+
+A "soft 404" occurs when a web server returns a successful HTTP status code (typically 200) for a page that doesn't actually exist or contains error content. Common examples include:
+
+- Custom "Page not found" pages that return 200 instead of 404
+- Error pages styled to match the site design
+- Placeholder pages with generic content
+- Pages that redirect to a homepage or parent directory
+
+These soft 404 pages can pollute scan results with false positives, making it harder to identify real findings.
+
+## How it works
+
+Our AI classifier analyzes HTTP responses to distinguish between:
+
+- **Legitimate pages** — Real content that should be reported as findings
+- **Soft 404 pages** — Error pages disguised as valid responses
+
+The classifier uses multiple detection techniques:
+
+<AccordionGroup>
+  <Accordion title="Response comparison">
+    Compares page content against known 404 response patterns for the target site.
+  </Accordion>
+  <Accordion title="Content analysis">
+    Analyzes page content for common error indicators and patterns.
+  </Accordion>
+  <Accordion title="Machine learning classification">
+    Uses trained models to classify ambiguous responses with high accuracy.
+  </Accordion>
+</AccordionGroup>
+
+## Usage in Website Scanner
+
+The soft 404 detector is integrated into the [Website Scanner](/tools/website-vulnerability-scanner) to improve the accuracy of content discovery tests.
+
+### Enabled tests
+
+The classifier runs automatically when the following tests are enabled in the **Initial Tests** section:
+
+| Test | Generated finding |
+|------|-------------------|
+| **Find admin consoles** | Administration consoles found |
+| **Find sensitive files** | Sensitive files found |
+| **Find interesting files** | Interesting files found |
+| **Search for information disclosure** | Server information disclosure |
+| **Software identification** | Server software identified |
+
+<Note>
+The soft 404 detector is enabled by default for these tests to ensure cleaner results.
+</Note>
+
+### How it improves results
+
+Without soft 404 detection, these tests might report hundreds of false positives—pages that appear to exist but are actually custom error pages. The ML classifier filters these out, so you only see legitimate discoveries.
+
+## Usage in URL Fuzzer
+
+The soft 404 detector is also integrated into the [URL Fuzzer](/tools/url-fuzzer) to clean up fuzzing results.
+
+### How it works
+
+When fuzzing for hidden files and directories, the URL Fuzzer sends many requests that will return error pages. The ML classifier:
+
+1. Analyzes each response
+2. Identifies soft 404 patterns
+3. Filters out false positives from the results
+
+<Note>
+The URL Fuzzer doesn't generate findings directly, but its results are cleaned by the ML classifier to show only legitimate discoveries.
+</Note>
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="Fewer false positives" icon="filter">
+    Eliminates noise from custom error pages
+  </Card>
+  <Card title="Cleaner reports" icon="file-check">
+    Only legitimate findings appear in your results
+  </Card>
+  <Card title="Time savings" icon="clock">
+    Less time spent reviewing false positives
+  </Card>
+  <Card title="Higher accuracy" icon="bullseye">
+    ML models trained on real-world data
+  </Card>
+</CardGroup>
+
+## AI data handling
+
+We take your data privacy seriously. Our AI features are designed with security and privacy in mind:
+
+- **Proprietary models** — We use our own AI models, not third-party services like OpenAI
+- **Secure infrastructure** — Data is processed within our secure, isolated infrastructure
+- **No external training** — Your data is never sent to external companies for model training
+- **Predictive, not generative** — Our models classify data rather than generate content, eliminating "hallucination" risks
+
+For complete details on how we handle data in our AI features, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
+
+## Related topics
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [URL Fuzzer](/tools/url-fuzzer)
+- [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy)

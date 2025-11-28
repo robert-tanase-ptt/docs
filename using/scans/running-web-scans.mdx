@@ -1,0 +1,85 @@
+---
+title: "Running web scans"
+description: "Learn how to effectively scan web applications for vulnerabilities"
+---
+
+## Web Application Scanning
+
+Web scans identify vulnerabilities in your web applications, including SQL injection, XSS, misconfigurations, and more.
+
+## Available Web Scanners
+
+<CardGroup cols={2}>
+  <Card title="Website Vulnerability Scanner" icon="globe" href="/tools/website-vulnerability-scanner">
+    Comprehensive web application security testing.
+  </Card>
+  <Card title="XSS Scanner" icon="code" href="/tools/xss-scanner">
+    Detect cross-site scripting vulnerabilities.
+  </Card>
+  <Card title="SQL Injection Scanner" icon="database" href="/tools/sql-injection-scanner">
+    Find SQL injection flaws in your applications.
+  </Card>
+  <Card title="API Scanner" icon="plug" href="/tools/api-scanner">
+    Test REST and GraphQL APIs for security issues.
+  </Card>
+</CardGroup>
+
+## Running Your First Web Scan
+
+<Steps>
+  <Step title="Select Target">
+    Choose a verified web application asset from your inventory.
+  </Step>
+  <Step title="Choose Scanner">
+    Select the appropriate scanner based on what you want to test.
+  </Step>
+  <Step title="Configure Options">
+    Set scan depth, authentication, and any exclusions.
+  </Step>
+  <Step title="Launch Scan">
+    Start the scan and monitor progress.
+  </Step>
+  <Step title="Review Results">
+    Analyze findings and plan remediation.
+  </Step>
+</Steps>
+
+## Scan Configuration Options
+
+### Scan Depth
+
+| Depth | Coverage | Speed | Use Case |
+|-------|----------|-------|----------|
+| Light | Surface-level checks | Fast | Quick reconnaissance |
+| Normal | Standard vulnerability checks | Moderate | Regular assessments |
+| Deep | Comprehensive testing | Slow | Thorough security audits |
+
+### Authentication
+
+For testing authenticated areas:
+- Cookie-based authentication
+- Form-based login
+- Header-based tokens
+
+<Note>
+Authenticated scanning discovers significantly more vulnerabilities by testing areas only accessible to logged-in users.
+</Note>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start with Light Scans">
+    Use light scans first to identify obvious issues quickly, then follow up with deeper scans.
+  </Accordion>
+  <Accordion title="Test in Staging First">
+    When possible, test against staging environments before production.
+  </Accordion>
+  <Accordion title="Schedule Off-Peak">
+    Run intensive scans during off-peak hours to minimize impact.
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Scan Types and Depth](/using/scans/scan-types-and-depth)
+- [Authenticated Scanning](/using/scans/authenticated-scanning)

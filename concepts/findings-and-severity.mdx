@@ -1,0 +1,60 @@
+---
+title: "Findings and severity"
+description: "Learn how findings are categorized and prioritized by severity"
+---
+
+## What Are Findings?
+
+Findings are security issues, vulnerabilities, or informational items discovered during scans. Each finding includes details about the issue, its location, and remediation guidance.
+
+## Severity Levels
+
+Pentest-Tools.com uses a standard severity scale to help you prioritize remediation:
+
+| Severity | Description | Action |
+|----------|-------------|--------|
+| **Critical** | Severe vulnerabilities that could lead to full system compromise | Immediate remediation required |
+| **High** | Significant vulnerabilities with serious impact potential | Remediate as soon as possible |
+| **Medium** | Moderate risk vulnerabilities | Plan remediation in near term |
+| **Low** | Minor issues with limited impact | Address when convenient |
+| **Info** | Informational findings, not necessarily vulnerabilities | Review for awareness |
+
+## Severity Indicators
+
+<CardGroup cols={5}>
+  <Card title="Critical" icon="circle-exclamation">
+    🔴 Red
+  </Card>
+  <Card title="High" icon="triangle-exclamation">
+    🟠 Orange
+  </Card>
+  <Card title="Medium" icon="circle-info">
+    🟡 Yellow
+  </Card>
+  <Card title="Low" icon="circle">
+    🔵 Blue
+  </Card>
+  <Card title="Info" icon="info">
+    ⚪ Gray
+  </Card>
+</CardGroup>
+
+## Finding Details
+
+Each finding includes:
+
+- **Title**: Brief description of the issue
+- **Severity**: Risk level
+- **Description**: Detailed explanation
+- **Evidence**: Proof of the vulnerability
+- **Remediation**: How to fix the issue
+- **References**: Links to additional information (CVEs, CWEs, etc.)
+
+<Tip>
+Focus on Critical and High severity findings first—these represent the greatest risk to your systems.
+</Tip>
+
+## Related topics
+
+- [Findings overview](/using/findings/findings)
+- [Finding templates](/using/findings/templates)

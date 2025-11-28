@@ -1,0 +1,88 @@
+---
+title: "Subdomain finder"
+description: "Enumerate subdomains to map your target's attack surface"
+---
+
+## Overview
+
+The Subdomain Finder discovers subdomains of a target domain, revealing potentially vulnerable services, forgotten systems, and shadow IT.
+
+## What It Finds
+
+<CardGroup cols={2}>
+  <Card title="Public Subdomains" icon="globe">
+    Production sites and services
+  </Card>
+  <Card title="Internal Systems" icon="server">
+    Exposed internal resources
+  </Card>
+  <Card title="Development Sites" icon="code">
+    Staging and dev environments
+  </Card>
+  <Card title="Forgotten Assets" icon="clock-rotate-left">
+    Legacy systems still online
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Domain">
+    Provide the root domain to enumerate.
+  </Step>
+  <Step title="Select Methods">
+    Choose enumeration techniques.
+  </Step>
+  <Step title="Run Enumeration">
+    Start the subdomain discovery.
+  </Step>
+  <Step title="Analyze Results">
+    Review discovered subdomains and their details.
+  </Step>
+</Steps>
+
+## Enumeration Methods
+
+| Method | Description | Coverage |
+|--------|-------------|----------|
+| DNS Brute Force | Try common subdomain names | High volume |
+| Certificate Transparency | Search CT logs | Historical |
+| DNS Zone Transfer | Request zone data | When allowed |
+| Search Engine | Query indexed subdomains | Public only |
+| Passive Sources | Aggregate from databases | Comprehensive |
+
+## Results Include
+
+For each subdomain:
+- Full subdomain name
+- IP address(es)
+- HTTP status (if web server)
+- Technologies detected
+- Discovery source
+
+## Example Results
+
+```
+www.example.com     → 192.168.1.1   → HTTP 200
+api.example.com     → 192.168.1.2   → HTTP 200
+staging.example.com → 192.168.1.3   → HTTP 403
+mail.example.com    → 192.168.1.4   → SMTP
+```
+
+## Why Subdomain Enumeration Matters
+
+<Warning>
+Organizations often have significantly more subdomains than they realize. Unknown subdomains can harbor vulnerable, unpatched services.
+</Warning>
+
+## Best Practices
+
+<Tip>
+Run subdomain enumeration regularly to detect newly deployed services and forgotten assets.
+</Tip>
+
+## Related Tools
+
+- [Domain Finder](/tools/domain-finder)
+- [Port Scanner](/tools/port-scanner)
+- [Website Recon](/tools/website-recon)

@@ -1,0 +1,126 @@
+---
+title: "AI-enhanced authentication"
+description: "How AI improves automatic login form detection for authenticated scans"
+---
+
+## Overview
+
+The AI-enhanced authentication feature improves the reliability of automatic login form detection in the [Website Scanner](/tools/website-vulnerability-scanner). By intelligently identifying page elements, AI helps complete logins on complex or dynamic web pages where traditional detection methods struggle.
+
+## How it works
+
+When you select **Automatic Login Form** authentication in the Website Scanner, the system uses a two-stage approach:
+
+<Steps>
+  <Step title="Traditional detection">
+    The scanner first attempts to identify login form elements (username field, password field, submit button) using pattern-based selectors. This method works well for standard login forms.
+  </Step>
+  <Step title="AI-powered fallback">
+    If traditional detection fails, an AI agent takes over. The agent analyzes the page structure and intelligently identifies the correct form elements, even on complex pages with iframes, dynamic loading, or non-standard layouts.
+  </Step>
+</Steps>
+
+## What AI handles
+
+The AI component excels at scenarios that challenge traditional detection:
+
+<CardGroup cols={2}>
+  <Card title="Dynamic forms" icon="rotate">
+    Login forms loaded via JavaScript or AJAX
+  </Card>
+  <Card title="Iframes" icon="window-restore">
+    Login forms embedded in iframes
+  </Card>
+  <Card title="Non-standard layouts" icon="table-cells">
+    Forms with unusual element structures or naming
+  </Card>
+  <Card title="Multi-step logins" icon="list-ol">
+    Login flows spread across multiple screens
+  </Card>
+</CardGroup>
+
+## Performance improvement
+
+AI-enhanced authentication significantly improves success rates for automatic logins:
+
+| Metric | Without AI | With AI |
+|--------|------------|---------|
+| Success rate | 84% | 92% |
+
+<Note>
+Based on analysis of 3,200 authenticated scans over a 60-day period.
+</Note>
+
+## Using AI authentication
+
+### Enabling automatic login form
+
+<Steps>
+  <Step title="Configure your scan">
+    In the Website Scanner, add your target URL and configure scan options.
+  </Step>
+  <Step title="Enable authentication">
+    Toggle **Authentication** to enable authenticated scanning.
+  </Step>
+  <Step title="Select Automatic Login Form">
+    Choose **Automatic Login Form** as the authentication method.
+  </Step>
+  <Step title="Enter credentials">
+    Provide the **Login URL**, **Username**, and **Password** for the application.
+  </Step>
+  <Step title="Verify authentication">
+    Use **Check authentication** to confirm the login works before starting the scan.
+  </Step>
+</Steps>
+
+### Generated finding
+
+When automatic authentication succeeds, the scan generates an informational finding:
+
+> **Authentication complete: Automatic method.**
+
+<Info>
+Each authentication method generates its own confirmation message. For example, the Recorded method displays: "Authentication complete: Recorded method."
+</Info>
+
+## When AI is used
+
+The AI component activates only when needed:
+
+- **Standard forms**: Traditional detection handles most login forms without AI
+- **Complex forms**: AI activates automatically when traditional detection fails
+- **Transparent operation**: You don't need to configure anything—the system chooses the best approach
+
+<Note>
+The scan result shows the same "Authentication complete: Automatic method" message regardless of whether AI was used. Both approaches are part of the Automatic Login Form method.
+</Note>
+
+## Other authentication methods
+
+AI-enhanced detection is specific to the **Automatic Login Form** method. Other authentication methods work differently:
+
+| Method | How it works | Uses AI |
+|--------|--------------|---------|
+| **Automatic Login Form** | Detects and fills login form automatically | Yes (as fallback) |
+| **Recorded** | Replays recorded login steps from Chrome DevTools | No |
+| **Cookie** | Uses session cookies from an existing login | No |
+| **Header** | Sends custom authentication headers | No |
+
+For details on all authentication methods, see [Authenticated scanning](/using/scans/authenticated-scanning).
+
+## AI data handling
+
+Your authentication credentials are handled securely:
+
+- **Proprietary AI models** — We use our own AI infrastructure, not third-party services
+- **Secure processing** — Credentials are processed within our isolated infrastructure
+- **No external sharing** — Your data is never sent to external companies
+- **No retention** — Authentication data is not logged or retained for AI purposes
+
+For complete details, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
+
+## Related topics
+
+- [Authenticated scanning](/using/scans/authenticated-scanning)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy)

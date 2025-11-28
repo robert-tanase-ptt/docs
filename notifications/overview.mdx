@@ -1,0 +1,86 @@
+---
+title: "Notifications overview"
+description: "Stay informed about scan results and security findings"
+---
+
+## Why Notifications?
+
+Notifications keep you informed about important security events without constantly checking the dashboard.
+
+## Notification Types
+
+<CardGroup cols={2}>
+  <Card title="Scan Notifications" icon="bell">
+    Alerts when scans complete or fail.
+  </Card>
+  <Card title="Finding Alerts" icon="triangle-exclamation">
+    Immediate alerts for new findings.
+  </Card>
+  <Card title="System Notifications" icon="gear">
+    Account and platform updates.
+  </Card>
+  <Card title="Scheduled Reports" icon="calendar">
+    Regular summary reports.
+  </Card>
+</CardGroup>
+
+## Notification Channels
+
+| Channel | Use Case | Setup |
+|---------|----------|-------|
+| [Email](/notifications/email/configure-alerts) | Universal notifications | Built-in |
+| [Slack](/notifications/chat/slack) | Team collaboration | Integration |
+| [Microsoft Teams](/notifications/chat/microsoft-teams) | Enterprise communication | Integration |
+| [Jira](/notifications/chat/jira) | Ticket creation | Integration |
+| [Webhooks](/notifications/webhooks/overview) | Custom integrations | Configuration |
+
+## Configuring Notifications
+
+<Steps>
+  <Step title="Choose Channel">
+    Select where you want to receive notifications.
+  </Step>
+  <Step title="Set Up Integration">
+    Configure the connection.
+  </Step>
+  <Step title="Define Triggers">
+    Choose what events trigger notifications.
+  </Step>
+  <Step title="Customize Content">
+    Set what information to include.
+  </Step>
+</Steps>
+
+## Notification Events
+
+| Event | Description |
+|-------|-------------|
+| Scan Started | Scan has begun |
+| Scan Completed | Scan finished successfully |
+| Scan Failed | Scan encountered an error |
+| New Finding | Vulnerability discovered |
+| Critical Finding | High-severity issue found |
+
+## Best Practices
+
+<Tip>
+Start with fewer notifications and add more as needed. Too many notifications leads to alert fatigue.
+</Tip>
+
+<AccordionGroup>
+  <Accordion title="Prioritize Critical Alerts">
+    Set up immediate notifications for critical and high severity findings.
+  </Accordion>
+  <Accordion title="Use Appropriate Channels">
+    Email for summaries, Slack for real-time alerts, Jira for tracking.
+  </Accordion>
+  <Accordion title="Avoid Alert Fatigue">
+    Don't notify on every event—focus on actionable items.
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Configure Email Alerts](/notifications/email/configure-alerts)
+- [Slack Integration](/notifications/chat/slack)
+- [Webhooks](/notifications/webhooks/overview)

@@ -1,0 +1,96 @@
+---
+title: "SQL injection scanner"
+description: "Detect SQL injection vulnerabilities in web applications"
+---
+
+## Overview
+
+The SQL Injection Scanner identifies SQLi vulnerabilities that could allow attackers to access, modify, or delete database contents.
+
+## Injection Types Detected
+
+<CardGroup cols={2}>
+  <Card title="Error-based SQLi" icon="circle-exclamation">
+    Database errors reveal information
+  </Card>
+  <Card title="Boolean-based Blind" icon="toggle-on">
+    True/false responses indicate injection
+  </Card>
+  <Card title="Time-based Blind" icon="clock">
+    Response delays confirm injection
+  </Card>
+  <Card title="Union-based" icon="layer-group">
+    UNION statements extract data
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide the URL with parameters to test.
+  </Step>
+  <Step title="Configure Options">
+    Select database types and testing depth.
+  </Step>
+  <Step title="Run Scan">
+    Execute SQL injection testing.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered vulnerabilities.
+  </Step>
+</Steps>
+
+## Database Support
+
+| Database | Detection | Exploitation |
+|----------|-----------|--------------|
+| MySQL | ✓ | ✓ |
+| PostgreSQL | ✓ | ✓ |
+| Microsoft SQL | ✓ | ✓ |
+| Oracle | ✓ | ✓ |
+| SQLite | ✓ | ✓ |
+
+## Testing Methodology
+
+1. **Parameter identification**: Find injectable inputs
+2. **Injection testing**: Submit test payloads
+3. **Response analysis**: Detect injection indicators
+4. **Confirmation**: Verify exploitability
+5. **Classification**: Determine injection type
+
+## Results Include
+
+For each SQLi finding:
+- Injection type
+- Vulnerable parameter
+- Database type (if detected)
+- Working payload
+- Evidence
+- Remediation guidance
+
+## Understanding Impact
+
+<Warning>
+SQL Injection is consistently ranked as one of the most critical web vulnerabilities. It can lead to complete database compromise.
+</Warning>
+
+| Impact | Description |
+|--------|-------------|
+| Data Theft | Extract sensitive information |
+| Data Modification | Alter database contents |
+| Authentication Bypass | Log in as any user |
+| Remote Code Execution | In some configurations |
+
+## Prevention
+
+Recommendations for developers:
+- Use parameterized queries
+- Implement input validation
+- Apply least privilege to database accounts
+- Use WAF as defense in depth
+
+## Related Tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [SQLi Exploiter](/tools/sqli-exploiter)

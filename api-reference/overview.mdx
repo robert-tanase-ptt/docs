@@ -1,0 +1,142 @@
+---
+title: "Overview"
+description: "Programmatic access to Pentest-Tools.com capabilities"
+---
+
+## Introduction
+
+Pentest-Tools.com makes it easy for security teams to discover, exploit, and report common vulnerabilities while saving time for custom work and more creative hacking.
+
+Our REST API enables you to interact with the platform programmatically, integrating security scanning into your existing tools and workflows.
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Targets" icon="crosshairs">
+    View all targets from a workspace, get details for one, or create new targets.
+  </Card>
+  <Card title="Scans" icon="radar">
+    Start scans, stop them, get status updates, or retrieve full scan results.
+  </Card>
+  <Card title="Workspaces" icon="folder-tree">
+    Get details for all workspaces, view a specific one, or create new ones.
+  </Card>
+  <Card title="Findings" icon="flag">
+    Access vulnerability findings and their details.
+  </Card>
+  <Card title="Reports" icon="file-pdf">
+    Generate and download PDF, DOCX, or HTML reports.
+  </Card>
+  <Card title="And More" icon="ellipsis">
+    HTTP loggers, VPN profiles, wordlists, and finding templates.
+  </Card>
+</CardGroup>
+
+## API Base URL
+
+```
+https://app.pentest-tools.com/api/v2
+```
+
+## Quick Start
+
+### 1. Get Your API Key
+
+Generate an API key from **My Account → API** in the web application.
+
+<Note>
+API access requires a plan that includes it. Check your plan details if you receive a 403 error.
+</Note>
+
+### 2. Make Your First Request
+
+```bash
+curl -X GET "https://app.pentest-tools.com/api/v2/targets" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+### 3. Start a Scan
+
+```bash
+curl -X POST "https://app.pentest-tools.com/api/v2/scans" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"tool_id": 170, "target_name": "https://example.com"}'
+```
+
+## Available Endpoints
+
+| Resource | Endpoint | Operations |
+|----------|----------|------------|
+| Targets | `/targets` | List, create, get, delete |
+| Scans | `/scans` | List, start, get, stop, delete |
+| Scan Output | `/scans/{id}/output` | Get JSON results |
+| Scan Raw Output | `/scans/{id}/raw` | Get raw output |
+| Findings | `/findings` | List, get details, screenshots |
+| Workspaces | `/workspaces` | List, create, get, update, delete |
+| Reports | `/reports` | List, create, get, download, delete |
+| HTTP Loggers | `/http_loggers` | List, create, get, delete, get/clear data |
+| VPN Profiles | `/vpn_profiles` | List |
+| Wordlists | `/wordlists` | List, get, delete, get contents |
+| Finding Templates | `/public/finding_templates` | List (public) |
+
+## Response Format
+
+All successful responses return JSON with data wrapped in a `data` field:
+
+```json
+{
+  "data": {
+    "id": 12345,
+    "name": "example.com",
+    "status": "finished"
+  }
+}
+```
+
+For list endpoints, the response includes an array:
+
+```json
+{
+  "data": [
+    { "id": 1, "name": "target1.com" },
+    { "id": 2, "name": "target2.com" }
+  ]
+}
+```
+
+<Note>
+Error responses use a different format. See [Limits and Errors](/api-reference/limits-and-errors) for details.
+</Note>
+
+## Rate Limits
+
+API requests are rate limited per user:
+
+| Request Type | Limit |
+|--------------|-------|
+| GET requests | 250/minute |
+| POST/DELETE requests | 125/minute |
+| `/scans/{id}/output` | 60/minute |
+
+See [Limits and Errors](/api-reference/limits-and-errors) for full details.
+
+## OpenAPI Schema
+
+This API reference is based on our public OpenAPI schema, available at:
+
+```
+https://app.pentest-tools.com/api-schema.yml
+```
+
+You can use this schema with tools like Postman, Insomnia, or code generators.
+
+## Support
+
+If you have questions about the API, contact us at [support@pentest-tools.com](mailto:support@pentest-tools.com).
+
+## Next Steps
+
+- [Authentication](/api-reference/authentication) — Get your API key and authenticate requests
+- [API Examples](/api-reference/examples) — Python examples for all endpoints
+- [Limits and Errors](/api-reference/limits-and-errors) — Rate limits and error handling

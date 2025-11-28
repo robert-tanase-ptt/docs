@@ -1,0 +1,199 @@
+---
+title: "Tools reference"
+description: "Complete reference for MCP tools, resources, and prompts"
+---
+
+The Pentest-Tools.com MCP server exposes tools for scanning, management, and reporting that AI assistants can use to interact with your account.
+
+## Scanning Tools
+
+### run_website_scanner
+
+Run a website vulnerability scanner on a target URL.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `target` | string | Yes | Target URL (e.g., `https://example.com`) |
+| `scan_type` | string | No | `light`, `deep` (default), or `custom` |
+| `attack_active` | array | No | Active attacks: `xss`, `sqli`, `lfi`, `ssrf`, `ssti`, `xxe`, etc. |
+| `attack_passive` | array | No | Passive checks: `security_headers`, `cookie_security`, etc. |
+| `discovery` | array | No | Discovery modules: `fingerprint`, `sensitive_files`, etc. |
+| `authentication` | object | No | Auth config: `login_form`, `cookies`, or `headers` |
+| `workspace_id` | integer | No | Workspace for the scan |
+| `vpn_profile_uuid` | string | No | VPN profile for internal scanning |
+
+<Note>
+Authenticated scanning configuration is complex. LLMs may require a few attempts to construct the parameters correctly. Provide explicit examples in your prompts.
+</Note>
+
+### run_subdomain_finder
+
+Discover subdomains for a target domain.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `target` | string | Yes | Target domain (e.g., `example.com`) |
+| `scan_type` | string | No | `light`, `deep` (default), or `custom` |
+| `web_details` | boolean | No | Include web server details |
+| `whois` | boolean | No | Include WHOIS information |
+| `search_methods` | object | No | Custom methods: `dns_enumeration`, `ctr_search`, etc. |
+
+### run_network_scanner
+
+Run a network vulnerability scanner or port scanner.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `target` | string | Yes | Hostname or IP address |
+| `preset` | string | No | `light`, `deep` (default), or `custom` |
+| `scanning_engines` | array | No | Engines: `version_based`, `sniper`, `nuclei`, `openvas` |
+| `protocol_type` | string | No | `tcp` (default) or `udp` |
+| `port_range` | object | No | `{start_port, end_port}` |
+| `port_list` | array | No | Specific ports: `[22, 80, 443]` |
+| `just_scan_ports` | boolean | No | Port scan only (no vulnerability checks) |
+
+---
+
+## Management Tools
+
+### get_scans
+
+Retrieve scans with optional filtering.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `workspace_id` | integer | Filter by workspace |
+| `target_id` | integer | Filter by target |
+| `status` | string | Filter: `running`, `finished`, `stopped`, etc. |
+| `limit` | integer | Max results |
+| `page` | integer | Page number |
+
+### scan
+
+Manage individual scans.
+
+| Verb | Parameters | Description |
+|------|------------|-------------|
+| `get_status` | `scan_id` | Get scan status and progress |
+| `get_output` | `scan_id` | Get parsed JSON output |
+| `get_raw_output` | `scan_id` | Get raw output |
+| `stop` | `scan_id` | Stop a running scan |
+| `delete` | `scan_id` | Delete a scan (requires confirmation) |
+| `start_by_targetid` | `target_id`, `tool_id`, `tool_params` | Start scan on existing target |
+
+### get_targets / target
+
+| Tool | Verb | Parameters | Description |
+|------|------|------------|-------------|
+| `get_targets` | — | `workspace_id`, `target_type`, `limit` | List targets |
+| `target` | `add` | `name`, `description`, `workspace_id` | Create target |
+| `target` | `delete` | `target_id` | Delete target |
+
+### workspace
+
+| Verb | Parameters | Description |
+|------|------------|-------------|
+| `list` | — | Get all workspaces |
+| `get` | `workspace_id` | Get workspace details |
+| `create` | `name`, `description` | Create workspace |
+| `edit` | `workspace_id`, `name`, `description` | Update workspace |
+| `delete` | `workspace_id` | Delete workspace |
+
+### findings
+
+| Verb | Parameters | Description |
+|------|------------|-------------|
+| `get` | — | Get all findings |
+| `get_finding_information_by_id` | `finding_id` | Get finding details |
+
+### import_findings
+
+Import external findings into Pentest-Tools.com.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `findings` | array | Yes | Array of finding objects |
+
+Each finding requires: `target_name`, `source`, `name`, `vuln_description`, `vuln_risk_level`, `vuln_recommendation`, `cvss_v3`, `vuln_evidence`
+
+---
+
+## Reports
+
+### create_report
+
+Generate a new report.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `format` | string | Yes | `pdf`, `html`, `json`, `csv`, `xlsx`, `docx` |
+| `group_by` | string | Yes | `target` or `vulnerability` |
+| `source` | string | Yes | `scans` or `findings` |
+| `resources` | array | Yes | Scan IDs or finding IDs |
+| `webhook_url` | string | No | Notification URL |
+
+### report
+
+| Verb | Parameters | Description |
+|------|------------|-------------|
+| `get_all` | — | List all reports |
+| `get_report_information_by_id` | `report_id` | Get report details |
+| `download` | `report_id` | Download report file |
+| `delete` | `report_id` | Delete report |
+
+### translate_report
+
+<Tip>
+LLM-powered tool that uses AI to translate vulnerability findings.
+</Tip>
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `report_id` | integer | Yes | Report to translate |
+| `target_language` | string | Yes | e.g., `Spanish`, `French`, `German` |
+| `workspace_id` | integer | Yes | Workspace for translated findings |
+
+---
+
+## Utilities
+
+### http_logger
+
+Manage HTTP request loggers for out-of-band testing.
+
+| Verb | Parameters | Description |
+|------|------------|-------------|
+| `create` | `label`, `workspace_id` | Create logger |
+| `delete` | `logger_id` | Delete logger |
+| `clear` | `logger_id` | Clear logged data |
+
+### get_vpn_profiles
+
+Retrieve VPN profiles for internal network scanning. Returns profile UUIDs for use with scanning tools.
+
+---
+
+## Resources
+
+MCP resources provide read-only context to the LLM:
+
+| Resource | Description |
+|----------|-------------|
+| `scans://` | List of scans |
+| `targets://` | List of targets |
+| `workspaces://` | List of workspaces |
+| `findings://` | List of findings |
+| `reports://` | List of reports |
+| `http_loggers://` | List of HTTP loggers |
+| `wordlists://` | Available wordlists |
+
+---
+
+## Prompts
+
+| Prompt | Parameter | Description |
+|--------|-----------|-------------|
+| `pentest` | `target` | Comprehensive pentesting workflow |
+| `subdomains` | `target` | Subdomain discovery |
+| `is_up` | `target` | Check target accessibility |
+| `summary` | `workspace_id` | Executive summary for workspace |

@@ -1,0 +1,117 @@
+---
+title: "OpenVPN configuration"
+description: "Set up VPN profiles using OpenVPN for internal network scanning"
+---
+
+## Overview
+
+OpenVPN is a flexible option for connecting Pentest-Tools.com to your internal network using standard VPN technology.
+
+## Prerequisites
+
+- OpenVPN client installed on a machine in your internal network
+- Outbound internet access
+- Network access to the targets you want to scan
+
+## Setup Process
+
+<Steps>
+  <Step title="Download Configuration">
+    Get your OpenVPN configuration file from the Pentest-Tools.com dashboard.
+  </Step>
+  <Step title="Install OpenVPN">
+    Install the OpenVPN client on your internal machine.
+  </Step>
+  <Step title="Import Configuration">
+    Import the downloaded configuration file.
+  </Step>
+  <Step title="Connect">
+    Establish the VPN connection.
+  </Step>
+  <Step title="Verify">
+    Confirm the connection status in your dashboard.
+  </Step>
+</Steps>
+
+## Configuration File
+
+The configuration file contains:
+- Connection endpoint
+- Authentication credentials
+- Encryption settings
+- Routing configuration
+
+<Warning>
+Keep your OpenVPN configuration file secure. It contains credentials that allow access to scan through your network.
+</Warning>
+
+## Installation by Platform
+
+<Tabs>
+  <Tab title="Linux">
+    ```bash
+    # Install OpenVPN
+    sudo apt-get install openvpn
+
+    # Connect using config file
+    sudo openvpn --config pentest-tools.ovpn
+    ```
+  </Tab>
+  <Tab title="Windows">
+    1. Download OpenVPN client from openvpn.net
+    2. Install the client
+    3. Import the .ovpn configuration file
+    4. Connect from the system tray
+  </Tab>
+  <Tab title="macOS">
+    ```bash
+    # Install via Homebrew
+    brew install openvpn
+
+    # Connect using config file
+    sudo openvpn --config pentest-tools.ovpn
+    ```
+
+    Or use Tunnelblick GUI client.
+  </Tab>
+</Tabs>
+
+## Running as a Service
+
+For persistent connections, configure OpenVPN to run as a system service:
+
+```bash
+# Copy config to OpenVPN directory
+sudo cp pentest-tools.ovpn /etc/openvpn/client.conf
+
+# Enable and start service
+sudo systemctl enable openvpn@client
+sudo systemctl start openvpn@client
+```
+
+## Verifying Connection
+
+After connecting:
+1. Check the VPN status in your Pentest-Tools.com dashboard
+2. The profile should show as "Connected"
+3. Try running a scan against an internal target
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection fails">
+    - Verify outbound internet access
+    - Check firewall rules (allow UDP 1194 or TCP 443)
+    - Ensure configuration file is not corrupted
+  </Accordion>
+  <Accordion title="Scans timeout">
+    - Verify the VPN machine can reach the target
+    - Check internal firewall rules
+    - Ensure proper routing is configured
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [VPN Profiles Overview](/using/vpn/overview)
+- [Troubleshooting](/using/vpn/troubleshooting)
