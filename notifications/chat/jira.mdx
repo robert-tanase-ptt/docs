@@ -1,0 +1,119 @@
+---
+title: "Jira integration"
+description: "Create Jira tickets automatically from security findings"
+---
+
+## Overview
+
+The Jira integration automatically creates tickets for security findings, streamlining your remediation workflow.
+
+## Setting Up Jira
+
+<Steps>
+  <Step title="Access Integration">
+    Go to Settings → Integrations → Jira.
+  </Step>
+  <Step title="Connect Jira">
+    Enter your Jira instance URL and credentials.
+  </Step>
+  <Step title="Map Project">
+    Select which Jira project receives tickets.
+  </Step>
+  <Step title="Configure Mapping">
+    Set up field mappings and ticket creation rules.
+  </Step>
+</Steps>
+
+## Authentication Options
+
+| Method | Use Case |
+|--------|----------|
+| API Token | Jira Cloud |
+| OAuth | Enterprise Jira |
+| Basic Auth | Self-hosted (if enabled) |
+
+## Ticket Creation Rules
+
+### Automatic Creation
+
+Configure when tickets are created:
+
+| Trigger | Description |
+|---------|-------------|
+| New Critical Finding | Auto-create for critical severity |
+| New High Finding | Auto-create for high severity |
+| All Findings | Create ticket for every finding |
+| Manual Only | Only via platform button |
+
+### Ticket Content
+
+Tickets include:
+- Finding title as ticket summary
+- Full description with evidence
+- Severity as priority
+- Links back to platform
+- Remediation guidance
+
+## Field Mapping
+
+Map Pentest-Tools.com fields to Jira fields:
+
+| Platform Field | Jira Field |
+|----------------|------------|
+| Title | Summary |
+| Severity | Priority |
+| Description | Description |
+| Asset | Labels/Component |
+| Remediation | Custom field |
+
+## Workflow Integration
+
+<CardGroup cols={2}>
+  <Card title="Create" icon="plus">
+    Finding creates Jira ticket
+  </Card>
+  <Card title="Update" icon="arrows-rotate">
+    Status changes sync
+  </Card>
+  <Card title="Resolve" icon="check">
+    Closing ticket updates finding
+  </Card>
+  <Card title="Link" icon="link">
+    Bidirectional linking
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<Tip>
+Use Jira labels or components to organize security tickets separately from regular development work.
+</Tip>
+
+### Avoiding Ticket Spam
+
+<Warning>
+Creating tickets for every finding can overwhelm teams. Consider limiting auto-creation to high-severity findings.
+</Warning>
+
+- Auto-create: Critical and High only
+- Manual: Medium and below
+- Use Jira automation for routing
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tickets not creating">
+    - Verify Jira credentials
+    - Check project permissions
+    - Review required fields
+  </Accordion>
+  <Accordion title="Missing fields">
+    - Check field mapping configuration
+    - Verify custom field IDs
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Notifications overview](/notifications/overview)
+- [Findings](/using/findings/findings)

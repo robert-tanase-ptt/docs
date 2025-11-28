@@ -1,0 +1,83 @@
+---
+title: "ICMP ping"
+description: "Test host reachability using ICMP ping"
+---
+
+## Overview
+
+The ICMP Ping tool tests whether a target host is reachable over the network using ICMP echo requests.
+
+## What It Does
+
+<CardGroup cols={2}>
+  <Card title="Reachability" icon="wifi">
+    Check if host responds
+  </Card>
+  <Card title="Latency" icon="clock">
+    Measure response time
+  </Card>
+  <Card title="Packet Loss" icon="chart-line">
+    Detect connectivity issues
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide IP address or hostname.
+  </Step>
+  <Step title="Configure Options">
+    Set packet count and timeout.
+  </Step>
+  <Step title="Run Ping">
+    Execute the connectivity test.
+  </Step>
+  <Step title="Review Results">
+    Analyze response data.
+  </Step>
+</Steps>
+
+## Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| Count | Number of packets | 4 |
+| Timeout | Wait time per packet | 1 second |
+| Size | Packet size | 64 bytes |
+
+## Results Include
+
+- Response status (success/failure)
+- Round-trip time (RTT)
+- Packet loss percentage
+- TTL information
+
+## Use Cases
+
+- Verify target is online before scanning
+- Check network connectivity
+- Troubleshoot reachability issues
+- Quick host discovery
+
+<Note>
+Some hosts block ICMP traffic. A non-responsive ping doesn't necessarily mean the host is down.
+</Note>
+
+## Interpreting Results
+
+| Result | Meaning |
+|--------|---------|
+| Reply received | Host is up and reachable |
+| Request timeout | Host may be down or blocking ICMP |
+| Network unreachable | Routing issue |
+| Host unreachable | No route to host |
+
+<Tip>
+If ICMP is blocked, try connecting to a known open port to verify host availability.
+</Tip>
+
+## Related Tools
+
+- [Port Scanner](/tools/port-scanner)
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)

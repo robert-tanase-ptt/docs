@@ -1,0 +1,116 @@
+---
+title: "Webhooks overview"
+description: "Build custom integrations using webhooks"
+---
+
+## What Are Webhooks?
+
+Webhooks are HTTP callbacks that send data to your systems when events occur in Pentest-Tools.com.
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Custom Integrations" icon="plug">
+    Connect to any system with an HTTP API.
+  </Card>
+  <Card title="Automation" icon="robot">
+    Trigger external workflows.
+  </Card>
+  <Card title="Logging" icon="file-lines">
+    Send events to logging systems.
+  </Card>
+  <Card title="Alerting" icon="bell">
+    Custom alerting pipelines.
+  </Card>
+</CardGroup>
+
+## Setting Up Webhooks
+
+<Steps>
+  <Step title="Create Endpoint">
+    Set up an HTTP endpoint to receive webhooks.
+  </Step>
+  <Step title="Configure Webhook">
+    In Settings → Integrations → Webhooks, add your URL.
+  </Step>
+  <Step title="Select Events">
+    Choose which events trigger the webhook.
+  </Step>
+  <Step title="Test">
+    Send a test webhook to verify.
+  </Step>
+</Steps>
+
+## Available Events
+
+| Event | Trigger |
+|-------|---------|
+| `scan.started` | Scan begins |
+| `scan.completed` | Scan finishes |
+| `scan.failed` | Scan errors |
+| `finding.new` | New finding discovered |
+| `finding.updated` | Finding status changed |
+
+## Webhook Payload
+
+```json
+{
+  "event": "finding.new",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "finding_id": 123,
+    "title": "SQL Injection",
+    "severity": "high",
+    "asset": "example.com",
+    "scan_id": 456
+  }
+}
+```
+
+## Security
+
+### Verification
+
+Webhooks include a signature header for verification:
+
+```
+X-Webhook-Signature: sha256=abc123...
+```
+
+Verify using your webhook secret:
+
+```python
+import hmac
+import hashlib
+
+def verify_webhook(payload, signature, secret):
+    expected = hmac.new(
+        secret.encode(),
+        payload.encode(),
+        hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(f"sha256={expected}", signature)
+```
+
+### Best Practices
+
+<Warning>
+Always verify webhook signatures to ensure requests are legitimate.
+</Warning>
+
+- Use HTTPS endpoints
+- Verify signatures
+- Implement idempotency
+- Handle retries
+
+## Retry Behavior
+
+Failed webhooks are retried:
+- 3 retry attempts
+- Exponential backoff
+- After 3 failures, webhook is disabled
+
+## Related Topics
+
+- [Webhook Examples](/notifications/webhooks/examples)
+- [Notifications Overview](/notifications/overview)

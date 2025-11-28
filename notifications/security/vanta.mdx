@@ -1,0 +1,95 @@
+---
+title: "Vanta integration"
+description: "Send security findings to Vanta for compliance monitoring"
+---
+
+## Overview
+
+The Vanta integration allows you to send security scan results to Vanta for automated compliance monitoring and evidence collection.
+
+## What Is Vanta?
+
+Vanta is a security and compliance automation platform that helps organizations achieve and maintain compliance certifications like SOC 2, ISO 27001, HIPAA, and more.
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="Automated Evidence" icon="file-check">
+    Scan results automatically provide compliance evidence.
+  </Card>
+  <Card title="Continuous Monitoring" icon="radar">
+    Keep compliance posture up to date.
+  </Card>
+  <Card title="Centralized View" icon="eye">
+    See security status alongside other compliance data.
+  </Card>
+  <Card title="Audit Ready" icon="clipboard-check">
+    Findings ready for auditor review.
+  </Card>
+</CardGroup>
+
+## Setting Up Vanta
+
+<Steps>
+  <Step title="Get Vanta API Key">
+    In Vanta, navigate to Settings → Integrations → API.
+  </Step>
+  <Step title="Configure Integration">
+    In Pentest-Tools.com, go to Settings → Integrations → Vanta.
+  </Step>
+  <Step title="Enter Credentials">
+    Add your Vanta API key.
+  </Step>
+  <Step title="Map Data">
+    Configure which data syncs to Vanta.
+  </Step>
+</Steps>
+
+## Data Sent to Vanta
+
+| Data Type | Purpose |
+|-----------|---------|
+| Scan Results | Evidence of security testing |
+| Finding Counts | Vulnerability metrics |
+| Remediation Status | Track fix progress |
+| Asset Inventory | Scope of testing |
+
+## Compliance Frameworks
+
+Integration supports evidence for:
+- SOC 2
+- ISO 27001
+- HIPAA
+- PCI DSS
+- GDPR
+
+## Sync Options
+
+| Option | Description |
+|--------|-------------|
+| Automatic | Sync after each scan |
+| Scheduled | Daily/weekly sync |
+| Manual | On-demand sync |
+
+<Tip>
+Configure automatic sync to ensure Vanta always has the latest security posture data.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Data not appearing in Vanta">
+    - Verify API key is correct
+    - Check integration status
+    - Review sync logs
+  </Accordion>
+  <Accordion title="Missing evidence">
+    - Ensure correct data mapping
+    - Verify scan completed successfully
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Nucleus Integration](/notifications/security/nucleus)
+- [Notifications Overview](/notifications/overview)

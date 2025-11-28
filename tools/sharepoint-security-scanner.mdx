@@ -1,0 +1,91 @@
+---
+title: "SharePoint security scanner"
+description: "Security testing for Microsoft SharePoint installations"
+---
+
+## Overview
+
+The SharePoint Security Scanner assesses Microsoft SharePoint installations for vulnerabilities, misconfigurations, and security issues.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="SharePoint Version" icon="microsoft">
+    Version detection and CVEs
+  </Card>
+  <Card title="Authentication" icon="lock">
+    Auth mechanisms and weaknesses
+  </Card>
+  <Card title="Permissions" icon="shield">
+    Access control issues
+  </Card>
+  <Card title="Configuration" icon="gear">
+    Security settings
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter SharePoint URL">
+    Provide the SharePoint site URL.
+  </Step>
+  <Step title="Configure Authentication">
+    Provide credentials if testing authenticated access.
+  </Step>
+  <Step title="Run Scan">
+    Execute security assessment.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered issues.
+  </Step>
+</Steps>
+
+## Checks Performed
+
+### Version Analysis
+
+| Check | Description |
+|-------|-------------|
+| Version detection | SharePoint version identification |
+| Patch level | Service pack and updates |
+| CVE matching | Known vulnerability check |
+
+### Security Checks
+
+- Anonymous access settings
+- Web part vulnerabilities
+- Document library exposure
+- Search disclosure
+- User enumeration
+
+### Authentication
+
+- Login page analysis
+- Authentication bypass tests
+- Session management
+- Brute force protection
+
+## SharePoint-Specific Risks
+
+| Risk | Impact |
+|------|--------|
+| CVE-2019-0604 | Remote Code Execution |
+| Anonymous Access | Data exposure |
+| Misconfigurations | Information disclosure |
+
+<Warning>
+SharePoint often contains sensitive corporate data. Vulnerabilities can lead to significant data breaches.
+</Warning>
+
+## Results Include
+
+- SharePoint version information
+- Vulnerability assessment
+- Configuration issues
+- Remediation guidance
+
+## Related Tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)

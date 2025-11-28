@@ -1,0 +1,259 @@
+---
+title: "Cloud"
+description: "Deploy the VPN agent in AWS or Azure cloud environments"
+---
+
+## Overview
+
+Deploy the VPN agent in your cloud environment to scan resources within your VPCs, virtual networks, and private subnets.
+
+<Tabs>
+  <Tab title="AWS">
+    ## Prerequisites
+
+    - AWS account with appropriate permissions
+    - VPC with subnets you want to scan
+    - Outbound internet access (NAT Gateway or Internet Gateway)
+
+    ## Deployment options
+
+    <CardGroup cols={2}>
+      <Card title="EC2 instance" icon="server">
+        Deploy as a standalone EC2 instance.
+      </Card>
+      <Card title="ECS/Fargate" icon="docker">
+        Run as a containerized task.
+      </Card>
+    </CardGroup>
+
+    ## EC2 deployment
+
+    <Steps>
+      <Step title="Launch instance">
+        Launch an EC2 instance from the AWS Marketplace or using the provided AMI.
+      </Step>
+      <Step title="Configure security group">
+        Allow outbound traffic to Pentest-Tools.com.
+      </Step>
+      <Step title="Configure networking">
+        Place in subnet with access to targets.
+      </Step>
+      <Step title="Configure agent">
+        SSH in and configure with your agent token.
+      </Step>
+    </Steps>
+
+    ### Instance requirements
+
+    | Specification | Recommendation |
+    |---------------|----------------|
+    | Instance Type | t3.micro or larger |
+    | AMI | Amazon Linux 2 or Ubuntu |
+    | Storage | 10 GB gp3 |
+    | Network | Private subnet with NAT |
+
+    ### Security group rules
+
+    **Outbound rules:**
+    | Type | Port | Destination | Purpose |
+    |------|------|-------------|---------|
+    | HTTPS | 443 | 0.0.0.0/0 | Platform communication |
+    | Custom UDP | 1194 | VPN endpoint | VPN tunnel |
+
+    **Inbound rules:**
+    | Type | Port | Source | Purpose |
+    |------|------|--------|---------|
+    | SSH | 22 | Your IP | Management (optional) |
+
+    ### User data script
+
+    ```bash
+    #!/bin/bash
+    # Install Docker
+    yum update -y
+    yum install -y docker
+    systemctl start docker
+    systemctl enable docker
+
+    # Run agent
+    docker run -d \
+      --name pentest-agent \
+      --restart unless-stopped \
+      --network host \
+      -e AGENT_TOKEN="your-token" \
+      pentesttools/vpn-agent:latest
+    ```
+
+    ## ECS/Fargate deployment
+
+    For containerized deployments:
+
+    ```json
+    {
+      "family": "pentest-agent",
+      "networkMode": "awsvpc",
+      "containerDefinitions": [
+        {
+          "name": "agent",
+          "image": "pentesttools/vpn-agent:latest",
+          "environment": [
+            {"name": "AGENT_TOKEN", "value": "your-token"}
+          ],
+          "linuxParameters": {
+            "capabilities": {
+              "add": ["NET_ADMIN"]
+            }
+          }
+        }
+      ]
+    }
+    ```
+
+    ## VPC configuration
+
+    <Note>
+    Place the agent in a subnet with routing to the resources you want to scan.
+    </Note>
+
+    ### Multi-VPC scanning
+
+    To scan across VPCs:
+    - Use VPC Peering
+    - Use Transit Gateway
+    - Deploy agents in each VPC
+  </Tab>
+
+  <Tab title="Azure">
+    ## Prerequisites
+
+    - Azure subscription
+    - Virtual network with subnets to scan
+    - Outbound internet access
+
+    ## Deployment options
+
+    <CardGroup cols={2}>
+      <Card title="Virtual machine" icon="server">
+        Deploy as an Azure VM.
+      </Card>
+      <Card title="Container instance" icon="docker">
+        Run as Azure Container Instance.
+      </Card>
+    </CardGroup>
+
+    ## VM deployment
+
+    <Steps>
+      <Step title="Create VM">
+        Create a virtual machine in your target virtual network.
+      </Step>
+      <Step title="Configure NSG">
+        Set up Network Security Group rules.
+      </Step>
+      <Step title="Install agent">
+        SSH/RDP in and install the agent.
+      </Step>
+      <Step title="Configure">
+        Enter your agent token.
+      </Step>
+    </Steps>
+
+    ### VM specifications
+
+    | Specification | Recommendation |
+    |---------------|----------------|
+    | Size | Standard_B1s or larger |
+    | OS | Ubuntu 20.04 LTS |
+    | Disk | 32 GB Standard SSD |
+    | Network | Place in target VNet |
+
+    ### Network security group
+
+    **Outbound rules:**
+    | Priority | Name | Port | Protocol | Destination |
+    |----------|------|------|----------|-------------|
+    | 100 | AllowHTTPS | 443 | TCP | Internet |
+    | 110 | AllowVPN | 1194 | UDP | Internet |
+
+    **Inbound rules:**
+    | Priority | Name | Port | Protocol | Source |
+    |----------|------|------|----------|--------|
+    | 100 | AllowSSH | 22 | TCP | Your IP |
+
+    ### Cloud-init configuration
+
+    ```yaml
+    #cloud-config
+    package_update: true
+    packages:
+      - docker.io
+
+    runcmd:
+      - systemctl start docker
+      - systemctl enable docker
+      - docker run -d --name pentest-agent --restart unless-stopped --network host -e AGENT_TOKEN="your-token" pentesttools/vpn-agent:latest
+    ```
+
+    ## Container instance deployment
+
+    ### Azure CLI
+
+    ```bash
+    az container create \
+      --resource-group your-rg \
+      --name pentest-agent \
+      --image pentesttools/vpn-agent:latest \
+      --vnet your-vnet \
+      --subnet your-subnet \
+      --environment-variables AGENT_TOKEN=your-token \
+      --restart-policy Always
+    ```
+
+    ### ARM template
+
+    ```json
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2021-03-01",
+      "name": "pentest-agent",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "containers": [{
+          "name": "agent",
+          "properties": {
+            "image": "pentesttools/vpn-agent:latest",
+            "environmentVariables": [{
+              "name": "AGENT_TOKEN",
+              "secureValue": "[parameters('agentToken')]"
+            }],
+            "resources": {
+              "requests": {"cpu": 1, "memoryInGb": 1}
+            }
+          }
+        }],
+        "osType": "Linux",
+        "restartPolicy": "Always"
+      }
+    }
+    ```
+
+    ## Virtual network configuration
+
+    <Note>
+    Ensure the subnet has a route to the resources you want to scan and outbound internet access.
+    </Note>
+
+    ### VNet peering
+
+    To scan across virtual networks:
+    - Set up VNet peering
+    - Configure route tables
+    - Or deploy agents in each VNet
+  </Tab>
+</Tabs>
+
+## Related topics
+
+- [VPN profiles overview](/using/vpn/overview)
+- [Docker agent](/using/vpn/docker-agent)
+- [Troubleshooting](/using/vpn/troubleshooting)

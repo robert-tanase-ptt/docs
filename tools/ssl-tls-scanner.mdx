@@ -1,0 +1,107 @@
+---
+title: "SSL/TLS scanner"
+description: "Analyze SSL/TLS configurations for security issues"
+---
+
+## Overview
+
+The SSL/TLS Scanner analyzes the SSL/TLS configuration of servers, identifying weak protocols, cipher suites, and certificate issues.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="Protocols" icon="lock">
+    SSL/TLS version support
+  </Card>
+  <Card title="Cipher Suites" icon="key">
+    Encryption algorithms
+  </Card>
+  <Card title="Certificates" icon="certificate">
+    Certificate validity and chain
+  </Card>
+  <Card title="Vulnerabilities" icon="bug">
+    Known SSL/TLS attacks
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide hostname and port (default 443).
+  </Step>
+  <Step title="Run Scan">
+    Execute SSL/TLS analysis.
+  </Step>
+  <Step title="Review Results">
+    Analyze configuration and issues.
+  </Step>
+</Steps>
+
+## Checks Performed
+
+### Protocol Support
+
+| Protocol | Security Status |
+|----------|-----------------|
+| SSL 2.0 | Insecure (disable) |
+| SSL 3.0 | Insecure (disable) |
+| TLS 1.0 | Deprecated (disable) |
+| TLS 1.1 | Deprecated (disable) |
+| TLS 1.2 | Secure (enable) |
+| TLS 1.3 | Most Secure (enable) |
+
+### Cipher Suite Analysis
+
+- Weak ciphers (RC4, DES, export)
+- Perfect Forward Secrecy (PFS)
+- Key exchange strength
+- Authentication methods
+
+### Certificate Checks
+
+- Expiration status
+- Chain of trust
+- Key strength
+- Hostname matching
+- Revocation status
+
+### Vulnerability Checks
+
+| Vulnerability | Description |
+|---------------|-------------|
+| BEAST | CBC cipher weakness |
+| CRIME | Compression attack |
+| POODLE | SSLv3 padding attack |
+| Heartbleed | OpenSSL memory leak |
+| DROWN | SSLv2 cross-protocol attack |
+| ROBOT | RSA padding oracle |
+
+## Results Include
+
+For each finding:
+- Issue description
+- Severity rating
+- Technical details
+- Remediation steps
+
+## Grading
+
+Results may include an overall grade:
+
+| Grade | Description |
+|-------|-------------|
+| A+ | Excellent configuration |
+| A | Good with minor issues |
+| B | Acceptable |
+| C | Needs improvement |
+| F | Critical issues |
+
+<Tip>
+Aim for TLS 1.2/1.3 only with strong cipher suites and PFS for the best security posture.
+</Tip>
+
+## Related Tools
+
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
+- [Website Recon](/tools/website-recon)

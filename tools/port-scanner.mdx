@@ -1,0 +1,102 @@
+---
+title: "Port scanner"
+description: "Discover open TCP ports and running services on target hosts"
+---
+
+## Overview
+
+The Port Scanner identifies open TCP ports on target hosts, revealing running services that may be vulnerable to attack.
+
+## What It Finds
+
+<CardGroup cols={2}>
+  <Card title="Open Ports" icon="door-open">
+    TCP ports accepting connections
+  </Card>
+  <Card title="Service Identification" icon="gears">
+    What's running on each port
+  </Card>
+  <Card title="Version Detection" icon="tag">
+    Software versions when detectable
+  </Card>
+  <Card title="Banner Grabbing" icon="flag">
+    Service banners and metadata
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide IP address, hostname, or range.
+  </Step>
+  <Step title="Select Port Range">
+    Choose which ports to scan.
+  </Step>
+  <Step title="Configure Options">
+    Set scan speed and detection options.
+  </Step>
+  <Step title="Run Scan">
+    Execute the port scan.
+  </Step>
+</Steps>
+
+## Port Range Options
+
+| Option | Ports | Use Case |
+|--------|-------|----------|
+| Top 100 | Most common services | Quick discovery |
+| Top 1000 | Extended common | Standard assessment |
+| Full Scan | All 65,535 | Comprehensive audit |
+| Custom | User-defined | Specific requirements |
+
+## Common Ports
+
+| Port | Service | Security Concern |
+|------|---------|------------------|
+| 21 | FTP | Anonymous access, clear text |
+| 22 | SSH | Brute force, outdated versions |
+| 23 | Telnet | Clear text transmission |
+| 80 | HTTP | Web vulnerabilities |
+| 443 | HTTPS | SSL/TLS issues |
+| 3306 | MySQL | Database exposure |
+| 3389 | RDP | Remote access risks |
+
+## Results Include
+
+For each open port:
+- Port number
+- Protocol (TCP)
+- State (open/filtered)
+- Service name
+- Version (if detected)
+- Banner
+
+## Scan Profiles
+
+<Tabs>
+  <Tab title="Quick Scan">
+    Top 100 ports, fast timing
+    - Best for: Initial reconnaissance
+    - Duration: Minutes
+  </Tab>
+  <Tab title="Standard Scan">
+    Top 1000 ports, balanced timing
+    - Best for: Regular assessments
+    - Duration: ~30 minutes
+  </Tab>
+  <Tab title="Comprehensive">
+    All ports, thorough detection
+    - Best for: Security audits
+    - Duration: Hours
+  </Tab>
+</Tabs>
+
+<Tip>
+Start with a quick scan to identify interesting targets, then run deeper scans on specific hosts.
+</Tip>
+
+## Related Tools
+
+- [UDP Port Scanner](/tools/udp-port-scanner)
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)

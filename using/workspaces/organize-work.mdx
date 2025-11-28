@@ -1,0 +1,132 @@
+---
+title: "Workspaces"
+description: "Organize your security testing by project, client, or engagement using workspaces"
+---
+
+<Info>
+Workspaces are available on all paid plans. Accounts with the Free Edition have access to a single default workspace only.
+</Info>
+
+Workspaces are organizational containers that group related assets, targets, scans, findings, and reports. Each workspace provides a separate context for your security testing activities.
+
+When you create an account, a default workspace called **My Workspace** is automatically created. On paid plans, you can create additional workspaces and share them with team members.
+
+## What workspaces contain
+
+Each workspace includes:
+
+| Item | Description |
+|------|-------------|
+| Assets | The targets you add for security testing |
+| Targets | Specific scan targets derived from assets |
+| Scans | All scan history for this workspace |
+| Scheduled scans | Recurring scans configured for workspace targets |
+| Findings | Vulnerabilities discovered in workspace scans |
+| Attack surface data | Technology fingerprints and discovered hosts |
+| Notification settings | Workspace-specific alert configurations |
+| Handlers | XSS and HTTP handlers scoped to the workspace |
+
+<Note>
+Each workspace can optionally have a VPN profile assigned, allowing all scans within that workspace to route through your internal network. Learn more about [VPN profiles](/using/vpn/overview).
+</Note>
+
+## Creating a workspace
+
+1. Click the workspace dropdown in the top navigation
+2. Select **Create workspace**
+3. Enter a name and optional description
+4. Click **Create**
+
+## Switching workspaces
+
+1. Click the workspace dropdown in the top navigation
+2. Select the workspace you want to switch to
+3. The interface updates to show that workspace's assets, scans, and findings
+
+## Organization strategies
+
+<Tabs>
+  <Tab title="By Client">
+    **Best for**: Consulting firms and MSPs
+
+    Create one workspace per client to keep their data separate and generate client-specific reports.
+  </Tab>
+  <Tab title="By Project">
+    **Best for**: Internal security teams
+
+    Create workspaces for specific initiatives like "Q4 Assessment" or "New Product Launch".
+  </Tab>
+  <Tab title="By Environment">
+    **Best for**: DevSecOps teams
+
+    Separate workspaces for Development, Staging, and Production environments.
+  </Tab>
+</Tabs>
+
+## Sharing workspaces
+
+Share workspaces with subusers (colleagues) on your account. When sharing, you grant one of the following access levels:
+
+| Access level | What they can do |
+|--------------|------------------|
+| **No access** | Cannot view or interact with the workspace |
+| **View** | See assets, scans, and findings. Cannot start scans or modify anything. |
+| **Edit** | Full access to start scans, manage assets, and work with findings. Cannot delete the workspace. |
+
+### How sharing works
+
+1. The workspace owner shares a workspace with selected team members
+2. Team members see the shared workspace in their workspace list
+3. Team members can switch to the shared workspace and work according to their permissions
+4. Scans started by team members appear in the shared workspace, visible to all members with access
+
+<Tip>
+Use workspace sharing to collaborate on client engagements. Share a client workspace with your team so everyone can see findings and contribute to the assessment.
+</Tip>
+
+### For workspace owners
+
+- Share workspaces from **Settings → Team → Sharing**
+- Choose which workspaces to share and with which team members
+- Set appropriate access levels for each team member
+- Revoke access at any time by removing sharing permissions
+
+### For team members
+
+- Shared workspaces appear in your workspace dropdown
+- Your access level determines what actions you can take
+- Switch between your own workspaces and shared workspaces freely
+- Scans you start in a shared workspace are visible to all members with access
+
+## Deleting a workspace
+
+When deleting a workspace, you choose what happens to its contents:
+
+- **Move assets** – Transfer all assets and their data to your default workspace
+- **Delete everything** – Permanently remove all assets, scans, and findings
+
+<Warning>
+Deleting a workspace cannot be undone. If you choose to delete everything, all associated scan history and findings are permanently removed.
+</Warning>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Use descriptive names">
+    Name workspaces clearly so you and your team can quickly identify them. Include client names, project codes, or environment indicators.
+  </Accordion>
+  <Accordion title="Set up workspace notifications">
+    Configure notification settings per workspace to get alerts relevant to each project. This prevents notification overload from unrelated scans.
+  </Accordion>
+  <Accordion title="Assign VPN profiles strategically">
+    If scanning internal networks, assign the appropriate VPN profile to the workspace so all team members automatically use the correct network path.
+  </Accordion>
+  <Accordion title="Review sharing access regularly">
+    Periodically audit who has access to which workspaces and what access levels they have, especially after team changes or project completions.
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Teams and subusers](/account/teams-and-roles)
+- [VPN profiles](/using/vpn/overview)

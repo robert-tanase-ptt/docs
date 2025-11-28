@@ -1,0 +1,95 @@
+---
+title: "WHOIS"
+description: "Look up domain registration and IP ownership information"
+---
+
+## Overview
+
+The WHOIS tool retrieves registration information for domains and IP addresses, providing ownership and administrative contact details.
+
+## What It Provides
+
+<CardGroup cols={2}>
+  <Card title="Domain Info" icon="globe">
+    Registration and expiration dates
+  </Card>
+  <Card title="Ownership" icon="user">
+    Registrant details
+  </Card>
+  <Card title="Contacts" icon="address-book">
+    Admin and technical contacts
+  </Card>
+  <Card title="Name Servers" icon="server">
+    DNS configuration
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Query">
+    Provide domain name or IP address.
+  </Step>
+  <Step title="Run Lookup">
+    Execute the WHOIS query.
+  </Step>
+  <Step title="Review Results">
+    Analyze registration data.
+  </Step>
+</Steps>
+
+## Domain WHOIS Data
+
+| Field | Description |
+|-------|-------------|
+| Registrar | Company that registered the domain |
+| Created | Domain registration date |
+| Expires | Domain expiration date |
+| Updated | Last modification date |
+| Name Servers | DNS servers |
+| Status | Domain status codes |
+
+## IP WHOIS Data
+
+| Field | Description |
+|-------|-------------|
+| Network | IP range/CIDR |
+| Organization | IP block owner |
+| Country | Geographic location |
+| Abuse Contact | Security contact |
+
+## Use Cases in Security Testing
+
+<CardGroup cols={2}>
+  <Card title="Reconnaissance" icon="magnifying-glass">
+    Gather target organization info
+  </Card>
+  <Card title="Scope Validation" icon="check">
+    Verify target ownership
+  </Card>
+  <Card title="Contact Discovery" icon="envelope">
+    Find security contacts
+  </Card>
+  <Card title="Infrastructure Mapping" icon="sitemap">
+    Identify related assets
+  </Card>
+</CardGroup>
+
+## Privacy Considerations
+
+<Note>
+Many domain registrations use privacy protection services that hide actual registrant details. This is normal and expected.
+</Note>
+
+## WHOIS for Security
+
+Information useful for penetration testing:
+- Organization name for social engineering research
+- Email patterns for username guessing
+- IP ranges that might be in scope
+- Associated domains
+
+## Related Tools
+
+- [Domain Finder](/tools/domain-finder)
+- [Subdomain Finder](/tools/subdomain-finder)

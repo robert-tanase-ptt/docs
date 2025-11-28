@@ -1,0 +1,165 @@
+---
+title: "Scheduled scans"
+description: "Automate your security testing with scheduled and recurring scans"
+---
+
+Scheduled scans automate your security testing by running scans at specified intervals, helping you maintain continuous security visibility without manual intervention.
+
+## What can you schedule?
+
+You can schedule two types of scans:
+
+- **Individual tools** — Schedule any [security tool](/tools) to run automatically (e.g., Network Scanner, Website Scanner, Port Scanner)
+- **Pentest Robots** — Schedule [Pentest Robots](/automation/robots/what-are-pentest-robots) to run automated, multi-tool assessments on a recurring basis
+
+## Why schedule scans?
+
+<CardGroup cols={3}>
+  <Card title="Consistency" icon="clock">
+    Regular testing on a predictable schedule
+  </Card>
+  <Card title="Automation" icon="robot">
+    Reduce manual work and human error
+  </Card>
+  <Card title="Coverage" icon="calendar-check">
+    Ensure nothing falls through the cracks
+  </Card>
+</CardGroup>
+
+## Creating a scheduled scan
+
+<Steps>
+  <Step title="Configure your scan">
+    Set up your scan with the desired tool, target, and options (scan type, authentication, etc.).
+  </Step>
+  <Step title="Enable scheduling">
+    Click the **Schedule** button instead of **Start scan**.
+  </Step>
+  <Step title="Set start date and time">
+    Choose when the first scan should run. The time uses your account's time zone.
+  </Step>
+  <Step title="Set frequency">
+    Choose how often the scan should repeat.
+  </Step>
+  <Step title="Configure compliance (optional)">
+    Enable **Send to Vanta** if you want scan results sent to Vanta for compliance reporting.
+  </Step>
+</Steps>
+
+## Schedule frequencies
+
+The available frequencies depend on your subscription plan.
+
+| Frequency | Description | Free Plan | Paid Plans |
+|-----------|-------------|-----------|------------|
+| **No repeat** | Run once at the scheduled time | — | ✓ |
+| **Daily** | Run every day | — | ✓ |
+| **Weekly** | Run every week | ✓ | ✓ |
+| **Monthly** | Run every month | ✓ | ✓ |
+| **Quarterly** | Run every 3 months | — | ✓ |
+| **Yearly** | Run every year | — | ✓ |
+
+<Info>
+Free plan users can schedule scans with **Weekly** or **Monthly** frequencies. [Upgrade your plan](/plans-and-limits/plan-overview) to access all scheduling options.
+</Info>
+
+<Note>
+If you schedule a Monthly or Quarterly scan starting on the last day of a month (e.g., January 31), it will automatically run on the last day of each subsequent month (e.g., February 28/29, March 31).
+</Note>
+
+## Vanta compliance integration
+
+When scheduling a scan, you can optionally send the results to [Vanta](/notifications/security/vanta) for automated compliance monitoring and evidence collection.
+
+**To enable Vanta integration:**
+1. First, [configure the Vanta integration](/notifications/security/vanta) in your account settings
+2. When scheduling a scan, toggle **Send to Vanta** to **On**
+
+<Warning>
+If Vanta is not configured, the "Send to Vanta" toggle will be disabled. You'll need to set up the integration first.
+</Warning>
+
+**Benefits of sending to Vanta:**
+- Automated compliance evidence collection
+- Continuous security posture monitoring
+- Audit-ready vulnerability reports
+- Support for SOC 2, ISO 27001, HIPAA, and other frameworks
+
+## Managing scheduled scans
+
+Access all your scheduled scans from the **Scheduled Scans** dashboard.
+
+### Viewing scheduled scans
+
+The dashboard shows:
+- All scheduled scans and their status (enabled/disabled)
+- Next scheduled run time
+- Frequency settings
+- Target and tool information
+- Last execution results
+
+### Actions
+
+| Action | Description |
+|--------|-------------|
+| **Enable/Disable** | Toggle a scheduled scan on or off without deleting it |
+| **Run now** | Trigger an immediate execution of the scheduled scan |
+| **Edit** | Modify the schedule settings (frequency, start time, Vanta toggle) |
+| **Delete** | Permanently remove the scheduled scan |
+
+<Tip>
+Use **Disable** instead of **Delete** if you want to temporarily pause a scheduled scan. This preserves your configuration for when you're ready to resume.
+</Tip>
+
+## Notifications
+
+Scheduled scans work seamlessly with the [notifications system](/notifications/overview). Configure alerts to stay informed about your automated scans:
+
+| Notification | When it triggers |
+|--------------|------------------|
+| **Scan started** | When a scheduled scan begins execution |
+| **Scan completed** | When a scheduled scan finishes (with results summary) |
+| **New findings** | When new vulnerabilities are discovered |
+| **Scan failed** | When a scheduled scan encounters an error |
+
+<Tip>
+Set up notifications for scheduled scans to ensure you're alerted to new findings even when you're not actively monitoring.
+</Tip>
+
+## Timing considerations
+
+- **Time zone**: Schedules use your account's time zone setting
+- **Start time**: The exact time when the scan should begin
+- **Duration**: Some scans may run longer than expected—plan accordingly if scheduling multiple scans
+
+<Tip>
+Schedule intensive scans during off-peak hours to minimize impact on production systems and users.
+</Tip>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Start conservative">
+    Begin with weekly scans and adjust the frequency based on how often your assets change. Critical or frequently updated assets may benefit from daily scans.
+  </Accordion>
+  <Accordion title="Stagger schedules">
+    Don't schedule all scans at the same time. Spread them throughout the day or week to avoid resource contention and ensure each scan gets adequate attention.
+  </Accordion>
+  <Accordion title="Review results regularly">
+    Scheduled scans are only valuable if you act on the findings. Set up notifications and establish a regular review cadence.
+  </Accordion>
+  <Accordion title="Use Vanta for compliance">
+    If you need to demonstrate regular security testing for compliance purposes, enable the Vanta integration to automatically collect evidence.
+  </Accordion>
+  <Accordion title="Monitor scan health">
+    Periodically check that your scheduled scans are completing successfully. Failed scans may indicate connectivity issues, expired credentials, or target changes.
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Scan types and depth](/using/scans/scan-types-and-depth)
+- [Authenticated scanning](/using/scans/authenticated-scanning)
+- [Notifications overview](/notifications/overview)
+- [Vanta integration](/notifications/security/vanta)
+- [Plan overview](/plans-and-limits/plan-overview)

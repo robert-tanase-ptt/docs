@@ -1,0 +1,96 @@
+---
+title: "Build your first robot"
+description: "Step-by-step guide to creating your first Pentest Robot"
+---
+
+## Prerequisites
+
+Before building a robot:
+- Have at least one verified asset
+- Understand basic scan concepts
+- Know what you want to automate
+
+## Creating a Robot
+
+<Steps>
+  <Step title="Navigate to Robots">
+    Go to Automation → Robots in the navigation.
+  </Step>
+  <Step title="Create New Robot">
+    Click "New Robot" and give it a name.
+  </Step>
+  <Step title="Add Trigger">
+    Define what starts the robot.
+  </Step>
+  <Step title="Add Actions">
+    Add the steps your robot should perform.
+  </Step>
+  <Step title="Configure Outputs">
+    Set where results should go.
+  </Step>
+  <Step title="Save and Test">
+    Save the robot and run a test.
+  </Step>
+</Steps>
+
+## Example: Basic Security Scan Robot
+
+Let's build a robot that:
+1. Runs when manually triggered
+2. Scans a website for vulnerabilities
+3. Sends an email with results
+
+### Step 1: Set Up Trigger
+
+Select **Manual Trigger** for testing. You can change this to a schedule later.
+
+### Step 2: Add Website Scan Action
+
+1. Add action → Select "Website Vulnerability Scanner"
+2. Configure target asset
+3. Set scan depth (start with Light)
+
+### Step 3: Add Notification
+
+1. Add action → Select "Send Email"
+2. Configure recipient
+3. Set up email template with scan results
+
+### Step 4: Test the Robot
+
+1. Save the robot
+2. Click "Run Now"
+3. Monitor execution
+4. Review results and email
+
+## Robot Editor Interface
+
+| Element | Purpose |
+|---------|---------|
+| Canvas | Visual workflow area |
+| Toolbox | Available actions |
+| Properties | Configure selected item |
+| Execution Log | View run history |
+
+## Tips for Success
+
+<Tip>
+Start with simple robots and add complexity gradually. It's easier to troubleshoot a simple robot.
+</Tip>
+
+<Warning>
+Test robots with non-production assets first to ensure they work as expected.
+</Warning>
+
+## Common First Robots
+
+| Robot | Description |
+|-------|-------------|
+| Scan and Report | Run scan, generate report, email results |
+| Asset Discovery | Find subdomains, add to inventory |
+| Continuous Monitoring | Weekly scans with alerting |
+
+## Next Steps
+
+- [Reusable Robots](/automation/robots/reusable-robots)
+- [Scheduled Scans](/using/scans/scheduled-scans)

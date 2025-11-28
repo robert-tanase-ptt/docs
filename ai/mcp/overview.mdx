@@ -1,0 +1,213 @@
+---
+title: "MCP server"
+description: "Connect AI assistants to Pentest-Tools.com using the Model Context Protocol"
+---
+
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server provides a standardized interface that allows any compatible AI model or agent to access your Pentest-Tools.com account—running scans, managing targets, retrieving findings, and generating reports.
+
+Connect to our MCP server in Claude, Cursor, VS Code, and other clients using either the local server or our hosted remote server.
+
+## Setup Instructions
+
+### General
+
+Our MCP server supports both local (stdio) and remote (HTTP) transports:
+
+| Transport | Address |
+|-----------|---------|
+| Local | `ptt mcp` (requires `pip install pentesttools[mcp]`) |
+| Remote | `https://mcp.pentest-tools.com:90001/mcp/` |
+
+Authentication requires your Pentest-Tools.com API key. Get it from **My Account → API** in the web application.
+
+<Note>
+API access requires a plan that includes it. See [Authentication](/api-reference/authentication) for details.
+</Note>
+
+### Claude
+
+**Claude Desktop**
+
+Edit your Claude Desktop configuration file:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "ptt-mcp": {
+      "command": "ptt",
+      "args": ["mcp"],
+      "env": {
+        "PTT_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+Restart Claude Desktop after saving.
+
+### Cursor
+
+**Local server**
+
+Add to your Cursor MCP settings:
+
+```json
+{
+  "servers": {
+    "ptt-mcp": {
+      "type": "stdio",
+      "command": "ptt",
+      "args": ["mcp"],
+      "env": {
+        "PTT_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+**Remote server**
+
+```json
+{
+  "servers": {
+    "ptt-mcp": {
+      "type": "http",
+      "url": "https://mcp.pentest-tools.com:90001/mcp/",
+      "headers": {
+        "PTT_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### Visual Studio Code
+
+1. Press `Ctrl/Cmd + P` and search for **MCP: Add Server**
+2. Select **Command (stdio)**
+3. Enter: `ptt mcp`
+4. Set environment variable `PTT_KEY` to your API key
+
+Or add manually to your settings:
+
+```json
+{
+  "servers": {
+    "ptt-mcp": {
+      "type": "stdio",
+      "command": "ptt",
+      "args": ["mcp"],
+      "env": {
+        "PTT_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### Gemini CLI
+
+Add to your Gemini CLI configuration:
+
+```json
+{
+  "mcpServers": {
+    "ptt-mcp": {
+      "type": "http",
+      "httpUrl": "https://mcp.pentest-tools.com:90001/mcp/",
+      "headers": {
+        "PTT_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### Others
+
+Configure other MCP-compatible tools with:
+
+| Setting | Local | Remote |
+|---------|-------|--------|
+| Command | `ptt` | — |
+| Arguments | `mcp` | — |
+| URL | — | `https://mcp.pentest-tools.com:90001/mcp/` |
+| Environment | `PTT_KEY=your_api_key` | — |
+| Headers | — | `PTT_API_KEY: your_api_key` |
+
+## Installation
+
+For local server usage, install the Python package:
+
+```bash
+pip install pentesttools[mcp]
+```
+
+For development:
+
+```bash
+git clone https://github.com/pentesttoolscom/pentesttools-pypi
+cd pentesttools-pypi
+pip install -e .[mcp]
+```
+
+<Note>
+Python 3.9 or higher is required.
+</Note>
+
+## Available Tools
+
+The MCP server provides tools for:
+
+| Category | Tools |
+|----------|-------|
+| Scanning | Website Scanner, Subdomain Finder, Network Scanner |
+| Targets | List, add, delete targets |
+| Scans | Start, stop, get status, get output |
+| Findings | List findings, get details, import findings |
+| Reports | Create, download, delete reports |
+| Workspaces | List, create, edit, delete workspaces |
+| Utilities | HTTP loggers, VPN profiles, report translation |
+
+See [Tools Reference](/ai/mcp/tools-reference) for complete documentation.
+
+## Built-in Prompts
+
+Pre-built prompts for common workflows:
+
+| Prompt | Description |
+|--------|-------------|
+| `pentest` | Comprehensive pentesting workflow for a target |
+| `subdomains` | Discover all subdomains for a domain |
+| `is_up` | Check if a target is accessible |
+| `summary` | Executive summary for scans in a workspace |
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="What plans support API/MCP access?">
+    API access requires a plan that includes it. Check your plan details in **My Account → Subscription** or contact support if you receive a 403 error.
+  </Accordion>
+
+  <Accordion title="Local vs Remote server—which should I use?">
+    Use the **local server** if you have Python installed and want faster response times. Use the **remote server** for simpler setup without local dependencies.
+  </Accordion>
+
+  <Accordion title="Why is authenticated scanning difficult for the AI?">
+    Website Scanner authentication has complex configuration options. LLMs may need a few attempts to construct parameters correctly. Provide explicit examples in your prompts for best results.
+  </Accordion>
+
+  <Accordion title="How do I know what tools the AI is calling?">
+    Most MCP clients ask for permission before calling tools. This is helpful for understanding what actions the AI takes. You can disable this once you're confident in the workflow.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+- [Tools Reference](/ai/mcp/tools-reference) — Complete list of MCP tools and parameters
+- [API Examples](/api-reference/examples) — Python examples for direct API usage

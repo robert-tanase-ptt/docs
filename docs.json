@@ -1,48 +1,223 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "maple",
+  "name": "Pentest-Tools.com docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2A76D1",
+    "light": "#4497FA",
+    "dark": "#00327C"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Intro",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "concepts/core-concepts",
+              "overview/plans-at-a-glance"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Core",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "using/workspaces/organize-work",
+              "using/assets/assets",
+              {
+                "group": "Scans",
+                "pages": [
+                  "using/scans/scan-types-and-depth",
+                  "using/scans/authenticated-scanning",
+                  "using/scans/scheduled-scans",
+                  "concepts/scans-and-statuses"
+                ]
+              },
+              {
+                "group": "Findings",
+                "pages": [
+                  "using/findings/findings",
+                  "using/findings/templates"
+                ]
+              }
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Tools reference",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "tools/index",
+              {
+                "group": "Reconnaissance",
+                "pages": [
+                  "tools/google-hacking",
+                  "tools/domain-finder",
+                  "tools/subdomain-finder",
+                  "tools/find-virtual-hosts",
+                  "tools/port-scanner",
+                  "tools/udp-port-scanner",
+                  "tools/website-recon",
+                  "tools/waf-detector",
+                  "tools/url-fuzzer"
+                ]
+              },
+              {
+                "group": "Network vulnerability scanning",
+                "pages": [
+                  "tools/network-vulnerability-scanner",
+                  "tools/password-auditor",
+                  "tools/ssl-tls-scanner",
+                  "tools/cloud-scanner"
+                ]
+              },
+              {
+                "group": "Web vulnerability scanning",
+                "pages": [
+                  "tools/website-vulnerability-scanner",
+                  "tools/xss-scanner",
+                  "tools/sql-injection-scanner",
+                  "tools/api-scanner",
+                  "tools/wordpress-scanner",
+                  "tools/drupal-scanner",
+                  "tools/joomla-scanner",
+                  "tools/sharepoint-security-scanner"
+                ]
+              },
+              {
+                "group": "Offensive",
+                "pages": [
+                  "tools/sniper",
+                  "tools/sqli-exploiter",
+                  "tools/subdomain-takeover"
+                ]
+              },
+              {
+                "group": "Handlers",
+                "pages": [
+                  "tools/xss-handlers",
+                  "tools/http-handlers"
+                ]
+              },
+              {
+                "group": "Utilities",
+                "pages": [
+                  "tools/icmp-ping",
+                  "tools/whois"
+                ]
+              }
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Capabilities",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              {
+                "group": "Attack surface",
+                "pages": [
+                  "using/attack-surface/attack-surface-overview",
+                  "using/attack-surface/working-with-technology-fingerprints"
+                ]
+              },
+              {
+                "group": "Reports",
+                "pages": [
+                  "using/reporting/reporting-overview",
+                  "using/reporting/report-templates",
+                  "using/reporting/engagements",
+                  "using/reporting/branded-reports",
+                  "using/reporting/exports"
+                ]
+              },
+              {
+                "group": "Pentest robots",
+                "pages": [
+                  "automation/robots/what-are-pentest-robots",
+                  "automation/robots/build-your-first-robot",
+                  "automation/robots/reusable-robots"
+                ]
+              },
+              "account/teams-and-roles",
+              {
+                "group": "Integrations",
+                "pages": [
+                  "notifications/chat/microsoft-teams",
+                  "notifications/chat/slack",
+                  "notifications/webhooks/overview",
+                  "notifications/chat/jira",
+                  "notifications/chat/discord",
+                  "notifications/security/vanta",
+                  "notifications/github-actions",
+                  "notifications/burp",
+                  "notifications/aws",
+                  "notifications/security/nucleus",
+                  "notifications/generic-cicd"
+                ]
+              },
+              {
+                "group": "VPN profiles",
+                "pages": [
+                  "using/vpn/overview",
+                  {
+                    "group": "VPN agent",
+                    "pages": [
+                      "using/vpn/virtual-machine",
+                      "using/vpn/docker-agent",
+                      "using/vpn/cloud"
+                    ]
+                  },
+                  "using/vpn/openvpn",
+                  "using/vpn/troubleshooting"
+                ]
+              },
+              "notifications/overview",
+              "capabilities/wordlists"
+            ]
+          },
+          {
+            "group": "AI",
+            "pages": [
+              {
+                "group": "MCP",
+                "pages": [
+                  "ai/mcp/overview",
+                  "ai/mcp/tools-reference"
+                ]
+              },
+              "ai/soft404detector",
+              "ai/authentication"
+            ]
+          },
+          {
+            "group": "Account & billing",
+            "pages": [
+              "account/creating-and-signing-in",
+              "account/user-profile-and-preferences",
+              {
+                "group": "Plans & limits",
+                "pages": [
+                  "plans-and-limits/plan-overview",
+                  "plans-and-limits/feature-matrix",
+                  "plans-and-limits/assets-scan-cycles",
+                  "plans-and-limits/usage-limits-and-quotas",
+                  "plans-and-limits/add-ons"
+                ]
+              },
+              {
+                "group": "Billing & subscription",
+                "pages": [
+                  "billing/payment-methods",
+                  "billing/change-plan",
+                  "billing/cancel-and-refunds",
+                  "billing/invoices"
+                ]
+              },
+              {
+                "group": "Security & data protection",
+                "pages": [
+                  "account/security",
+                  "trust-and-legal/where-to-find-policies"
+                ]
+              }
             ]
           }
         ]
@@ -51,72 +226,20 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Using the API",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/overview",
+              "api-reference/authentication",
+              "api-reference/examples",
+              "api-reference/limits-and-errors"
             ]
           },
           {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
+            "group": "API reference",
+            "openapi": "https://app.pentest-tools.com/api-schema.yml"
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

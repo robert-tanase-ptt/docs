@@ -1,0 +1,90 @@
+---
+title: "WAF detector"
+description: "Identify web application firewalls protecting target websites"
+---
+
+## Overview
+
+The WAF Detector identifies whether a target website is protected by a Web Application Firewall and attempts to determine which WAF product is in use.
+
+## Why Detect WAFs?
+
+<CardGroup cols={2}>
+  <Card title="Testing Strategy" icon="chess">
+    Adjust scanning approach based on WAF presence.
+  </Card>
+  <Card title="Bypass Planning" icon="shield">
+    Understand protection mechanisms.
+  </Card>
+  <Card title="False Positive Reduction" icon="filter">
+    Distinguish WAF blocks from real issues.
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter URL">
+    Provide the target website URL.
+  </Step>
+  <Step title="Run Detection">
+    Execute the WAF detection scan.
+  </Step>
+  <Step title="Review Results">
+    Analyze detected WAF information.
+  </Step>
+</Steps>
+
+## What It Detects
+
+### WAF Products
+
+Common WAFs detected:
+- Cloudflare
+- AWS WAF
+- Akamai
+- Imperva/Incapsula
+- F5 BIG-IP ASM
+- ModSecurity
+- Sucuri
+
+### Detection Methods
+
+| Method | Description |
+|--------|-------------|
+| Response Headers | WAF-specific headers |
+| Cookie Analysis | WAF session cookies |
+| Error Responses | Characteristic block pages |
+| Behavioral Analysis | Response to test payloads |
+
+## Results Include
+
+- WAF detected (yes/no)
+- WAF product name
+- Confidence level
+- Detection method
+- Additional observations
+
+## Testing Implications
+
+<Note>
+WAF presence doesn't mean a site is secure—WAFs can often be bypassed, and they may not catch all vulnerabilities.
+</Note>
+
+### With WAF Detected
+
+- Expect more false negatives
+- Scans may trigger blocks
+- Consider WAF bypass techniques
+- Rate limiting may apply
+
+### No WAF Detected
+
+- Direct access to application
+- More accurate scan results
+- Faster scanning possible
+
+## Related Tools
+
+- [Website Recon](/tools/website-recon)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)

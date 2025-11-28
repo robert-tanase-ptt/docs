@@ -1,0 +1,92 @@
+---
+title: "Authentication"
+description: "Authenticate your API requests to Pentest-Tools.com"
+---
+
+## Overview
+
+The API uses Bearer token authentication. Include your API key in the `Authorization` header of every request.
+
+<Note>
+API access requires a plan that includes it. If you receive a 403 "Your plan does not have API access" error, check your subscription.
+</Note>
+
+## Getting Your API Key
+
+<Steps>
+  <Step title="Log In">
+    Access your Pentest-Tools.com account.
+  </Step>
+  <Step title="Go to API Settings">
+    Navigate to **My Account → API**.
+  </Step>
+  <Step title="Create a Key">
+    Click **Create API Key**, give it a name, and optionally set an expiration date.
+  </Step>
+  <Step title="Copy and Store">
+    Copy your key immediately—it won't be shown again.
+  </Step>
+</Steps>
+
+## Using the API Key
+
+Include the key in the `Authorization` header with the `Bearer` prefix:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Example Request
+
+```python
+import requests
+
+API_KEY = "YOUR_API_KEY"
+API_URL = "https://app.pentest-tools.com/api/v2"
+
+response = requests.get(
+    f"{API_URL}/targets",
+    headers={"Authorization": f"Bearer {API_KEY}"}
+)
+
+print(response.json())
+```
+
+## API Key Security
+
+<Warning>
+Treat your API key like a password. Never commit it to version control or expose it in client-side code.
+</Warning>
+
+### Best Practices
+
+| Practice | Description |
+|----------|-------------|
+| Environment Variables | Store keys in environment variables, not in code |
+| Rotation | Rotate keys periodically |
+| Expiration | Set expiration dates on keys |
+| Naming | Use descriptive names to identify key purpose |
+| Monitoring | Check "Last used" date in My Account → API |
+
+### Managing Keys
+
+From **My Account → API** you can:
+
+- Create multiple keys for different purposes (CI/CD, scripts, integrations)
+- View when each key was last used
+- Set expiration dates (1-365 days, or never)
+- Revoke compromised keys immediately
+
+## Authentication Errors
+
+| Code | Message | Solution |
+|------|---------|----------|
+| 401 | Unauthorized | API key is missing or invalid |
+| 403 | Your plan does not have API access | Upgrade to a plan with API access |
+| 403 | Forbidden | Valid key but insufficient permissions for the action |
+
+## Related Topics
+
+- [API Overview](/api-reference/overview)
+- [API Examples](/api-reference/examples)
+- [Limits and Errors](/api-reference/limits-and-errors)

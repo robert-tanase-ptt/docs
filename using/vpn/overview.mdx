@@ -1,0 +1,85 @@
+---
+title: "VPN profiles overview"
+description: "Scan internal networks securely using VPN profiles and agents"
+---
+
+## Why VPN Profiles?
+
+By default, Pentest-Tools.com scans targets over the public internet. VPN profiles enable you to scan internal networks, private infrastructure, and resources not exposed to the internet.
+
+## How It Works
+
+<Steps>
+  <Step title="Deploy Agent">
+    Install a VPN agent in your internal network.
+  </Step>
+  <Step title="Establish Connection">
+    The agent creates a secure tunnel to the platform.
+  </Step>
+  <Step title="Run Scans">
+    Scans route through the agent to reach internal targets.
+  </Step>
+  <Step title="View Results">
+    Results appear in the platform like any other scan.
+  </Step>
+</Steps>
+
+## Deployment Options
+
+Choose the deployment method that fits your environment:
+
+<CardGroup cols={2}>
+  <Card title="OpenVPN" icon="shield-halved" href="/using/vpn/openvpn">
+    Traditional VPN configuration for any OpenVPN-compatible setup.
+  </Card>
+  <Card title="Docker Agent" icon="docker" href="/using/vpn/docker-agent">
+    Containerized agent for Docker environments.
+  </Card>
+  <Card title="Hyper-V Agent" icon="windows" href="/using/vpn/hyper-v-agent">
+    Virtual appliance for Microsoft Hyper-V.
+  </Card>
+  <Card title="VMware Agent" icon="server" href="/using/vpn/vmware-agent">
+    Virtual appliance for VMware environments.
+  </Card>
+  <Card title="VirtualBox Agent" icon="box" href="/using/vpn/virtualbox-agent">
+    Virtual appliance for Oracle VirtualBox.
+  </Card>
+  <Card title="AWS Agent" icon="aws" href="/using/vpn/aws-agent">
+    Deploy in Amazon Web Services.
+  </Card>
+  <Card title="Azure Agent" icon="microsoft" href="/using/vpn/azure-agent">
+    Deploy in Microsoft Azure.
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+| Scenario | Description |
+|----------|-------------|
+| Internal Applications | Scan intranet sites and internal tools |
+| Development Environments | Test staging servers not exposed publicly |
+| Corporate Networks | Assess internal infrastructure security |
+| Cloud VPCs | Scan private cloud resources |
+| Isolated Segments | Test network segments with no internet access |
+
+## Security Considerations
+
+<Warning>
+VPN agents have network access to your internal systems. Deploy them thoughtfully and restrict their network access appropriately.
+</Warning>
+
+- Agents only communicate outbound to Pentest-Tools.com
+- No inbound ports need to be opened
+- Traffic is encrypted
+- Agent access can be restricted via firewall rules
+
+## Requirements
+
+- **Network**: Outbound internet access from the agent
+- **Resources**: Minimal CPU and memory (varies by deployment)
+- **Permissions**: Ability to deploy the chosen agent type
+
+## Related Topics
+
+- [Troubleshooting VPN Issues](/using/vpn/troubleshooting)
+- [Running Network Scans](/using/scans/running-network-scans)

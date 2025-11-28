@@ -1,0 +1,167 @@
+---
+title: "Limits and errors"
+description: "Understand API rate limits and error handling"
+---
+
+## Rate Limits
+
+API requests are rate limited to ensure fair usage and platform stability. Limits are applied per user.
+
+### Request Rate Limits
+
+| Endpoint Type | Limit |
+|---------------|-------|
+| GET requests | 250 requests/minute |
+| POST and DELETE requests | 125 requests/minute |
+| `/scans/{id}/output` | 60 requests/minute |
+
+<Note>
+Pentest Robots have no rate limit when stopping scans via the API.
+</Note>
+
+### Rate Limit Headers
+
+You can inspect your current rate limit status by checking the response headers on any request:
+
+| Header | Description |
+|--------|-------------|
+| `X-RateLimit-Limit` | Maximum requests allowed per minute |
+| `X-RateLimit-Remaining` | Requests remaining in current window |
+
+```
+X-RateLimit-Limit: 250
+X-RateLimit-Remaining: 245
+```
+
+### When Rate Limited
+
+When you exceed the rate limit, you'll receive a `429 Too Many Requests` response with additional headers:
+
+| Header | Description |
+|--------|-------------|
+| `X-RateLimit-Reset` | Unix timestamp when the limit resets |
+| `Retry-After` | Seconds to wait before retrying |
+
+**Best Practice**: Implement exponential backoff:
+
+```python
+import time
+import requests
+
+def api_request_with_retry(url, headers, max_retries=3):
+    for attempt in range(max_retries):
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            retry_after = int(response.headers.get('Retry-After', 2 ** attempt))
+            time.sleep(retry_after)
+            continue
+
+        return response
+
+    raise Exception("Max retries exceeded")
+```
+
+## Error Response Format
+
+Error responses include a `status` code and `message`, with optional `details`:
+
+```json
+{
+  "status": 400,
+  "message": "No tool_id specified"
+}
+```
+
+With additional details:
+
+```json
+{
+  "status": 404,
+  "message": "Invalid target_id",
+  "details": "Target was not found"
+}
+```
+
+## Error Codes
+
+| Code | Meaning | Common Causes |
+|------|---------|---------------|
+| 400 | Bad Request | Missing required parameters, invalid input format |
+| 401 | Unauthorized | Missing or invalid API key |
+| 403 | Forbidden | Valid API key but insufficient permissions |
+| 404 | Not Found | Resource doesn't exist or you don't have access |
+| 406 | Not Acceptable | Requested format not supported (e.g., JSON output for raw-only tools) |
+| 409 | Conflict | Operation conflicts with current state (e.g., deleting running scan) |
+| 422 | Unprocessable Entity | Validation failed for the request body |
+| 429 | Too Many Requests | Rate limit exceeded |
+| 500 | Internal Server Error | Server-side issue; retry later |
+
+## Common Errors
+
+<AccordionGroup>
+  <Accordion title="401 Unauthorized">
+    **Cause**: Invalid or missing API key
+
+    **Solution**: Verify your API key is correct and included in the Authorization header as `Bearer YOUR_API_KEY`
+  </Accordion>
+
+  <Accordion title="403 Forbidden">
+    **Cause**: Your API key lacks permission for this action
+
+    **Solutions**:
+    - Check your subscription plan includes the requested feature
+    - Verify you have access to the workspace or resource
+    - For target deletion: ensure your plan allows API target deletion
+  </Accordion>
+
+  <Accordion title="404 Not Found">
+    **Cause**: Resource doesn't exist or you don't have access
+
+    **Solutions**:
+    - Verify the resource ID is correct
+    - Check the resource belongs to your account or a workspace you have access to
+    - For scans/targets: ensure they haven't been deleted
+  </Accordion>
+
+  <Accordion title="406 Not Acceptable">
+    **Cause**: Requested output format not supported
+
+    **Example**: Requesting JSON output for a tool that only provides raw output
+
+    **Solution**: Use a different output format or download the PDF report instead
+  </Accordion>
+
+  <Accordion title="409 Conflict">
+    **Cause**: Operation conflicts with current resource state
+
+    **Examples**:
+    - Deleting a scan that is still running
+    - Creating a workspace with a name that already exists
+    - Deleting your current active workspace
+
+    **Solution**: Resolve the conflict (e.g., stop the scan first) before retrying
+  </Accordion>
+
+  <Accordion title="429 Too Many Requests">
+    **Cause**: Rate limit exceeded
+
+    **Solution**: Wait for the duration specified in the `Retry-After` header before making more requests
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Tip>
+Always check the `status` field in error responses to determine the appropriate action.
+</Tip>
+
+- **Handle errors gracefully**: Implement proper error handling for all API calls
+- **Respect rate limits**: Monitor `X-RateLimit-Remaining` and slow down before hitting limits
+- **Use exponential backoff**: When retrying failed requests, increase wait time between attempts
+- **Log errors**: Keep records of errors for debugging and monitoring
+
+## Related Topics
+
+- [API Overview](/api-reference/overview)
+- [Authentication](/api-reference/authentication)

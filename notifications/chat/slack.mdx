@@ -1,0 +1,114 @@
+---
+title: "Slack integration"
+description: "Send security alerts to Slack channels"
+---
+
+## Overview
+
+The Slack integration delivers security notifications directly to your Slack workspace, enabling real-time team awareness.
+
+## Setting Up Slack
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to Settings → Integrations → Slack.
+  </Step>
+  <Step title="Connect Slack">
+    Click "Add to Slack" and authorize the app.
+  </Step>
+  <Step title="Select Channel">
+    Choose which Slack channel receives notifications.
+  </Step>
+  <Step title="Configure Alerts">
+    Set which events trigger Slack messages.
+  </Step>
+</Steps>
+
+## Available Notifications
+
+| Event | Slack Support |
+|-------|---------------|
+| Scan Complete | ✓ |
+| Scan Failed | ✓ |
+| New Finding | ✓ |
+| Critical Finding | ✓ |
+| Status Change | ✓ |
+
+## Message Format
+
+Slack notifications include:
+
+- Event type and timestamp
+- Target/asset information
+- Severity indicators
+- Direct links to platform
+- Action buttons
+
+### Example Message
+
+```
+🔴 Critical Finding Detected
+
+Target: example.com
+Tool: Website Vulnerability Scanner
+Finding: SQL Injection in login form
+
+[View Finding] [View Scan]
+```
+
+## Channel Strategies
+
+<Tabs>
+  <Tab title="Single Channel">
+    All notifications to one channel.
+
+    **Pros**: Simple, everyone sees everything
+
+    **Cons**: Can get noisy
+  </Tab>
+  <Tab title="Multiple Channels">
+    Route by severity or project.
+
+    **Pros**: Organized, relevant alerts
+
+    **Cons**: More setup required
+  </Tab>
+</Tabs>
+
+### Channel Examples
+
+| Channel | Purpose |
+|---------|---------|
+| #security-critical | Critical findings only |
+| #security-scans | All scan activity |
+| #project-client-a | Client-specific alerts |
+
+## Best Practices
+
+<Tip>
+Create a dedicated channel for critical findings and enable notifications/alerts on that channel for immediate attention.
+</Tip>
+
+<Warning>
+Avoid sending all notifications to general channels—this creates noise and leads to ignored alerts.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Messages not appearing">
+    - Check Slack app permissions
+    - Verify channel exists
+    - Check integration status
+  </Accordion>
+  <Accordion title="Too many messages">
+    - Filter by severity
+    - Use a dedicated channel
+    - Enable digest mode if available
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Microsoft Teams](/notifications/chat/microsoft-teams)
+- [Notifications Overview](/notifications/overview)

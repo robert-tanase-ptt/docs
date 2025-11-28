@@ -1,0 +1,99 @@
+---
+title: "Subdomain takeover"
+description: "Detect and validate subdomain takeover vulnerabilities"
+---
+
+## Overview
+
+The Subdomain Takeover tool identifies subdomains vulnerable to takeover, where an attacker could claim control of a subdomain pointing to an unclaimed resource.
+
+## What Is Subdomain Takeover?
+
+Subdomain takeover occurs when:
+1. A subdomain points to an external service (CNAME)
+2. The service account/resource is deleted or unclaimed
+3. An attacker can claim the resource
+4. They now control content on your subdomain
+
+## What It Detects
+
+<CardGroup cols={2}>
+  <Card title="Dangling CNAMEs" icon="link-slash">
+    CNAMEs pointing to non-existent resources
+  </Card>
+  <Card title="Unclaimed Services" icon="cloud">
+    Unused cloud service endpoints
+  </Card>
+  <Card title="Vulnerable Patterns" icon="triangle-exclamation">
+    Known takeover signatures
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Domain">
+    Provide the domain to check.
+  </Step>
+  <Step title="Run Scan">
+    Execute subdomain takeover detection.
+  </Step>
+  <Step title="Review Results">
+    Analyze vulnerable subdomains.
+  </Step>
+</Steps>
+
+## Commonly Affected Services
+
+| Service | Takeover Risk |
+|---------|---------------|
+| GitHub Pages | High |
+| Heroku | High |
+| AWS S3 | High |
+| Azure | Medium |
+| Shopify | Medium |
+| Fastly | Medium |
+| Zendesk | Low |
+
+## Detection Methods
+
+1. **DNS Resolution**: Check CNAME records
+2. **HTTP Response**: Look for service-specific error pages
+3. **Fingerprinting**: Match known takeover signatures
+4. **Validation**: Verify resource is actually unclaimed
+
+## Results Include
+
+For each vulnerable subdomain:
+- Subdomain name
+- CNAME target
+- Service identified
+- Takeover risk level
+- Validation status
+
+## Risk and Impact
+
+<Warning>
+Subdomain takeover can lead to cookie theft, phishing attacks, and reputation damage. The attacker controls content on your domain.
+</Warning>
+
+### Potential Impact
+
+| Impact | Description |
+|--------|-------------|
+| Cookie Theft | Steal session cookies scoped to parent domain |
+| Phishing | Host convincing phishing pages |
+| Malware | Distribute malware from trusted domain |
+| SEO Damage | Deface with inappropriate content |
+
+## Remediation
+
+1. Remove unused DNS records
+2. Verify all CNAME targets are claimed
+3. Monitor for new dangling records
+4. Use DNS monitoring tools
+
+## Related Tools
+
+- [Subdomain Finder](/tools/subdomain-finder)
+- [Domain Finder](/tools/domain-finder)

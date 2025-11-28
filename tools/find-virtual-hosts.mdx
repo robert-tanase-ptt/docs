@@ -1,0 +1,81 @@
+---
+title: "Find virtual hosts"
+description: "Discover virtual hosts sharing the same IP address"
+---
+
+## Overview
+
+The Virtual Host Finder discovers websites hosted on the same server using virtual hosting, revealing additional attack surface and potential targets.
+
+## What Are Virtual Hosts?
+
+Virtual hosting allows multiple websites to share a single IP address. Each site is served based on the HTTP Host header. This tool discovers these hidden sites.
+
+## What It Finds
+
+- Additional websites on shared hosting
+- Internal applications exposed on shared servers
+- Development sites on production IPs
+- Legacy applications still hosted
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Target">
+    Provide an IP address or domain.
+  </Step>
+  <Step title="Run Discovery">
+    Execute the virtual host enumeration.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered virtual hosts.
+  </Step>
+</Steps>
+
+## Discovery Methods
+
+| Method | Description |
+|--------|-------------|
+| Reverse DNS | Query PTR records |
+| Certificate Analysis | Extract names from SSL certs |
+| Historical Data | Search passive DNS databases |
+| Brute Force | Try common hostnames |
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Shared Hosting" icon="server">
+    Find other sites on shared servers.
+  </Card>
+  <Card title="Cloud Environments" icon="cloud">
+    Discover sites on shared cloud infrastructure.
+  </Card>
+  <Card title="CDN Analysis" icon="network-wired">
+    Identify sites behind the same CDN endpoint.
+  </Card>
+</CardGroup>
+
+## Results Include
+
+For each virtual host:
+- Hostname
+- HTTP response code
+- Page title
+- Server header
+- SSL certificate info
+
+<Note>
+Virtual hosts may belong to different organizations when using shared hosting providers.
+</Note>
+
+## Security Implications
+
+Finding virtual hosts can reveal:
+- Cross-site vulnerabilities on shared hosting
+- Internal applications exposed unintentionally
+- Additional scope targets
+
+## Related Tools
+
+- [Subdomain Finder](/tools/subdomain-finder)
+- [Port Scanner](/tools/port-scanner)

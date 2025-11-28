@@ -1,0 +1,93 @@
+---
+title: "Joomla scanner"
+description: "Specialized security testing for Joomla installations"
+---
+
+## Overview
+
+The Joomla Scanner performs security assessments of Joomla CMS installations, identifying core vulnerabilities, extension issues, and misconfigurations.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="Joomla Core" icon="joomla">
+    Version and known vulnerabilities
+  </Card>
+  <Card title="Extensions" icon="puzzle-piece">
+    Components, modules, plugins
+  </Card>
+  <Card title="Templates" icon="palette">
+    Template security issues
+  </Card>
+  <Card title="Configuration" icon="gear">
+    Security settings
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter Joomla URL">
+    Provide the Joomla site URL.
+  </Step>
+  <Step title="Configure Options">
+    Select scan parameters.
+  </Step>
+  <Step title="Run Scan">
+    Execute security testing.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered vulnerabilities.
+  </Step>
+</Steps>
+
+## Checks Performed
+
+### Core Analysis
+
+- Version detection
+- Known vulnerability matching
+- Security patches status
+- Update availability
+
+### Extension Analysis
+
+| Type | Checks |
+|------|--------|
+| Components | Enumeration, vulnerabilities |
+| Modules | Detection, security issues |
+| Plugins | Analysis, known CVEs |
+
+### Configuration Checks
+
+- Administrator path exposure
+- User registration settings
+- Error reporting level
+- Debug mode status
+- Backup files
+
+## Common Findings
+
+| Finding | Severity | Description |
+|---------|----------|-------------|
+| Outdated core | High | Vulnerable Joomla version |
+| Vulnerable extensions | Variable | Third-party security issues |
+| Admin path default | Low | /administrator accessible |
+| Debug enabled | Medium | Information disclosure |
+
+<Note>
+Joomla extensions (especially third-party) are frequently sources of vulnerabilities. Audit and update them regularly.
+</Note>
+
+## Results Include
+
+- Joomla version information
+- Core vulnerability assessment
+- Extension inventory and security status
+- Configuration recommendations
+
+## Related Tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [WordPress Scanner](/tools/wordpress-scanner)
+- [Drupal Scanner](/tools/drupal-scanner)

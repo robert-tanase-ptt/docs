@@ -1,0 +1,94 @@
+---
+title: "WordPress scanner"
+description: "Specialized security testing for WordPress installations"
+---
+
+## Overview
+
+The WordPress Scanner performs targeted security testing specifically designed for WordPress sites, checking core, themes, and plugins.
+
+## What It Tests
+
+<CardGroup cols={2}>
+  <Card title="WordPress Core" icon="wordpress">
+    Version detection, known vulnerabilities
+  </Card>
+  <Card title="Plugins" icon="plug">
+    Installed plugins and their vulnerabilities
+  </Card>
+  <Card title="Themes" icon="palette">
+    Theme security issues
+  </Card>
+  <Card title="Configuration" icon="gear">
+    Security misconfigurations
+  </Card>
+</CardGroup>
+
+## How to Use
+
+<Steps>
+  <Step title="Enter WordPress URL">
+    Provide the WordPress site URL.
+  </Step>
+  <Step title="Configure Options">
+    Select scan depth and enumeration options.
+  </Step>
+  <Step title="Run Scan">
+    Execute the WordPress security test.
+  </Step>
+  <Step title="Review Results">
+    Analyze discovered vulnerabilities.
+  </Step>
+</Steps>
+
+## Checks Performed
+
+### Core WordPress
+
+- Version detection
+- Known CVEs for detected version
+- Outdated installation warnings
+- Debug mode detection
+
+### Plugin Analysis
+
+| Check | Description |
+|-------|-------------|
+| Enumeration | List installed plugins |
+| Version Detection | Identify plugin versions |
+| Vulnerability Matching | Check against vuln database |
+| Abandoned Plugins | Identify unmaintained plugins |
+
+### Theme Analysis
+
+- Theme detection and versioning
+- Known theme vulnerabilities
+- Child theme analysis
+
+### Configuration
+
+- User enumeration
+- XML-RPC enabled
+- wp-config.php exposure
+- Directory listing
+- Backup files
+
+## Common Findings
+
+| Finding | Risk |
+|---------|------|
+| Outdated WordPress | High |
+| Vulnerable plugins | Variable |
+| XML-RPC enabled | Medium |
+| User enumeration | Low |
+| Debug mode enabled | Medium |
+
+<Warning>
+WordPress plugins are a major source of vulnerabilities. Always keep plugins updated and remove unused ones.
+</Warning>
+
+## Related Tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [Drupal Scanner](/tools/drupal-scanner)
+- [Joomla Scanner](/tools/joomla-scanner)

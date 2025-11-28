@@ -1,0 +1,143 @@
+---
+title: "Overview"
+description: "View, triage, and manage security findings discovered by your scans"
+---
+
+Findings are security vulnerabilities and issues discovered during scans. The findings list is your central hub for reviewing, triaging, and managing all discovered issues across your assets.
+
+## Viewing findings
+
+Each finding in the list displays:
+
+| Column | Description |
+|--------|-------------|
+| **Severity** | Risk level (Critical, High, Medium, Low, Info) |
+| **Title** | Brief description of the vulnerability |
+| **Asset** | Where the finding was discovered |
+| **Status** | Current triage status |
+| **Tool** | Scanner that detected the issue |
+| **Date** | When it was discovered |
+
+### Filtering and sorting
+
+Use filters to focus on what matters:
+
+- **By severity** — View only Critical and High findings, exclude informational items
+- **By status** — Track remediation progress (New, Confirmed, Fixed, etc.)
+- **By asset or tool** — Scope to specific targets or scanner types
+
+<Tip>
+Start your triage by filtering for Critical and High severity findings—these represent the greatest risk to your organization.
+</Tip>
+
+## Finding details
+
+Select any finding to view comprehensive information:
+
+- **Description** — What the vulnerability is and why it's a security concern
+- **Evidence** — Proof of the vulnerability (request/response data, screenshots, payloads)
+- **Remediation** — Step-by-step guidance on how to fix the issue
+- **References** — Links to CVE entries, CWE classifications, OWASP documentation
+
+## Actions
+
+### Change status
+
+Update the finding's lifecycle status:
+
+| Status | Description | When to use |
+|--------|-------------|-------------|
+| **New** | Recently discovered | Not yet reviewed |
+| **Confirmed** | Validated as real | Plan remediation |
+| **In Progress** | Remediation underway | Track active work |
+| **Fixed** | Remediated and verified | Close out |
+| **Accepted** | Risk acknowledged | No action planned—document rationale |
+| **False Positive** | Not a real vulnerability | Incorrect detection |
+
+<Warning>
+Document all risk acceptance decisions with clear rationale and approval from appropriate stakeholders.
+</Warning>
+
+### Change risk level
+
+Adjust the severity rating if the automated assessment doesn't match the actual risk in your environment. Consider factors like:
+
+- Business context and asset criticality
+- Compensating controls in place
+- Actual exploitability in your environment
+
+### Add notes and comments
+
+Document your findings with:
+
+- Validation details and reproduction steps
+- Remediation notes and progress updates
+- Team communication and handoff information
+
+### Rescan to verify fixes
+
+<Steps>
+  <Step title="Apply the fix">
+    Implement the recommended remediation.
+  </Step>
+  <Step title="Rescan the target">
+    Run a targeted scan to verify the fix worked.
+  </Step>
+  <Step title="Update status">
+    Mark as Fixed if remediation is successful.
+  </Step>
+</Steps>
+
+### Bulk operations
+
+Select multiple findings to:
+
+- Update status in batch
+- Export selected items
+- Assign to team members
+
+## Add manual findings
+
+<Info>
+Manual findings are available on the **Pentest Suite** plan. [View plans](/plans-and-limits/plan-overview)
+</Info>
+
+Create findings manually for vulnerabilities discovered through manual testing that automated scanners can't detect. Use [finding templates](/using/findings/templates) to standardize documentation and save time.
+
+## Deduplication
+
+When running multiple scans, the same vulnerability may be detected more than once. Findings are automatically grouped as duplicates when they match on:
+
+- Vulnerability type
+- Location (same asset and URL/endpoint)
+- Affected parameter
+
+<Note>
+Deduplication groups findings but doesn't delete them—you can always see the full history.
+</Note>
+
+## Suppression
+
+Hide findings you don't want in your regular views:
+
+- **Known issues** you're tracking elsewhere
+- **Accepted risks** you've consciously decided to accept
+- **False positives** you want to hide from default views
+
+<Warning>
+Be cautious with broad suppression rules—they may hide legitimate findings. Review suppression rules quarterly.
+</Warning>
+
+## Reporting
+
+Export your findings for stakeholder communication and compliance documentation. Generate professional pentest reports, export to various formats, or integrate with your existing workflows.
+
+<Card title="Reporting" icon="file-lines" href="/using/reporting/reporting-overview">
+  Learn how to generate reports, create templates, and export findings.
+</Card>
+
+## Related topics
+
+- [Finding templates](/using/findings/templates)
+- [Findings and severity](/concepts/findings-and-severity)
+- [Reporting overview](/using/reporting/reporting-overview)

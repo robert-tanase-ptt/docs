@@ -1,0 +1,181 @@
+---
+title: "VPN troubleshooting"
+description: "Diagnose and resolve common VPN agent issues"
+---
+
+## Common Issues
+
+<AccordionGroup>
+  <Accordion title="Agent won't connect">
+    **Symptoms**: Agent shows as disconnected in dashboard
+
+    **Solutions**:
+    - Verify outbound internet access from agent
+    - Check firewall rules allow HTTPS (443) and UDP (1194)
+    - Confirm agent token is correct
+    - Restart the agent service
+  </Accordion>
+
+  <Accordion title="Scans timeout or fail">
+    **Symptoms**: Scans against internal targets fail or timeout
+
+    **Solutions**:
+    - Verify agent can reach target (ping/telnet test)
+    - Check internal firewall rules
+    - Ensure proper network routing
+    - Verify target is responding on expected ports
+  </Accordion>
+
+  <Accordion title="Intermittent connectivity">
+    **Symptoms**: Agent connects and disconnects randomly
+
+    **Solutions**:
+    - Check network stability
+    - Verify sufficient resources (CPU, memory)
+    - Review agent logs for errors
+    - Check for IP/port conflicts
+  </Accordion>
+
+  <Accordion title="Slow scan performance">
+    **Symptoms**: Scans take much longer than expected
+
+    **Solutions**:
+    - Check network latency to targets
+    - Verify agent resource utilization
+    - Consider agent placement (closer to targets)
+    - Check for bandwidth limitations
+  </Accordion>
+</AccordionGroup>
+
+## Diagnostic Steps
+
+### 1. Check Agent Status
+
+<Tabs>
+  <Tab title="Docker">
+    ```bash
+    # Check container status
+    docker ps -a | grep pentest-agent
+
+    # View logs
+    docker logs pentest-agent --tail 100
+
+    # Check resource usage
+    docker stats pentest-agent
+    ```
+  </Tab>
+  <Tab title="VM">
+    ```bash
+    # Check service status
+    systemctl status pentest-agent
+
+    # View logs
+    journalctl -u pentest-agent -n 100
+
+    # Check connectivity
+    curl -v https://app.pentest-tools.com
+    ```
+  </Tab>
+</Tabs>
+
+### 2. Test Network Connectivity
+
+```bash
+# Test outbound internet
+curl -I https://app.pentest-tools.com
+
+# Test internal target reachability
+ping internal-target.local
+nc -zv internal-target.local 80
+```
+
+### 3. Check Firewall Rules
+
+Ensure these are allowed:
+
+| Direction | Protocol | Port | Destination |
+|-----------|----------|------|-------------|
+| Outbound | TCP | 443 | app.pentest-tools.com |
+| Outbound | UDP | 1194 | VPN endpoint |
+
+## Log Analysis
+
+### Important Log Messages
+
+| Message | Meaning | Action |
+|---------|---------|--------|
+| `Connected successfully` | Agent is online | None needed |
+| `Authentication failed` | Invalid token | Verify token |
+| `Connection timeout` | Network issue | Check connectivity |
+| `Certificate error` | SSL/TLS issue | Check system time |
+
+### Collecting Logs for Support
+
+```bash
+# Docker
+docker logs pentest-agent > agent-logs.txt 2>&1
+
+# Include system info
+uname -a >> agent-logs.txt
+docker version >> agent-logs.txt
+```
+
+## Resolution Procedures
+
+### Restart Agent
+
+<Tabs>
+  <Tab title="Docker">
+    ```bash
+    docker restart pentest-agent
+    ```
+  </Tab>
+  <Tab title="Service">
+    ```bash
+    sudo systemctl restart pentest-agent
+    ```
+  </Tab>
+</Tabs>
+
+### Reinstall Agent
+
+If issues persist:
+
+1. Remove existing agent
+2. Download fresh configuration/image
+3. Redeploy with new token if needed
+
+### Network Troubleshooting
+
+<Steps>
+  <Step title="Verify Basic Connectivity">
+    Test internet access and DNS resolution.
+  </Step>
+  <Step title="Check Routing">
+    Verify routes to internal targets exist.
+  </Step>
+  <Step title="Test Port Access">
+    Confirm required ports are open.
+  </Step>
+  <Step title="Review Firewall Logs">
+    Check for blocked traffic.
+  </Step>
+</Steps>
+
+## Getting Support
+
+If you can't resolve the issue:
+
+1. Collect agent logs
+2. Note your agent ID and affected targets
+3. Document steps already tried
+4. Contact support with this information
+
+<Note>
+Include the agent version and deployment type when contacting support.
+</Note>
+
+## Related Topics
+
+- [VPN Profiles Overview](/using/vpn/overview)
+- [Docker Agent](/using/vpn/docker-agent)

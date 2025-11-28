@@ -1,0 +1,102 @@
+---
+title: "Teams and roles"
+description: "Manage team members and access control"
+---
+
+## Team Management
+
+Enterprise plans support multiple team members with role-based access control.
+
+## User Roles
+
+| Role | Permissions |
+|------|-------------|
+| **Owner** | Full access, billing, delete account |
+| **Admin** | Manage users, all features |
+| **Member** | Run scans, view results |
+| **Viewer** | Read-only access |
+
+## Role Permissions Matrix
+
+| Permission | Owner | Admin | Member | Viewer |
+|------------|-------|-------|--------|--------|
+| View findings | ✓ | ✓ | ✓ | ✓ |
+| Run scans | ✓ | ✓ | ✓ | ✗ |
+| Manage assets | ✓ | ✓ | ✓ | ✗ |
+| Create workspaces | ✓ | ✓ | ✗ | ✗ |
+| Manage team | ✓ | ✓ | ✗ | ✗ |
+| Billing access | ✓ | ✗ | ✗ | ✗ |
+| Delete account | ✓ | ✗ | ✗ | ✗ |
+
+## Inviting Team Members
+
+<Steps>
+  <Step title="Go to Team Settings">
+    Navigate to Settings → Team.
+  </Step>
+  <Step title="Click Invite">
+    Click "Invite Team Member".
+  </Step>
+  <Step title="Enter Details">
+    Provide email and select role.
+  </Step>
+  <Step title="Send Invitation">
+    User receives email invitation.
+  </Step>
+</Steps>
+
+## Managing Team Members
+
+### Changing Roles
+
+1. Go to Settings → Team
+2. Find the team member
+3. Click Edit/Change Role
+4. Select new role
+5. Save changes
+
+### Removing Team Members
+
+1. Go to Settings → Team
+2. Find the team member
+3. Click Remove
+4. Confirm removal
+
+<Warning>
+Removing a team member immediately revokes their access. Any scheduled scans they created will continue to run.
+</Warning>
+
+## Workspace Access
+
+### Workspace-Level Permissions
+
+In addition to roles, access can be controlled per workspace:
+- Users can be granted access to specific workspaces
+- Workspace permissions override team-level for that workspace
+
+### Access Scenarios
+
+| Scenario | Setup |
+|----------|-------|
+| Full access | Admin role, all workspaces |
+| Limited access | Member role, specific workspaces |
+| Audit access | Viewer role, relevant workspaces |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Least Privilege">
+    Give users the minimum access needed for their role.
+  </Accordion>
+  <Accordion title="Regular Reviews">
+    Periodically review team membership and roles.
+  </Accordion>
+  <Accordion title="Offboarding">
+    Remove access promptly when team members leave.
+  </Accordion>
+</AccordionGroup>
+
+## Related Topics
+
+- [Account Security](/account/security)
+- [Organize Work with Workspaces](/using/workspaces/organize-work)
