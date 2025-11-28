@@ -1,91 +1,93 @@
 ---
 title: "SharePoint security scanner"
-description: "Security testing for Microsoft SharePoint installations"
+description: "Security testing for Microsoft SharePoint deployments"
 ---
 
 ## Overview
 
-The SharePoint Security Scanner assesses Microsoft SharePoint installations for vulnerabilities, misconfigurations, and security issues.
+The SharePoint Security Scanner identifies vulnerabilities and misconfigurations in Microsoft SharePoint deployments, both on-premises and SharePoint Online.
 
-## What It Tests
+## What it tests
 
 <CardGroup cols={2}>
-  <Card title="SharePoint Version" icon="microsoft">
-    Version detection and CVEs
+  <Card title="Version vulnerabilities" icon="microsoft">
+    Known SharePoint CVEs
   </Card>
-  <Card title="Authentication" icon="lock">
-    Auth mechanisms and weaknesses
+  <Card title="Access controls" icon="lock">
+    Permission misconfigurations
   </Card>
-  <Card title="Permissions" icon="shield">
-    Access control issues
+  <Card title="Authentication" icon="key">
+    Authentication weaknesses
   </Card>
-  <Card title="Configuration" icon="gear">
-    Security settings
+  <Card title="Exposed content" icon="folder-open">
+    Sensitive document exposure
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
   <Step title="Enter SharePoint URL">
     Provide the SharePoint site URL.
   </Step>
-  <Step title="Configure Authentication">
-    Provide credentials if testing authenticated access.
+  <Step title="Configure authentication">
+    Provide credentials if testing authenticated areas.
   </Step>
-  <Step title="Run Scan">
-    Execute security assessment.
-  </Step>
-  <Step title="Review Results">
-    Analyze discovered issues.
+  <Step title="Run scan">
+    Execute the SharePoint security assessment.
   </Step>
 </Steps>
 
-## Checks Performed
+## Checks performed
 
-### Version Analysis
+### Version checks
 
 | Check | Description |
 |-------|-------------|
-| Version detection | SharePoint version identification |
-| Patch level | Service pack and updates |
-| CVE matching | Known vulnerability check |
+| **Version detection** | Identify SharePoint version |
+| **Patch level** | Determine installed updates |
+| **CVE matching** | Check for known vulnerabilities |
 
-### Security Checks
+### Security checks
 
-- Anonymous access settings
-- Web part vulnerabilities
-- Document library exposure
-- Search disclosure
-- User enumeration
+| Check | Description |
+|-------|-------------|
+| **Anonymous access** | Check for unauthenticated access |
+| **Directory browsing** | Check for enabled browsing |
+| **Exposed lists** | Find accessible lists |
+| **Document libraries** | Check for exposed documents |
 
-### Authentication
+### Authentication checks
 
-- Login page analysis
-- Authentication bypass tests
-- Session management
-- Brute force protection
+| Check | Description |
+|-------|-------------|
+| **Authentication methods** | Identify enabled auth types |
+| **Forms authentication** | Check for form-based auth issues |
+| **Kerberos/NTLM** | Test Windows authentication |
 
-## SharePoint-Specific Risks
+## SharePoint-specific risks
 
-| Risk | Impact |
-|------|--------|
-| CVE-2019-0604 | Remote Code Execution |
-| Anonymous Access | Data exposure |
-| Misconfigurations | Information disclosure |
+| Risk | Description |
+|------|-------------|
+| **CVE-2019-0604** | Remote code execution vulnerability |
+| **CVE-2020-1147** | XML deserialization RCE |
+| **Overly permissive sharing** | Documents shared with "Everyone" |
+| **Anonymous access** | Sites accessible without login |
 
 <Warning>
-SharePoint often contains sensitive corporate data. Vulnerabilities can lead to significant data breaches.
+SharePoint vulnerabilities can expose sensitive corporate documents. Regular security assessments are critical.
 </Warning>
 
-## Results Include
+## Results
 
-- SharePoint version information
-- Vulnerability assessment
-- Configuration issues
-- Remediation guidance
+For each finding:
+- **Issue type** — Vulnerability or misconfiguration
+- **Location** — Affected site/list/library
+- **Severity** — Risk rating
+- **Details** — Technical description
+- **Remediation** — Steps to fix
 
-## Related Tools
+## Related tools
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web testing
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Infrastructure assessment

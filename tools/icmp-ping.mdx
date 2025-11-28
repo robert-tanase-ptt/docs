@@ -1,13 +1,13 @@
 ---
 title: "ICMP ping"
-description: "Test host reachability using ICMP ping"
+description: "Test host reachability using ICMP echo requests"
 ---
 
 ## Overview
 
 The ICMP Ping tool tests whether a target host is reachable over the network using ICMP echo requests.
 
-## What It Does
+## What it does
 
 <CardGroup cols={2}>
   <Card title="Reachability" icon="wifi">
@@ -16,24 +16,24 @@ The ICMP Ping tool tests whether a target host is reachable over the network usi
   <Card title="Latency" icon="clock">
     Measure response time
   </Card>
-  <Card title="Packet Loss" icon="chart-line">
+  <Card title="Packet loss" icon="chart-line">
     Detect connectivity issues
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Target">
+  <Step title="Enter target">
     Provide IP address or hostname.
   </Step>
-  <Step title="Configure Options">
+  <Step title="Configure options">
     Set packet count and timeout.
   </Step>
-  <Step title="Run Ping">
+  <Step title="Run ping">
     Execute the connectivity test.
   </Step>
-  <Step title="Review Results">
+  <Step title="Review results">
     Analyze response data.
   </Step>
 </Steps>
@@ -46,14 +46,14 @@ The ICMP Ping tool tests whether a target host is reachable over the network usi
 | Timeout | Wait time per packet | 1 second |
 | Size | Packet size | 64 bytes |
 
-## Results Include
+## Results include
 
 - Response status (success/failure)
 - Round-trip time (RTT)
 - Packet loss percentage
 - TTL information
 
-## Use Cases
+## Use cases
 
 - Verify target is online before scanning
 - Check network connectivity
@@ -64,7 +64,7 @@ The ICMP Ping tool tests whether a target host is reachable over the network usi
 Some hosts block ICMP traffic. A non-responsive ping doesn't necessarily mean the host is down.
 </Note>
 
-## Interpreting Results
+## Interpreting results
 
 | Result | Meaning |
 |--------|---------|
@@ -77,7 +77,7 @@ Some hosts block ICMP traffic. A non-responsive ping doesn't necessarily mean th
 If ICMP is blocked, try connecting to a known open port to verify host availability.
 </Tip>
 
-## Related Tools
+## Related tools
 
-- [Port Scanner](/tools/port-scanner)
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
+- [Port Scanner](/tools/port-scanner) — Scan open ports
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Infrastructure assessment

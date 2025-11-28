@@ -1,98 +1,144 @@
 ---
 title: "URL fuzzer"
-description: "Discover hidden files, directories, and paths on web servers"
+description: "Discover hidden files, directories, and endpoints on web servers"
 ---
 
 ## Overview
 
-The URL Fuzzer discovers hidden or unlinked content on web servers by testing common file and directory names.
+The URL Fuzzer discovers hidden content on web servers by testing common file and directory names. It finds backup files, admin panels, configuration files, and other resources not linked from the main application.
 
-## What It Finds
+## What it finds
 
 <CardGroup cols={2}>
-  <Card title="Hidden Directories" icon="folder">
+  <Card title="Hidden directories" icon="folder">
     Admin panels, backup folders
   </Card>
-  <Card title="Sensitive Files" icon="file">
-    Configuration files, backups
+  <Card title="Backup files" icon="file-zipper">
+    .bak, .old, .backup files
   </Card>
-  <Card title="Unlinked Pages" icon="link-slash">
-    Development and test pages
+  <Card title="Configuration files" icon="file-code">
+    Config files, .env, .git
   </Card>
-  <Card title="API Endpoints" icon="plug">
-    Undocumented API paths
+  <Card title="Sensitive endpoints" icon="key">
+    Debug endpoints, API paths
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Target URL">
+  <Step title="Enter target URL">
     Provide the base URL to fuzz.
   </Step>
-  <Step title="Select Wordlist">
-    Choose the discovery wordlist.
+  <Step title="Select wordlist">
+    Choose a wordlist or use custom entries.
   </Step>
-  <Step title="Configure Options">
-    Set extensions, recursion depth.
+  <Step title="Configure options">
+    Set extensions, recursion, and filters.
   </Step>
-  <Step title="Run Fuzzer">
-    Start the fuzzing process.
+  <Step title="Run fuzzer">
+    Execute the content discovery.
   </Step>
 </Steps>
 
-## Wordlist Options
+## Wordlist options
 
-| Wordlist | Size | Use Case |
-|----------|------|----------|
-| Small | ~1,000 | Quick discovery |
-| Medium | ~10,000 | Standard testing |
-| Large | ~50,000+ | Comprehensive |
-| Custom | Variable | Specific targets |
+| Wordlist | Size | Description |
+|----------|------|-------------|
+| **Small** | ~1K entries | Quick common files |
+| **Medium** | ~10K entries | Standard assessment |
+| **Large** | ~100K entries | Comprehensive discovery |
+| **Custom** | Variable | Your own wordlist |
 
-## Common Discoveries
+## Common discoveries
 
-| Path | Description |
-|------|-------------|
-| `/admin` | Admin interfaces |
-| `/backup` | Backup files |
-| `/config` | Configuration files |
-| `/api` | API endpoints |
-| `/.git` | Git repository exposure |
-| `/phpinfo.php` | PHP configuration |
+| Type | Examples |
+|------|----------|
+| **Admin panels** | /admin, /administrator, /wp-admin |
+| **Backup files** | .bak, .old, .backup, .swp |
+| **Config files** | .env, config.php, web.config |
+| **Version control** | .git, .svn, .hg |
+| **Development** | /test, /dev, /staging |
+| **API endpoints** | /api, /v1, /graphql |
 
-## Configuration Options
+## Configuration options
 
 ### Extensions
 
-Test for specific file types:
-```
-.php, .asp, .aspx, .jsp, .html, .bak, .old, .txt
-```
+Add file extensions to test:
+- PHP: `.php`, `.php.bak`
+- ASP: `.asp`, `.aspx`
+- Backup: `.bak`, `.old`, `.backup`
+- Config: `.conf`, `.config`, `.yml`
 
 ### Recursion
 
-- **Off**: Scan base path only
-- **Level 1**: Scan discovered directories
-- **Level 2+**: Deep recursive scanning
+When enabled, discovered directories are also fuzzed:
+- Set maximum depth
+- Control directory-only recursion
 
-<Warning>
-Deep recursive scanning can generate significant traffic. Use thoughtfully in production environments.
-</Warning>
+### Response filtering
 
-## Filtering Results
-
-Filter by response code:
-- **200**: Success (found)
-- **301/302**: Redirects
-- **403**: Forbidden (exists but restricted)
-- **404**: Not found (ignore)
+Filter results by:
+- **Status codes** — Include/exclude HTTP status codes
+- **Response size** — Filter by content length
+- **Response content** — Match/exclude patterns
 
 <Tip>
-403 Forbidden responses can be interesting—the path exists but access is denied.
+Filter out common "not found" response sizes to reduce noise in results.
 </Tip>
 
-## Related Tools
+## Results
 
-- [Website Recon](/tools/website-recon)
-- [Google Hacking](/tools/google-hacking)
+For each discovered resource:
+- **URL** — Full path to resource
+- **Status code** — HTTP response code
+- **Size** — Response content length
+- **Content type** — MIME type
+
+## Authentication
+
+The URL Fuzzer supports custom headers in **Custom** scan mode, allowing you to fuzz authenticated endpoints.
+
+**How to configure:**
+1. Select **Custom** scan type
+2. Navigate to **Request options → Headers**
+3. Enter your authentication headers
+
+**Use for:**
+- JWT tokens
+- Authorization headers
+- Cookies
+- Custom User-Agent strings
+
+**Example:**
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+Cookie: session_id=abc123
+User-Agent: Custom-Scanner/1.0
+```
+
+[Full authentication guide →](/using/scans/authenticated-scanning#url-fuzzer)
+
+## Security implications
+
+Discovering hidden content can reveal:
+- **Backup files** with source code or credentials
+- **Configuration files** exposing database passwords
+- **Admin interfaces** for privilege escalation
+- **Version control** directories with full source
+- **Debug endpoints** with sensitive information
+
+<Warning>
+Exposed .git directories can leak entire source code repositories including commit history.
+</Warning>
+
+## Related tools
+
+- [Website Recon](/tools/website-recon) — Technology fingerprinting
+- [Google Hacking](/tools/google-hacking) — Find indexed sensitive content
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Full web app testing
+
+## Related topics
+
+- [Authenticated scanning](/using/scans/authenticated-scanning#url-fuzzer)

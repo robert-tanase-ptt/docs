@@ -5,95 +5,146 @@ description: "Automated reconnaissance and exploitation framework"
 
 ## Overview
 
-Sniper is an automated tool that combines reconnaissance, vulnerability scanning, and exploitation capabilities for comprehensive penetration testing.
+Sniper is an automated penetration testing tool that combines reconnaissance, scanning, and exploitation capabilities. It streamlines the testing workflow by automating common attack patterns.
 
-## What It Does
+## What it does
 
 <CardGroup cols={2}>
   <Card title="Reconnaissance" icon="magnifying-glass">
     Automated information gathering
   </Card>
-  <Card title="Scanning" icon="radar">
-    Vulnerability detection
+  <Card title="Vulnerability scanning" icon="radar">
+    Identify security weaknesses
   </Card>
   <Card title="Exploitation" icon="bolt">
-    Automated exploit attempts
+    Validate vulnerabilities
   </Card>
-  <Card title="Reporting" icon="file-lines">
-    Comprehensive results
+  <Card title="Reporting" icon="file-alt">
+    Consolidated findings
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Define Target">
-    Enter the target domain or IP.
+  <Step title="Enter target">
+    Provide IP, hostname, or URL.
   </Step>
-  <Step title="Select Mode">
-    Choose the scan/attack mode.
+  <Step title="Select mode">
+    Choose the scan mode.
   </Step>
-  <Step title="Configure Options">
-    Set scope and limitations.
+  <Step title="Run Sniper">
+    Execute automated testing.
   </Step>
-  <Step title="Execute">
-    Run the automated assessment.
+  <Step title="Review results">
+    Analyze findings and evidence.
   </Step>
 </Steps>
 
-## Scan Modes
+## Scan modes
 
-| Mode | Description | Intensity |
-|------|-------------|-----------|
-| Recon | Information gathering only | Low |
-| Scan | Vulnerability scanning | Medium |
-| Full | Complete assessment | High |
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **Normal** | Standard scanning | General assessment |
+| **Stealth** | Low-profile scanning | Avoiding detection |
+| **Aggressive** | Thorough testing | Comprehensive audit |
 
 ## Capabilities
 
 ### Reconnaissance
 
-- Subdomain enumeration
+- Port scanning and service detection
 - Technology fingerprinting
-- Port discovery
-- Service identification
+- DNS enumeration
+- OSINT gathering
 
-### Scanning
+### Vulnerability scanning
 
-- Web vulnerability scanning
-- Network vulnerability scanning
-- CMS-specific tests
-- SSL/TLS analysis
+- Web application vulnerabilities
+- Network service vulnerabilities
+- CVE checking
+- Misconfiguration detection
 
 ### Exploitation
 
-- Automated exploit selection
-- Proof-of-concept execution
-- Impact validation
+- Automated exploit attempts
+- Proof of concept generation
+- Impact demonstration
+
+## Results
+
+For each finding:
+- **Vulnerability type** — Category and name
+- **Target** — Affected host/service
+- **Evidence** — Proof of exploitation
+- **Severity** — Risk rating
+- **Details** — Technical description
 
 <Warning>
-Exploitation features should only be used against systems you have explicit permission to test. Unauthorized exploitation is illegal.
+Sniper performs active exploitation. Only use against systems you have explicit authorization to test.
 </Warning>
 
-## Results Include
+## Authenticated scanning
 
-- Full reconnaissance data
-- Vulnerability findings
-- Exploitation results
-- Detailed evidence
-
-## Use Cases
-
-- Penetration testing engagements
-- Red team assessments
-- Security audits
-- Vulnerability validation
+Sniper supports authenticated scans via four protocols, allowing you to extract system artifacts through an authenticated session.
 
 <Note>
-Sniper automates many manual testing steps but should be complemented with manual testing for comprehensive assessments.
+Authenticated Sniper scans don't search for vulnerabilities—instead, they extract artifacts (system information, configurations, user data) through the authenticated session. This is useful for post-authentication reconnaissance.
 </Note>
 
-## Related Tools
+| Protocol | Authentication | Use case |
+|----------|----------------|----------|
+| **SSH** | Username/password or private key | Linux/Unix systems |
+| **WinRM** | Username/password (NTLM or Basic) | Windows systems |
+| **SMB** | Username/password with optional domain | Windows file shares |
+| **MySQL** | Username/password with database name | Database servers |
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
+### SSH authentication
+
+**Username/Password:**
+1. Select **SSH** protocol
+2. Choose **Username and Password** authentication
+3. Enter SSH credentials
+
+**SSH Private Key:**
+1. Select **SSH** protocol
+2. Choose **SSH private key** authentication
+3. Paste your private key content
+4. Enter the key passphrase (if applicable)
+
+### WinRM authentication
+
+1. Select **WinRM** protocol
+2. Enter **username** and **password**
+3. Choose authentication type: **NTLM** (domain) or **Basic** (standalone)
+
+### SMB authentication
+
+1. Select **SMB** protocol
+2. Enter **username** and **password**
+3. Optionally specify the **domain** for domain-joined systems
+
+### MySQL authentication
+
+1. Select **MySQL** protocol
+2. Enter **username** and **password**
+3. Specify the **database name** to connect to
+
+[Full authentication guide →](/using/scans/authenticated-scanning#sniper)
+
+## Use cases
+
+- **Quick assessments** — Rapid security evaluation
+- **Red team exercises** — Automated attack simulation
+- **Penetration testing** — Comprehensive security testing
+- **Vulnerability validation** — Confirm scanner findings
+- **Post-authentication recon** — Extract artifacts via authenticated sessions
+
+## Related tools
+
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Access Sniper in Custom mode
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing
+
+## Related topics
+
+- [Authenticated scanning](/using/scans/authenticated-scanning#sniper)

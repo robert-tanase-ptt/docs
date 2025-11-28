@@ -5,73 +5,81 @@ description: "Discover related domains and expand your attack surface knowledge"
 
 ## Overview
 
-The Domain Finder tool helps you discover domains related to your target organization, including acquisitions, subsidiaries, and alternate brands.
+The Domain Finder discovers domains related to your target organization, including acquisitions, subsidiaries, and alternate brands. Understanding the full domain portfolio is essential for comprehensive security assessments.
 
-## What It Finds
+## What it finds
 
 - Related company domains
-- Alternate TLDs (.com, .net, .org, etc.)
+- Alternate TLDs (.com, .net, .org, .io, etc.)
 - Regional domain variations
 - Historical domains
 - Subsidiary and acquisition domains
+- Brand variation domains
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Seed Domain">
+  <Step title="Enter seed domain">
     Provide a known domain for the target organization.
   </Step>
-  <Step title="Configure Options">
+  <Step title="Configure options">
     Set search parameters and depth.
   </Step>
-  <Step title="Run Discovery">
+  <Step title="Run discovery">
     Execute the domain finding process.
   </Step>
-  <Step title="Review Results">
+  <Step title="Review results">
     Analyze discovered domains and verify relevance.
   </Step>
 </Steps>
 
-## Discovery Methods
+## Discovery methods
 
 | Method | Description |
 |--------|-------------|
-| WHOIS Analysis | Find domains with similar registration |
-| Certificate Search | Discover domains in SSL certificates |
-| Reverse DNS | Identify domains on shared infrastructure |
-| Pattern Matching | Find variations of known domains |
+| **WHOIS analysis** | Find domains with similar registration data |
+| **Certificate search** | Discover domains in SSL certificates |
+| **Reverse DNS** | Identify domains on shared infrastructure |
+| **Pattern matching** | Find variations of known domains |
 
-## Use Cases
+## Use cases
 
 <CardGroup cols={2}>
-  <Card title="Attack Surface Mapping" icon="map">
-    Understand the full scope of an organization's online presence.
+  <Card title="Attack surface mapping" icon="map">
+    Understand the full scope of an organization's online presence
   </Card>
-  <Card title="Acquisition Research" icon="building">
-    Find domains belonging to acquired companies.
+  <Card title="Acquisition research" icon="building">
+    Find domains belonging to acquired companies
   </Card>
-  <Card title="Brand Monitoring" icon="eye">
-    Discover potential brand infringement domains.
+  <Card title="Brand monitoring" icon="eye">
+    Discover potential brand infringement domains
   </Card>
-  <Card title="Scope Definition" icon="crosshairs">
-    Identify all domains that should be in testing scope.
+  <Card title="Scope definition" icon="crosshairs">
+    Identify all domains that should be in testing scope
   </Card>
 </CardGroup>
 
-## Results Include
+## Results
 
 For each discovered domain:
 - Domain name
 - Registration status
 - Discovery method
-- Confidence level
 - Relationship to seed domain
 
 <Note>
-Not all discovered domains may belong to your target. Always verify ownership before adding to scope.
+Not all discovered domains may belong to your target. Always verify ownership before adding to testing scope.
 </Note>
 
-## Related Tools
+## Following up
 
-- [Subdomain Finder](/tools/subdomain-finder)
-- [WHOIS](/tools/whois)
+After discovering related domains:
+1. **Verify ownership** — Confirm domains belong to the target
+2. **Run subdomain enumeration** — Use [Subdomain Finder](/tools/subdomain-finder)
+3. **Check for takeover risks** — Use [Subdomain Takeover](/tools/subdomain-takeover)
+4. **Scan discovered assets** — Run appropriate scanners
+
+## Related tools
+
+- [Subdomain Finder](/tools/subdomain-finder) — Enumerate subdomains
+- [WHOIS Lookup](/tools/whois) — Domain registration lookup

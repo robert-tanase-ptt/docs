@@ -56,7 +56,6 @@
                   "tools/subdomain-finder",
                   "tools/find-virtual-hosts",
                   "tools/port-scanner",
-                  "tools/udp-port-scanner",
                   "tools/website-recon",
                   "tools/waf-detector",
                   "tools/url-fuzzer"
@@ -75,8 +74,6 @@
                 "group": "Web vulnerability scanning",
                 "pages": [
                   "tools/website-vulnerability-scanner",
-                  "tools/xss-scanner",
-                  "tools/sql-injection-scanner",
                   "tools/api-scanner",
                   "tools/wordpress-scanner",
                   "tools/drupal-scanner",

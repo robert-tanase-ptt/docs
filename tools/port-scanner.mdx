@@ -1,102 +1,176 @@
 ---
 title: "Port scanner"
-description: "Discover open TCP ports and running services on target hosts"
+description: "Discover open TCP and UDP ports and running services on target hosts"
 ---
 
 ## Overview
 
-The Port Scanner identifies open TCP ports on target hosts, revealing running services that may be vulnerable to attack.
+The Port Scanner identifies open TCP and UDP ports on target hosts using [Nmap](https://nmap.org/), the industry-standard port scanning tool. Knowing which network services are exposed is essential for securing the network perimeter.
 
-## What It Finds
+## What it finds
 
 <CardGroup cols={2}>
-  <Card title="Open Ports" icon="door-open">
-    TCP ports accepting connections
+  <Card title="Open ports" icon="door-open">
+    TCP/UDP ports accepting connections
   </Card>
-  <Card title="Service Identification" icon="gears">
-    What's running on each port
+  <Card title="Service identification" icon="gears">
+    What service runs on each port
   </Card>
-  <Card title="Version Detection" icon="tag">
+  <Card title="Version detection" icon="tag">
     Software versions when detectable
   </Card>
-  <Card title="Banner Grabbing" icon="flag">
-    Service banners and metadata
+  <Card title="OS detection" icon="desktop">
+    Operating system fingerprinting
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Target">
-    Provide IP address, hostname, or range.
+  <Step title="Enter target">
+    Provide an IP address or hostname to scan.
   </Step>
-  <Step title="Select Port Range">
-    Choose which ports to scan.
+  <Step title="Select protocol">
+    Choose TCP or UDP scanning.
   </Step>
-  <Step title="Configure Options">
-    Set scan speed and detection options.
+  <Step title="Select scan type">
+    Choose Light, Deep, or Custom mode.
   </Step>
-  <Step title="Run Scan">
+  <Step title="Configure port range">
+    Select common ports, custom range, or full scan.
+  </Step>
+  <Step title="Run scan">
     Execute the port scan.
   </Step>
 </Steps>
 
-## Port Range Options
+## Scan types
 
-| Option | Ports | Use Case |
-|--------|-------|----------|
-| Top 100 | Most common services | Quick discovery |
-| Top 1000 | Extended common | Standard assessment |
-| Full Scan | All 65,535 | Comprehensive audit |
-| Custom | User-defined | Specific requirements |
+| Type | Ports | Features | Use case |
+|------|-------|----------|----------|
+| **Light** | Top 1000 (TCP) / Top 100 (UDP) | Service detection | Quick reconnaissance |
+| **Deep** | Top 5000 (TCP) / Top 1000 (UDP) | Service + OS detection | Comprehensive audit |
+| **Custom** | User-defined | All options configurable | Targeted scanning |
 
-## Common Ports
+## Port selection
 
-| Port | Service | Security Concern |
-|------|---------|------------------|
+### Common port presets
+
+| Preset | TCP ports | UDP ports | Description |
+|--------|-----------|-----------|-------------|
+| Top 10 | 10 | 10 | Fastest scan |
+| Top 100 | 100 | 100 | Quick discovery |
+| Top 1000 | 1000 | 1000 | Standard assessment |
+| Top 5000 | 5000 | 5000 | Extended coverage |
+| Full range | 65535 | 65535 | Comprehensive (slow) |
+
+### Custom options
+
+- **Port range**: Specify start and end port (e.g., 1-1024)
+- **Port list**: Comma-separated list (e.g., 22,80,443,3306)
+
+## Scan techniques
+
+For TCP scanning, multiple techniques are available in Custom mode:
+
+| Technique | Flag | Description |
+|-----------|------|-------------|
+| **SYN scan** | -sS | Default, stealthy, fast |
+| **Connect scan** | -sT | Full TCP connection |
+| **ACK scan** | -sA | Firewall rule mapping |
+| **NULL scan** | -sN | No flags set |
+| **FIN scan** | -sF | FIN flag only |
+| **Xmas scan** | -sX | FIN, PSH, URG flags |
+
+## Additional options
+
+### Service detection
+
+When enabled, Nmap attempts to determine the service version:
+- Banner grabbing
+- Service-specific probes
+- Response analysis
+
+### OS detection
+
+Nmap analyzes TCP/IP stack responses to fingerprint the operating system:
+- TCP options analysis
+- Initial sequence number patterns
+- Response timing characteristics
+
+<Note>
+OS detection accuracy varies depending on how the target responds to probe requests.
+</Note>
+
+### Check alive
+
+Verify host responsiveness before scanning:
+- ICMP echo requests
+- TCP/UDP probes
+
+<Tip>
+If the scanner reports no open ports on a host you know is up, try disabling "Check alive" — the host may be blocking ICMP.
+</Tip>
+
+## Common TCP ports
+
+| Port | Service | Security concerns |
+|------|---------|-------------------|
 | 21 | FTP | Anonymous access, clear text |
 | 22 | SSH | Brute force, outdated versions |
 | 23 | Telnet | Clear text transmission |
+| 25 | SMTP | Open relay, email spoofing |
 | 80 | HTTP | Web vulnerabilities |
 | 443 | HTTPS | SSL/TLS issues |
+| 445 | SMB | EternalBlue, relay attacks |
+| 1433 | MSSQL | Database exposure |
 | 3306 | MySQL | Database exposure |
-| 3389 | RDP | Remote access risks |
+| 3389 | RDP | Remote access risks, BlueKeep |
+| 5432 | PostgreSQL | Database exposure |
 
-## Results Include
+## Common UDP ports
 
-For each open port:
-- Port number
-- Protocol (TCP)
-- State (open/filtered)
-- Service name
-- Version (if detected)
-- Banner
+| Port | Service | Security concerns |
+|------|---------|-------------------|
+| 53 | DNS | Zone transfer, amplification attacks |
+| 67-68 | DHCP | Rogue DHCP attacks |
+| 69 | TFTP | No authentication |
+| 123 | NTP | Amplification, time attacks |
+| 161 | SNMP | Information disclosure, default communities |
+| 500 | IKE/IPSec | VPN endpoint discovery |
+| 514 | Syslog | Log injection |
+| 1900 | SSDP/UPnP | Device discovery |
 
-## Scan Profiles
+<Note>
+UDP scanning is slower than TCP because UDP is connectionless. The scanner must wait for timeouts to determine if ports are closed or filtered.
+</Note>
 
-<Tabs>
-  <Tab title="Quick Scan">
-    Top 100 ports, fast timing
-    - Best for: Initial reconnaissance
-    - Duration: Minutes
-  </Tab>
-  <Tab title="Standard Scan">
-    Top 1000 ports, balanced timing
-    - Best for: Regular assessments
-    - Duration: ~30 minutes
-  </Tab>
-  <Tab title="Comprehensive">
-    All ports, thorough detection
-    - Best for: Security audits
-    - Duration: Hours
-  </Tab>
-</Tabs>
+## Results
 
-<Tip>
-Start with a quick scan to identify interesting targets, then run deeper scans on specific hosts.
-</Tip>
+For each open port, you receive:
 
-## Related Tools
+- **Port number** and protocol (TCP/UDP)
+- **State** (open, filtered, closed)
+- **Service name** (SSH, HTTP, etc.)
+- **Product** name (OpenSSH, nginx, etc.)
+- **Version** information
+- **Extra info** (OS, kernel version, etc.)
 
-- [UDP Port Scanner](/tools/udp-port-scanner)
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
+### Port states
+
+| State | Meaning |
+|-------|---------|
+| **Open** | Port accepts connections |
+| **Closed** | Port responds but no service |
+| **Filtered** | Firewall blocks probes |
+| **Open\|Filtered** | Cannot determine (UDP) |
+
+## Related tools
+
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Service vulnerability testing
+- [SSL/TLS Scanner](/tools/ssl-tls-scanner) — Certificate analysis
+- [Password Auditor](/tools/password-auditor) — Credential testing
+
+## Related topics
+
+- [VPN Configuration](/using/vpn/overview) — Scan internal networks

@@ -1,93 +1,94 @@
 ---
 title: "Drupal scanner"
-description: "Specialized security testing for Drupal installations"
+description: "Security testing for Drupal websites"
 ---
 
 ## Overview
 
-The Drupal Scanner performs targeted security assessments of Drupal CMS installations, identifying core, module, and configuration vulnerabilities.
+The Drupal Scanner identifies vulnerabilities in Drupal installations, including core, modules, and themes. It detects security issues specific to the Drupal CMS.
 
-## What It Tests
+## What it tests
 
 <CardGroup cols={2}>
-  <Card title="Drupal Core" icon="drupal">
-    Version and known vulnerabilities
+  <Card title="Core vulnerabilities" icon="droplet">
+    Drupal core security issues
   </Card>
-  <Card title="Modules" icon="puzzle-piece">
-    Installed module security
+  <Card title="Module vulnerabilities" icon="puzzle-piece">
+    Known vulnerable modules
   </Card>
-  <Card title="Configuration" icon="gear">
-    Security settings analysis
+  <Card title="Theme issues" icon="palette">
+    Theme security problems
   </Card>
-  <Card title="Users" icon="users">
-    User enumeration checks
+  <Card title="Misconfigurations" icon="gear">
+    Insecure Drupal settings
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
   <Step title="Enter Drupal URL">
-    Provide the Drupal site URL.
+    Provide the URL of the Drupal site.
   </Step>
-  <Step title="Configure Scan">
-    Select scanning options.
+  <Step title="Select scan type">
+    Choose Light or Deep mode.
   </Step>
-  <Step title="Run Scan">
-    Execute the security assessment.
-  </Step>
-  <Step title="Review Findings">
-    Analyze discovered issues.
+  <Step title="Run scan">
+    Execute the Drupal security assessment.
   </Step>
 </Steps>
 
-## Checks Performed
+## Checks performed
 
-### Core Analysis
-
-- Drupal version detection
-- Known CVE matching
-- Security advisory checks
-- Update status
-
-### Module Analysis
+### Core checks
 
 | Check | Description |
 |-------|-------------|
-| Module enumeration | List enabled modules |
-| Version detection | Identify module versions |
-| Vulnerability check | Match against vuln database |
-| Contrib vs Core | Differentiate module types |
+| **Version detection** | Identify Drupal version |
+| **Core vulnerabilities** | Check for known Drupal CVEs (including Drupalgeddon) |
+| **CHANGELOG.txt** | Detect exposed changelog |
+| **Update status** | Check if updates are available |
 
-### Configuration Checks
+### Module checks
 
-- User registration settings
-- Error message exposure
-- Private file handling
-- PHP execution in uploads
-- Update module status
+| Check | Description |
+|-------|-------------|
+| **Module enumeration** | Discover installed modules |
+| **Version detection** | Identify module versions |
+| **Vulnerability matching** | Check against security advisories |
 
-## Notable Drupal Vulnerabilities
+### Configuration checks
 
-| CVE | Name | Impact |
-|-----|------|--------|
-| CVE-2018-7600 | Drupalgeddon 2 | RCE |
-| CVE-2019-6340 | REST RCE | RCE |
-| Various | SA-CORE advisories | Variable |
+| Check | Description |
+|-------|-------------|
+| **User enumeration** | Discover Drupal users |
+| **Admin paths** | Check for exposed admin pages |
+| **Backup files** | Check for exposed backups |
+| **Error messages** | Check for verbose errors |
+
+## Notable Drupal vulnerabilities
+
+| Vulnerability | CVE | Impact |
+|---------------|-----|--------|
+| **Drupalgeddon** | CVE-2014-3704 | SQL injection, RCE |
+| **Drupalgeddon 2** | CVE-2018-7600 | Remote code execution |
+| **Drupalgeddon 3** | CVE-2018-7602 | Remote code execution |
 
 <Warning>
-Drupal has had several critical RCE vulnerabilities. Keeping Drupal core updated is essential.
+Drupalgeddon vulnerabilities allow complete site takeover. Affected versions must be updated immediately.
 </Warning>
 
-## Results Include
+## Results
 
-- Drupal version information
-- Vulnerable core/modules
-- Configuration issues
-- Security recommendations
+For each finding:
+- **Component** — Core, module, or theme name
+- **Version** — Detected version
+- **Vulnerability** — CVE and description
+- **Severity** — Risk rating
+- **Advisory** — Drupal security advisory link
 
-## Related Tools
+## Related tools
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [WordPress Scanner](/tools/wordpress-scanner)
-- [Joomla Scanner](/tools/joomla-scanner)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web testing
+- [WordPress Scanner](/tools/wordpress-scanner) — WordPress-specific testing
+- [Joomla Scanner](/tools/joomla-scanner) — Joomla-specific testing

@@ -1,93 +1,97 @@
 ---
 title: "Joomla scanner"
-description: "Specialized security testing for Joomla installations"
+description: "Security testing for Joomla websites"
 ---
 
 ## Overview
 
-The Joomla Scanner performs security assessments of Joomla CMS installations, identifying core vulnerabilities, extension issues, and misconfigurations.
+The Joomla Scanner identifies vulnerabilities in Joomla installations, including core, extensions, and templates. It detects security issues specific to the Joomla CMS.
 
-## What It Tests
+## What it tests
 
 <CardGroup cols={2}>
-  <Card title="Joomla Core" icon="joomla">
-    Version and known vulnerabilities
+  <Card title="Core vulnerabilities" icon="j">
+    Joomla core security issues
   </Card>
-  <Card title="Extensions" icon="puzzle-piece">
-    Components, modules, plugins
+  <Card title="Extension vulnerabilities" icon="puzzle-piece">
+    Known vulnerable components
   </Card>
-  <Card title="Templates" icon="palette">
-    Template security issues
+  <Card title="Template issues" icon="palette">
+    Template security problems
   </Card>
-  <Card title="Configuration" icon="gear">
-    Security settings
+  <Card title="Misconfigurations" icon="gear">
+    Insecure Joomla settings
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
   <Step title="Enter Joomla URL">
-    Provide the Joomla site URL.
+    Provide the URL of the Joomla site.
   </Step>
-  <Step title="Configure Options">
-    Select scan parameters.
+  <Step title="Select scan type">
+    Choose Light or Deep mode.
   </Step>
-  <Step title="Run Scan">
-    Execute security testing.
-  </Step>
-  <Step title="Review Results">
-    Analyze discovered vulnerabilities.
+  <Step title="Run scan">
+    Execute the Joomla security assessment.
   </Step>
 </Steps>
 
-## Checks Performed
+## Checks performed
 
-### Core Analysis
+### Core checks
 
-- Version detection
-- Known vulnerability matching
-- Security patches status
-- Update availability
+| Check | Description |
+|-------|-------------|
+| **Version detection** | Identify Joomla version |
+| **Core vulnerabilities** | Check for known Joomla CVEs |
+| **README.txt** | Detect exposed readme |
+| **Admin path** | Locate administrator directory |
 
-### Extension Analysis
+### Extension checks
 
-| Type | Checks |
-|------|--------|
-| Components | Enumeration, vulnerabilities |
-| Modules | Detection, security issues |
-| Plugins | Analysis, known CVEs |
+| Check | Description |
+|-------|-------------|
+| **Component enumeration** | Discover installed components |
+| **Module enumeration** | Discover installed modules |
+| **Plugin enumeration** | Discover installed plugins |
+| **Vulnerability matching** | Check against security database |
 
-### Configuration Checks
+### Configuration checks
 
-- Administrator path exposure
-- User registration settings
-- Error reporting level
-- Debug mode status
-- Backup files
+| Check | Description |
+|-------|-------------|
+| **User enumeration** | Discover Joomla users |
+| **Debug mode** | Check for enabled debugging |
+| **Configuration.php** | Check for exposed configuration |
+| **Backup files** | Check for exposed backups |
 
-## Common Findings
+## Common findings
 
-| Finding | Severity | Description |
-|---------|----------|-------------|
-| Outdated core | High | Vulnerable Joomla version |
-| Vulnerable extensions | Variable | Third-party security issues |
-| Admin path default | Low | /administrator accessible |
-| Debug enabled | Medium | Information disclosure |
+| Finding | Risk | Recommendation |
+|---------|------|----------------|
+| Outdated Joomla | High | Update to latest version |
+| Vulnerable extension | Varies | Update or remove extension |
+| Exposed admin path | Low | Restrict access to /administrator |
+| Debug mode enabled | Medium | Disable in production |
+| Configuration exposure | Critical | Protect configuration.php |
 
-<Note>
-Joomla extensions (especially third-party) are frequently sources of vulnerabilities. Audit and update them regularly.
-</Note>
+<Tip>
+Regularly update Joomla core and all extensions. Many attacks target known vulnerabilities in outdated installations.
+</Tip>
 
-## Results Include
+## Results
 
-- Joomla version information
-- Core vulnerability assessment
-- Extension inventory and security status
-- Configuration recommendations
+For each finding:
+- **Component** — Core, extension, or template name
+- **Version** — Detected version
+- **Vulnerability** — CVE and description
+- **Severity** — Risk rating
+- **References** — Joomla security announcements
 
-## Related Tools
+## Related tools
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [WordPress Scanner](/tools/wordpress-scanner)
-- [Drupal Scanner](/tools/drupal-scanner)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web testing
+- [WordPress Scanner](/tools/wordpress-scanner) — WordPress-specific testing
+- [Drupal Scanner](/tools/drupal-scanner) — Drupal-specific testing

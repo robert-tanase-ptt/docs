@@ -7,37 +7,37 @@ description: "Identify web application firewalls protecting target websites"
 
 The WAF Detector identifies whether a target website is protected by a Web Application Firewall and attempts to determine which WAF product is in use.
 
-## Why Detect WAFs?
+## Why detect WAFs?
 
 <CardGroup cols={2}>
-  <Card title="Testing Strategy" icon="chess">
-    Adjust scanning approach based on WAF presence.
+  <Card title="Testing strategy" icon="chess">
+    Adjust scanning approach based on WAF presence
   </Card>
-  <Card title="Bypass Planning" icon="shield">
-    Understand protection mechanisms.
+  <Card title="Bypass planning" icon="shield">
+    Understand protection mechanisms
   </Card>
-  <Card title="False Positive Reduction" icon="filter">
-    Distinguish WAF blocks from real issues.
+  <Card title="False positive reduction" icon="filter">
+    Distinguish WAF blocks from real issues
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
   <Step title="Enter URL">
     Provide the target website URL.
   </Step>
-  <Step title="Run Detection">
+  <Step title="Run detection">
     Execute the WAF detection scan.
   </Step>
-  <Step title="Review Results">
+  <Step title="Review results">
     Analyze detected WAF information.
   </Step>
 </Steps>
 
-## What It Detects
+## What it detects
 
-### WAF Products
+### WAF products
 
 Common WAFs detected:
 - Cloudflare
@@ -47,44 +47,60 @@ Common WAFs detected:
 - F5 BIG-IP ASM
 - ModSecurity
 - Sucuri
+- Barracuda
+- Fortinet FortiWeb
 
-### Detection Methods
+### Detection methods
 
 | Method | Description |
 |--------|-------------|
-| Response Headers | WAF-specific headers |
-| Cookie Analysis | WAF session cookies |
-| Error Responses | Characteristic block pages |
-| Behavioral Analysis | Response to test payloads |
+| **Response headers** | WAF-specific HTTP headers |
+| **Cookie analysis** | WAF session cookies |
+| **Error responses** | Characteristic block pages |
+| **Behavioral analysis** | Response to test payloads |
 
-## Results Include
+## Results
 
+Detection provides:
 - WAF detected (yes/no)
 - WAF product name
 - Confidence level
-- Detection method
+- Detection method used
 - Additional observations
 
-## Testing Implications
+## Testing implications
 
 <Note>
 WAF presence doesn't mean a site is secure—WAFs can often be bypassed, and they may not catch all vulnerabilities.
 </Note>
 
-### With WAF Detected
+### With WAF detected
 
-- Expect more false negatives
+- Expect more false negatives in vulnerability scans
 - Scans may trigger blocks
-- Consider WAF bypass techniques
+- Consider WAF bypass techniques for manual testing
 - Rate limiting may apply
+- Some payloads may be filtered
 
-### No WAF Detected
+### No WAF detected
 
 - Direct access to application
 - More accurate scan results
 - Faster scanning possible
+- Full payload testing
 
-## Related Tools
+## Adjusting your approach
 
-- [Website Recon](/tools/website-recon)
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+<Tip>
+When a WAF is detected, consider slowing down scans and using evasion techniques for manual testing.
+</Tip>
+
+- Lower request rates to avoid triggering rules
+- Use encoded payloads where appropriate
+- Document WAF for the final report
+- Note that some vulnerabilities may be blocked but still exist
+
+## Related tools
+
+- [Website Recon](/tools/website-recon) — Technology fingerprinting
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Vulnerability assessment

@@ -5,79 +5,96 @@ description: "Fingerprint technologies and gather intelligence about web applica
 
 ## Overview
 
-Website Recon performs reconnaissance on web applications, identifying technologies, frameworks, and configuration details.
+Website Recon performs reconnaissance on web applications, identifying technologies, frameworks, and configuration details to support security assessment planning.
 
-## What It Discovers
+## What it discovers
 
 <CardGroup cols={2}>
   <Card title="Technologies" icon="layer-group">
     CMS, frameworks, libraries
   </Card>
-  <Card title="Server Info" icon="server">
+  <Card title="Server info" icon="server">
     Web server, OS details
   </Card>
-  <Card title="Security Headers" icon="shield">
+  <Card title="Security headers" icon="shield">
     Security configuration analysis
   </Card>
-  <Card title="Meta Information" icon="info">
+  <Card title="Meta information" icon="info">
     Site metadata and structure
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
   <Step title="Enter URL">
     Provide the website URL to analyze.
   </Step>
-  <Step title="Run Recon">
+  <Step title="Run recon">
     Execute the reconnaissance scan.
   </Step>
-  <Step title="Review Results">
+  <Step title="Review results">
     Analyze discovered information.
   </Step>
 </Steps>
 
-## Information Gathered
+## Information gathered
 
-### Technology Detection
+### Technology detection
 
 | Category | Examples |
 |----------|----------|
-| CMS | WordPress, Drupal, Joomla |
-| Frameworks | React, Angular, Laravel |
-| Web Servers | nginx, Apache, IIS |
-| Languages | PHP, Python, Java |
-| JavaScript | jQuery, Bootstrap |
+| **CMS** | WordPress, Drupal, Joomla |
+| **Frameworks** | React, Angular, Vue, Laravel, Django |
+| **Web servers** | nginx, Apache, IIS, LiteSpeed |
+| **Languages** | PHP, Python, Java, Node.js |
+| **JavaScript** | jQuery, Bootstrap, Lodash |
+| **CDN** | Cloudflare, Akamai, Fastly |
 
-### Security Analysis
+### Security analysis
 
-- HTTP security headers
-- Cookie attributes
-- SSL/TLS configuration
-- Content Security Policy
+- HTTP security headers present/missing
+- Cookie attributes (HttpOnly, Secure, SameSite)
+- SSL/TLS configuration overview
+- Content Security Policy presence
+- X-Frame-Options status
+- HSTS implementation
 
-### Meta Information
+### Meta information
 
 - Page titles and descriptions
-- robots.txt content
-- sitemap.xml
-- Interesting paths
+- robots.txt content and directives
+- sitemap.xml locations
+- Interesting paths discovered
+- Contact information
 
-## Why Recon Matters
+## Why recon matters
 
 Technology fingerprinting helps:
-- Select appropriate scanners
-- Identify version-specific vulnerabilities
-- Understand the application architecture
-- Plan targeted testing
+- **Select appropriate scanners** — Use CMS-specific tools when detected
+- **Identify version-specific vulnerabilities** — Match versions to CVEs
+- **Understand application architecture** — Plan targeted testing
+- **Prioritize testing areas** — Focus on known-vulnerable components
 
 <Tip>
-Use Website Recon results to choose which specialized scanners to run (WordPress Scanner for WordPress sites, etc.)
+Use Website Recon results to choose which specialized scanners to run. For example, if WordPress is detected, follow up with the [WordPress Scanner](/tools/wordpress-scanner).
 </Tip>
 
-## Related Tools
+## Following up
 
-- [WAF Detector](/tools/waf-detector)
-- [URL Fuzzer](/tools/url-fuzzer)
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+Based on recon results, consider these next steps:
+
+| Discovery | Recommended action |
+|-----------|-------------------|
+| WordPress | Run [WordPress Scanner](/tools/wordpress-scanner) |
+| Drupal | Run [Drupal Scanner](/tools/drupal-scanner) |
+| Joomla | Run [Joomla Scanner](/tools/joomla-scanner) |
+| API endpoints | Run [API Scanner](/tools/api-scanner) |
+| Outdated software | Check CVE databases |
+| Missing headers | Document for remediation |
+
+## Related tools
+
+- [WAF Detector](/tools/waf-detector) — Identify web application firewalls
+- [URL Fuzzer](/tools/url-fuzzer) — Discover hidden content
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Full vulnerability assessment
