@@ -1,99 +1,101 @@
 ---
 title: "Subdomain takeover"
-description: "Detect and validate subdomain takeover vulnerabilities"
+description: "Detect subdomain takeover vulnerabilities"
 ---
 
 ## Overview
 
-The Subdomain Takeover tool identifies subdomains vulnerable to takeover, where an attacker could claim control of a subdomain pointing to an unclaimed resource.
+The Subdomain Takeover scanner detects subdomains vulnerable to takeover attacks, where attackers can claim abandoned cloud resources to serve malicious content from your domain.
 
-## What Is Subdomain Takeover?
+## What is subdomain takeover?
 
 Subdomain takeover occurs when:
-1. A subdomain points to an external service (CNAME)
-2. The service account/resource is deleted or unclaimed
-3. An attacker can claim the resource
-4. They now control content on your subdomain
+1. A subdomain points to a cloud service (AWS, Azure, Heroku, etc.)
+2. The cloud resource is deleted or unclaimed
+3. An attacker claims the resource
+4. Attacker now controls content on your subdomain
 
-## What It Detects
+## What it detects
 
 <CardGroup cols={2}>
-  <Card title="Dangling CNAMEs" icon="link-slash">
-    CNAMEs pointing to non-existent resources
+  <Card title="Dangling DNS" icon="link-slash">
+    CNAMEs pointing to unclaimed resources
   </Card>
-  <Card title="Unclaimed Services" icon="cloud">
-    Unused cloud service endpoints
+  <Card title="Cloud services" icon="cloud">
+    Vulnerable cloud provider configurations
   </Card>
-  <Card title="Vulnerable Patterns" icon="triangle-exclamation">
-    Known takeover signatures
+  <Card title="Third-party services" icon="building">
+    Abandoned SaaS integrations
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Domain">
-    Provide the domain to check.
+  <Step title="Enter domain">
+    Provide domain or list of subdomains.
   </Step>
-  <Step title="Run Scan">
-    Execute subdomain takeover detection.
+  <Step title="Run scan">
+    Check for takeover vulnerabilities.
   </Step>
-  <Step title="Review Results">
+  <Step title="Review results">
     Analyze vulnerable subdomains.
   </Step>
 </Steps>
 
-## Commonly Affected Services
+## Commonly affected services
 
-| Service | Takeover Risk |
-|---------|---------------|
-| GitHub Pages | High |
-| Heroku | High |
-| AWS S3 | High |
-| Azure | Medium |
-| Shopify | Medium |
-| Fastly | Medium |
-| Zendesk | Low |
+| Service | Indicator |
+|---------|-----------|
+| **AWS S3** | NoSuchBucket error |
+| **AWS CloudFront** | Bad request, distribution not found |
+| **GitHub Pages** | 404 There isn't a GitHub Pages site here |
+| **Heroku** | No such app |
+| **Azure** | NXDOMAIN on azurewebsites.net |
+| **Shopify** | Sorry, this shop is unavailable |
+| **Fastly** | Fastly error: unknown domain |
+| **Ghost** | Domain not configured |
+| **Tumblr** | There's nothing here |
 
-## Detection Methods
+## Detection methods
 
-1. **DNS Resolution**: Check CNAME records
-2. **HTTP Response**: Look for service-specific error pages
-3. **Fingerprinting**: Match known takeover signatures
-4. **Validation**: Verify resource is actually unclaimed
+| Method | Description |
+|--------|-------------|
+| **CNAME analysis** | Check if CNAME target is claimable |
+| **Response fingerprinting** | Match error pages to vulnerable services |
+| **DNS resolution** | Detect NXDOMAIN responses |
 
-## Results Include
+## Results
 
 For each vulnerable subdomain:
-- Subdomain name
-- CNAME target
-- Service identified
-- Takeover risk level
-- Validation status
+- **Subdomain** — Affected hostname
+- **Service** — Cloud provider/service
+- **CNAME** — DNS target
+- **Status** — Vulnerability confirmation
+- **Risk** — Takeover feasibility
 
-## Risk and Impact
+## Risk and impact
+
+Successful takeover allows attackers to:
+- **Serve malicious content** from your domain
+- **Steal cookies** set on parent domain
+- **Phish users** with legitimate-looking URLs
+- **Bypass security controls** that trust your domain
+- **Damage reputation** through defacement
 
 <Warning>
-Subdomain takeover can lead to cookie theft, phishing attacks, and reputation damage. The attacker controls content on your domain.
+Subdomain takeover enables cookie theft for your entire domain if cookies are set without proper domain restrictions.
 </Warning>
-
-### Potential Impact
-
-| Impact | Description |
-|--------|-------------|
-| Cookie Theft | Steal session cookies scoped to parent domain |
-| Phishing | Host convincing phishing pages |
-| Malware | Distribute malware from trusted domain |
-| SEO Damage | Deface with inappropriate content |
 
 ## Remediation
 
-1. Remove unused DNS records
-2. Verify all CNAME targets are claimed
-3. Monitor for new dangling records
-4. Use DNS monitoring tools
+When vulnerabilities are found:
+1. **Remove dangling DNS records** — Delete CNAMEs pointing to unclaimed resources
+2. **Reclaim resources** — If still needed, recreate the cloud resource
+3. **Monitor continuously** — Set up alerts for DNS changes
+4. **Audit regularly** — Review DNS records and cloud assets
 
-## Related Tools
+## Related tools
 
-- [Subdomain Finder](/tools/subdomain-finder)
-- [Domain Finder](/tools/domain-finder)
+- [Subdomain Finder](/tools/subdomain-finder) — Discover subdomains first
+- [Domain Finder](/tools/domain-finder) — Find related domains

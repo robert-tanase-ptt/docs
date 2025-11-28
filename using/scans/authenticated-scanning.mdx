@@ -26,17 +26,24 @@ The [Website Scanner](/tools/website-vulnerability-scanner) supports four authen
 
 ### Automatic login form
 
-The scanner automatically fills in and submits a login form. Best for simple forms with username, password, and submit button on a single page.
+The scanner automatically fills in and submits a login form. This method uses a two-stage approach:
+
+1. **Traditional detection** — Pattern-based selectors identify standard login form elements
+2. **AI-powered fallback** — If traditional detection fails, [AI-enhanced authentication](/ai/authentication) takes over to handle complex pages with iframes, dynamic loading, or non-standard layouts
+
+This makes automatic login form suitable for both simple and complex forms—the system automatically chooses the best approach.
 
 **Requirements:**
-- Login form loads when the page loads (no preceding screens)
-- Simple form with only username, password, and submit button
 - No CAPTCHA, 2FA, or SSO
 
 **How to configure:**
 1. Enter the **Login URL** where your login form is located
 2. Provide the **Username** and **Password**
 3. Use **Check authentication** to verify the credentials work
+
+<Note>
+You don't need to configure anything for AI detection—it activates automatically when needed. See [AI-enhanced authentication](/ai/authentication) for details on how it works.
+</Note>
 
 ### Recorded authentication
 
@@ -313,6 +320,7 @@ Authenticated Sniper scans don't search for vulnerabilities or run exploits—in
 
 ## Related topics
 
+- [AI-enhanced authentication](/ai/authentication) — How AI improves automatic login form detection
 - [Scan types and depth](/using/scans/scan-types-and-depth)
 - [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
 - [API Scanner](/tools/api-scanner)

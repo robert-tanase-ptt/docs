@@ -1,16 +1,16 @@
 ---
-title: "WHOIS"
+title: "WHOIS lookup"
 description: "Look up domain registration and IP ownership information"
 ---
 
 ## Overview
 
-The WHOIS tool retrieves registration information for domains and IP addresses, providing ownership and administrative contact details.
+The WHOIS Lookup tool retrieves registration information for domains and IP addresses, providing ownership and administrative contact details.
 
-## What It Provides
+## What it provides
 
 <CardGroup cols={2}>
-  <Card title="Domain Info" icon="globe">
+  <Card title="Domain info" icon="globe">
     Registration and expiration dates
   </Card>
   <Card title="Ownership" icon="user">
@@ -19,26 +19,26 @@ The WHOIS tool retrieves registration information for domains and IP addresses, 
   <Card title="Contacts" icon="address-book">
     Admin and technical contacts
   </Card>
-  <Card title="Name Servers" icon="server">
+  <Card title="Name servers" icon="server">
     DNS configuration
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Query">
+  <Step title="Enter query">
     Provide domain name or IP address.
   </Step>
-  <Step title="Run Lookup">
+  <Step title="Run lookup">
     Execute the WHOIS query.
   </Step>
-  <Step title="Review Results">
+  <Step title="Review results">
     Analyze registration data.
   </Step>
 </Steps>
 
-## Domain WHOIS Data
+## Domain WHOIS data
 
 | Field | Description |
 |-------|-------------|
@@ -46,42 +46,42 @@ The WHOIS tool retrieves registration information for domains and IP addresses, 
 | Created | Domain registration date |
 | Expires | Domain expiration date |
 | Updated | Last modification date |
-| Name Servers | DNS servers |
+| Name servers | DNS servers |
 | Status | Domain status codes |
 
-## IP WHOIS Data
+## IP WHOIS data
 
 | Field | Description |
 |-------|-------------|
 | Network | IP range/CIDR |
 | Organization | IP block owner |
 | Country | Geographic location |
-| Abuse Contact | Security contact |
+| Abuse contact | Security contact |
 
-## Use Cases in Security Testing
+## Use cases in security testing
 
 <CardGroup cols={2}>
   <Card title="Reconnaissance" icon="magnifying-glass">
     Gather target organization info
   </Card>
-  <Card title="Scope Validation" icon="check">
+  <Card title="Scope validation" icon="check">
     Verify target ownership
   </Card>
-  <Card title="Contact Discovery" icon="envelope">
+  <Card title="Contact discovery" icon="envelope">
     Find security contacts
   </Card>
-  <Card title="Infrastructure Mapping" icon="sitemap">
+  <Card title="Infrastructure mapping" icon="sitemap">
     Identify related assets
   </Card>
 </CardGroup>
 
-## Privacy Considerations
+## Privacy considerations
 
 <Note>
 Many domain registrations use privacy protection services that hide actual registrant details. This is normal and expected.
 </Note>
 
-## WHOIS for Security
+## WHOIS for security
 
 Information useful for penetration testing:
 - Organization name for social engineering research
@@ -89,7 +89,7 @@ Information useful for penetration testing:
 - IP ranges that might be in scope
 - Associated domains
 
-## Related Tools
+## Related tools
 
-- [Domain Finder](/tools/domain-finder)
-- [Subdomain Finder](/tools/subdomain-finder)
+- [Domain Finder](/tools/domain-finder) — Discover related domains
+- [Subdomain Finder](/tools/subdomain-finder) — Enumerate subdomains

@@ -1,105 +1,150 @@
 ---
 title: "API scanner"
-description: "Test REST and GraphQL APIs for security vulnerabilities"
+description: "Security testing for REST and GraphQL APIs"
 ---
 
 ## Overview
 
-The API Scanner tests REST APIs and GraphQL endpoints for security issues, authentication flaws, and configuration problems.
+The API Scanner tests REST and GraphQL APIs for security vulnerabilities. It understands API specifications (OpenAPI/Swagger, Postman) to perform comprehensive security testing of your API endpoints.
 
-## What It Tests
+## What it tests
 
 <CardGroup cols={2}>
-  <Card title="Authentication" icon="key">
-    Auth bypass, weak tokens
+  <Card title="Injection vulnerabilities" icon="syringe">
+    SQL injection, NoSQL injection in API parameters
   </Card>
-  <Card title="Authorization" icon="shield">
-    BOLA, privilege escalation
+  <Card title="Authentication issues" icon="key">
+    Broken authentication, missing authorization
   </Card>
-  <Card title="Injection" icon="syringe">
-    SQLi, NoSQLi, command injection
+  <Card title="Data exposure" icon="database">
+    Excessive data exposure, sensitive information leaks
   </Card>
-  <Card title="Data Exposure" icon="eye">
-    Excessive data in responses
+  <Card title="Configuration" icon="gear">
+    Security headers, rate limiting, CORS
   </Card>
 </CardGroup>
 
-## Supported API Types
+## Supported API types
 
-| Type | Support |
-|------|---------|
-| REST API | Full |
-| GraphQL | Full |
-| SOAP | Limited |
+| Type | Description |
+|------|-------------|
+| **REST** | RESTful APIs with OpenAPI/Swagger or Postman specs |
+| **GraphQL** | GraphQL APIs with introspection |
+| **Auto-detect** | Automatically determine API type |
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Import API Spec">
-    Upload OpenAPI/Swagger spec or GraphQL schema.
+  <Step title="Enter API base URL">
+    Provide the base URL of your API.
   </Step>
-  <Step title="Configure Authentication">
-    Provide API keys or tokens.
+  <Step title="Select scan type">
+    Choose Light, Deep, or Custom mode.
   </Step>
-  <Step title="Run Scan">
-    Execute API security testing.
+  <Step title="Provide API specification (optional)">
+    Upload or link to OpenAPI/Swagger or Postman collection.
   </Step>
-  <Step title="Review Results">
-    Analyze discovered vulnerabilities.
+  <Step title="Configure authentication">
+    Add API keys or tokens as needed.
+  </Step>
+  <Step title="Run scan">
+    Execute the API security assessment.
   </Step>
 </Steps>
 
-## API Specification Support
+## API specification support
 
-- OpenAPI 3.0/3.1
-- Swagger 2.0
-- GraphQL introspection
-- Postman collections
-- Manual endpoint definition
+### OpenAPI/Swagger
 
-## Vulnerability Categories
+Provide your API specification to enable comprehensive testing:
+- **URL**: Link to hosted OpenAPI/Swagger JSON or YAML
+- **File upload**: Upload specification file directly
 
-### OWASP API Security Top 10
+### Postman collections
 
-- API1: Broken Object Level Authorization
-- API2: Broken Authentication
-- API3: Broken Object Property Level Authorization
-- API4: Unrestricted Resource Consumption
-- API5: Broken Function Level Authorization
-- API6: Server Side Request Forgery
-- API7: Security Misconfiguration
-- API8: Lack of Protection from Automated Threats
-- API9: Improper Inventory Management
-- API10: Unsafe Consumption of APIs
+Import Postman collections for testing:
+- **URL**: Link to shared Postman collection
+- **File upload**: Upload exported collection JSON
 
-## Configuration Options
+### GraphQL
 
-### Authentication
+For GraphQL APIs, the scanner uses introspection to discover:
+- Available queries and mutations
+- Input types and arguments
+- Schema structure
 
+<Note>
+Providing an API specification dramatically improves test coverage by ensuring all endpoints are tested.
+</Note>
+
+## Scan profiles
+
+| Profile | Coverage | Use case |
+|---------|----------|----------|
+| **Light** | Fingerprinting, basic checks | Quick assessment |
+| **Deep** | Full active testing | Comprehensive audit |
+| **Custom** | User-configured tests | Targeted testing |
+
+## Vulnerability categories
+
+Tests aligned with OWASP API Security Top 10:
+
+| Category | Description |
+|----------|-------------|
+| **Broken Object Level Authorization** | Accessing other users' data |
+| **Broken Authentication** | Weak authentication mechanisms |
+| **Excessive Data Exposure** | APIs returning too much data |
+| **Lack of Resources & Rate Limiting** | Missing rate limits |
+| **Broken Function Level Authorization** | Unauthorized function access |
+| **Mass Assignment** | Binding client data to internal objects |
+| **Security Misconfiguration** | Insecure default configurations |
+| **Injection** | SQL, NoSQL, command injection |
+
+## Authentication
+
+Configure authentication for testing protected API endpoints using custom headers.
+
+| Method | Description |
+|--------|-------------|
+| **Headers** | Add Authorization headers, API keys, Bearer tokens |
+
+**How to configure:**
+1. In the scan configuration, locate the **Headers** section
+2. Enter your authentication headers (one per line)
+
+**Format:**
 ```
-Authorization: Bearer <token>
-X-API-Key: <key>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+X-API-Key: your-api-key-here
 ```
 
-### Rate Limiting
+**Common header examples:**
 
-Adjust request rate to avoid:
-- Triggering API rate limits
-- Being blocked
-- Overwhelming the API
+| Use case | Header format |
+|----------|---------------|
+| JWT Bearer token | `Authorization: Bearer <token>` |
+| Basic authentication | `Authorization: Basic <base64-credentials>` |
+| API key | `X-API-Key: <key>` |
+| Custom token | `X-Auth-Token: <token>` |
 
 <Tip>
-Start with a slower scan rate and increase if the API handles it well.
+If your API uses multiple authentication mechanisms (e.g., both a Bearer token and an API key), include all required headers.
 </Tip>
 
-## GraphQL-Specific Testing
+[Full authentication guide →](/using/scans/authenticated-scanning#api-scanner)
 
-- Introspection enabled check
-- Query depth limits
-- Batch query abuse
-- Field suggestion exploitation
+## Results
 
-## Related Tools
+For each finding:
+- Vulnerability type and severity
+- Affected endpoint and parameter
+- Request/response evidence
+- Remediation recommendations
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [SQL Injection Scanner](/tools/sql-injection-scanner)
+## Related tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing
+
+## Related topics
+
+- [Authenticated scanning](/using/scans/authenticated-scanning)

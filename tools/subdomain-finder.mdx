@@ -1,88 +1,87 @@
 ---
 title: "Subdomain finder"
-description: "Enumerate subdomains to map your target's attack surface"
+description: "Enumerate subdomains to map the attack surface"
 ---
 
 ## Overview
 
-The Subdomain Finder discovers subdomains of a target domain, revealing potentially vulnerable services, forgotten systems, and shadow IT.
+The Subdomain Finder discovers subdomains of a target domain, revealing additional attack surface that may host vulnerable applications, development servers, or forgotten assets.
 
-## What It Finds
+## What it finds
 
 <CardGroup cols={2}>
-  <Card title="Public Subdomains" icon="globe">
-    Production sites and services
+  <Card title="Production sites" icon="globe">
+    www, app, api subdomains
   </Card>
-  <Card title="Internal Systems" icon="server">
-    Exposed internal resources
+  <Card title="Development" icon="code">
+    dev, staging, test environments
   </Card>
-  <Card title="Development Sites" icon="code">
-    Staging and dev environments
+  <Card title="Infrastructure" icon="server">
+    mail, vpn, dns servers
   </Card>
-  <Card title="Forgotten Assets" icon="clock-rotate-left">
-    Legacy systems still online
+  <Card title="Cloud services" icon="cloud">
+    CDN, storage, SaaS integrations
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Domain">
+  <Step title="Enter domain">
     Provide the root domain to enumerate.
   </Step>
-  <Step title="Select Methods">
-    Choose enumeration techniques.
+  <Step title="Select scan type">
+    Choose Light or Deep mode.
   </Step>
-  <Step title="Run Enumeration">
-    Start the subdomain discovery.
+  <Step title="Run enumeration">
+    Execute subdomain discovery.
   </Step>
-  <Step title="Analyze Results">
-    Review discovered subdomains and their details.
+  <Step title="Review results">
+    Analyze discovered subdomains.
   </Step>
 </Steps>
 
-## Enumeration Methods
+## Enumeration methods
 
-| Method | Description | Coverage |
-|--------|-------------|----------|
-| DNS Brute Force | Try common subdomain names | High volume |
-| Certificate Transparency | Search CT logs | Historical |
-| DNS Zone Transfer | Request zone data | When allowed |
-| Search Engine | Query indexed subdomains | Public only |
-| Passive Sources | Aggregate from databases | Comprehensive |
+| Method | Description |
+|--------|-------------|
+| **DNS brute force** | Test common subdomain names |
+| **Certificate transparency** | Query CT logs for issued certificates |
+| **DNS zone transfer** | Attempt AXFR if misconfigured |
+| **Public sources** | Search engines, archives, databases |
+| **Passive DNS** | Historical DNS record databases |
 
-## Results Include
+## Results
 
 For each subdomain:
-- Full subdomain name
-- IP address(es)
-- HTTP status (if web server)
-- Technologies detected
-- Discovery source
+- **Subdomain name** — Full hostname
+- **IP addresses** — Resolved A/AAAA records
+- **HTTP status** — If web server responds
+- **Title** — Web page title if available
 
-## Example Results
+## Why subdomain enumeration matters
 
-```
-www.example.com     → 192.168.1.1   → HTTP 200
-api.example.com     → 192.168.1.2   → HTTP 200
-staging.example.com → 192.168.1.3   → HTTP 403
-mail.example.com    → 192.168.1.4   → SMTP
-```
-
-## Why Subdomain Enumeration Matters
-
-<Warning>
-Organizations often have significantly more subdomains than they realize. Unknown subdomains can harbor vulnerable, unpatched services.
-</Warning>
-
-## Best Practices
+Subdomains often host:
+- **Development environments** — Less security, more bugs
+- **Legacy applications** — Outdated and vulnerable
+- **Internal tools** — Admin panels, dashboards
+- **Forgotten assets** — Abandoned but still running
+- **Third-party services** — Potentially misconfigured
 
 <Tip>
-Run subdomain enumeration regularly to detect newly deployed services and forgotten assets.
+After discovering subdomains, check for takeover risks with the [Subdomain Takeover](/tools/subdomain-takeover) scanner.
 </Tip>
 
-## Related Tools
+## Following up
 
-- [Domain Finder](/tools/domain-finder)
-- [Port Scanner](/tools/port-scanner)
-- [Website Recon](/tools/website-recon)
+After subdomain enumeration:
+- **Check for takeover risks** — Use [Subdomain Takeover](/tools/subdomain-takeover) scanner
+- **Scan for vulnerabilities** — Run [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- **Fingerprint technologies** — Use [Website Recon](/tools/website-recon)
+
+## Related tools
+
+- [Domain Finder](/tools/domain-finder) — Discover related domains
+- [Subdomain Takeover](/tools/subdomain-takeover) — Check for takeover risks
+- [Port Scanner](/tools/port-scanner) — Scan discovered hosts
+- [Website Recon](/tools/website-recon) — Fingerprint discovered services

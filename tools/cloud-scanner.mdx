@@ -1,91 +1,105 @@
 ---
 title: "Cloud scanner"
-description: "Identify security issues in cloud infrastructure and services"
+description: "Discover misconfigured cloud storage and services"
 ---
 
 ## Overview
 
-The Cloud Scanner identifies security misconfigurations and vulnerabilities in cloud environments and cloud-hosted resources.
+The Cloud Scanner identifies misconfigured cloud storage buckets and services that may expose sensitive data. It tests for public access on AWS S3, Azure Blob Storage, and Google Cloud Storage.
 
-## What It Tests
+## What it tests
 
 <CardGroup cols={2}>
-  <Card title="Storage" icon="bucket">
-    S3 buckets, blob storage exposure
+  <Card title="AWS S3" icon="aws">
+    S3 bucket permissions
   </Card>
-  <Card title="Services" icon="cloud">
-    Exposed cloud services
+  <Card title="Azure Blob" icon="microsoft">
+    Azure container access
   </Card>
-  <Card title="Configuration" icon="gear">
-    Security misconfigurations
+  <Card title="Google Cloud" icon="google">
+    GCS bucket permissions
   </Card>
-  <Card title="Metadata" icon="info">
-    Cloud metadata exposure
+  <Card title="Access controls" icon="lock-open">
+    Public read/write settings
   </Card>
 </CardGroup>
 
-## How to Use
+## How to use
 
 <Steps>
-  <Step title="Enter Target">
-    Provide cloud resource URLs or identifiers.
+  <Step title="Enter target">
+    Provide domain, bucket name, or URL.
   </Step>
-  <Step title="Select Checks">
-    Choose which cloud checks to run.
+  <Step title="Select cloud providers">
+    Choose which cloud providers to test.
   </Step>
-  <Step title="Run Scan">
-    Execute cloud security assessment.
-  </Step>
-  <Step title="Review Results">
-    Analyze discovered issues.
+  <Step title="Run scan">
+    Execute the cloud configuration check.
   </Step>
 </Steps>
 
-## Cloud Storage Checks
+## Cloud storage checks
 
-### Amazon S3
+### AWS S3
 
-- Public bucket detection
-- ACL misconfigurations
-- Bucket policy issues
-- Listing enabled
+| Check | Risk |
+|-------|------|
+| Public read access | Data exposure |
+| Public write access | Data tampering |
+| Public listing | Information disclosure |
+| ACL misconfigurations | Unauthorized access |
 
 ### Azure Blob Storage
 
-- Public container access
-- Anonymous read permissions
-- SAS token exposure
+| Check | Risk |
+|-------|------|
+| Anonymous read access | Data exposure |
+| Container listing | Information disclosure |
+| Public blob access | Individual file exposure |
 
 ### Google Cloud Storage
 
-- Public bucket access
-- IAM misconfigurations
+| Check | Risk |
+|-------|------|
+| Public object access | Data exposure |
+| allUsers permissions | Universal access |
+| allAuthenticatedUsers | Any Google account access |
 
-## Common Findings
+## Common findings
 
-| Finding | Risk | Description |
-|---------|------|-------------|
-| Public S3 Bucket | Critical | Data exposed to internet |
-| Directory Listing | High | Can enumerate contents |
-| Weak ACLs | Medium | Overly permissive access |
-| Metadata Exposure | Low | Information disclosure |
+| Finding | Impact | Remediation |
+|---------|--------|-------------|
+| Public bucket listing | Info disclosure | Disable public listing |
+| Public read access | Data breach | Restrict to authorized users |
+| Public write access | Data tampering | Remove write permissions |
+| Sensitive files exposed | Data breach | Review and restrict access |
 
 <Warning>
-Publicly accessible cloud storage has caused numerous data breaches. Always verify storage permissions.
+Publicly writable buckets allow attackers to upload malicious content or modify existing files.
 </Warning>
 
-## Best Practices
+## Results
+
+For each finding:
+- **Resource** — Bucket/container name
+- **Provider** — AWS, Azure, or GCP
+- **Access level** — Public read, write, list
+- **Risk** — Severity rating
+- **Details** — Specific misconfigurations
+
+## Best practices
 
 <Tip>
-Regularly scan your cloud resources for public exposure, especially after infrastructure changes.
+Enable cloud provider security tools like AWS Config Rules, Azure Security Center, or GCP Security Command Center for continuous monitoring.
 </Tip>
 
-- Enable bucket/container logging
-- Use private by default
-- Implement least privilege
-- Monitor for configuration drift
+- **Block public access** by default
+- **Use IAM policies** for access control
+- **Enable logging** for audit trails
+- **Review regularly** for drift
+- **Encrypt data** at rest and in transit
 
-## Related Tools
+## Related tools
 
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner)
-- [Subdomain Finder](/tools/subdomain-finder)
+- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Infrastructure assessment
+- [Subdomain Finder](/tools/subdomain-finder) — Discover cloud-hosted assets
