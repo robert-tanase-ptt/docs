@@ -1,102 +1,133 @@
 ---
-title: "WordPress scanner"
-description: "Security testing for WordPress websites"
+title: "WordPress Scanner"
+description: "Security testing for WordPress websites using WPScan"
 ---
 
 ## Overview
 
-The WordPress Scanner identifies vulnerabilities in WordPress installations, including core, plugins, and themes. It uses WPScan technology to detect security issues specific to the WordPress ecosystem.
+The WordPress Scanner identifies vulnerabilities in WordPress installations, including the core platform, plugins, and themes. It uses WPScan technology to detect security issues specific to the WordPress ecosystem.
 
-## What it tests
+The WordPress Scanner is a **vulnerability scanner**: it actively tests WordPress sites for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="Core vulnerabilities" icon="wordpress">
-    WordPress core security issues
-  </Card>
-  <Card title="Plugin vulnerabilities" icon="puzzle-piece">
-    Known vulnerable plugins
-  </Card>
-  <Card title="Theme vulnerabilities" icon="palette">
-    Theme security issues
-  </Card>
-  <Card title="Misconfigurations" icon="gear">
-    Insecure WordPress settings
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **URL** | `https://example.com`, `https://example.com/blog/` |
 
-<Steps>
-  <Step title="Enter WordPress URL">
-    Provide the URL of the WordPress site.
-  </Step>
-  <Step title="Select scan type">
-    Choose Light or Deep mode.
-  </Step>
-  <Step title="Run scan">
-    Execute the WordPress security assessment.
-  </Step>
-</Steps>
+<Note>
+Provide the complete path to the WordPress installation. If WordPress is installed in a subdirectory (e.g., `/blog/`), include it in the URL.
+</Note>
 
-## Scan profiles
+## Scan modes
 
-| Profile | Coverage | Use case |
-|---------|----------|----------|
-| **Light** | Basic enumeration and checks | Quick assessment |
-| **Deep** | Full enumeration and vulnerability detection | Comprehensive audit |
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **Light** | Passive detection, minimal requests | Quick assessment |
+| **Deep** | Aggressive detection with full enumeration | Comprehensive audit |
+| **Custom** | User-configured detection and enumeration | Targeted testing |
 
-## Checks performed
+### Parameters comparison
 
-### Core checks
+| Parameter | Light | Deep | Custom |
+|-----------|:-----:|:----:|:------:|
+| **Authentication** | ✗ | ✗ | ✓ |
+| **Detection mode** | Passive | Aggressive | Configurable |
+| **Enumerate users** | ✗ | ✓ | ✓ (optional) |
+| **Enumerate vulnerable plugins** | ✗ | ✓ | ✓ (optional) |
+| **Enumerate vulnerable themes** | ✗ | ✓ | ✓ (optional) |
+| **Enumerate config backups** | ✗ | ✓ | ✓ (optional) |
+| **Enumerate database exports** | ✗ | ✓ | ✓ (optional) |
+| **Enumerate TimThumbs** | ✗ | ✓ | ✓ (optional) |
 
-| Check | Description |
-|-------|-------------|
-| **Version detection** | Identify WordPress version |
-| **Core vulnerabilities** | Check for known WordPress CVEs |
-| **readme.html** | Detect exposed readme file |
-| **Debug mode** | Check for WP_DEBUG exposure |
-| **Directory listing** | Check uploads and other directories |
+### Tests comparison
 
-### Plugin checks
+**[Core tests](#core-tests)**
 
-| Check | Description |
-|-------|-------------|
-| **Plugin enumeration** | Discover installed plugins |
-| **Version detection** | Identify plugin versions |
-| **Vulnerability matching** | Check against WPScan database |
-| **Abandoned plugins** | Detect unmaintained plugins |
+| Test | Light | Deep |
+|------|:-----:|:----:|
+| **WordPress Core Vulnerabilities** | ✓ | ✓ |
+| **Main Theme Vulnerabilities** | ✓ | ✓ |
 
-### Theme checks
+**[Interesting findings](#interesting-findings)**
 
-| Check | Description |
-|-------|-------------|
-| **Theme detection** | Identify active theme |
-| **Version detection** | Determine theme version |
-| **Vulnerability matching** | Check for known theme vulnerabilities |
+| Test | Light | Deep |
+|------|:-----:|:----:|
+| **Interesting Headers** | ✓ | ✓ |
+| **Robots.txt** | ✓ | ✓ |
+| **WP-Cron Enabled** | ✓ | ✓ |
+| **Readme.html** | ✗ | ✓ |
+| **Directory Listing** | ✗ | ✓ |
+| **XML-RPC Enabled** | ✗ | ✓ |
+| **Must Use Plugins** | ✗ | ✓ |
 
-### Configuration checks
+**[Enumeration tests](#enumeration-tests)**
 
-| Check | Description |
-|-------|-------------|
-| **User enumeration** | Discover WordPress users |
-| **XML-RPC** | Check for enabled XML-RPC |
-| **REST API** | User enumeration via REST API |
-| **Backup files** | Check for exposed backups |
-| **wp-config.php** | Check for exposed configuration |
+| Test | Light | Deep |
+|------|:-----:|:----:|
+| **User Enumeration** | ✗ | ✓ |
+| **Vulnerable Plugins** | ✗ | ✓ |
+| **Vulnerable Themes** | ✗ | ✓ |
+| **Config Backups** | ✗ | ✓ |
+| **Database Exports** | ✗ | ✓ |
+| **TimThumbs** | ✗ | ✓ |
 
-## Common findings
+<Warning>
+The Deep scan performs aggressive detection and sends numerous requests to the server. It is more likely to be detected by IDS/IPS solutions. Only run it against systems you have authorization to test.
+</Warning>
 
-| Finding | Risk | Recommendation |
-|---------|------|----------------|
-| Outdated WordPress | High | Update to latest version |
-| Vulnerable plugin | Varies | Update or remove plugin |
-| User enumeration | Medium | Disable username discovery |
-| XML-RPC enabled | Medium | Disable if not needed |
-| Debug mode on | Medium | Disable WP_DEBUG in production |
-| Exposed readme.html | Low | Remove or restrict access |
+### Custom scan
+
+Full control over scan parameters:
+
+| Option | Description |
+|--------|-------------|
+| **Detection mode** | Choose Passive (fewer requests) or Aggressive (better detection) |
+| **Enumerate users** | Discover WordPress usernames |
+| **Enumerate vulnerable plugins** | Find plugins with known vulnerabilities |
+| **Enumerate vulnerable themes** | Find themes with known vulnerabilities |
+| **Enumerate config backups** | Search for wp-config.php backup files |
+| **Enumerate database exports** | Search for exposed database dumps |
+| **Enumerate TimThumbs** | Search for vulnerable TimThumb scripts |
+
+## Core tests
+
+Core tests identify the WordPress version and main theme, then check for known vulnerabilities. These tests run in both Light and Deep scans.
+
+| Test | Description |
+|------|-------------|
+| **WordPress Core Vulnerabilities** | Detects the WordPress version and checks for known CVEs affecting that version |
+| **Main Theme Vulnerabilities** | Identifies the active theme and version, checks for known vulnerabilities |
+
+## Interesting findings
+
+Interesting findings detect common WordPress misconfigurations and exposed files. See the [tests comparison table](#tests-comparison) for Light vs Deep availability.
+
+| Test | Description |
+|------|-------------|
+| **Interesting Headers** | Analyzes HTTP headers for security-relevant information (server software, PHP version, etc.) |
+| **Robots.txt** | Checks robots.txt for exposed sensitive paths and directories |
+| **WP-Cron Enabled** | Detects if wp-cron.php is accessible, which can be abused for DoS attacks |
+| **Readme.html** | Checks for exposed readme.html that reveals WordPress version |
+| **Directory Listing** | Detects directory indexes exposing file listings (uploads, plugins, themes) |
+| **XML-RPC Enabled** | Checks if xmlrpc.php is enabled, which can be used for brute-force and DDoS attacks |
+| **Must Use Plugins** | Detects must-use plugins that load automatically and may contain vulnerabilities |
+
+## Enumeration tests
+
+Enumeration tests actively search for WordPress components and security issues. These tests are only available in Deep and Custom scans.
+
+| Test | Description |
+|------|-------------|
+| **User Enumeration** | Discovers WordPress usernames via author archives, REST API, and login error messages |
+| **Vulnerable Plugins** | Enumerates installed plugins and checks versions against the WPScan vulnerability database |
+| **Vulnerable Themes** | Enumerates installed themes and checks versions against the WPScan vulnerability database |
+| **Config Backups** | Searches for wp-config.php backup files (wp-config.php.bak, wp-config.php~, etc.) |
+| **Database Exports** | Searches for exposed database dump files that may contain sensitive data |
+| **TimThumbs** | Searches for vulnerable TimThumb scripts that allow remote code execution |
 
 <Tip>
-Keep WordPress, plugins, and themes updated. Most WordPress vulnerabilities affect outdated installations.
+Plugin and theme vulnerabilities are the most common attack vector for WordPress sites. The Deep scan's enumeration capabilities are essential for a thorough security assessment.
 </Tip>
 
 ## Authentication
@@ -104,31 +135,55 @@ Keep WordPress, plugins, and themes updated. Most WordPress vulnerabilities affe
 The WordPress Scanner supports HTTP Basic Authentication in **Custom** scan mode for testing sites protected by server-level authentication.
 
 **How to configure:**
-1. Select **Custom** scan type
-2. Enable **Basic Authentication**
-3. Enter your **username** and **password**
+
+<Steps>
+  <Step title="Select scan type">
+    Choose **Custom** scan type.
+  </Step>
+  <Step title="Enable authentication">
+    Enable **Authentication** in the scan settings.
+  </Step>
+  <Step title="Enter credentials">
+    Enter your **username** and **password**.
+  </Step>
+</Steps>
 
 <Note>
 Basic Authentication is different from WordPress login credentials. It's typically configured at the server level (Apache/Nginx) to restrict access to the entire site or wp-admin area.
 </Note>
 
-[Full authentication guide →](/using/scans/authenticated-scanning#wordpress-scanner)
+For detailed authentication configuration, see [Authenticated scanning](/using/scans/authenticated-scanning#wordpress-scanner).
 
-## Results
+## How it works
 
-For each finding:
-- **Component** — Core, plugin, or theme name
-- **Version** — Detected version
-- **Vulnerability** — CVE and description
-- **Severity** — Risk rating
-- **References** — WPScan database links
+The WordPress Scanner uses WPScan technology and follows a systematic approach:
 
-## Related tools
+1. **Version detection**: Identifies WordPress core version from meta tags, scripts, and readme files
+2. **Theme detection**: Identifies the active theme and its version
+3. **Interesting findings**: Checks for misconfigurations and exposed files
+4. **Enumeration**: Discovers plugins, themes, users, and sensitive files (Deep/Custom only)
+5. **Vulnerability matching**: Cross-references detected versions against the WPScan vulnerability database
+6. **Reporting**: Generates findings with CVE details, CVSS scores, and remediation guidance
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing
-- [Drupal Scanner](/tools/drupal-scanner) — Drupal-specific testing
-- [Joomla Scanner](/tools/joomla-scanner) — Joomla-specific testing
+<Note>
+Vulnerability detection is version-based. The scanner identifies component versions and matches them against known vulnerabilities. Since vulnerabilities are discovered using version-based testing only, the risk level for findings will not exceed 'high' severity.
+</Note>
 
-## Related topics
+## Why WordPress security matters
 
-- [Authenticated scanning](/using/scans/authenticated-scanning#wordpress-scanner)
+- **High-value target**: WordPress powers 40%+ of websites, making it a prime target for attackers
+- **Plugin vulnerabilities**: Third-party plugins are the most common attack vector
+- **Outdated installations**: Many sites run outdated WordPress, plugins, or themes
+- **Default configurations**: XML-RPC, user enumeration, and other defaults can be exploited
+
+## Follow-up actions
+
+After identifying vulnerabilities:
+
+- **Update WordPress core**: Keep WordPress updated to the latest version
+- **Update plugins and themes**: Apply security patches for all components
+- **Remove unused plugins**: Delete plugins that are not actively used
+- **Disable XML-RPC**: If not needed, disable xmlrpc.php to prevent brute-force attacks
+- **Hide version information**: Remove readme.html and version meta tags
+- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for additional testing
+- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring

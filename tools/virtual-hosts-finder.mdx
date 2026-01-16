@@ -1,0 +1,97 @@
+---
+title: "Virtual Hosts Finder"
+description: "Discover virtual hosts configured on a given IP address"
+---
+
+## Overview
+
+The Virtual Hosts Finder discovers websites hosted on the same server using virtual hosting. A single web server can run multiple websites under different domain names, these are called virtual hosts (vhosts) and are commonly found in shared hosting environments.
+
+Virtual Hosts Finder is a **discovery tool**: it identifies websites sharing the same server but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
+
+**Example**: Multiple websites pointing to the same IP:
+
+```
+www.company1.com  → 109.11.231.5
+test.company2.com → 109.11.231.5
+sales.company3.com → 109.11.231.5
+```
+
+Finding all virtual hosts on a server is important because each website may contain vulnerabilities that affect the same server. If one website is compromised, the attacker may gain access to other websites running on the same server.
+
+## Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| Target | IP address or hostname. If a hostname is provided, DNS resolution is performed first to find its IP address. |
+
+## How it works
+
+The tool uses multiple discovery techniques to find hostnames, then validates each by checking if it resolves back to the target IP address.
+
+<Steps>
+  <Step title="Discover hostnames">
+    The tool searches for hostnames associated with the target IP using multiple methods (see below).
+  </Step>
+  <Step title="Validate DNS resolution">
+    Each discovered hostname is checked to confirm it resolves to the target IP.
+  </Step>
+  <Step title="Expand with DNS enumeration">
+    For validated virtual hosts, the tool extracts root domains and performs DNS enumeration to find additional subdomains pointing to the same IP.
+  </Step>
+</Steps>
+
+### Bing search
+
+Searches Bing using the `ip:` operator to find websites indexed on the target IP address. This reveals publicly visible sites hosted on the server.
+
+### SSL certificates
+
+Connects to port 443 and extracts hostnames from the SSL certificate:
+- **Common Name (CN)**: The primary hostname in the certificate
+- **Subject Alternative Names (SAN)**: Additional hostnames listed in the certificate
+
+### HTTP redirects
+
+Makes HTTP requests to the IP and checks if the server returns a redirect (301/302) to a hostname. Many servers redirect bare IP requests to a domain name.
+
+### Reverse DNS
+
+Performs a PTR (reverse DNS) lookup on the IP address to find hostnames configured in DNS records.
+
+### DNS enumeration
+
+After finding initial virtual hosts, the tool:
+1. Extracts the root domains from discovered hostnames
+2. Performs DNS enumeration using a wordlist
+3. Checks if any discovered subdomains also point to the target IP
+
+This expands the results by finding related subdomains on the same server.
+
+<Note>
+Virtual hosts may belong to different organizations when using shared hosting providers. Always verify ownership before including them in your testing scope.
+</Note>
+
+## Why virtual hosts discovery matters
+
+Finding virtual hosts can reveal:
+
+- **Cross-site vulnerabilities**: One compromised site can affect others on the same server
+- **Internal applications**: Development or staging sites exposed on shared infrastructure
+- **Additional targets**: More applications to test within your scope
+- **Weak neighbors**: Less secure sites that share resources with your target
+
+Virtual hosts discovery is valuable for:
+
+- **Shared hosting reconnaissance**: Find other sites on shared servers that might be vulnerable
+- **Cloud environments**: Discover sites on shared cloud infrastructure
+- **Attack surface expansion**: Identify additional targets within scope
+
+## Follow-up actions
+
+After discovering virtual hosts:
+
+1. **Enumerate subdomains**: Use [Subdomain Finder](/tools/subdomain-finder) to discover more subdomains of the discovered domains
+2. **Scan for open ports**: Use [Port Scanner](/tools/port-scanner) to identify services running on the hosts
+3. **Scan for vulnerabilities**: Run [Network Scanner](/tools/network-scanner) on discovered hosts
+4. **Fingerprint technologies**: Use [Website Recon](/tools/website-recon) for detailed technology detection

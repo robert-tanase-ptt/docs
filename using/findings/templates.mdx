@@ -11,7 +11,9 @@ Finding templates are available on the **Pentest Suite** plan. [View plans](/pla
 
 Finding templates allow you to create reusable vulnerability definitions that standardize how security findings are documented across your organization. Instead of manually entering the same vulnerability details repeatedly, you can save templates and apply them when creating new findings.
 
-## Template Types
+Templates can be shared with team members, allowing your entire team to use consistent vulnerability documentation. See [Sharing templates](#sharing-templates) for details.
+
+## Template types
 
 There are two types of templates available:
 
@@ -20,11 +22,11 @@ There are two types of templates available:
 | **Default** | Pre-built templates provided by Pentest-Tools.com covering common vulnerabilities |
 | **Custom** | Templates you create for your organization's specific needs |
 
-## Template Fields
+## Template fields
 
 Each finding template contains the following information:
 
-### Core Details
+### Core details
 
 | Field | Required | Description |
 |-------|----------|-------------|
@@ -34,7 +36,7 @@ Each finding template contains the following information:
 | **Risk Description** | No | Why this vulnerability poses a security concern |
 | **Recommendation** | No | How to fix or mitigate the issue |
 
-### Standards and Scoring
+### Standards and scoring
 
 | Field | Description |
 |-------|-------------|
@@ -45,7 +47,7 @@ Each finding template contains the following information:
 | **OWASP 2017** | OWASP Top 10 2017 classification |
 | **OWASP 2021** | OWASP Top 10 2021 classification |
 
-### Threat Intelligence
+### Threat intelligence
 
 | Field | Description |
 |-------|-------------|
@@ -53,7 +55,7 @@ Each finding template contains the following information:
 | **EPSS Percentile** | Percentile ranking compared to other vulnerabilities |
 | **In CISA KEV** | Whether the vulnerability is in CISA's Known Exploited Vulnerabilities catalog |
 
-### Evidence and Reproduction
+### Evidence and reproduction
 
 | Field | Description |
 |-------|-------------|
@@ -61,14 +63,14 @@ Each finding template contains the following information:
 | **How to Reproduce** | Steps to reproduce the vulnerability |
 | **References** | Links to additional documentation and resources |
 
-## Creating a Template
+## Creating a template
 
 <Steps>
   <Step title="Navigate to Templates">
-    Go to **Findings** → **Templates** in the main navigation.
+    Go to **Findings** and click the **Templates** tab.
   </Step>
-  <Step title="Click Create Template">
-    Click the **Create Template** button.
+  <Step title="Click Add">
+    Click the **Add** button.
   </Step>
   <Step title="Fill in Template Details">
     Enter the vulnerability information you want to save:
@@ -82,89 +84,128 @@ Each finding template contains the following information:
 </Steps>
 
 <Tip>
-When creating a finding, check the **Save as template** option to automatically create a template from that finding's details.
+When creating a finding, check the **Add to templates** option to automatically create a template from that finding's details.
 </Tip>
 
-## Using a Template
+## Using a template
 
 When you create a new finding, you can select a template to pre-populate the form:
 
 <Steps>
   <Step title="Start Creating a Finding">
-    Go to **Findings** and click **Add Finding**.
+    Go to **Findings** and click **Add**.
+  </Step>
+  <Step title="Click Use Template">
+    Click the **Use template** button, or navigate to the Templates tab and click **Use Template** on a template card.
   </Step>
   <Step title="Select a Template">
-    Choose from your custom templates or default templates. Use the search to filter by name.
+    Choose from your custom templates, shared templates, or default templates. Use the search to filter by name.
   </Step>
   <Step title="Review and Customize">
     The form will be populated with the template data. Modify any fields as needed for this specific finding.
   </Step>
   <Step title="Add Target-Specific Details">
-    Fill in target-specific information like the affected asset, port, and specific evidence.
+    Fill in target-specific information like the affected target, port, and specific evidence.
   </Step>
   <Step title="Save the Finding">
     Click **Save** to create the finding.
   </Step>
 </Steps>
 
-## Managing Templates
+## Managing templates
 
-### Filtering Templates
+### Filtering templates
 
 Filter your template list by:
-- **Name**: Search for templates by name
-- **Type**: Show only default or custom templates
+- **Type**: Show all templates, only custom templates, or only default templates
+- **Name**: Search for templates by keyword
 
-### Editing Templates
+### Viewing templates
+
+Click on any template card to view its full details in a modal. The card displays:
+- Template name
+- Description preview
+- Owner (for shared templates)
+- Your permission level (Owner, Edit, or View)
+
+### Editing templates
 
 To edit a custom template:
 
-1. Navigate to **Findings** → **Templates**
+1. Navigate to **Findings** → **Templates** tab
 2. Find the template you want to edit
-3. Click the edit icon
+3. Click the options menu (three dots) and select **Edit**
 4. Make your changes
 5. Click **Save**
 
 <Note>
-Default templates provided by Pentest-Tools.com cannot be edited. Create a custom template if you need to modify the content.
+Default templates provided by Pentest-Tools.com cannot be edited. You can only edit templates you own or templates shared with you with Edit permission.
 </Note>
 
-### Deleting Templates
+### Deleting templates
 
 To delete a custom template:
 
-1. Navigate to **Findings** → **Templates**
+1. Navigate to **Findings** → **Templates** tab
 2. Find the template you want to delete
-3. Click the delete icon
+3. Click the options menu (three dots) and select **Delete**
 4. Confirm the deletion
 
 <Warning>
 Deleting a template does not affect findings that were created using that template. The deletion is permanent and cannot be undone.
 </Warning>
 
-## Best Practices
+## Sharing templates
+
+Finding templates can be shared with team members (subusers) on your account. When you share templates, team members can use them to create findings with consistent documentation.
+
+### Permission levels
+
+| Permission | What they can do |
+|------------|------------------|
+| **No access** | Cannot see or use your templates |
+| **View** | Can view and use templates to create findings, but cannot edit or delete |
+| **Edit** | Full access to view, use, edit, and delete templates |
+
+### How to share templates
+
+1. Go to **Settings** → **Team**
+2. Select the team members you want to configure sharing for
+3. Click **Share**
+4. Set the **Finding Templates** permission level
+5. Click **Save**
+
+Templates you share will appear in your team members' template list with a sharing indicator showing your name as the owner.
+
+<Tip>
+Sharing templates is a great way to ensure your entire team uses consistent vulnerability documentation. Create a library of templates for common findings and share them with Edit or View permissions.
+</Tip>
+
+For more information about team management and sharing, see [Teams and roles](/account/teams-and-roles).
+
+## Best practices
 
 <AccordionGroup>
-  <Accordion title="Standardize Naming Conventions">
+  <Accordion title="Standardize naming conventions">
     Use consistent naming patterns for your templates. Include the vulnerability type and any relevant context (e.g., "SQL Injection - Blind Boolean-based").
   </Accordion>
-  <Accordion title="Include Complete References">
+  <Accordion title="Include complete references">
     Add CVE, CWE, and OWASP classifications to help with compliance reporting and vulnerability tracking.
   </Accordion>
-  <Accordion title="Document Reproduction Steps">
+  <Accordion title="Document reproduction steps">
     Include clear, step-by-step instructions in the "How to Reproduce" field. This helps team members validate findings and demonstrates impact to stakeholders.
   </Accordion>
-  <Accordion title="Use Templates for Recurring Vulnerabilities">
+  <Accordion title="Use templates for recurring vulnerabilities">
     Create templates for vulnerabilities you encounter frequently during pentests to save time and ensure consistent documentation.
   </Accordion>
-  <Accordion title="Keep Recommendations Actionable">
+  <Accordion title="Keep recommendations actionable">
     Write specific, actionable remediation guidance rather than generic advice.
   </Accordion>
 </AccordionGroup>
 
-## Use Cases
+## Use cases
 
-### Penetration Testing Teams
+### Penetration testing teams
 
 Create templates for vulnerabilities commonly found during engagements:
 - Authentication bypass techniques
@@ -172,21 +213,21 @@ Create templates for vulnerabilities commonly found during engagements:
 - Misconfigurations
 - Business logic flaws
 
-### Compliance Reporting
+### Compliance reporting
 
 Standardize how compliance-related findings are documented:
 - Include relevant compliance framework references
 - Ensure consistent severity ratings
 - Add standard remediation guidance
 
-### Knowledge Sharing
+### Knowledge sharing
 
 Build an organizational knowledge base of vulnerability templates:
-- Share proven exploitation techniques
+- Share templates with team members for consistent documentation
 - Document company-specific security policies
 - Maintain consistent reporting quality across team members
 
 ## Related topics
 
 - [Findings](/using/findings/findings)
-- [Findings and severity](/concepts/findings-and-severity)
+- [Teams and roles](/account/teams-and-roles)

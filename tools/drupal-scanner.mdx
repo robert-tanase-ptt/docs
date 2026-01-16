@@ -1,94 +1,171 @@
 ---
-title: "Drupal scanner"
+title: "Drupal Scanner"
 description: "Security testing for Drupal websites"
 ---
 
 ## Overview
 
-The Drupal Scanner identifies vulnerabilities in Drupal installations, including core, modules, and themes. It detects security issues specific to the Drupal CMS.
+The Drupal Scanner identifies vulnerabilities in Drupal installations, including core, modules, and themes. It uses Droopescan technology combined with custom security tests to detect issues specific to the Drupal CMS.
 
-## What it tests
+The Drupal Scanner is a **vulnerability scanner**: it actively tests Drupal sites for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="Core vulnerabilities" icon="droplet">
-    Drupal core security issues
-  </Card>
-  <Card title="Module vulnerabilities" icon="puzzle-piece">
-    Known vulnerable modules
-  </Card>
-  <Card title="Theme issues" icon="palette">
-    Theme security problems
-  </Card>
-  <Card title="Misconfigurations" icon="gear">
-    Insecure Drupal settings
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **URL** | `https://example.com`, `https://example.com/drupal/` |
 
-<Steps>
-  <Step title="Enter Drupal URL">
-    Provide the URL of the Drupal site.
-  </Step>
-  <Step title="Select scan type">
-    Choose Light or Deep mode.
-  </Step>
-  <Step title="Run scan">
-    Execute the Drupal security assessment.
-  </Step>
-</Steps>
+<Note>
+Provide the complete path to the Drupal installation. If Drupal is installed in a subdirectory (e.g., `/drupal/`), include it in the URL.
+</Note>
 
-## Checks performed
+## Tests performed
 
-### Core checks
+The Drupal Scanner runs all tests in a single scan. There are no scan mode options.
 
-| Check | Description |
-|-------|-------------|
-| **Version detection** | Identify Drupal version |
-| **Core vulnerabilities** | Check for known Drupal CVEs (including Drupalgeddon) |
-| **CHANGELOG.txt** | Detect exposed changelog |
-| **Update status** | Check if updates are available |
+| Test | Description |
+|------|-------------|
+| **Server Fingerprinting** | Identifies web server software, technology stack, and operating system |
+| **Drupal Fingerprinting** | Detects Drupal version using Droopescan and fingerprinting techniques |
+| **Drupal Core Vulnerabilities** | Checks detected version against CVE databases for known vulnerabilities |
+| **Module Enumeration** | Discovers installed Drupal modules by analyzing page links and directory structure |
+| **Theme Detection** | Identifies the current Drupal theme from page source and settings |
+| **Directory Listing** | Checks if modules and files directories expose file listings |
+| **User Enumeration (Views)** | Attempts to enumerate users via the Views module autocomplete vulnerability |
+| **User Discovery (Forgot Password)** | Tests if usernames can be discovered via the Forgot Password form |
+| **Login Page Detection** | Checks if the login page is publicly accessible |
+| **Secure Communication** | Verifies HTTPS usage and SSL/TLS certificate validity |
+| **Install Files Detection** | Searches for exposed default installation files (CHANGELOG.txt, INSTALL.txt, etc.) |
+| **User Registration Check** | Tests if public user registration is enabled |
 
-### Module checks
+## Test details
 
-| Check | Description |
-|-------|-------------|
-| **Module enumeration** | Discover installed modules |
-| **Version detection** | Identify module versions |
-| **Vulnerability matching** | Check against security advisories |
+### Server fingerprinting
 
-### Configuration checks
+Identifies the web server software (Apache, Nginx), technology stack (PHP version), and operating system. This information helps attackers identify potential vulnerabilities.
 
-| Check | Description |
-|-------|-------------|
-| **User enumeration** | Discover Drupal users |
-| **Admin paths** | Check for exposed admin pages |
-| **Backup files** | Check for exposed backups |
-| **Error messages** | Check for verbose errors |
+### Drupal fingerprinting
+
+Uses Droopescan to detect the exact Drupal version. Version detection is crucial for identifying applicable vulnerabilities.
+
+### Drupal core vulnerabilities
+
+Cross-references the detected Drupal version against CVE databases to identify known vulnerabilities. Findings include:
+- CVE identifiers with links
+- CVSS scores
+- EPSS scores and percentiles
+- Vulnerability summaries
+- Available exploits (if any)
+
+<Note>
+Vulnerability detection is version-based. The scanner identifies the Drupal version and matches it against known vulnerabilities. Since vulnerabilities are discovered using version-based testing only, the risk level for findings will not exceed 'high' severity.
+</Note>
+
+### Module enumeration
+
+Discovers installed Drupal modules by:
+- Analyzing page HTML for module references
+- Parsing Drupal.settings JavaScript object
+- Checking module directory listings
+- Validating module paths via CHANGELOG.txt, README.txt, LICENSE.txt
+
+### Theme detection
+
+Identifies the active Drupal theme from:
+- `ajaxPageState.theme` in Drupal.settings
+- Theme references in page links
+- Theme paths in raw HTML
+
+### Directory listing
+
+Checks for exposed directory listings in:
+- `/sites/all/modules/`: modules directory
+- `/sites/default/files/`: files directory
+
+Directory listing exposes file structure and potentially sensitive files.
+
+### User enumeration (Views module)
+
+Tests the Views module autocomplete vulnerability that allows extracting usernames via:
+```
+/admin/views/ajax/autocomplete/user/{letter}
+```
+
+This vulnerability can reveal all Drupal usernames including the super user account.
+
+### User discovery (Forgot Password)
+
+Tests if the Forgot Password form reveals whether a username exists by checking error messages for explicit "username not recognized" responses.
+
+### Login page detection
+
+Checks if the login page (`?q=user/login`) is publicly accessible. An exposed login page enables brute-force attacks.
+
+### Secure communication
+
+Verifies:
+- HTTPS is used for communication
+- SSL/TLS certificate is valid and trusted
+- No certificate errors
+
+### Install files detection
+
+Searches for default Drupal installation files that reveal version information:
+- `install.php`
+- `CHANGELOG.txt`
+- `INSTALL.txt`
+- `INSTALL.mysql.txt`
+- `INSTALL.pgsql.txt`
+- `LICENSE.txt`
+- `MAINTAINERS.txt`
+- `UPGRADE.txt`
+
+### User registration check
+
+Tests if public user registration is enabled (`?q=user/register`), which could allow attackers to create accounts.
 
 ## Notable Drupal vulnerabilities
 
 | Vulnerability | CVE | Impact |
 |---------------|-----|--------|
-| **Drupalgeddon** | CVE-2014-3704 | SQL injection, RCE |
+| **Drupalgeddon** | CVE-2014-3704 | SQL injection leading to RCE |
 | **Drupalgeddon 2** | CVE-2018-7600 | Remote code execution |
 | **Drupalgeddon 3** | CVE-2018-7602 | Remote code execution |
 
 <Warning>
-Drupalgeddon vulnerabilities allow complete site takeover. Affected versions must be updated immediately.
+Drupalgeddon vulnerabilities allow complete site takeover. Affected Drupal versions must be updated immediately.
 </Warning>
 
-## Results
+## How it works
 
-For each finding:
-- **Component** — Core, module, or theme name
-- **Version** — Detected version
-- **Vulnerability** — CVE and description
-- **Severity** — Risk rating
-- **Advisory** — Drupal security advisory link
+The Drupal Scanner follows a systematic approach:
 
-## Related tools
+1. **Server fingerprinting**: Identifies web server, technology, and OS
+2. **Drupal detection**: Confirms Drupal installation and determines version
+3. **Vulnerability lookup**: Cross-references version against CVE databases
+4. **Component discovery**: Enumerates modules and identifies the active theme
+5. **Security checks**: Tests for misconfigurations and exposed functionality
+6. **Reporting**: Generates findings with CVE details, CVSS/EPSS scores, and remediation guidance
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web testing
-- [WordPress Scanner](/tools/wordpress-scanner) — WordPress-specific testing
-- [Joomla Scanner](/tools/joomla-scanner) — Joomla-specific testing
+The scanner uses Droopescan for version detection and implements additional custom security tests.
+
+## Why Drupal security matters
+
+- **High-value target**: Drupal powers government sites, enterprises, and universities
+- **Drupalgeddon history**: Critical RCE vulnerabilities have allowed mass compromises
+- **Module vulnerabilities**: Third-party modules can introduce security weaknesses
+- **Complex updates**: Drupal's update process can leave sites running vulnerable versions
+
+## Follow-up actions
+
+After identifying vulnerabilities:
+
+- **Update Drupal core**: Apply security patches immediately, especially for Drupalgeddon-class vulnerabilities
+- **Update modules**: Keep all installed modules updated to latest versions
+- **Remove unused modules**: Delete modules that are not actively used
+- **Remove install files**: Delete CHANGELOG.txt, INSTALL.txt, and other default files
+- **Disable user registration**: If not needed, disable public user registration
+- **Restrict login access**: Consider IP-based restrictions on the login page
+- **Enable HTTPS**: Ensure all communication uses HTTPS with valid certificates
+- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for additional testing
+- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring

@@ -1,13 +1,17 @@
 ---
-title: "Attack surface overview"
+title: "Attack surface"
 description: "Discover and manage your organization's attack surface with Pentest-Tools.com"
 ---
 
-## What Is Attack Surface Management?
+## What is attack surface management?
 
 Attack Surface Management (ASM) is the continuous process of discovering, cataloging, and monitoring your external-facing assets to understand and reduce security risks.
 
-## The Attack Surface Dashboard
+<Info>
+All attack surface data lives inside your current workspace. Every IP, hostname, port, URL, and technology entry keeps a link back to the scan and tool that produced it, so you can jump directly to the originating results.
+</Info>
+
+## The attack surface dashboard
 
 The Attack Surface view provides a comprehensive overview of your discovered assets:
 
@@ -26,9 +30,46 @@ The Attack Surface view provides a comprehensive overview of your discovered ass
   </Card>
 </CardGroup>
 
-## Key Features
+## How data gets into the attack surface
 
-### Asset Discovery
+We automatically populate the Attack Surface View (ASV) from supported scanners:
+
+- **Port Scanner (TCP or UDP)**: Adds open ports and service fingerprints per target.
+- **Network Scanner**: Adds ports, protocols, services, and discovered technologies.
+- **Website Scanner** and **Website Recon**: Add URLs, titles, technologies, and screenshots where available.
+
+New discoveries are merged into your workspace inventory: new ports and URLs are appended; existing ones are refreshed instead of wiping other scan results.
+
+<Note>
+If a scan finds an additional port, ASV adds that port to the existing IP/host entry. Other ports and technologies stay intact.
+</Note>
+
+## Grouping and Navigation
+
+Use **Group by** to organize results the way you work:
+
+- IP Address (single, all-in-one list)
+- Hostname
+- Port
+- Protocol
+- Service
+- Technology
+
+Switching the grouping changes only the view; the underlying data remains the same. You can drill into an item to open the scan that created it.
+
+## Exports
+
+You can export the current attack surface at any time:
+
+- **CSV**: Full data (IPs, hosts, ports, protocols, services, URLs, technologies)
+- **CSV (Network Only)**: Network-layer fields only (no URLs/technologies)
+- **JSON**: Structured export of the full dataset
+
+Exports respect your current grouping, so you can keep the structure you see in the UI.
+
+## Key features
+
+### Asset discovery
 
 Automatically discover assets you may not know about:
 
@@ -37,31 +78,20 @@ Automatically discover assets you may not know about:
 - **Services**: Identify running services and open ports
 - **Certificates**: Track SSL/TLS certificates
 
-### Risk Assessment
-
-Each discovered asset is assessed for risk based on:
-
-| Factor | Description |
-|--------|-------------|
-| Exposure | How accessible is the asset from the internet? |
-| Technology | Are there known vulnerabilities in detected software? |
-| Configuration | Are there misconfigurations or weak settings? |
-| Age | Is the asset using outdated software? |
-
-### Continuous Monitoring
+### Continuous monitoring
 
 <Note>
 Attack surfaces change constantly. New assets are deployed, configurations change, and new vulnerabilities are discovered. Continuous monitoring helps you stay aware.
 </Note>
 
-## Getting Started
+## Getting started
 
 <Steps>
   <Step title="Add Root Assets">
     Start by adding your primary domains to the platform.
   </Step>
   <Step title="Run Discovery">
-    Launch discovery scans to find related assets.
+    Launch reconnaissance scans to find related assets.
   </Step>
   <Step title="Review Results">
     Analyze discovered assets and their risk levels.
@@ -71,14 +101,12 @@ Attack surfaces change constantly. New assets are deployed, configurations chang
   </Step>
 </Steps>
 
-## Best Practices
+## Best practices
 
 <Tip>
-Run discovery scans regularly—monthly at minimum—to catch newly deployed assets and changes.
+Run reconnaissance scans regularly (monthly at minimum) to catch newly deployed assets and changes.
 </Tip>
 
-## Related Topics
+## Related topics
 
-- [Working with Technology Fingerprints](/using/attack-surface/working-with-technology-fingerprints)
-- [Attack Surface Concept](/concepts/attack-surface)
 - [Subdomain Finder](/tools/subdomain-finder)

@@ -68,12 +68,12 @@ All of these targets belong to the single `example.com` asset, counting as **one
 | IP range (CIDR) | `192.168.1.0/24` | Individual IPs |
 
 <Note>
-Different tools accept different target types. For example, the Website Vulnerability Scanner requires a URL, while the Port Scanner accepts hostnames or IP addresses.
+Different tools accept different target types. For example, the Website Scanner requires a URL, while the Port Scanner accepts hostnames or IP addresses.
 </Note>
 
 ## Importing multiple targets
 
-For bulk operations, you can import targets from a file or cloud provider.
+For bulk operations, you can import targets from a file or from AWS.
 
 ### Import from file
 
@@ -146,7 +146,7 @@ Moving a target also moves its associated scan history and findings to the new w
 ### Deleting assets and targets
 
 <Warning>
-Deleting an asset removes all associated targets, scans, and findings permanently. This action cannot be undone.
+Deleting an asset removes all associated targets, scans, findings, and attack surface data permanently. This action cannot be undone.
 </Warning>
 
 **To delete targets (keeping the asset):**
@@ -161,16 +161,16 @@ Deleting an asset removes all associated targets, scans, and findings permanentl
 
 ## Asset discovery
 
-Some tools discover additional targets during scanning:
+Some tools discover additional information during scanning:
 
 - **Subdomain Finder** discovers subdomains under your domain asset
 - **Website Recon** identifies linked pages and endpoints
 - **Port Scanner** finds services that may expose web interfaces
 
-When new targets are discovered, they're automatically associated with the appropriate asset. Discovered subdomains of `example.com` count under the `example.com` asset—you don't consume additional asset slots.
+Discovered items appear in the scan results and in the attack surface view. To add them as assets or targets, you need to manually add them from the scan results.
 
 <Tip>
-Use the attack surface view to see all targets discovered under each asset.
+Use the attack surface view to see all discovered hosts, ports, and technologies across your scans.
 </Tip>
 
 ## Check alive
@@ -216,23 +216,9 @@ The platform uses a customized version of Nmap's host discovery to determine if 
 
 ## Asset limits
 
-Your subscription includes a maximum number of assets. This limit:
+Your subscription includes limits for both added assets and scanned assets. These limits apply across all your workspaces and are shared among all team members on your account.
 
-- Applies across all your workspaces
-- Is shared among all team members on your account
-- Counts unique assets (not targets)
-
-### Checking your usage
-
-View your current asset usage in **My account → Plan details & billing → Scanned assets**.
-
-### When you reach your limit
-
-If you reach your asset limit, you can:
-
-- **Add targets to existing assets** – New URL targets on domains you already have don't consume additional asset slots
-- **Delete unused assets** – Remove assets you no longer need to free up capacity
-- **Upgrade your plan** – Increase your asset tier for more capacity
+For detailed information about how asset limits work, see [Assets and limits](/plans-and-limits/assets-and-limits).
 
 ## Best practices
 
@@ -253,7 +239,7 @@ If you reach your asset limit, you can:
 
 ## Related topics
 
-- [Assets and scan cycles](/plans-and-limits/assets-scan-cycles) – How assets affect your subscription
+- [Assets and limits](/plans-and-limits/assets-and-limits) – How assets affect your subscription
 - [Workspaces](/using/workspaces/organize-work) – Group assets by project or client
 - [Attack surface overview](/using/attack-surface/attack-surface-overview) – View all discovered targets
 - [AWS integration](/notifications/aws) – Import targets from AWS

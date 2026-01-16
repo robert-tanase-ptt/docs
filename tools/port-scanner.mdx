@@ -1,176 +1,154 @@
 ---
-title: "Port scanner"
+title: "Port Scanner"
 description: "Discover open TCP and UDP ports and running services on target hosts"
 ---
 
 ## Overview
 
-The Port Scanner identifies open TCP and UDP ports on target hosts using [Nmap](https://nmap.org/), the industry-standard port scanning tool. Knowing which network services are exposed is essential for securing the network perimeter.
+The Port Scanner identifies open TCP and UDP ports on target hosts using [Nmap](https://nmap.org/), the industry-standard port scanning tool. Knowing which network services are exposed to the Internet is essential for securing the network perimeter.
 
-## What it finds
+The Port Scanner is a **discovery tool**: it maps your network's exposed services but does not test them for vulnerabilities. Discovered ports, services, and OS information are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). It does not generate [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="Open ports" icon="door-open">
-    TCP/UDP ports accepting connections
-  </Card>
-  <Card title="Service identification" icon="gears">
-    What service runs on each port
-  </Card>
-  <Card title="Version detection" icon="tag">
-    Software versions when detectable
-  </Card>
-  <Card title="OS detection" icon="desktop">
-    Operating system fingerprinting
-  </Card>
-</CardGroup>
+## Parameters
 
-## How to use
+| Parameter | Description |
+|-----------|-------------|
+| Target | The hostname or IP address to scan. |
+| Protocol | Choose between **TCP** (default) or **UDP** scanning. |
+| Scan type | **Light**, **Deep** (default), or **Custom** mode. See [Scan types](#scan-types) below. |
+| Check alive | When enabled (default), the scanner checks if the host is up before scanning. Disable this if the host doesn't respond to ICMP but you know it's online. Learn more about [Check alive](/using/assets/assets#check-alive). |
 
-<Steps>
-  <Step title="Enter target">
-    Provide an IP address or hostname to scan.
-  </Step>
-  <Step title="Select protocol">
-    Choose TCP or UDP scanning.
-  </Step>
-  <Step title="Select scan type">
-    Choose Light, Deep, or Custom mode.
-  </Step>
-  <Step title="Configure port range">
-    Select common ports, custom range, or full scan.
-  </Step>
-  <Step title="Run scan">
-    Execute the port scan.
-  </Step>
-</Steps>
+### Custom scan options
+
+These parameters are only available when using **Custom** scan type:
+
+| Parameter | Description |
+|-----------|-------------|
+| Ports to scan | Choose from common presets, specify a range, or provide a comma-separated list. See [Port presets](#port-presets) below. |
+| Detect service version | Enables Nmap service detection to identify what's running on each port. |
+| Detect operating system | Enables OS fingerprinting based on TCP/IP stack analysis. |
+| Do traceroute | Shows the network path to the target (TCP only). |
+| Scan technique | The TCP scan method to use. See [Scan techniques](#scan-techniques) below. |
+
+#### Port presets
+
+| Preset | TCP ports | UDP ports |
+|--------|-----------|-----------|
+| **Top 10 ports** | ~7 | ~8 |
+| **Top 100 ports** | ~85 | ~68 |
+| **Top 1000 ports** | ~617 | ~784 |
+| **Top 5000 ports** | ~2,012 | ~3,926 |
+| **Full port range** | 65,535 | 65,535 |
+
+You can also specify a **port range** (e.g., `1-1024` for privileged ports) or a **port list** (comma-separated, e.g., `22,80,443,3306,8080`).
+
+<Note>
+The "Top X ports" presets use **different, curated port lists for TCP and UDP** based on which ports are most commonly open for each protocol. TCP lists emphasize web (80, 443, 8080), SSH (22), and database ports, while UDP lists focus on DNS (53), DHCP (67-68), SNMP (161-162), and NTP (123) ports.
+</Note>
+
+#### Scan techniques
+
+For TCP scanning, you can choose the scan technique. For detailed explanations, see the [Nmap port scanning techniques documentation](https://nmap.org/book/man-port-scanning-techniques.html).
+
+| Technique | Flag | Description | Use case |
+|-----------|------|-------------|----------|
+| **TCP SYN** | -sS | Half-open scan, fast and stealthy | Default, recommended |
+| **Connect** | -sT | Full TCP connection | When SYN scan isn't possible |
+| **ACK** | -sA | Examines firewall rules | Firewall mapping |
+| **Window** | -sW | Analyzes TCP Window field | Specific systems |
+| **Maimon** | -sM | FIN/ACK probe | BSD-derived systems |
+| **TCP NULL** | -sN | No flags set | Bypass non-stateful firewalls |
+| **FIN** | -sF | FIN flag only | Bypass non-stateful firewalls |
+| **Xmas** | -sX | FIN, PSH, URG flags | Bypass non-stateful firewalls |
+| **SCTP INIT** | -sY | SCTP protocol scan | SCTP services |
+| **COOKIE-ECHO** | -sZ | Advanced SCTP scan | SCTP services |
+| **IP** | -sO | IP protocol scan | Protocol identification |
+
+<Note>
+Most scans should use **TCP SYN** (the default). Alternative techniques are useful for firewall evasion or specialized assessments.
+</Note>
 
 ## Scan types
 
-| Type | Ports | Features | Use case |
-|------|-------|----------|----------|
-| **Light** | Top 1000 (TCP) / Top 100 (UDP) | Service detection | Quick reconnaissance |
-| **Deep** | Top 5000 (TCP) / Top 1000 (UDP) | Service + OS detection | Comprehensive audit |
-| **Custom** | User-defined | All options configurable | Targeted scanning |
-
-## Port selection
-
-### Common port presets
-
-| Preset | TCP ports | UDP ports | Description |
-|--------|-----------|-----------|-------------|
-| Top 10 | 10 | 10 | Fastest scan |
-| Top 100 | 100 | 100 | Quick discovery |
-| Top 1000 | 1000 | 1000 | Standard assessment |
-| Top 5000 | 5000 | 5000 | Extended coverage |
-| Full range | 65535 | 65535 | Comprehensive (slow) |
-
-### Custom options
-
-- **Port range**: Specify start and end port (e.g., 1-1024)
-- **Port list**: Comma-separated list (e.g., 22,80,443,3306)
-
-## Scan techniques
-
-For TCP scanning, multiple techniques are available in Custom mode:
-
-| Technique | Flag | Description |
-|-----------|------|-------------|
-| **SYN scan** | -sS | Default, stealthy, fast |
-| **Connect scan** | -sT | Full TCP connection |
-| **ACK scan** | -sA | Firewall rule mapping |
-| **NULL scan** | -sN | No flags set |
-| **FIN scan** | -sF | FIN flag only |
-| **Xmas scan** | -sX | FIN, PSH, URG flags |
-
-## Additional options
-
-### Service detection
-
-When enabled, Nmap attempts to determine the service version:
-- Banner grabbing
-- Service-specific probes
-- Response analysis
-
-### OS detection
-
-Nmap analyzes TCP/IP stack responses to fingerprint the operating system:
-- TCP options analysis
-- Initial sequence number patterns
-- Response timing characteristics
-
-<Note>
-OS detection accuracy varies depending on how the target responds to probe requests.
-</Note>
-
-### Check alive
-
-Verify host responsiveness before scanning:
-- ICMP echo requests
-- TCP/UDP probes
+| Scan type | TCP ports scanned | UDP ports scanned | Features |
+|-----------|-------------------|-------------------|----------|
+| **Light** | ~140 top ports | ~70 top ports | Service detection |
+| **Deep** | ~3,800 top ports | ~780 top ports | Service detection, OS detection |
+| **Custom** | User-defined | User-defined | All options configurable |
 
 <Tip>
-If the scanner reports no open ports on a host you know is up, try disabling "Check alive" — the host may be blocking ICMP.
+**Light** is a quick reconnaissance scan. **Deep** (the default) provides comprehensive coverage and is recommended for security assessments.
 </Tip>
 
-## Common TCP ports
+## How it works
+
+<Steps>
+  <Step title="Check if host is alive (optional)">
+    If enabled, the scanner sends ICMP echo requests and TCP/UDP probes to verify the host is reachable before scanning.
+  </Step>
+  <Step title="Port scanning">
+    Nmap probes the specified ports using the selected technique (SYN scan for TCP by default, UDP scan for UDP).
+  </Step>
+  <Step title="Service detection">
+    For Light and Deep scans, Nmap identifies services using banner grabbing, service-specific probes, and response analysis.
+  </Step>
+  <Step title="OS detection (Deep only)">
+    Analyzes TCP/IP stack responses to fingerprint the operating system based on TCP options, sequence numbers, and timing characteristics.
+  </Step>
+  <Step title="Traceroute (Custom, TCP only)">
+    If enabled, determines the network path to the target, showing IP addresses of intermediate routers.
+  </Step>
+</Steps>
+
+### UDP scanning considerations
+
+UDP scanning is slower than TCP because UDP is connectionless. The scanner must wait for timeouts to determine if ports are closed or filtered. For UDP:
+- No response typically means `open|filtered`
+- An ICMP "port unreachable" error indicates `closed`
+
+<Tip>
+If the scanner reports "host seems down" or finds no open ports on a host you know is up, re-run the scan with **Check alive** disabled. The host may be blocking ICMP probes.
+</Tip>
+
+## Why port scanning matters
+
+Port scanning reveals your network's attack surface by identifying exposed services. Each open port represents a potential entry point that attackers can probe for vulnerabilities.
+
+### Common TCP services and their risks
 
 | Port | Service | Security concerns |
 |------|---------|-------------------|
-| 21 | FTP | Anonymous access, clear text |
-| 22 | SSH | Brute force, outdated versions |
+| 21 | FTP | Anonymous access, clear text credentials |
+| 22 | SSH | Brute force attacks, outdated versions |
 | 23 | Telnet | Clear text transmission |
 | 25 | SMTP | Open relay, email spoofing |
 | 80 | HTTP | Web vulnerabilities |
-| 443 | HTTPS | SSL/TLS issues |
+| 443 | HTTPS | SSL/TLS misconfigurations |
 | 445 | SMB | EternalBlue, relay attacks |
-| 1433 | MSSQL | Database exposure |
 | 3306 | MySQL | Database exposure |
 | 3389 | RDP | Remote access risks, BlueKeep |
-| 5432 | PostgreSQL | Database exposure |
 
-## Common UDP ports
+### Common UDP services and their risks
 
 | Port | Service | Security concerns |
 |------|---------|-------------------|
-| 53 | DNS | Zone transfer, amplification attacks |
-| 67-68 | DHCP | Rogue DHCP attacks |
-| 69 | TFTP | No authentication |
-| 123 | NTP | Amplification, time attacks |
-| 161 | SNMP | Information disclosure, default communities |
+| 53 | DNS | Zone transfers, amplification attacks |
+| 123 | NTP | Amplification attacks, time manipulation |
+| 161 | SNMP | Information disclosure, default community strings |
 | 500 | IKE/IPSec | VPN endpoint discovery |
-| 514 | Syslog | Log injection |
-| 1900 | SSDP/UPnP | Device discovery |
+| 1900 | SSDP/UPnP | Device discovery, amplification |
 
-<Note>
-UDP scanning is slower than TCP because UDP is connectionless. The scanner must wait for timeouts to determine if ports are closed or filtered.
-</Note>
+## Follow-up actions
 
-## Results
+From the results, you can launch additional scans directly:
 
-For each open port, you receive:
+| Discovered service | Suggested action |
+|-------------------|-----------------|
+| HTTP/HTTPS | Run [Website Scanner](/tools/website-scanner), [URL Fuzzer](/tools/url-fuzzer), or [Website Recon](/tools/website-recon) |
+| SSH, FTP, RDP, SMB | Test credentials with [Password Auditor](/tools/password-auditor) |
+| HTTPS, SMTP, IMAP | Analyze encryption with [SSL/TLS Scanner](/tools/ssl-tls-scanner) |
+| Any service | Run [Network Scanner](/tools/network-scanner) to test for vulnerabilities |
 
-- **Port number** and protocol (TCP/UDP)
-- **State** (open, filtered, closed)
-- **Service name** (SSH, HTTP, etc.)
-- **Product** name (OpenSSH, nginx, etc.)
-- **Version** information
-- **Extra info** (OS, kernel version, etc.)
-
-### Port states
-
-| State | Meaning |
-|-------|---------|
-| **Open** | Port accepts connections |
-| **Closed** | Port responds but no service |
-| **Filtered** | Firewall blocks probes |
-| **Open\|Filtered** | Cannot determine (UDP) |
-
-## Related tools
-
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Service vulnerability testing
-- [SSL/TLS Scanner](/tools/ssl-tls-scanner) — Certificate analysis
-- [Password Auditor](/tools/password-auditor) — Credential testing
-
-## Related topics
-
-- [VPN Configuration](/using/vpn/overview) — Scan internal networks
+<Tip>
+Use [VPN profiles](/using/vpn/overview) to scan internal networks behind firewalls.
+</Tip>

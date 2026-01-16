@@ -7,14 +7,18 @@ description: "Send security findings to Nucleus for vulnerability management"
 
 The Nucleus integration enables you to send security findings to Nucleus for centralized vulnerability management and tracking.
 
-## What Is Nucleus?
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## What is Nucleus?
 
 Nucleus is a vulnerability management platform that aggregates findings from multiple security tools, providing a unified view of your security posture.
 
 ## Benefits
 
 <CardGroup cols={2}>
-  <Card title="Centralized Management" icon="layer-group">
+  <Card title="Centralized management" icon="layer-group">
     All findings in one place.
   </Card>
   <Card title="Deduplication" icon="filter">
@@ -28,80 +32,102 @@ Nucleus is a vulnerability management platform that aggregates findings from mul
   </Card>
 </CardGroup>
 
-## Setting Up Nucleus
+## Setting up Nucleus
 
 <Steps>
-  <Step title="Get API Credentials">
-    In Nucleus, obtain your API key and connector ID.
+  <Step title="Get API credentials">
+    In Nucleus, obtain your API key.
   </Step>
-  <Step title="Configure Integration">
-    In Pentest-Tools.com, go to Settings → Integrations → Nucleus.
+  <Step title="Configure credentials">
+    In Pentest-Tools.com, go to Settings → Integrations → Nucleus and enter your subdomain and API key.
   </Step>
-  <Step title="Enter Credentials">
-    Add your Nucleus API credentials.
+  <Step title="Add projects">
+    Add Nucleus projects to send findings to.
   </Step>
-  <Step title="Test Connection">
-    Verify the integration works.
+  <Step title="Start sending">
+    Send findings manually or configure automatic sync.
   </Step>
 </Steps>
 
-## Data Sent to Nucleus
+## Sending findings
 
-| Data | Format |
-|------|--------|
-| Findings | Nucleus-compatible format |
-| Asset Info | IP, hostname, URL |
-| Severity | Mapped to Nucleus levels |
-| Evidence | References and proof |
+### Manual send
 
-## Sync Behavior
+Send selected findings to Nucleus on demand:
 
-### What Syncs
+1. Select findings from your findings list
+2. Click **Send to Nucleus**
+3. Choose the Nucleus project
+4. Findings are uploaded to Nucleus
 
-- New findings from scans
-- Finding updates and status changes
-- Asset information
-- Remediation guidance
+### Automatic notifications
 
-### Sync Options
+Configure notifications to automatically send scan results to Nucleus:
 
-| Option | Description |
-|--------|-------------|
-| Real-time | Immediate sync on scan complete |
-| Batch | Periodic batch uploads |
-| Manual | On-demand sync |
+1. Create a notification setting
+2. Select a Nucleus project as the destination
+3. Findings are sent when scans complete
 
-## Mapping Configuration
+## Nucleus projects
 
-Map Pentest-Tools.com data to Nucleus fields:
+Add multiple Nucleus projects to organize findings:
 
-| Platform | Nucleus |
-|----------|---------|
+| Field | Description |
+|-------|-------------|
+| **Project name** | Display name in Pentest-Tools.com |
+| **Project ID** | The Nucleus project identifier |
+
+<Tip>
+Create different projects for different environments (production, staging) or teams.
+</Tip>
+
+## What gets sent
+
+| Data | Description |
+|------|-------------|
+| **Findings** | Vulnerability details and evidence |
+| **Asset info** | Target IP, hostname, URL |
+| **Severity** | Mapped to Nucleus levels |
+| **Scan info** | Tool and scan details |
+
+### Severity mapping
+
+| Pentest-Tools.com | Nucleus |
+|-------------------|---------|
 | Critical | Critical |
 | High | High |
 | Medium | Medium |
 | Low | Low |
 | Info | Informational |
 
-<Tip>
-Use consistent severity mapping across all tools feeding into Nucleus for accurate prioritization.
-</Tip>
+## Tracking sent findings
+
+After sending findings to Nucleus:
+
+- Findings show a Nucleus indicator
+- You can track which findings have been sent
+- Avoid duplicate submissions
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Findings not syncing">
-    - Verify API credentials
-    - Check connector configuration
-    - Review Nucleus logs
+    - Verify API credentials are correct
+    - Check the project ID exists in Nucleus
+    - Review the subdomain configuration
+  </Accordion>
+  <Accordion title="API key invalid">
+    - Regenerate your API key in Nucleus
+    - Update the credentials in Pentest-Tools.com
   </Accordion>
   <Accordion title="Duplicate findings">
-    - Check Nucleus dedup rules
-    - Verify unique identifiers
+    - Check Nucleus deduplication rules
+    - Verify you haven't already sent the findings
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
 - [Vanta Integration](/notifications/security/vanta)
+- [Findings](/using/findings/findings)
 - [Notifications Overview](/notifications/overview)

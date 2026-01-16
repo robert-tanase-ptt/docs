@@ -11,33 +11,40 @@ Each finding in the list displays:
 
 | Column | Description |
 |--------|-------------|
-| **Severity** | Risk level (Critical, High, Medium, Low, Info) |
-| **Title** | Brief description of the vulnerability |
-| **Asset** | Where the finding was discovered |
+| **Finding** | Name of the vulnerability with a verified indicator |
+| **Target** | The target where the finding was discovered |
 | **Status** | Current triage status |
-| **Tool** | Scanner that detected the issue |
-| **Date** | When it was discovered |
+| **Risk level** | Severity rating (Critical, High, Medium, Low, Info) |
+| **Source** | Scanner or source that detected the issue (e.g., Website Scanner, manually added) |
+| **Scan date** | When the finding was discovered |
 
 ### Filtering and sorting
 
 Use filters to focus on what matters:
 
-- **By severity** — View only Critical and High findings, exclude informational items
-- **By status** — Track remediation progress (New, Confirmed, Fixed, etc.)
-- **By asset or tool** — Scope to specific targets or scanner types
+- **By risk level**: View only Critical and High findings, exclude informational items
+- **By status**: Track remediation progress (Open, Fixed, Accepted, etc.)
+- **By target**: Scope to specific targets
+- **By source**: Filter by scanner type or manually added findings
+- **By verified status**: Show only verified or unverified findings
+- **By scan date**: Filter by when findings were discovered
 
 <Tip>
-Start your triage by filtering for Critical and High severity findings—these represent the greatest risk to your organization.
+Start your triage by filtering for Critical and High severity findings, these represent the greatest risk to your organization.
 </Tip>
 
 ## Finding details
 
 Select any finding to view comprehensive information:
 
-- **Description** — What the vulnerability is and why it's a security concern
-- **Evidence** — Proof of the vulnerability (request/response data, screenshots, payloads)
-- **Remediation** — Step-by-step guidance on how to fix the issue
-- **References** — Links to CVE entries, CWE classifications, OWASP documentation
+- **Description**: What the vulnerability is and why it's a security concern
+- **Evidence**: Proof of the vulnerability (request/response data, screenshots, payloads)
+- **How to reproduce**: Steps to reproduce the vulnerability
+- **Risk description**: Explanation of the potential impact
+- **Recommendation**: Guidance on how to fix the issue
+- **References**: Links to CVE entries, CWE classifications, OWASP documentation
+
+Additional metadata fields include Port, Protocol, Service, CVSS scores, CVE, CWE, EPSS score, CISA KEV status, and OWASP classifications.
 
 ## Actions
 
@@ -47,11 +54,10 @@ Update the finding's lifecycle status:
 
 | Status | Description | When to use |
 |--------|-------------|-------------|
-| **New** | Recently discovered | Not yet reviewed |
-| **Confirmed** | Validated as real | Plan remediation |
-| **In Progress** | Remediation underway | Track active work |
-| **Fixed** | Remediated and verified | Close out |
-| **Accepted** | Risk acknowledged | No action planned—document rationale |
+| **Open** | Active finding requiring attention | Default status for new findings |
+| **Fixed** | Remediated and verified | Issue has been resolved |
+| **Accepted** | Risk acknowledged | No action planned, document rationale |
+| **Ignored** | Intentionally excluded | Not relevant to current scope |
 | **False Positive** | Not a real vulnerability | Incorrect detection |
 
 <Warning>
@@ -92,9 +98,12 @@ Document your findings with:
 
 Select multiple findings to:
 
-- Update status in batch
-- Export selected items
-- Assign to team members
+- Change status in batch
+- Change risk level in batch
+- Change verified status in batch
+- Send to integrations (Jira, Nucleus)
+- Clone findings
+- Delete findings (only for manually added or imported findings)
 
 ## Add manual findings
 
@@ -113,20 +122,8 @@ When running multiple scans, the same vulnerability may be detected more than on
 - Affected parameter
 
 <Note>
-Deduplication groups findings but doesn't delete them—you can always see the full history.
+Deduplication groups findings but doesn't delete them, you can always see the full history.
 </Note>
-
-## Suppression
-
-Hide findings you don't want in your regular views:
-
-- **Known issues** you're tracking elsewhere
-- **Accepted risks** you've consciously decided to accept
-- **False positives** you want to hide from default views
-
-<Warning>
-Be cautious with broad suppression rules—they may hide legitimate findings. Review suppression rules quarterly.
-</Warning>
 
 ## Reporting
 
@@ -139,5 +136,4 @@ Export your findings for stakeholder communication and compliance documentation.
 ## Related topics
 
 - [Finding templates](/using/findings/templates)
-- [Findings and severity](/concepts/findings-and-severity)
 - [Reporting overview](/using/reporting/reporting-overview)

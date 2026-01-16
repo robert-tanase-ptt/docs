@@ -9,8 +9,8 @@ Scheduled scans automate your security testing by running scans at specified int
 
 You can schedule two types of scans:
 
-- **Individual tools** — Schedule any [security tool](/tools) to run automatically (e.g., Network Scanner, Website Scanner, Port Scanner)
-- **Pentest Robots** — Schedule [Pentest Robots](/automation/robots/what-are-pentest-robots) to run automated, multi-tool assessments on a recurring basis
+- **Individual tools**: Schedule any [security tool](/tools) to run automatically (e.g., [Network Scanner](/tools/network-scanner), [Website Scanner](/tools/website-scanner), [Port Scanner](/tools/port-scanner))
+- **Pentest Robots**: Schedule [Pentest Robots](/automation/robots/pentest-robots) to run automated, multi-tool assessments on a recurring basis
 
 ## Why schedule scans?
 
@@ -52,16 +52,12 @@ The available frequencies depend on your subscription plan.
 
 | Frequency | Description | Free Plan | Paid Plans |
 |-----------|-------------|-----------|------------|
-| **No repeat** | Run once at the scheduled time | — | ✓ |
-| **Daily** | Run every day | — | ✓ |
+| **No repeat** | Run once at the scheduled time | ✗ | ✓ |
+| **Daily** | Run every day | ✗ | ✓ |
 | **Weekly** | Run every week | ✓ | ✓ |
 | **Monthly** | Run every month | ✓ | ✓ |
-| **Quarterly** | Run every 3 months | — | ✓ |
-| **Yearly** | Run every year | — | ✓ |
-
-<Info>
-Free plan users can schedule scans with **Weekly** or **Monthly** frequencies. [Upgrade your plan](/plans-and-limits/plan-overview) to access all scheduling options.
-</Info>
+| **Quarterly** | Run every 3 months | ✗ | ✓ |
+| **Yearly** | Run every year | ✗ | ✓ |
 
 <Note>
 If you schedule a Monthly or Quarterly scan starting on the last day of a month (e.g., January 31), it will automatically run on the last day of each subsequent month (e.g., February 28/29, March 31).
@@ -87,7 +83,7 @@ If Vanta is not configured, the "Send to Vanta" toggle will be disabled. You'll 
 
 ## Managing scheduled scans
 
-Access all your scheduled scans from the **Scheduled Scans** dashboard.
+Access all your scheduled scans from the **Scheduled Scans** page.
 
 ### Viewing scheduled scans
 
@@ -130,7 +126,7 @@ Set up notifications for scheduled scans to ensure you're alerted to new finding
 
 - **Time zone**: Schedules use your account's time zone setting
 - **Start time**: The exact time when the scan should begin
-- **Duration**: Some scans may run longer than expected—plan accordingly if scheduling multiple scans
+- **Duration**: Some scans may run longer than expected, so plan accordingly if scheduling multiple scans
 
 <Tip>
 Schedule intensive scans during off-peak hours to minimize impact on production systems and users.

@@ -1,105 +1,107 @@
 ---
-title: "Cloud scanner"
-description: "Discover misconfigured cloud storage and services"
+title: "Cloud Scanner"
+description: "Discover misconfigurations and vulnerabilities in cloud storage and services"
 ---
 
 ## Overview
 
-The Cloud Scanner identifies misconfigured cloud storage buckets and services that may expose sensitive data. It tests for public access on AWS S3, Azure Blob Storage, and Google Cloud Storage.
+The Cloud Scanner identifies misconfigurations and vulnerabilities in cloud environments, focusing on AWS S3 buckets and Google Cloud Storage. It detects public access issues, overly permissive configurations, and interesting files that may expose sensitive data.
 
-## What it tests
+The Cloud Scanner is a **vulnerability scanner**: it actively tests cloud resources for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="AWS S3" icon="aws">
-    S3 bucket permissions
-  </Card>
-  <Card title="Azure Blob" icon="microsoft">
-    Azure container access
-  </Card>
-  <Card title="Google Cloud" icon="google">
-    GCS bucket permissions
-  </Card>
-  <Card title="Access controls" icon="lock-open">
-    Public read/write settings
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **IP address** | `192.168.1.1` |
+| **Hostname** | `example.com`, `mybucket.s3.amazonaws.com` |
+| **URL** | `https://mybucket.s3.amazonaws.com`, `https://storage.googleapis.com/mybucket` |
 
-<Steps>
-  <Step title="Enter target">
-    Provide domain, bucket name, or URL.
-  </Step>
-  <Step title="Select cloud providers">
-    Choose which cloud providers to test.
-  </Step>
-  <Step title="Run scan">
-    Execute the cloud configuration check.
-  </Step>
-</Steps>
+### Cloud storage URLs
 
-## Cloud storage checks
+You can scan cloud storage buckets directly using their URLs:
+
+| Provider | URL format |
+|----------|------------|
+| **AWS S3** | `https://<bucket_name>.s3.amazonaws.com` |
+| **Google Cloud Storage** | `https://storage.googleapis.com/<bucket_name>` |
+
+## Supported cloud providers
+
+| Provider | Detection | Vulnerability scanning |
+|----------|-----------|----------------------|
+| **AWS** | ✅ | ✅ S3 bucket misconfigurations |
+| **Google Cloud** | ✅ | ✅ Cloud Storage misconfigurations |
+| **Azure** | ✅ | Coming soon |
+
+## Scan options
+
+The Cloud Scanner has two configurable options (both enabled by default):
+
+| Option | Description |
+|--------|-------------|
+| **Detect cloud provider** | Identifies which cloud provider hosts the target by checking IP ranges |
+| **Detect cloud vulnerabilities** | Scans for misconfigurations and security issues |
+
+<Note>
+If "Detect cloud provider" is disabled, the scanner tests for vulnerabilities across all supported providers. If enabled, it only tests for issues specific to the detected provider.
+</Note>
+
+## What it detects
 
 ### AWS S3
 
-| Check | Risk |
-|-------|------|
-| Public read access | Data exposure |
-| Public write access | Data tampering |
-| Public listing | Information disclosure |
-| ACL misconfigurations | Unauthorized access |
+| Check | Description |
+|-------|-------------|
+| **Public bucket listing** | Bucket contents can be enumerated |
+| **Public read access** | Objects can be read without authentication |
+| **Public write access** | Objects can be uploaded or modified |
+| **ACL misconfigurations** | Overly permissive access control lists |
+| **Interesting files** | Sensitive files like wp-config, backups, keys |
 
-### Azure Blob Storage
+### Google cloud storage
 
-| Check | Risk |
-|-------|------|
-| Anonymous read access | Data exposure |
-| Container listing | Information disclosure |
-| Public blob access | Individual file exposure |
+| Check | Description |
+|-------|-------------|
+| **Public bucket access** | Bucket accessible without authentication |
+| **IAM policy issues** | `allUsers` or `allAuthenticatedUsers` permissions |
+| **Bucket ACL** | Overly permissive access control |
+| **Uniform access not enabled** | Legacy ACL mode in use |
+| **Logging not enabled** | Access logging disabled |
+| **Versioning/retention not enabled** | No protection against accidental deletion |
+| **Encryption not configured** | Using default encryption only |
+| **Lifecycle rules missing** | No automated object management |
+| **Interesting files** | Sensitive files exposed in the bucket |
 
-### Google Cloud Storage
+## How it works
 
-| Check | Risk |
-|-------|------|
-| Public object access | Data exposure |
-| allUsers permissions | Universal access |
-| allAuthenticatedUsers | Any Google account access |
+The Cloud Scanner performs these steps:
 
-## Common findings
+1. **Target resolution**: Resolves the target to an IP address
+2. **Provider detection**: Checks IP ranges to identify AWS, GCP, or Azure
+3. **Bucket discovery**: Identifies storage buckets from the target
+4. **Permission testing**: Tests what operations are allowed (read, write, list)
+5. **Configuration analysis**: Checks security settings like ACLs, IAM policies, encryption
+6. **Interesting file search**: Looks for sensitive filenames in accessible buckets
 
-| Finding | Impact | Remediation |
-|---------|--------|-------------|
-| Public bucket listing | Info disclosure | Disable public listing |
-| Public read access | Data breach | Restrict to authorized users |
-| Public write access | Data tampering | Remove write permissions |
-| Sensitive files exposed | Data breach | Review and restrict access |
+## Why cloud security matters
+
+- **Data exposure**: Misconfigured buckets have caused major data breaches
+- **Compliance**: Regulations require proper access controls on cloud storage
+- **Attack surface**: Public buckets are actively scanned by attackers
+- **Data integrity**: Writable buckets allow attackers to modify or inject content
 
 <Warning>
-Publicly writable buckets allow attackers to upload malicious content or modify existing files.
+Publicly writable buckets allow attackers to upload malicious content, host phishing pages, or modify existing files.
 </Warning>
 
-## Results
+## Follow-up actions
 
-For each finding:
-- **Resource** — Bucket/container name
-- **Provider** — AWS, Azure, or GCP
-- **Access level** — Public read, write, list
-- **Risk** — Severity rating
-- **Details** — Specific misconfigurations
+After discovering cloud misconfigurations:
 
-## Best practices
-
-<Tip>
-Enable cloud provider security tools like AWS Config Rules, Azure Security Center, or GCP Security Command Center for continuous monitoring.
-</Tip>
-
-- **Block public access** by default
-- **Use IAM policies** for access control
-- **Enable logging** for audit trails
-- **Review regularly** for drift
-- **Encrypt data** at rest and in transit
-
-## Related tools
-
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Infrastructure assessment
-- [Subdomain Finder](/tools/subdomain-finder) — Discover cloud-hosted assets
+- **Restrict public access**: Remove `allUsers` and `allAuthenticatedUsers` permissions
+- **Enable bucket-level security**: Use uniform bucket-level access (GCP) or block public access (AWS)
+- **Enable logging**: Track access to sensitive buckets
+- **Review sensitive files**: Check if exposed files contain credentials or PII
+- **Run [Network Scanner](/tools/network-scanner)**: Test the underlying infrastructure
+- **Run [Subdomain Finder](/tools/subdomain-finder)**: Discover additional cloud-hosted assets

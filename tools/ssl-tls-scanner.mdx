@@ -1,46 +1,104 @@
 ---
-title: "SSL/TLS scanner"
-description: "Analyze SSL/TLS configuration and certificate security"
+title: "SSL/TLS Scanner"
+description: "Analyze SSL/TLS configuration and detect certificate and protocol vulnerabilities"
 ---
 
 ## Overview
 
-The SSL/TLS Scanner analyzes the security of SSL/TLS configurations, identifying weak ciphers, protocol vulnerabilities, and certificate issues.
+The SSL/TLS Scanner analyzes the security configuration of SSL/TLS services, identifying weak ciphers, deprecated protocols, certificate issues, and known vulnerabilities like Heartbleed, POODLE, and ROBOT.
 
-## What it tests
+The SSL/TLS Scanner is a **vulnerability scanner**: it actively tests SSL/TLS configurations for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="Protocols" icon="lock">
-    SSL 2/3, TLS 1.0/1.1/1.2/1.3
-  </Card>
-  <Card title="Cipher suites" icon="key">
-    Encryption strength and security
-  </Card>
-  <Card title="Certificates" icon="certificate">
-    Validity, chain, and trust
-  </Card>
-  <Card title="Vulnerabilities" icon="bug">
-    Known SSL/TLS attacks
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **IP address** | `192.168.1.1`, `10.0.0.5` |
+| **Hostname** | `example.com`, `mail.example.com` |
 
-<Steps>
-  <Step title="Enter target">
-    Provide hostname and port (default: 443).
-  </Step>
-  <Step title="Run scan">
-    Execute the SSL/TLS analysis.
-  </Step>
-  <Step title="Review results">
-    Analyze configuration and issues.
-  </Step>
-</Steps>
+## Scan modes
 
-## Checks performed
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **Light** | Scan port 443 only | Quick HTTPS check |
+| **Deep** | Scan ~2,012 TCP ports | Full infrastructure audit |
+| **Custom** | User-configured ports and engines | Targeted testing |
 
-### Protocol checks
+### Parameters comparison
+
+| Parameter | Light | Deep | Custom |
+|-----------|:-----:|:----:|:------:|
+| **TCP ports** | 443 | ~2,012 | User-defined |
+| **Certificate engine** | ✓ | ✓ | Configurable |
+| **Vulnerability engine** | ✓ | ✓ | Configurable |
+
+### Engines comparison
+
+| Engine | Light | Deep | Custom |
+|--------|:-----:|:----:|:------:|
+| [**Certificate**](#certificate-checks) | ✓ | ✓ | ✓ |
+| [**Vulnerability**](#vulnerability-checks) | ✓ | ✓ | ✓ |
+
+<Warning>
+The Deep scan tests ~2,012 ports and may take significant time. Use Light mode for quick HTTPS checks or Custom mode to specify exact ports.
+</Warning>
+
+### Custom scan
+
+Full control over scan parameters:
+
+- Select specific scanning engines (Certificate, Vulnerability, or both)
+- Define custom port ranges, lists, or common port presets
+- Target specific SSL/TLS services on non-standard ports
+
+## Custom scan options
+
+### Port selection
+
+| Option | TCP ports | Description |
+|--------|-----------|-------------|
+| **Top 10 ports** | ~7 | Fastest scan |
+| **Top 100 ports** | ~85 | Quick discovery |
+| **Top 1000 ports** | ~617 | Standard assessment |
+| **Top 5000 ports** | ~2,012 | Extended coverage |
+| **Full port range** | 65,535 | All ports (slow) |
+| **Port range** | Variable | Specify start and end (e.g., `1-1024`) |
+| **Port list** | Variable | Comma-separated (e.g., `443,8443,993`) |
+
+## Vulnerability checks
+
+The Vulnerability engine detects these known SSL/TLS vulnerabilities:
+
+| Vulnerability | CVE | Description |
+|---------------|-----|-------------|
+| **Heartbleed** | CVE-2014-0160 | OpenSSL memory disclosure |
+| **Ticketbleed** | CVE-2016-9244 | F5 BIG-IP session ticket leak |
+| **CCS Injection** | CVE-2014-0224 | OpenSSL ChangeCipherSpec attack |
+| **POODLE** | CVE-2014-3566 | SSL 3.0 padding oracle attack |
+| **ROBOT** | CVE-2017-13099 | RSA padding oracle attack |
+| **DROWN** | CVE-2016-0800 | SSLv2 cross-protocol attack |
+| **Secure Renegotiation** | CVE-2009-3555 | Insecure renegotiation |
+| **CRIME** | CVE-2012-4929 | TLS compression attack |
+| **BREACH** | CVE-2013-3587 | HTTP compression attack |
+| **FREAK** | CVE-2015-0204 | Export cipher downgrade |
+| **SWEET32** | CVE-2016-2183 | 64-bit block cipher birthday attack |
+| **BEAST** | CVE-2011-3389 | CBC cipher attack |
+| **LOGJAM** | CVE-2015-4000 | DHE export downgrade |
+
+## Certificate checks
+
+The Certificate engine analyzes certificate configuration:
+
+| Check | Description |
+|-------|-------------|
+| **Validity period** | Not expired, not future-dated |
+| **Common name** | Matches requested hostname |
+| **Subject Alternative Names** | Additional hostnames covered |
+| **Certificate chain** | Complete and trusted |
+| **Signature algorithm** | SHA-256 or better recommended |
+| **Key size** | RSA 2048+ or ECDSA 256+ recommended |
+
+## Protocol analysis
 
 | Protocol | Status | Notes |
 |----------|--------|-------|
@@ -51,63 +109,41 @@ The SSL/TLS Scanner analyzes the security of SSL/TLS configurations, identifying
 | TLS 1.2 | ✅ Current | Recommended minimum |
 | TLS 1.3 | ✅ Modern | Best security |
 
-### Cipher suite analysis
+## Cipher suite analysis
 
-| Category | Examples |
-|----------|----------|
-| **Strong** | AES-256-GCM, ChaCha20-Poly1305 |
-| **Acceptable** | AES-128-GCM |
-| **Weak** | 3DES, RC4 |
-| **Insecure** | NULL, EXPORT, DES |
+| Category | Examples | Rating |
+|----------|----------|--------|
+| **Strong** | AES-256-GCM, ChaCha20-Poly1305 | ✅ Recommended |
+| **Acceptable** | AES-128-GCM | ✅ Acceptable |
+| **Weak** | 3DES, RC4 | ⚠️ Avoid |
+| **Insecure** | NULL, EXPORT, DES | ❌ Critical |
 
-### Certificate checks
+## How it works
 
-| Check | Description |
-|-------|-------------|
-| **Validity period** | Not expired, not future-dated |
-| **Common name** | Matches requested hostname |
-| **SANs** | Subject Alternative Names |
-| **Chain** | Complete and trusted |
-| **Signature algorithm** | SHA-256 or better |
-| **Key size** | RSA 2048+, ECDSA 256+ |
+The SSL/TLS Scanner uses a scanning engine based on **testssl.sh** with custom enhancements:
 
-### Vulnerability checks
+1. **Port discovery**: Uses Nmap to identify SSL/TLS-enabled services on specified ports
+2. **Protocol negotiation**: Attempts to negotiate various SSL/TLS protocol versions
+3. **Cipher enumeration**: Tests which cipher suites the server accepts
+4. **Vulnerability testing**: Runs specific checks for known SSL/TLS vulnerabilities
+5. **Certificate analysis**: Validates the certificate chain and configuration
 
-| Vulnerability | CVE | Description |
-|---------------|-----|-------------|
-| **BEAST** | CVE-2011-3389 | CBC cipher attack |
-| **POODLE** | CVE-2014-3566 | SSL 3.0 padding attack |
-| **FREAK** | CVE-2015-0204 | Export cipher downgrade |
-| **Logjam** | CVE-2015-4000 | DHE export downgrade |
-| **DROWN** | CVE-2016-0800 | SSLv2 cross-protocol attack |
-| **Heartbleed** | CVE-2014-0160 | OpenSSL memory disclosure |
-| **ROBOT** | CVE-2017-13099 | RSA padding oracle |
+## Why SSL/TLS security matters
 
-## Results
-
-For each target:
-- **Grade** — Overall security rating (A-F)
-- **Protocols** — Supported SSL/TLS versions
-- **Cipher suites** — List with strength ratings
-- **Certificate details** — Full certificate information
-- **Vulnerabilities** — Known issues detected
-
-## Grading
-
-| Grade | Meaning |
-|-------|---------|
-| **A+** | Excellent configuration, HSTS |
-| **A** | Strong configuration |
-| **B** | Minor issues |
-| **C** | Weak ciphers or protocols |
-| **D** | Significant vulnerabilities |
-| **F** | Critical issues |
+- **Data protection**: Weak SSL/TLS allows attackers to decrypt sensitive communications
+- **Compliance**: PCI DSS, HIPAA, and other regulations require strong encryption
+- **Trust**: Modern browsers warn users about insecure configurations
+- **Attack surface**: Deprecated protocols and weak ciphers are actively exploited
 
 <Tip>
-Aim for at least a B grade. A+ requires TLS 1.2+, strong ciphers, and HSTS enabled.
+Aim for TLS 1.2+ with strong cipher suites. Disable SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1.
 </Tip>
 
-## Related tools
+## Follow-up actions
 
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Infrastructure assessment
-- [Website Recon](/tools/website-recon) — Technology fingerprinting
+After identifying SSL/TLS issues:
+
+- **Update server configuration**: Disable weak protocols and ciphers
+- **Renew certificates**: Replace expiring or weak certificates
+- **Run [Network Scanner](/tools/network-scanner)**: Test for additional infrastructure vulnerabilities
+- **Check [Website Scanner](/tools/website-scanner)**: Assess web application security

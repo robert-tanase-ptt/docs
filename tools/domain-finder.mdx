@@ -1,85 +1,107 @@
 ---
-title: "Domain finder"
-description: "Discover related domains and expand your attack surface knowledge"
+title: "Domain Finder"
+description: "Discover domain names owned by a company and map its attack surface"
 ---
 
 ## Overview
 
-The Domain Finder discovers domains related to your target organization, including acquisitions, subsidiaries, and alternate brands. Understanding the full domain portfolio is essential for comprehensive security assessments.
+The Domain Finder discovers additional domain names owned by a target organization. Finding all domains belonging to a company is an important step in the information gathering phase of a penetration test or bug bounty activities, as these associated domains could expose resources that are less secure than the main domain.
 
-## What it finds
+Domain Finder is a **discovery tool**: it identifies related domains but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
-- Related company domains
-- Alternate TLDs (.com, .net, .org, .io, etc.)
-- Regional domain variations
-- Historical domains
-- Subsidiary and acquisition domains
-- Brand variation domains
+**Example**: For `facebook.com`, the tool discovers related domains like:
+- `facebook.net`
+- `fbcdn.net`
+- `fb.com`
+- `messenger.com`
+- `fbsbx.com`
 
-## How to use
+## Scan types
 
-<Steps>
-  <Step title="Enter seed domain">
-    Provide a known domain for the target organization.
-  </Step>
-  <Step title="Configure options">
-    Set search parameters and depth.
-  </Step>
-  <Step title="Run discovery">
-    Execute the domain finding process.
-  </Step>
-  <Step title="Review results">
-    Analyze discovered domains and verify relevance.
-  </Step>
-</Steps>
+| Technique | Light scan | Deep scan |
+|-----------|:----------:|:---------:|
+| [SSL Certificates](#ssl-certificates) | ✓ | ✓ |
+| [BuiltWith](#builtwith) | ✗ | ✓ |
+| [Reverse Whois](#reverse-whois) | ✗ | ✓ |
 
-## Discovery methods
+**Custom scan** allows you to select which techniques to use and configure all parameters manually.
 
-| Method | Description |
+## Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| Domain name | The target domain (e.g., `oracle.com`, `yahoo.com`). Must be a root domain with a TLD, subdomains like `www.example.com` are not accepted. |
+| Scan type | Light, Deep, or Custom. See comparison table above. |
+| SSL Certificates | Enable searching Certificate Transparency Logs. See [SSL Certificates](#ssl-certificates) for details. |
+| BuiltWith | Enable searching for shared technology relationships. See [BuiltWith](#builtwith) for details. |
+| Reverse Whois | Enable reverse Whois lookups on registrant data. See [Reverse Whois](#reverse-whois) for details. |
+| Minimum weight | Certainty threshold (0-100) for including a domain in results. Default is 30. Higher values show only high-confidence matches; lower values show more potential matches that may need verification. See [How results are scored](#how-results-are-scored) for details on how certainty is calculated. |
+
+## Discovery techniques
+
+### SSL Certificates
+
+Searches Certificate Transparency Logs for certificates that include the target domain or its subdomains. The tool examines:
+
+- **Current certificates**: Active certificates where the target appears in the Common Name or Subject Alternative Names
+- **Expired certificates**: Historical certificates that may reveal previously associated domains
+- **Organization field**: The company name in certificates, used to find other domains with matching organizations
+
+This technique is particularly effective because organizations often include multiple domains in a single certificate or use the same company name across certificates for different domains.
+
+### BuiltWith
+
+Searches BuiltWith for technology relationship data. When two websites share the same tracking identifiers (like Google Analytics IDs, Facebook Pixels, or other technology fingerprints), they're likely owned by the same organization.
+
+The tool considers:
+- Whether the relationship is currently active
+- How long the relationship has existed
+- How many times the relationship appears across different technologies
+
+### Reverse Whois
+
+Performs a multi-step Whois analysis:
+
+1. **Initial lookup**: Gets the registrant company and contact email from the target domain's Whois record
+2. **Reverse lookup on company**: Finds all domains registered under the same company name
+3. **Reverse lookup on email**: Finds all domains registered with the same contact email
+
+This is one of the most reliable techniques, as domain registration data directly links domains to their owners.
+
+## How results are scored
+
+Each discovered domain receives a **certainty score** based on multiple factors:
+
+| Factor | Description |
 |--------|-------------|
-| **WHOIS analysis** | Find domains with similar registration data |
-| **Certificate search** | Discover domains in SSL certificates |
-| **Reverse DNS** | Identify domains on shared infrastructure |
-| **Pattern matching** | Find variations of known domains |
+| SSL certificate matches | How the domain appears in certificates (in target's cert, in other certs, organization match) |
+| BuiltWith relationships | Shared technology identifiers, relationship duration, and current status |
+| Whois record matches | Matching registrant companies or contact emails |
+| Name similarity | Similar domain names (e.g., `amazon.com` and `amazon.de`) |
+| Redirect analysis | Whether domains redirect to each other |
 
-## Use cases
+The **Minimum weight** parameter filters out low-confidence results. The default of 30 provides a good balance between coverage and accuracy. Increase it to see only high-confidence matches; decrease it to see more potential matches that may need manual verification.
 
-<CardGroup cols={2}>
-  <Card title="Attack surface mapping" icon="map">
-    Understand the full scope of an organization's online presence
-  </Card>
-  <Card title="Acquisition research" icon="building">
-    Find domains belonging to acquired companies
-  </Card>
-  <Card title="Brand monitoring" icon="eye">
-    Discover potential brand infringement domains
-  </Card>
-  <Card title="Scope definition" icon="crosshairs">
-    Identify all domains that should be in testing scope
-  </Card>
-</CardGroup>
+## Why domain discovery matters
 
-## Results
+Domain Finder is valuable for:
 
-For each discovered domain:
-- Domain name
-- Registration status
-- Discovery method
-- Relationship to seed domain
+- **Attack surface mapping**: Discover the full scope of an organization's online presence
+- **Penetration testing**: Find additional domains to include in your testing scope
+- **Bug bounty**: Identify domains that may be in scope but less monitored
+- **M&A due diligence**: Discover domains belonging to acquired companies
 
 <Note>
-Not all discovered domains may belong to your target. Always verify ownership before adding to testing scope.
+Not all discovered domains may belong to your target. Always verify ownership before adding domains to your testing scope.
 </Note>
 
-## Following up
+## Follow-up actions
 
 After discovering related domains:
-1. **Verify ownership** — Confirm domains belong to the target
-2. **Run subdomain enumeration** — Use [Subdomain Finder](/tools/subdomain-finder)
-3. **Check for takeover risks** — Use [Subdomain Takeover](/tools/subdomain-takeover)
-4. **Scan discovered assets** — Run appropriate scanners
 
-## Related tools
-
-- [Subdomain Finder](/tools/subdomain-finder) — Enumerate subdomains
-- [WHOIS Lookup](/tools/whois) — Domain registration lookup
+1. **Verify ownership**: Confirm domains belong to the target
+2. **Enumerate subdomains**: Use [Subdomain Finder](/tools/subdomain-finder) on each discovered domain
+3. **Check for takeover risks**: Use [Subdomain Takeover](/tools/subdomain-takeover) to find dangling DNS entries
+4. **Look up registration details**: Use [WHOIS Lookup](/tools/whois) for domain registration information
+5. **Search for exposed data**: Use [Google Hacking](/tools/google-hacking) to find indexed information about discovered domains
+6. **Scan discovered assets**: Run appropriate vulnerability scanners on confirmed domains

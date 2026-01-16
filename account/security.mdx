@@ -3,11 +3,13 @@ title: "Account security"
 description: "Secure your Pentest-Tools.com account"
 ---
 
-## Security Overview
+## Overview
 
-Protecting your account is critical—it has access to sensitive security testing data.
+Protecting your account is critical. It has access to sensitive security testing data.
 
-## Two-Factor Authentication (2FA)
+Manage your security settings at [**My Account → Security**](https://app.pentest-tools.com/account/security/general).
+
+## Two-factor authentication (2FA)
 
 <Warning>
 We strongly recommend enabling 2FA for all accounts.
@@ -15,94 +17,88 @@ We strongly recommend enabling 2FA for all accounts.
 
 ### Enabling 2FA
 
+Go to [**My Account → Security → 2FA**](https://app.pentest-tools.com/account/security/tfa) to set up two-factor authentication.
+
 <Steps>
-  <Step title="Go to Security Settings">
-    Navigate to Settings → Security.
+  <Step title="Scan the QR code">
+    Use an authenticator app to scan the QR code displayed on the page. Alternatively, you can manually enter the secret key.
   </Step>
-  <Step title="Enable 2FA">
-    Click "Enable Two-Factor Authentication".
-  </Step>
-  <Step title="Scan QR Code">
-    Use an authenticator app to scan the code.
-  </Step>
-  <Step title="Enter Code">
-    Enter the code from your app to verify.
-  </Step>
-  <Step title="Save Recovery Codes">
-    Store backup codes securely.
+  <Step title="Enter the verification code">
+    Enter the 6-digit code from your authenticator app to verify the setup.
   </Step>
 </Steps>
 
-### Supported Authenticator Apps
+Once enabled, you'll need to enter a code from your authenticator app each time you log in.
 
-- Google Authenticator
-- Authy
+### Supported authenticator apps
+
+Any TOTP-compatible authenticator app works, including:
+
+- [Authy](https://authy.com/)
+- [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2)
+- [LastPass Authenticator](https://lastpass.com/auth/)
 - Microsoft Authenticator
 - 1Password
-- Any TOTP-compatible app
 
-### Recovery Codes
+### Disabling 2FA
+
+To disable 2FA:
+
+1. Go to [**My Account → Security**](https://app.pentest-tools.com/account/security/general)
+2. Click **Disable 2FA**
+3. Enter your current password to confirm
+
+## Password
+
+### Changing your password
+
+Go to [**My Account → Security**](https://app.pentest-tools.com/account/security/general) to change your password.
+
+1. Click **Change password**
+2. Enter your current password
+3. Enter and confirm your new password
+4. Click **Save**
+
+The page also shows when you last changed your password.
 
 <Note>
-Save your recovery codes in a secure location. They're the only way to access your account if you lose your authenticator.
+If you signed up using Google or Microsoft SSO and haven't set a password yet, you'll see **Set password** instead of **Change password**.
 </Note>
 
-## Password Security
+### Password requirements
 
-### Password Best Practices
+- Minimum 8 characters
+- We recommend using a password manager and a unique password for this service
 
-| Practice | Recommendation |
-|----------|----------------|
-| Length | 12+ characters |
-| Complexity | Mix of types |
-| Uniqueness | Unique to this service |
-| Manager | Use a password manager |
+## Login history
 
-### Changing Your Password
+Review your login history for suspicious activity at [**My Account → Security → Login history**](https://app.pentest-tools.com/account/security/login_history).
 
-1. Go to Settings → Security
-2. Click "Change Password"
-3. Enter current password
-4. Enter and confirm new password
-5. Click Save
+Each login event shows:
 
-## Session Management
-
-### Active Sessions
-
-View and manage active sessions:
-- See all logged-in devices
-- View login locations
-- Revoke suspicious sessions
-
-### Session Security
-
-| Setting | Description |
-|---------|-------------|
-| Auto-logout | Session timeout period |
-| Remember me | Persistent login option |
-| Device trust | Trusted device management |
-
-## Login History
-
-Review your login history for suspicious activity:
-- Login timestamps
-- IP addresses
-- Geographic locations
-- Device information
+| Field | Description |
+|-------|-------------|
+| Date | When the login occurred |
+| IP address | The IP address used |
+| Location | Country and city (when available) |
+| Client | Browser/device information |
 
 <Tip>
-Regularly review your login history for unauthorized access attempts.
+Regularly review your login history for unauthorized access attempts. If you see suspicious activity, change your password immediately and enable 2FA.
 </Tip>
 
-## API Key Security
+## API key security
+
+For API access, follow these best practices:
 
 - Generate separate keys for different purposes
 - Rotate keys periodically
 - Revoke unused keys
 - Never share keys in code or logs
 
-## Related Topics
+See [API Authentication](/api-reference/authentication) for more details.
 
-- [Creating and Signing In](/account/creating-and-signing-in)
-- [Teams and Roles](/account/teams-and-roles)
+## Related topics
+
+- [Teams and roles](/account/teams-and-roles): Manage team access
+- [API Authentication](/api-reference/authentication): API key management

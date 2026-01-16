@@ -1,96 +1,30 @@
 ---
-title: "Sniper"
-description: "Automated reconnaissance and exploitation framework"
+title: "Sniper: Auto-Exploiter"
+description: "Automatically exploit known vulnerabilities and extract evidence from compromised systems"
 ---
 
 ## Overview
 
-Sniper is an automated penetration testing tool that combines reconnaissance, scanning, and exploitation capabilities. It streamlines the testing workflow by automating common attack patterns.
+Sniper is an automated exploitation tool that identifies and exploits known vulnerabilities in high-profile software. After successful exploitation, it automatically extracts artifacts (system information, users, network data) as proof of compromise.
 
-## What it does
+Sniper is an **exploitation tool**: it actively attempts to exploit vulnerabilities to gain remote command execution. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings). Instead, it produces detailed reports with extracted artifacts as evidence.
 
-<CardGroup cols={2}>
-  <Card title="Reconnaissance" icon="magnifying-glass">
-    Automated information gathering
-  </Card>
-  <Card title="Vulnerability scanning" icon="radar">
-    Identify security weaknesses
-  </Card>
-  <Card title="Exploitation" icon="bolt">
-    Validate vulnerabilities
-  </Card>
-  <Card title="Reporting" icon="file-alt">
-    Consolidated findings
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **IP address** | `192.168.1.1`, `10.0.0.5` |
+| **Hostname** | `server.example.com`, `mail.corp.local` |
 
-<Steps>
-  <Step title="Enter target">
-    Provide IP, hostname, or URL.
-  </Step>
-  <Step title="Select mode">
-    Choose the scan mode.
-  </Step>
-  <Step title="Run Sniper">
-    Execute automated testing.
-  </Step>
-  <Step title="Review results">
-    Analyze findings and evidence.
-  </Step>
-</Steps>
+## Attack modes
 
-## Scan modes
+### Unauthenticated mode
 
-| Mode | Description | Use case |
-|------|-------------|----------|
-| **Normal** | Standard scanning | General assessment |
-| **Stealth** | Low-profile scanning | Avoiding detection |
-| **Aggressive** | Thorough testing | Comprehensive audit |
+Sniper scans for open ports, fingerprints services, and attempts to exploit known vulnerabilities to gain access.
 
-## Capabilities
+### Authenticated mode
 
-### Reconnaissance
-
-- Port scanning and service detection
-- Technology fingerprinting
-- DNS enumeration
-- OSINT gathering
-
-### Vulnerability scanning
-
-- Web application vulnerabilities
-- Network service vulnerabilities
-- CVE checking
-- Misconfiguration detection
-
-### Exploitation
-
-- Automated exploit attempts
-- Proof of concept generation
-- Impact demonstration
-
-## Results
-
-For each finding:
-- **Vulnerability type** — Category and name
-- **Target** — Affected host/service
-- **Evidence** — Proof of exploitation
-- **Severity** — Risk rating
-- **Details** — Technical description
-
-<Warning>
-Sniper performs active exploitation. Only use against systems you have explicit authorization to test.
-</Warning>
-
-## Authenticated scanning
-
-Sniper supports authenticated scans via four protocols, allowing you to extract system artifacts through an authenticated session.
-
-<Note>
-Authenticated Sniper scans don't search for vulnerabilities—instead, they extract artifacts (system information, configurations, user data) through the authenticated session. This is useful for post-authentication reconnaissance.
-</Note>
+Sniper uses provided credentials to establish a legitimate session and extracts artifacts without exploitation. Useful for post-authentication reconnaissance.
 
 | Protocol | Authentication | Use case |
 |----------|----------------|----------|
@@ -99,52 +33,116 @@ Authenticated Sniper scans don't search for vulnerabilities—instead, they extr
 | **SMB** | Username/password with optional domain | Windows file shares |
 | **MySQL** | Username/password with database name | Database servers |
 
-### SSH authentication
+## Parameters
 
-**Username/Password:**
-1. Select **SSH** protocol
-2. Choose **Username and Password** authentication
-3. Enter SSH credentials
+### Port selection
 
-**SSH Private Key:**
-1. Select **SSH** protocol
-2. Choose **SSH private key** authentication
-3. Paste your private key content
-4. Enter the key passphrase (if applicable)
+| Option | TCP ports | Description |
+|--------|-----------|-------------|
+| **Top 100 ports** | ~85 | Quick scan (default) |
+| **Top 1000 ports** | ~617 | Standard assessment |
+| **Top 5000 ports** | ~2,012 | Extended coverage |
+| **Full port range** | 65,535 | All ports (slow) |
+| **Port range** | Variable | Specify start and end port (e.g., 1-1024) |
+| **Port list** | Variable | Comma-separated list (e.g., 22,80,443,3389) |
 
-### WinRM authentication
+### Scan options
 
-1. Select **WinRM** protocol
-2. Enter **username** and **password**
-3. Choose authentication type: **NTLM** (domain) or **Basic** (standalone)
+| Option | Description |
+|--------|-------------|
+| **Check alive** | Verify the host is reachable before scanning |
+| **Safe exploits only** | Exclude exploits that may crash the target (e.g., EternalBlue) |
+| **Extensive modules** | Include modules that run longer due to fuzzing (e.g., CVE-2022-42889 Text4Shell) |
 
-### SMB authentication
+### CVE targeting
 
-1. Select **SMB** protocol
-2. Enter **username** and **password**
-3. Optionally specify the **domain** for domain-joined systems
+You can target specific CVEs (up to 10) to focus the scan on particular vulnerabilities. The CVEs must be part of Sniper's exploit module database.
 
-### MySQL authentication
+### Extractors
 
-1. Select **MySQL** protocol
-2. Enter **username** and **password**
-3. Specify the **database name** to connect to
+Choose which artifacts to extract after successful exploitation:
 
-[Full authentication guide →](/using/scans/authenticated-scanning#sniper)
+| Extractor | Description |
+|-----------|-------------|
+| **Basic system information** | Current user, computer name, IP, architecture, domain, hotfixes |
+| **Local users** | Users configured on the operating system |
+| **Processes** | Currently running processes |
+| **Screenshot** | Desktop screenshot (Windows only, if user logged in) |
+| **Filesystem** | Listing of interesting files and folders |
+| **Network data** | Network interfaces, neighbors, connections, services |
+| **Interesting files** | Files extracted via Local File Inclusion modules |
+| **Secrets** | Information extracted via custom capability modules |
 
-## Use cases
+## How it works
 
-- **Quick assessments** — Rapid security evaluation
-- **Red team exercises** — Automated attack simulation
-- **Penetration testing** — Comprehensive security testing
-- **Vulnerability validation** — Confirm scanner findings
-- **Post-authentication recon** — Extract artifacts via authenticated sessions
+Sniper executes a predefined attack workflow:
 
-## Related tools
+### 1. Port scanning
 
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Access Sniper in Custom mode
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing
+Scans the specified TCP ports to identify open services. Results include port number, state, service name, and version.
 
-## Related topics
+### 2. Web fingerprinting
 
-- [Authenticated scanning](/using/scans/authenticated-scanning#sniper)
+For HTTP/HTTPS services, Sniper identifies the web application type (e.g., Outlook Web Access, VMware, Jenkins) and underlying technologies.
+
+### 3. Exploit matching
+
+Based on the fingerprint data, Sniper filters its database to find compatible exploit modules.
+
+### 4. Vulnerability checking
+
+Runs non-destructive checks to determine if the target is actually exploitable.
+
+### 5. Exploitation and extraction
+
+If vulnerable, Sniper exploits the vulnerability to gain remote command execution, then runs extractors to collect artifacts.
+
+### 6. Cleanup
+
+Removes any files or processes created during exploitation to leave the system unaltered.
+
+## Exploit modules
+
+Sniper includes custom exploit modules developed for critical vulnerabilities in widely-used software. These modules target:
+
+- **Web servers and applications**: Apache, IIS, Exchange, SharePoint, Confluence, etc.
+- **Network services**: SSH, SMB, RDP, databases
+- **Known CVEs**: Actively maintained database of exploitable vulnerabilities
+
+<Warning>
+Sniper performs active exploitation. Only use against systems you have explicit authorization to test.
+</Warning>
+
+## Artifacts
+
+Artifacts are data extracted from the target system after successful exploitation. They provide solid proof that the target is vulnerable and help with further manual testing.
+
+| Artifact | Description |
+|----------|-------------|
+| **Current user** | The user context the exploit runs as (e.g., root, SYSTEM) |
+| **System information** | OS type, version, kernel, architecture, memory |
+| **Local users** | List of configured system users |
+| **Running processes** | Active processes with PIDs and owners |
+| **Network configuration** | IP addresses, network masks, gateways |
+| **Network neighbors** | Devices in the same local network (layer 2) |
+| **Network connections** | Open ports and established TCP connections |
+
+## Why use Sniper?
+
+- **Bridge the gap**: Go beyond vulnerability scanners that produce noise and false positives
+- **Validate findings**: Prove that a vulnerability is actually exploitable
+- **Red team efficiency**: Automate common attack patterns
+- **Evidence collection**: Gather artifacts for reports and remediation prioritization
+
+<Tip>
+Use "Safe exploits only" when testing production systems to avoid potential service disruption.
+</Tip>
+
+## Follow-up actions
+
+After successful exploitation:
+
+- **Prioritize remediation**: Exploitable vulnerabilities require immediate attention
+- **Expand testing**: Use extracted network data for lateral movement assessment
+- **Run [Network Scanner](/tools/network-scanner)**: Find additional infrastructure issues
+- **Document evidence**: Use artifacts for penetration test reports

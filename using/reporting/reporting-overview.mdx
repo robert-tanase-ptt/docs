@@ -3,30 +3,28 @@ title: "Reporting overview"
 description: "Generate professional security reports from your scan results"
 ---
 
-## Why Reporting Matters
+## Why reporting matters
 
 Reports transform technical scan data into actionable documents for stakeholders, management, and compliance requirements.
 
-## Report Types
+## Report types
 
-<CardGroup cols={2}>
-  <Card title="Executive Summary" icon="chart-pie">
-    High-level overview for management and stakeholders.
-  </Card>
-  <Card title="Technical Report" icon="code">
-    Detailed findings with evidence for security teams.
-  </Card>
-  <Card title="Compliance Report" icon="clipboard-check">
-    Formatted for specific compliance frameworks.
-  </Card>
-  <Card title="Custom Report" icon="sliders">
-    Tailored reports using templates.
-  </Card>
-</CardGroup>
+The platform offers four report types, each designed for different audiences and purposes:
 
-## Report Contents
+| Report Type | Description | Best For |
+|-------------|-------------|----------|
+| **Raw scan results** | Full output from a single scan with all technical details | Quick review of individual scan results |
+| **Aggregated scan results** | Combined results from multiple scans | Consolidated view across targets |
+| **Security testing report** | Curated findings with severity breakdown | Technical teams and remediation planning |
+| **Editable pentest report** | Professional penetration testing deliverable with customizable sections | Client deliverables and formal assessments |
 
-### Standard Sections
+<Info>
+The **Editable pentest report** requires selecting an [Engagement](/using/reporting/engagements) and a [Report Template](/using/reporting/report-templates) to populate client details and standard sections.
+</Info>
+
+## Report contents
+
+### Standard sections
 
 | Section | Description |
 |---------|-------------|
@@ -37,9 +35,10 @@ Reports transform technical scan data into actionable documents for stakeholders
 | Remediation | Recommendations for each finding |
 | Appendices | Supporting data and evidence |
 
-### Findings Information
+### Findings information
 
 Each finding in a report includes:
+
 - Title and description
 - Severity and risk rating
 - Affected assets and locations
@@ -47,35 +46,68 @@ Each finding in a report includes:
 - Remediation guidance
 - References (CVE, CWE, etc.)
 
-## Generating Reports
+## Where to Generate Reports
+
+You can generate reports from three locations in the platform:
+
+| Location | How to access |
+|----------|---------------|
+| **Scan result page** | Open a finished scan and click **Generate report** |
+| **Scans page** | Select one or more scans from the list and click **Generate report** |
+| **Findings page** | Select findings and click **Generate report** in the action bar |
+
+## Generating reports
 
 <Steps>
   <Step title="Select Scope">
-    Choose which scans, findings, or assets to include.
+    Choose which scans or findings to include. You can generate reports from:
+    - A single vulnerability or reconnaissance scan
+    - Multiple scans (vulnerability, reconnaissance, or mixed)
+    - Selected findings across scans
   </Step>
-  <Step title="Choose Template">
-    Select a report template that matches your needs.
+  <Step title="Choose Report Type">
+    Select the report type that matches your needs. For pentest reports, you'll also select an [Engagement](/using/reporting/engagements) and [Report Template](/using/reporting/report-templates).
   </Step>
-  <Step title="Configure Options">
-    Customize branding, sections, and content.
+  <Step title="Configure Filters">
+    Optionally filter findings by severity, status (fixed, ignored, accepted), or include additional context like finding history and tool configuration.
   </Step>
-  <Step title="Generate">
-    Create the report in your desired format.
+  <Step title="Select Format and Generate">
+    Pick your output format and generate the report.
   </Step>
 </Steps>
 
-## Output Formats
+## Output formats
 
-- **PDF**: Professional documents for sharing
-- **Word (DOCX)**: Editable for customization
-- **HTML**: Web-based viewing
-- **JSON/CSV**: Data export for integration
+| Format | Use Case |
+|--------|----------|
+| **PDF** | Professional documents for sharing and archiving |
+| **DOCX** | Editable reports for customization before delivery |
+| **HTML** | Web-based viewing and email sharing |
+| **XLSX** | Spreadsheet analysis with structured data |
+| **CSV** | Data processing and integration with other tools |
+| **JSON** | API integration and programmatic access |
+
+<Note>
+Not all formats are available for every report type. Discovery scan aggregations support only PDF and HTML.
+</Note>
 
 <Tip>
-Use PDF for final deliverables and DOCX when you need to make manual edits or additions.
+Use PDF for final deliverables and DOCX when you need to make manual edits or add custom content before sending to clients.
 </Tip>
 
-## Related Topics
+## Report settings
+
+Customize your reports with branding and email delivery options:
+
+- **[Custom Logo](/using/reporting/branded-reports)**: Add your company logo to reports
+- **[Email Settings](/using/reporting/branded-reports)**: Configure sender name, reply-to address, and email templates for report delivery
+
+<Note>
+Custom branding features require the **White Label add-on**. See [Add-ons](/plans-and-limits/add-ons) for details.
+</Note>
+
+## Related topics
 
 - [Report Templates](/using/reporting/report-templates)
-- [Exports](/using/reporting/exports)
+- [Engagements](/using/reporting/engagements)
+- [Branded Reports & Email Settings](/using/reporting/branded-reports)

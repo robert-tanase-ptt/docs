@@ -1,0 +1,164 @@
+---
+title: "Network Scanner"
+description: "Discover vulnerabilities in network infrastructure and services"
+---
+
+## Overview
+
+The Network Scanner identifies security weaknesses in network infrastructure, including servers, services, and network devices. It tests for known CVEs, misconfigurations, and security issues across network services.
+
+The Network Scanner is a **vulnerability scanner**: it actively tests your network infrastructure for security weaknesses. Discovered ports, services, OS information, and technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+
+## Supported targets
+
+| Target type | Examples |
+|-------------|----------|
+| **IP address** | `192.168.1.1`, `10.0.0.5` |
+| **Hostname** | `server.example.com`, `mail.example.com` |
+
+<Note>
+To scan multiple hosts, add IP ranges (CIDR notation like `192.168.1.0/24`) or IP ranges (like `10.10.0.1-255`) from the [Assets page](/using/assets/assets#supported-target-formats). You can also [import multiple targets](/using/assets/assets#importing-multiple-targets) from a file.
+</Note>
+
+## Scan modes
+
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **Light** | Fast scan with version-based detection | Quick assessment |
+| **Deep** | Comprehensive scan with multiple engines | Full security audit |
+| **Custom** | User-configured engines, ports, and options | Targeted testing |
+
+### Parameters comparison
+
+| Parameter | Light | Deep | Custom |
+|-----------|:-----:|:----:|:------:|
+| **TCP ports** | ~139 | ~3,847 | User-defined |
+| **UDP ports** | ~68 | ~784 | User-defined |
+| **Check alive** | ✓ | ✓ | Configurable |
+| **Extensive modules** | ✗ | ✓ | Configurable |
+| **Custom CVEs** | ✗ | ✗ | Up to 10 |
+| **Rate limiting** | - | - | 1-100 RPS |
+
+### Engines comparison
+
+| Engine | Light | Deep | Custom |
+|--------|:-----:|:----:|:------:|
+| [**Version-based**](#version-based) | ✓ | ✓ | ✓ |
+| [**Sniper**](#sniper) | ✗ | ✓ | ✓ |
+| [**Nuclei**](#nuclei) | ✗ | ✓ | ✓ |
+| [**OpenVAS**](#openvas) | ✗ | ✗ | ✓ |
+
+<Warning>
+The Deep scan performs active vulnerability testing and generates significant network traffic. Most correctly configured security monitoring systems will detect this scan. Do not use it if you don't have proper authorization from the target owner.
+</Warning>
+
+### Custom scan
+
+Full control over scan parameters:
+
+- Select any combination of scanning engines (including OpenVAS)
+- Define custom port ranges, lists, or common port presets
+- Scan for specific CVEs (up to 10)
+- Adjust request rate for Nuclei and OpenVAS engines
+
+## Scanning engines
+
+### Version-based
+
+Runs [Nmap](https://pentest-tools.com/blog/nmap-port-scanner/) to detect open ports and services, then queries a vulnerability database to find CVEs affecting detected versions. Fast but may produce false positives if version strings are inaccurate or backported patches aren't reflected.
+
+### Sniper
+
+Custom vulnerability checks developed by the Pentest-Tools.com research team. Actively tests for vulnerabilities with targeted payloads. Browse the [vulnerability database](https://pentest-tools.com/vulnerabilities-exploits) for the complete list. See [Sniper](/tools/sniper) for standalone usage.
+
+### Nuclei
+
+Open-source vulnerability scanner using network and CVE templates. Performs active verification of vulnerabilities with proof-of-concept payloads. See [Nuclei on GitHub](https://github.com/projectdiscovery/nuclei) for more information.
+
+### OpenVAS
+
+Full-featured open-source vulnerability scanner with 10,000+ plugins. Provides comprehensive testing including service-specific checks. See [OpenVAS](https://www.openvas.org/) for more information.
+
+<Note>
+Sniper modules only work with TCP protocol. If you select UDP with Sniper enabled, the scan will fail.
+</Note>
+
+## Custom scan options
+
+### Port selection
+
+| Option | TCP ports | UDP ports |
+|--------|-----------|-----------|
+| **Top 10 ports** | ~7 | ~8 |
+| **Top 100 ports** | ~85 | ~68 |
+| **Top 1000 ports** | ~617 | ~784 |
+| **Top 5000 ports** | ~2,012 | ~3,926 |
+| **OpenVAS default** | ~639 | - |
+| **Full port range** | 65,535 | 65,535 |
+
+You can also specify a **port range** (e.g., `1-1024`) or a **port list** (comma-separated, e.g., `22,80,443,8080`).
+
+<Note>
+The "Top X ports" options use **different, curated port lists for TCP and UDP** based on which ports are most commonly open for each protocol. TCP lists emphasize web (80, 443, 8080), SSH (22), and database ports, while UDP lists focus on DNS (53), DHCP (67-68), SNMP (161-162), and NTP (123) ports.
+</Note>
+
+### Protocol
+
+| Option | Description |
+|--------|-------------|
+| **TCP** | Scan TCP ports (default) |
+| **UDP** | Scan UDP ports |
+
+### Additional options
+
+| Option | Description |
+|--------|-------------|
+| **Check alive** | Verify the target is reachable before scanning. If disabled, the scan proceeds even if the host doesn't respond to discovery probes. |
+| **Extensive modules** | Enable additional checks for CVE-2022-42889 (Text4Shell) and CVE-2022-34265 that require extended scanning time due to fuzzing on multiple endpoints and query parameters. |
+
+### Custom CVE scanning
+
+Scan for up to 10 specific CVEs. This feature:
+
+- Is supported by **Sniper**, **Nuclei**, and **OpenVAS** engines (not version-based)
+- Validates that the specified CVEs are detectable by the selected engines
+- Only runs engines that can actually detect the specified CVEs
+
+To check which CVEs are detectable, browse the [Pentest-Tools.com vulnerability database](https://pentest-tools.com/vulnerabilities-exploits).
+
+### Rate limiting
+
+When using Nuclei or OpenVAS engines, you can adjust the request rate:
+
+| Setting | Value |
+|---------|-------|
+| **Default** | 50 requests per second |
+| **Minimum** | 1 request per second |
+| **Maximum** | 100 requests per second |
+
+<Tip>
+Lower the request rate when scanning production systems to reduce impact, or increase it for faster scans on test environments.
+</Tip>
+
+## Why network scanning matters
+
+Regular network scanning helps you:
+
+- **Discover exposed services**: Identify what's running and accessible on your network
+- **Find known vulnerabilities**: Detect CVEs and security issues before attackers do
+- **Verify patch status**: Confirm that security updates have been applied
+- **Detect misconfigurations**: Find insecure service settings and default configurations
+- **Meet compliance requirements**: Many frameworks require regular vulnerability assessments
+
+## Follow-up actions
+
+After running a network scan:
+
+1. **Prioritize by severity**: Address critical and high severity findings first. Use EPSS scores to prioritize actively exploited vulnerabilities.
+2. **Check CISA KEV**: Vulnerabilities in the CISA Known Exploited Vulnerabilities catalog should be remediated urgently.
+3. **Verify findings**: Use the evidence provided to confirm vulnerabilities.
+4. **Discover open ports**: Use the [Port Scanner](/tools/port-scanner) for detailed port enumeration.
+5. **Test SSL/TLS**: Run the [SSL/TLS Scanner](/tools/ssl-tls-scanner) on web services.
+6. **Audit credentials**: Use the [Password Auditor](/tools/password-auditor) to test for weak passwords.
+7. **Exploit verified vulnerabilities**: Use [Sniper](/tools/sniper) to validate exploitability.
+8. **Generate reports**: Export findings for remediation tracking and compliance documentation.

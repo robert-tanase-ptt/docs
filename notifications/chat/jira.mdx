@@ -1,119 +1,130 @@
 ---
 title: "Jira integration"
-description: "Create Jira tickets automatically from security findings"
+description: "Create Jira tickets from security findings"
 ---
 
 ## Overview
 
-The Jira integration automatically creates tickets for security findings, streamlining your remediation workflow.
+The Jira integration allows you to create Jira tickets directly from your security findings, streamlining the handoff to development teams for remediation.
 
-## Setting Up Jira
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Setting up Jira
 
 <Steps>
-  <Step title="Access Integration">
+  <Step title="Access integration settings">
     Go to Settings → Integrations → Jira.
   </Step>
-  <Step title="Connect Jira">
-    Enter your Jira instance URL and credentials.
+  <Step title="Enter Jira URL">
+    Add your Jira instance URL (e.g., `https://yourcompany.atlassian.net`).
   </Step>
-  <Step title="Map Project">
-    Select which Jira project receives tickets.
+  <Step title="Add credentials">
+    Enter your Jira email and API token.
   </Step>
-  <Step title="Configure Mapping">
-    Set up field mappings and ticket creation rules.
+  <Step title="Specify project">
+    Enter the project key where tickets will be created.
   </Step>
 </Steps>
 
-## Authentication Options
+## Getting your API token
 
-| Method | Use Case |
-|--------|----------|
-| API Token | Jira Cloud |
-| OAuth | Enterprise Jira |
-| Basic Auth | Self-hosted (if enabled) |
+For Jira Cloud:
 
-## Ticket Creation Rules
-
-### Automatic Creation
-
-Configure when tickets are created:
-
-| Trigger | Description |
-|---------|-------------|
-| New Critical Finding | Auto-create for critical severity |
-| New High Finding | Auto-create for high severity |
-| All Findings | Create ticket for every finding |
-| Manual Only | Only via platform button |
-
-### Ticket Content
-
-Tickets include:
-- Finding title as ticket summary
-- Full description with evidence
-- Severity as priority
-- Links back to platform
-- Remediation guidance
-
-## Field Mapping
-
-Map Pentest-Tools.com fields to Jira fields:
-
-| Platform Field | Jira Field |
-|----------------|------------|
-| Title | Summary |
-| Severity | Priority |
-| Description | Description |
-| Asset | Labels/Component |
-| Remediation | Custom field |
-
-## Workflow Integration
-
-<CardGroup cols={2}>
-  <Card title="Create" icon="plus">
-    Finding creates Jira ticket
-  </Card>
-  <Card title="Update" icon="arrows-rotate">
-    Status changes sync
-  </Card>
-  <Card title="Resolve" icon="check">
-    Closing ticket updates finding
-  </Card>
-  <Card title="Link" icon="link">
-    Bidirectional linking
-  </Card>
-</CardGroup>
-
-## Best Practices
-
-<Tip>
-Use Jira labels or components to organize security tickets separately from regular development work.
-</Tip>
-
-### Avoiding Ticket Spam
+1. Go to [Atlassian Account Settings](https://id.atlassian.com/manage/api-tokens)
+2. Click **Create API token**
+3. Name the token (e.g., "Pentest-Tools.com")
+4. Copy the token and save it securely
 
 <Warning>
-Creating tickets for every finding can overwhelm teams. Consider limiting auto-creation to high-severity findings.
+API tokens cannot be viewed again after creation. Store your token securely.
 </Warning>
 
-- Auto-create: Critical and High only
-- Manual: Medium and below
-- Use Jira automation for routing
+## Creating Jira tickets
+
+Once configured, you can send findings to Jira:
+
+1. Navigate to a finding in Pentest-Tools.com
+2. Click **Send to Jira**
+3. The ticket is created in your specified project
+
+### Ticket contents
+
+Created Jira tickets include:
+
+| Field | Content |
+|-------|---------|
+| **Summary** | Finding name and target |
+| **Description** | Full finding details, evidence, and remediation |
+| **Issue type** | Task |
+| **Labels** | `pentest-tools.com` |
+
+### Bulk ticket creation
+
+You can also send multiple findings to Jira at once:
+
+1. Select multiple findings from the findings list
+2. Click **Send to Jira**
+3. One ticket is created for each selected finding
+
+## Tracking tickets
+
+Once a finding is sent to Jira:
+
+- The finding shows a link to the Jira ticket
+- You can track which findings have associated tickets
+- Click the link to jump directly to Jira
+
+## Best practices
+
+<Tip>
+Use Jira labels and components to organize security tickets separately from regular development work.
+</Tip>
+
+### Prioritizing tickets
+
+- Send critical and high findings immediately
+- Batch medium and low findings for regular triage
+- Use finding severity to set Jira priority
+
+### Team workflow
+
+- Assign tickets to appropriate team members in Jira
+- Use Jira automation for routing and notifications
+- Link related tickets for comprehensive remediation
+
+## Configuration reference
+
+| Setting | Description |
+|---------|-------------|
+| **Jira URL** | Your Jira instance URL |
+| **Email** | Your Jira account email |
+| **API Key** | Your Jira API token |
+| **Project Key** | The project key for ticket creation (e.g., SEC, VULN) |
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Tickets not creating">
-    - Verify Jira credentials
-    - Check project permissions
-    - Review required fields
+    - Verify your Jira URL is correct
+    - Check that the API token is valid
+    - Ensure the project key exists
+    - Verify your account has permission to create issues
   </Accordion>
-  <Accordion title="Missing fields">
-    - Check field mapping configuration
-    - Verify custom field IDs
+  <Accordion title="Permission denied">
+    - Check your Jira account permissions
+    - Verify you can create issues in the target project
+    - Ensure the API token hasn't been revoked
+  </Accordion>
+  <Accordion title="Connection errors">
+    - Verify the Jira URL format
+    - Check that your Jira instance is accessible
+    - Try regenerating the API token
   </Accordion>
 </AccordionGroup>
 
 ## Related topics
 
-- [Notifications overview](/notifications/overview)
 - [Findings](/using/findings/findings)
+- [Notifications Overview](/notifications/overview)

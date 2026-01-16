@@ -1,0 +1,160 @@
+---
+title: "Assets and limits"
+description: "Understand asset limits, scan cycles, and resource quotas for your subscription"
+---
+
+## Assets overview
+
+Assets are the targets you add to Pentest-Tools.com for security testing. Each unique target consumes one asset slot from your subscription.
+
+For details on what counts as an asset, how assets are managed, and verification requirements, see the [Assets guide](/using/assets/assets).
+
+## Added assets vs. scanned assets
+
+Your subscription includes two distinct asset limits:
+
+| Limit | Description |
+|-------|-------------|
+| **Max added assets** | Total number of unique assets you can add to your workspaces |
+| **Max scanned assets** | Number of unique assets you can actively scan within a scan cycle |
+
+<Info>
+You can add more assets than your scanned assets limit allows. This lets you manage a larger inventory while focusing scans on priority targets each scan cycle.
+</Info>
+
+### How limits scale
+
+Both limits are calculated based on your selected asset tier:
+
+| Your asset tier | Max scanned assets | Max added assets |
+|-----------------|-------------------|------------------|
+| 5 | 5 | 100 |
+| 25 | 25 | 500 |
+| 100 | 100 | 2,000 |
+| 500 | 500 | 10,000 |
+
+<Tip>
+**Formula**: Max added assets = 20 × your scanned assets tier. This gives you room to manage a larger asset inventory while focusing scans each cycle.
+</Tip>
+
+### Scan cycles
+
+Your scanned assets counter resets at the start of each **scan cycle**, which is always monthly, even for annual subscriptions.
+
+- You get a fresh allocation of scanning capacity each month
+- Unused scanned asset slots don't roll over to the next cycle
+- You can re-scan the same assets in a new scan cycle
+
+### Tracking your usage
+
+Monitor your asset usage in the web application:
+
+- **[Scanned Assets](https://app.pentest-tools.com/account/plan_details/scanned_assets)**: View which assets have been scanned this scan cycle
+- **[Scan History](https://app.pentest-tools.com/account/plan_details/scan_history)**: Review all scans that counted toward your limit
+
+<Note>
+Both pages show usage across **all workspaces** and **all team members** for the entire account. Both account owners and team members can access these pages to monitor team-wide usage. For more about team structure and permissions, see [Teams and roles](/account/teams-and-roles).
+</Note>
+
+## Scan limits
+
+### Concurrent scans
+
+The number of scans that can run simultaneously scales with your asset tier:
+
+| Asset tier | Max parallel scans |
+|------------|-------------------|
+| Up to 49 | 2 |
+| 50–299 | 5 |
+| 300–500 | 10 |
+
+<Info>
+When you reach your concurrent scan limit, additional scans enter the **Waiting** state and run automatically as slots become available. See [Scans and statuses](/concepts/scans-and-statuses) for details on scan states.
+</Info>
+
+### Scan queue
+
+The maximum number of scans that can wait in the queue:
+
+| Asset tier | Max waiting scans |
+|------------|------------------|
+| 5 | 200 |
+| 25 | 1,000 |
+| 100 | 4,000 |
+| 500 | 20,000 |
+
+When you start a scan and all slots are occupied:
+
+1. The scan enters the [Waiting state](/concepts/scans-and-statuses)
+2. Queued scans start in order as running scans complete
+3. If the queue is full, you must wait for a slot before starting more scans
+
+### Scheduled scans
+
+| Asset tier | Max active scheduled scans |
+|------------|---------------------------|
+| 5 | 100 |
+| 25 | 500 |
+| 100 | 2,000 |
+| 500 | 10,000 |
+
+<Note>
+Scheduled scans count against your active schedule limit, not your concurrent scan limit. A scheduled scan only consumes a concurrent slot when it actually runs.
+</Note>
+
+**Scheduling frequencies:**
+- **Free plans**: Weekly, Monthly
+- **Paid plans**: Once, Daily, Weekly, Monthly, Quarterly, Yearly
+
+See [Scheduled scans](/using/scans/scheduled-scans) for setup instructions.
+
+## API limits
+
+API access is available on all paid plans. See [API limits and errors](/api-reference/limits-and-errors) for rate limits and error handling.
+
+## What happens when you hit limits
+
+<AccordionGroup>
+  <Accordion title="Max scanned assets reached">
+    **Behavior**: Cannot scan additional unique targets this scan cycle.
+
+    **Resolution**: Wait for your next scan cycle, or [upgrade your asset tier](/billing/change-plan).
+
+    **Check usage**: Visit [Scanned Assets](https://app.pentest-tools.com/account/plan_details/scanned_assets) to see which assets count toward your limit.
+  </Accordion>
+  <Accordion title="Max added assets reached">
+    **Behavior**: Cannot add new targets to your workspace.
+
+    **Resolution**: Remove assets you no longer need, or upgrade your asset tier.
+  </Accordion>
+  <Accordion title="Concurrent scan limit reached">
+    **Behavior**: New scans enter the [Waiting state](/concepts/scans-and-statuses) and are queued.
+
+    **Resolution**: Wait for running scans to complete, or cancel lower-priority scans to free slots.
+  </Accordion>
+  <Accordion title="Scan queue full">
+    **Behavior**: Cannot start additional scans until queue has space.
+
+    **Resolution**: Wait for queued scans to start running, or cancel queued scans you no longer need.
+  </Accordion>
+  <Accordion title="Scheduled scan limit reached">
+    **Behavior**: Cannot create new scheduled scans.
+
+    **Resolution**: Delete or disable scheduled scans you no longer need. See [Scheduled scans](/using/scans/scheduled-scans).
+  </Accordion>
+  <Accordion title="API rate limit exceeded">
+    **Behavior**: API returns HTTP 429 Too Many Requests.
+
+    **Resolution**: Implement request throttling. See [API limits and errors](/api-reference/limits-and-errors).
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Assets](/using/assets/assets) – What counts as an asset and how to manage them
+- [Plan overview](/plans-and-limits/plan-overview) – Compare subscription plans
+- [Scans and statuses](/concepts/scans-and-statuses) – Understand scan states including Waiting
+- [Scheduled scans](/using/scans/scheduled-scans) – Set up recurring scans
+- [Teams and roles](/account/teams-and-roles) – Team structure and permissions
+- [API limits and errors](/api-reference/limits-and-errors) – API rate limits and error handling
+- [Change plan](/billing/change-plan) – Upgrade or modify your subscription

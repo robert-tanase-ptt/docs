@@ -7,7 +7,11 @@ description: "Send security alerts to Microsoft Teams channels"
 
 The Microsoft Teams integration delivers security notifications to your Teams channels for enterprise collaboration.
 
-## Setting Up Teams
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Setting up Teams
 
 <Steps>
   <Step title="Create Webhook">
@@ -35,7 +39,7 @@ In Microsoft Teams:
 5. Optionally upload a custom icon
 6. Click **Create** and copy the URL
 
-## Available Notifications
+## Available notifications
 
 | Event | Teams Support |
 |-------|---------------|
@@ -45,7 +49,7 @@ In Microsoft Teams:
 | Critical Finding | ✓ |
 | Weekly Summary | ✓ |
 
-## Message Cards
+## Message cards
 
 Teams notifications use Adaptive Cards:
 
@@ -54,7 +58,7 @@ Teams notifications use Adaptive Cards:
 - Action buttons
 - Direct links to findings
 
-## Channel Strategy
+## Channel strategy
 
 <CardGroup cols={2}>
   <Card title="Security Team Channel" icon="shield">
@@ -65,7 +69,7 @@ Teams notifications use Adaptive Cards:
   </Card>
 </CardGroup>
 
-### Recommended Setup
+### Recommended setup
 
 | Channel | Notifications |
 |---------|---------------|
@@ -73,13 +77,13 @@ Teams notifications use Adaptive Cards:
 | Security-Activity | All scan completions |
 | Project channels | Project-specific findings |
 
-## Best Practices
+## Best practices
 
 <Tip>
 Use @mentions in Teams to alert specific people when critical findings are detected.
 </Tip>
 
-### Enterprise Considerations
+### Enterprise considerations
 
 - Coordinate with IT for webhook permissions
 - Follow your organization's data policies
@@ -103,7 +107,7 @@ Webhook URLs can be used by anyone who has them. Keep URLs confidential and rota
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
 - [Slack Integration](/notifications/chat/slack)
 - [Notifications Overview](/notifications/overview)

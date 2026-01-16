@@ -1,140 +1,157 @@
 ---
 title: "AWS integration"
-description: "Integrate with AWS services for notifications and data storage"
+description: "Import targets from your AWS infrastructure"
 ---
 
 ## Overview
 
-The AWS integration allows you to send security data to AWS services like SNS, S3, and Security Hub.
+The AWS integration allows you to import targets directly from your AWS infrastructure, making it easy to scan your EC2 instances and S3 buckets.
 
-## Available Integrations
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Benefits
 
 <CardGroup cols={2}>
-  <Card title="SNS" icon="bell">
-    Send notifications via Amazon SNS.
+  <Card title="Automatic discovery" icon="magnifying-glass">
+    Discover EC2 instances and S3 buckets automatically.
   </Card>
-  <Card title="S3" icon="bucket">
-    Store scan results in S3 buckets.
+  <Card title="Stay current" icon="arrows-rotate">
+    Keep your target list in sync with your infrastructure.
   </Card>
-  <Card title="Security Hub" icon="shield">
-    Send findings to AWS Security Hub.
+  <Card title="Multi-region" icon="globe">
+    Import from multiple AWS regions at once.
   </Card>
-  <Card title="Lambda" icon="bolt">
-    Trigger Lambda functions.
+  <Card title="Private networks" icon="lock">
+    Option to import private EC2 IP addresses.
   </Card>
 </CardGroup>
 
-## SNS Integration
-
-Send notifications through Amazon Simple Notification Service.
-
-### Setup
+## Setting up AWS integration
 
 <Steps>
-  <Step title="Create SNS Topic">
-    In AWS Console, create an SNS topic for notifications.
+  <Step title="Create IAM credentials">
+    In AWS, create an IAM user with read-only permissions.
   </Step>
-  <Step title="Get Topic ARN">
-    Copy the Topic ARN.
+  <Step title="Configure integration">
+    In Pentest-Tools.com, go to Settings → Integrations → AWS.
   </Step>
-  <Step title="Configure IAM">
-    Create an IAM user/role with SNS publish permissions.
+  <Step title="Enter credentials">
+    Add your AWS Access Key ID and Secret Access Key.
   </Step>
-  <Step title="Add to Platform">
-    Configure the SNS integration in Settings.
+  <Step title="Import targets">
+    Select services and regions, then import.
   </Step>
 </Steps>
 
-### IAM Policy
+## IAM Configuration
+
+Create an IAM user with minimal read-only permissions:
+
+### EC2 Permissions
 
 ```json
 {
   "Version": "2012-10-17",
-  "Statement": [{
-    "Effect": "Allow",
-    "Action": "sns:Publish",
-    "Resource": "arn:aws:sns:region:account:topic-name"
-  }]
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeInstances",
+      "Resource": "*"
+    }
+  ]
 }
 ```
 
-## S3 Integration
-
-Store scan results and reports in S3.
-
-### Use Cases
-
-- Archive scan results
-- Share reports with stakeholders
-- Long-term data retention
-
-### Configuration
-
-Provide:
-- Bucket name
-- Region
-- Access credentials (Access Key ID and Secret)
-- Optional: prefix for organization
-
-## Security Hub Integration
-
-Send findings to AWS Security Hub for centralized security management.
-
-### Benefits
-
-- Unified security view across AWS
-- Integration with other AWS security services
-- Compliance reporting
-
-### Finding Format
-
-Findings are formatted according to AWS Security Finding Format (ASFF):
+### S3 Permissions
 
 ```json
 {
-  "SchemaVersion": "2018-10-08",
-  "Id": "finding-123",
-  "ProductArn": "arn:aws:securityhub:...",
-  "GeneratorId": "pentest-tools",
-  "Types": ["Software and Configuration Checks/Vulnerabilities"],
-  "Severity": {
-    "Label": "HIGH"
-  },
-  "Title": "SQL Injection Vulnerability",
-  "Description": "..."
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListAllMyBuckets",
+      "Resource": "*"
+    }
+  ]
 }
 ```
 
-## Lambda Triggers
+<Warning>
+Use the principle of least privilege. Only grant the permissions needed for the services you want to import.
+</Warning>
 
-Trigger Lambda functions for custom processing.
+## Supported services
 
-### Example Use Cases
+| Service | What's Imported |
+|---------|-----------------|
+| **EC2** | Running instance IP addresses (public or private) |
+| **S3** | S3 bucket URLs |
 
-- Custom alerting logic
-- Data transformation
-- Integration with other systems
+## Import options
+
+### EC2 Options
+
+| Option | Description |
+|--------|-------------|
+| **Public IP** | Import the public IP address of instances |
+| **Private IP** | Import the private IP address (requires VPN) |
 
 <Tip>
-Use Lambda for complex notification logic that goes beyond standard integrations.
+Use private IP import with VPN if you need to scan instances that aren't publicly accessible.
 </Tip>
+
+### Region selection
+
+Select which AWS regions to import from. Running instances and buckets are discovered in the selected regions.
+
+## Imported targets
+
+When targets are imported:
+
+- EC2 instances appear as targets with the instance name and ID
+- S3 buckets appear as HTTPS URLs
+- Targets are added to your current workspace
+- You can scan them immediately after import
+
+### Example imported targets
+
+| Source | Target Name |
+|--------|-------------|
+| EC2 | `10.0.1.50` (AWS EC2 - WebServer i-1234567890abcdef0) |
+| S3 | `https://my-bucket.s3.amazonaws.com` |
+
+## Best practices
+
+- Create a dedicated IAM user for Pentest-Tools.com
+- Use read-only permissions only
+- Rotate access keys periodically
+- Import targets before major security assessments
+- Use workspaces to organize imported targets by environment
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Permission denied">
-    - Verify IAM credentials
-    - Check policy permissions
-    - Confirm resource ARNs
+  <Accordion title="No targets found">
+    - Verify IAM permissions are correct
+    - Check that instances are in running state
+    - Verify you selected the correct regions
   </Accordion>
-  <Accordion title="Data not appearing">
-    - Check region configuration
-    - Verify bucket/topic exists
-    - Review CloudWatch logs
+  <Accordion title="Authentication failed">
+    - Check Access Key ID and Secret are correct
+    - Verify the IAM user is active
+    - Check for copy/paste issues with credentials
+  </Accordion>
+  <Accordion title="Some regions failed">
+    - Verify IAM permissions apply to all regions
+    - Check for region-specific restrictions
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
-- [Webhooks](/notifications/webhooks/overview)
+- [Assets](/using/assets/assets)
+- [VPN Profiles](/using/vpn/overview)
 - [Notifications Overview](/notifications/overview)

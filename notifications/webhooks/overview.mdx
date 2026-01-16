@@ -1,116 +1,174 @@
 ---
-title: "Webhooks overview"
-description: "Build custom integrations using webhooks"
+title: "Webhooks"
+description: "Send scan results to custom HTTP endpoints"
 ---
 
-## What Are Webhooks?
+## Overview
 
-Webhooks are HTTP callbacks that send data to your systems when events occur in Pentest-Tools.com.
+Webhooks allow you to send scan results to any HTTP endpoint when notifications trigger. Use webhooks to integrate Pentest-Tools.com with your own systems, SIEM, ticketing, or automation platforms.
 
-## Use Cases
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Use cases
 
 <CardGroup cols={2}>
-  <Card title="Custom Integrations" icon="plug">
+  <Card title="Custom integrations" icon="plug">
     Connect to any system with an HTTP API.
   </Card>
+  <Card title="SIEM integration" icon="shield">
+    Send findings to your security information system.
+  </Card>
+  <Card title="Ticketing systems" icon="ticket">
+    Create tickets in custom ticketing platforms.
+  </Card>
   <Card title="Automation" icon="robot">
-    Trigger external workflows.
-  </Card>
-  <Card title="Logging" icon="file-lines">
-    Send events to logging systems.
-  </Card>
-  <Card title="Alerting" icon="bell">
-    Custom alerting pipelines.
+    Trigger external workflows and pipelines.
   </Card>
 </CardGroup>
 
-## Setting Up Webhooks
+## Setting up webhooks
 
 <Steps>
-  <Step title="Create Endpoint">
-    Set up an HTTP endpoint to receive webhooks.
+  <Step title="Create your endpoint">
+    Set up an HTTP endpoint to receive webhook requests.
   </Step>
-  <Step title="Configure Webhook">
-    In Settings → Integrations → Webhooks, add your URL.
+  <Step title="Add webhook in platform">
+    Go to Settings → Integrations → Webhooks and add your URL.
   </Step>
-  <Step title="Select Events">
-    Choose which events trigger the webhook.
+  <Step title="Select payload format">
+    Choose how you want to receive the data.
   </Step>
-  <Step title="Test">
-    Send a test webhook to verify.
+  <Step title="Use in notifications">
+    Select the webhook as a destination when creating notifications.
   </Step>
 </Steps>
 
-## Available Events
+## Payload formats
 
-| Event | Trigger |
-|-------|---------|
-| `scan.started` | Scan begins |
-| `scan.completed` | Scan finishes |
-| `scan.failed` | Scan errors |
-| `finding.new` | New finding discovered |
-| `finding.updated` | Finding status changed |
+When creating a webhook, choose the format that best suits your needs:
 
-## Webhook Payload
+| Format | Description |
+|--------|-------------|
+| **Scan Output (JSON)** | Raw scan results in JSON format |
+| **Scan Summary (JSON)** | Condensed summary of scan status and findings |
+| **Full Scan (JSON)** | Complete scan data including all details |
+| **Scan Output (PDF)** | PDF report attached to the request |
+
+### Scan summary example
 
 ```json
 {
-  "event": "finding.new",
-  "timestamp": "2024-01-15T10:30:00Z",
-  "data": {
-    "finding_id": 123,
-    "title": "SQL Injection",
-    "severity": "high",
-    "asset": "example.com",
-    "scan_id": 456
-  }
+  "task_id": 12345,
+  "target": "example.com",
+  "tool": "Website Scanner",
+  "status": "finished",
+  "findings_count": 3,
+  "critical": 0,
+  "high": 1,
+  "medium": 2,
+  "low": 0,
+  "info": 0,
+  "scan_url": "https://app.pentest-tools.com/scans/12345"
 }
 ```
 
-## Security
+### Full scan JSON
 
-### Verification
+The full JSON format includes:
 
-Webhooks include a signature header for verification:
+- Scan metadata (target, tool, status, timing)
+- All findings with full details
+- Evidence and remediation recommendations
+- CVSS scores and CVE references
 
-```
-X-Webhook-Signature: sha256=abc123...
-```
+## Creating a Webhook
 
-Verify using your webhook secret:
+1. Go to **Settings** → **Integrations** → **Webhooks**
+2. Click **Add webhook**
+3. Enter a **name** for identification
+4. Enter the **URL** of your endpoint
+5. Select the **payload format**
+6. Save the webhook
 
-```python
-import hmac
-import hashlib
+## Using webhooks in notifications
 
-def verify_webhook(payload, signature, secret):
-    expected = hmac.new(
-        secret.encode(),
-        payload.encode(),
-        hashlib.sha256
-    ).hexdigest()
-    return hmac.compare_digest(f"sha256={expected}", signature)
-```
+Once created, webhooks appear as destination options when creating notifications:
 
-### Best Practices
+1. Go to **Notifications**
+2. Create or edit a notification
+3. Enable **Webhook** as a destination
+4. Select your webhook from the dropdown
+
+## Endpoint Requirements
+
+Your endpoint should:
+
+- Accept HTTP POST requests
+- Return a 2xx status code on success
+- Handle the JSON or multipart/form-data (for PDF) content type
+- Respond within 30 seconds
+
+## Headers
+
+Webhook requests include these headers:
+
+| Header | Description |
+|--------|-------------|
+| `Content-Type` | `application/json` or `multipart/form-data` |
+| `User-Agent` | Pentest-Tools.com user agent |
+| `PTT-SCAN-ID` | The scan ID(s) that triggered the webhook |
+
+## Error handling
+
+If your endpoint fails to respond:
+
+- The request is retried up to 3 times
+- Retries use exponential backoff
+- Failed webhooks are logged for review
 
 <Warning>
-Always verify webhook signatures to ensure requests are legitimate.
+If webhooks consistently fail, they may be disabled. Check your endpoint is accessible and returning successful responses.
 </Warning>
 
-- Use HTTPS endpoints
-- Verify signatures
-- Implement idempotency
-- Handle retries
+## Best practices
 
-## Retry Behavior
+<AccordionGroup>
+  <Accordion title="Use HTTPS">
+    Always use HTTPS endpoints to encrypt data in transit.
+  </Accordion>
+  <Accordion title="Validate the source">
+    Verify requests come from Pentest-Tools.com by checking headers or IP ranges.
+  </Accordion>
+  <Accordion title="Handle duplicates">
+    Implement idempotency in case of retries.
+  </Accordion>
+  <Accordion title="Return quickly">
+    Process webhook data asynchronously if needed. Return a 200 response immediately.
+  </Accordion>
+</AccordionGroup>
 
-Failed webhooks are retried:
-- 3 retry attempts
-- Exponential backoff
-- After 3 failures, webhook is disabled
+## Troubleshooting
 
-## Related Topics
+<AccordionGroup>
+  <Accordion title="Webhook not firing">
+    - Verify the notification is enabled
+    - Check that conditions are being matched
+    - Review the notification settings
+  </Accordion>
+  <Accordion title="Receiving errors">
+    - Check your endpoint is accessible from the internet
+    - Verify the URL is correct
+    - Check server logs for errors
+  </Accordion>
+  <Accordion title="Missing data">
+    - Try a different payload format
+    - Check if the scan type includes the expected data
+  </Accordion>
+</AccordionGroup>
 
-- [Webhook Examples](/notifications/webhooks/examples)
-- [Notifications Overview](/notifications/overview)
+## Related topics
+
+- [Notifications](/notifications/overview)
+- [Slack Integration](/notifications/chat/slack)

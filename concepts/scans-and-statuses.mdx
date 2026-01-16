@@ -3,30 +3,58 @@ title: "Scans and statuses"
 description: "Understand scan lifecycle and status indicators in Pentest-Tools.com"
 ---
 
-## Scan Lifecycle
+## Scan lifecycle
 
-Every scan goes through a defined lifecycle from initiation to completion.
+Every scan moves through a predictable sequence from creation to results.
 
-## Scan Statuses
+<Steps>
+<Step title="Waiting">
+  The platform accepted the scan and placed it in the queue. We hold it here until workers are available and any required VPN/agent is ready.
+</Step>
+<Step title="Running">
+  The scanner is actively probing the target. You can pause or stop from the UI while in this state.
+</Step>
+<Step title="Wrap-up & results">
+  Once the scanner finishes, we compile findings and metadata, then mark the scan as finished or the appropriate terminal status.
+</Step>
+</Steps>
 
-| Status | Description |
-|--------|-------------|
-| **Queued** | Scan is waiting to be processed |
-| **Running** | Scan is actively in progress |
-| **Completed** | Scan finished successfully |
-| **Failed** | Scan encountered an error |
-| **Stopped** | Scan was manually stopped by user |
-| **Paused** | Scan is temporarily paused |
+<Tip>
+Schedule scans during off-peak hours to reduce queue time and keep throughput high.
+</Tip>
 
-## Status Flow
+## Scan statuses (runtime)
+
+These labels map to the runtime `ScanStatus` enum used by the platform.
+
+| Status label | What it means | Typical next step |
+|--------------|---------------|-------------------|
+| **Waiting** | Scan is queued and not yet executing | Keep the tab open; it should transition to Running automatically |
+| **Running** | Scanner is actively working | Monitor progress or stop if needed |
+| **Finished** | Scanner completed and results are ready | Review findings and download the report |
+| **Stopped** | You or the system stopped the run | Rerun after adjusting scope or timing |
+| **Timeout** | Scan exceeded the allowed duration | Narrow scope or increase timeout where supported |
+| **Start Error** | Scan failed before it could start | Check target reachability and configuration, then retry |
+| **Aborted** | Platform terminated the scan unexpectedly | Retry; contact support if it recurs |
+| **VPN Error** | Required VPN connection could not be established | Verify VPN agent status and credentials |
+| **Authentication Error** | Provided auth to the target failed | Update credentials or verification tokens |
+| **Connection Error** | Network connection to target failed | Confirm DNS/ports/firewall and try again |
+| **Skipped** | Run bypassed because a block/robot rule prevented execution | Adjust robot rules or allowlisting, then rerun |
+
+## Status flow
 
 ```
-Queued → Running → Completed
-                 → Failed
-                 → Stopped
+Waiting → Running → Finished
+                ↘ Stopped
+                ↘ Timeout
+                ↘ Start Error / Aborted / VPN Error / Authentication Error / Connection Error / Skipped
 ```
 
-## Understanding Scan Results
+<Note>
+Running and Waiting are the only active states. Everything else is terminal; Finished, Stopped, and Timeout retain partial or full results, while error states do not.
+</Note>
+
+## Understanding scan results
 
 When a scan completes, you'll see:
 
@@ -36,25 +64,31 @@ When a scan completes, you'll see:
 - **Coverage**: What was tested
 
 <Note>
-A completed scan with zero findings doesn't mean the target is secure—it means the scanner didn't detect vulnerabilities with its current checks.
+A completed scan with zero findings doesn't mean the target is secure. It means the scanner didn't detect vulnerabilities with its current checks.
 </Note>
 
-## Common Issues
+## Common issues
 
 <AccordionGroup>
-  <Accordion title="Scan stuck in Queued">
-    This may occur during high platform usage. Scans are processed in order.
+  <Accordion title="Scan stuck in Waiting">
+    This usually means workers are busy or the required VPN/agent is starting. If it persists, stop and rerun during off-peak hours.
   </Accordion>
-  <Accordion title="Scan Failed">
-    Check if the target is reachable and that your asset verification is still valid.
+  <Accordion title="Timeout">
+    Large scopes can hit duration limits. Reduce target scope or split into smaller scans, then rerun.
   </Accordion>
-  <Accordion title="Incomplete Results">
-    Some scans may timeout on large targets. Consider adjusting scan settings.
+  <Accordion title="Connection or Authentication Error">
+    Confirm DNS resolution, ports, firewall rules, and supplied credentials or verification tokens.
+  </Accordion>
+  <Accordion title="VPN Error">
+    Ensure the VPN agent is online and the tunnel profile is valid. Restart the agent if needed.
+  </Accordion>
+  <Accordion title="Stopped or Aborted">
+    If you stopped it manually, rerun when ready. For Aborted, retry once; if repeated, contact support with the scan ID.
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
-- [Running Web Scans](/using/scans/running-web-scans)
-- [Running Network Scans](/using/scans/running-network-scans)
-- [Scan Limits and Behavior](/using/scans/scan-limits-and-behavior)
+- [Scan types](/using/scans/scan-types-and-depth)
+- [Scheduled scans](/using/scans/scheduled-scans)
+- [Authenticated scanning](/using/scans/authenticated-scanning)

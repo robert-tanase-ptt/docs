@@ -3,11 +3,11 @@ title: "Limits and errors"
 description: "Understand API rate limits and error handling"
 ---
 
-## Rate Limits
+## Rate limits
 
 API requests are rate limited to ensure fair usage and platform stability. Limits are applied per user.
 
-### Request Rate Limits
+### Request rate limits
 
 | Endpoint Type | Limit |
 |---------------|-------|
@@ -19,7 +19,7 @@ API requests are rate limited to ensure fair usage and platform stability. Limit
 Pentest Robots have no rate limit when stopping scans via the API.
 </Note>
 
-### Rate Limit Headers
+### Rate limit headers
 
 You can inspect your current rate limit status by checking the response headers on any request:
 
@@ -33,7 +33,7 @@ X-RateLimit-Limit: 250
 X-RateLimit-Remaining: 245
 ```
 
-### When Rate Limited
+### When rate limited
 
 When you exceed the rate limit, you'll receive a `429 Too Many Requests` response with additional headers:
 
@@ -62,7 +62,7 @@ def api_request_with_retry(url, headers, max_retries=3):
     raise Exception("Max retries exceeded")
 ```
 
-## Error Response Format
+## Error response format
 
 Error responses include a `status` code and `message`, with optional `details`:
 
@@ -83,7 +83,7 @@ With additional details:
 }
 ```
 
-## Error Codes
+## Error codes
 
 | Code | Meaning | Common Causes |
 |------|---------|---------------|
@@ -97,7 +97,7 @@ With additional details:
 | 429 | Too Many Requests | Rate limit exceeded |
 | 500 | Internal Server Error | Server-side issue; retry later |
 
-## Common Errors
+## Common errors
 
 <AccordionGroup>
   <Accordion title="401 Unauthorized">
@@ -150,7 +150,7 @@ With additional details:
   </Accordion>
 </AccordionGroup>
 
-## Best Practices
+## Best practices
 
 <Tip>
 Always check the `status` field in error responses to determine the appropriate action.
@@ -161,7 +161,7 @@ Always check the `status` field in error responses to determine the appropriate 
 - **Use exponential backoff**: When retrying failed requests, increase wait time between attempts
 - **Log errors**: Keep records of errors for debugging and monitoring
 
-## Related Topics
+## Related topics
 
 - [API Overview](/api-reference/overview)
 - [Authentication](/api-reference/authentication)

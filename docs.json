@@ -17,8 +17,7 @@
             "group": "Intro",
             "pages": [
               "index",
-              "concepts/core-concepts",
-              "overview/plans-at-a-glance"
+              "concepts/core-concepts"
             ]
           },
           {
@@ -54,31 +53,33 @@
                   "tools/google-hacking",
                   "tools/domain-finder",
                   "tools/subdomain-finder",
-                  "tools/find-virtual-hosts",
+                  "tools/virtual-hosts-finder",
                   "tools/port-scanner",
                   "tools/website-recon",
                   "tools/waf-detector",
-                  "tools/url-fuzzer"
+                  "tools/url-fuzzer",
+                  "tools/people-hunter"
                 ]
               },
               {
                 "group": "Network vulnerability scanning",
                 "pages": [
-                  "tools/network-vulnerability-scanner",
+                  "tools/network-scanner",
                   "tools/password-auditor",
                   "tools/ssl-tls-scanner",
-                  "tools/cloud-scanner"
+                  "tools/cloud-scanner",
+                  "tools/kubernetes-scanner"
                 ]
               },
               {
                 "group": "Web vulnerability scanning",
                 "pages": [
-                  "tools/website-vulnerability-scanner",
+                  "tools/website-scanner",
                   "tools/api-scanner",
                   "tools/wordpress-scanner",
                   "tools/drupal-scanner",
                   "tools/joomla-scanner",
-                  "tools/sharepoint-security-scanner"
+                  "tools/sharepoint-scanner"
                 ]
               },
               {
@@ -90,7 +91,7 @@
                 ]
               },
               {
-                "group": "Handlers",
+                "group": "Exploit handlers",
                 "pages": [
                   "tools/xss-handlers",
                   "tools/http-handlers"
@@ -108,31 +109,17 @@
           {
             "group": "Capabilities",
             "pages": [
-              {
-                "group": "Attack surface",
-                "pages": [
-                  "using/attack-surface/attack-surface-overview",
-                  "using/attack-surface/working-with-technology-fingerprints"
-                ]
-              },
+              "using/attack-surface/attack-surface-overview",
               {
                 "group": "Reports",
                 "pages": [
                   "using/reporting/reporting-overview",
                   "using/reporting/report-templates",
                   "using/reporting/engagements",
-                  "using/reporting/branded-reports",
-                  "using/reporting/exports"
+                  "using/reporting/branded-reports"
                 ]
               },
-              {
-                "group": "Pentest robots",
-                "pages": [
-                  "automation/robots/what-are-pentest-robots",
-                  "automation/robots/build-your-first-robot",
-                  "automation/robots/reusable-robots"
-                ]
-              },
+              "automation/robots/pentest-robots",
               "account/teams-and-roles",
               {
                 "group": "Integrations",
@@ -145,9 +132,9 @@
                   "notifications/security/vanta",
                   "notifications/github-actions",
                   "notifications/burp",
+                  "notifications/generic-cicd",
                   "notifications/aws",
-                  "notifications/security/nucleus",
-                  "notifications/generic-cicd"
+                  "notifications/security/nucleus"
                 ]
               },
               {
@@ -173,13 +160,7 @@
           {
             "group": "AI",
             "pages": [
-              {
-                "group": "MCP",
-                "pages": [
-                  "ai/mcp/overview",
-                  "ai/mcp/tools-reference"
-                ]
-              },
+              "ai/mcp/overview",
               "ai/soft404detector",
               "ai/authentication"
             ]
@@ -187,15 +168,11 @@
           {
             "group": "Account & billing",
             "pages": [
-              "account/creating-and-signing-in",
-              "account/user-profile-and-preferences",
               {
                 "group": "Plans & limits",
                 "pages": [
                   "plans-and-limits/plan-overview",
-                  "plans-and-limits/feature-matrix",
-                  "plans-and-limits/assets-scan-cycles",
-                  "plans-and-limits/usage-limits-and-quotas",
+                  "plans-and-limits/assets-and-limits",
                   "plans-and-limits/add-ons"
                 ]
               },

@@ -1,0 +1,179 @@
+---
+title: "SharePoint Scanner"
+description: "Security testing for Microsoft SharePoint deployments"
+---
+
+## Overview
+
+The SharePoint Scanner identifies vulnerabilities and misconfigurations in Microsoft SharePoint deployments. It tests for exposed web services, user enumeration, accessible default pages, and configuration issues.
+
+The SharePoint Scanner is a **vulnerability scanner**: it tests SharePoint sites for security weaknesses from an anonymous user's perspective. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+
+## Supported targets
+
+| Target type | Examples |
+|-------------|----------|
+| **URL** | `https://sharepoint.example.com`, `https://example.com/sites/mysite` |
+
+<Note>
+Provide the SharePoint site URL. The scanner performs a black-box assessment from an anonymous user's perspective.
+</Note>
+
+## Tests performed
+
+The SharePoint Scanner runs all tests in a single scan. There are no scan mode options.
+
+| Test | Description |
+|------|-------------|
+| **Server Fingerprinting** | Identifies web server software, technology stack, and operating system |
+| **SharePoint Fingerprinting** | Detects SharePoint version from HTTP headers |
+| **SharePoint Configuration** | Analyzes configuration headers for information disclosure |
+| **FrontPage Server Extensions** | Checks for legacy FrontPage extensions |
+| **SharePoint Web Services** | Tests 26 web service endpoints for anonymous access |
+| **User Enumeration** | Attempts to enumerate users via userdisp.aspx (up to 20 users) |
+| **Default Catalogs** | Checks permissions on 3 default _catalogs pages |
+| **Default Forms** | Checks permissions on 9 default Forms pages |
+| **Default Layouts** | Checks permissions on 64+ default _layouts pages |
+| **Search Engine Exposure** | Generates Google dorks to find indexed SharePoint pages |
+
+## Test details
+
+### Server fingerprinting
+
+Identifies the web server software (IIS), technology stack (ASP.NET), and operating system. This information helps attackers identify potential vulnerabilities.
+
+### SharePoint fingerprinting
+
+Detects the SharePoint version from the `MicrosoftSharePointTeamServices` HTTP header. Version detection enables identification of applicable vulnerabilities.
+
+| Version prefix | SharePoint version |
+|----------------|-------------------|
+| 10.x | SharePoint 2001 |
+| 11.x | SharePoint 2003 |
+| 12.x | SharePoint 2007 |
+| 14.x | SharePoint 2010 |
+| 15.x | SharePoint 2013 |
+| 16.x | SharePoint 2016/Online |
+
+### SharePoint configuration
+
+Analyzes HTTP response headers for configuration information disclosure:
+
+| Header | Information exposed |
+|--------|-------------------|
+| **SPRequestDuration** | Request processing time in milliseconds |
+| **X-SharePointHealthScore** | Server load status (0-10 scale) |
+| **SPIislatency** | Web front-end server latency |
+| **SPRequestGuid** | Log correlation ID for troubleshooting |
+
+This information can help attackers monitor the effectiveness of denial-of-service attacks.
+
+### FrontPage Server Extensions
+
+Checks for legacy FrontPage Server Extensions by accessing `/_vti_inf.html`. FrontPage extensions are deprecated and may contain security vulnerabilities.
+
+### SharePoint web services
+
+Tests 26 SharePoint web service endpoints for anonymous access:
+
+- `/_vti_bin/spdisco.aspx`: Web service discovery
+- `/_vti_bin/lists.asmx`: List access
+- `/_vti_bin/People.asmx`: People service
+- `/_vti_bin/UserGroup.asmx`: User/group service
+- `/_vti_bin/permissions.asmx`: Permissions service
+- `/_vti_bin/search.asmx`: Search service
+- And 20 more endpoints...
+
+Exposed web services allow attackers to query SharePoint data without authentication.
+
+### User enumeration
+
+Attempts to enumerate SharePoint users via the `/_layouts/userdisp.aspx` page. For each user found, the scanner extracts:
+
+- Account name
+- Full name
+- Work email
+- Department
+- Job title
+- Mobile phone
+
+User information enables targeted phishing attacks and brute-force password attacks.
+
+### Default catalogs
+
+Checks anonymous access to default _catalogs pages:
+
+- `/_catalogs/masterpage/Forms/AllItems.aspx`
+- `/_catalogs/wp/Forms/AllItems.aspx`
+- `/_catalogs/wt/Forms/Common.aspx`
+
+### Default forms
+
+Checks anonymous access to 9 default Forms pages including:
+
+- `Forms/DispForm.aspx`: Display forms
+- `Forms/EditForm.aspx`: Edit forms
+- `Forms/NewForm.aspx`: New item forms
+- `Pages/Forms/AllItems.aspx`: Page listings
+
+### Default layouts
+
+Checks anonymous access to 64+ default _layouts pages (including SharePoint 2013 `/_layouts/15/` paths):
+
+- `_layouts/viewlsts.aspx`: List views
+- `_layouts/people.aspx`: People and groups
+- `_layouts/settings.aspx`: Site settings
+- `_layouts/create.aspx`: Create page
+- `_layouts/sitemanager.aspx`: Site manager
+- And many more administrative pages...
+
+### Search engine exposure
+
+Generates Google dork queries to find indexed SharePoint pages:
+
+- `site:example.com inurl:"/_catalogs"`
+- `site:example.com inurl:"/Forms"`
+- `site:example.com inurl:"/_layouts"`
+
+<Note>
+The scanner provides clickable Google search links. You should manually review the results to identify any sensitive indexed pages.
+</Note>
+
+## How it works
+
+The SharePoint Scanner follows a systematic approach:
+
+1. **Server fingerprinting**: Identifies web server, technology, and OS
+2. **SharePoint detection**: Confirms SharePoint installation and determines version
+3. **Configuration analysis**: Examines HTTP headers for information disclosure
+4. **Extension check**: Tests for legacy FrontPage extensions
+5. **Web services scan**: Tests 26 endpoints for anonymous access
+6. **User enumeration**: Attempts to extract user information
+7. **Permission checks**: Tests access to _catalogs, Forms, and _layouts pages
+8. **Search exposure**: Generates Google dorks for manual review
+
+The scan is performed remotely in a black-box manner, simulating an anonymous attacker.
+
+## Why SharePoint security matters
+
+- **Corporate data exposure**: SharePoint often contains sensitive business documents
+- **User information leakage**: Exposed user data enables targeted attacks
+- **Anonymous access risks**: Misconfigured permissions allow unauthorized access
+- **Critical vulnerabilities**: SharePoint has had severe RCE vulnerabilities (CVE-2019-0604, CVE-2023-29357)
+
+## Follow-up actions
+
+After identifying vulnerabilities:
+
+- **Remove version headers**: Eliminate MicrosoftSharePointTeamServices and other identifying headers
+- **Disable anonymous access**: Restrict web services and default pages to authenticated users
+- **Protect user information**: Disable anonymous access to userdisp.aspx
+- **Review permissions**: Audit _catalogs, Forms, and _layouts page permissions
+- **Remove FrontPage extensions**: If not needed, remove legacy FrontPage components
+- **Review indexed pages**: Check Google dork results and remove sensitive pages from search
+- **Scan for exploits**: Run [Sniper](/tools/sniper) to test for SharePoint RCE vulnerabilities
+- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
+
+<Warning>
+SharePoint vulnerabilities can expose sensitive corporate documents and enable remote code execution. Regular security assessments are critical.
+</Warning>

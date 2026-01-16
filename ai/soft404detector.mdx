@@ -22,8 +22,8 @@ These soft 404 pages can pollute scan results with false positives, making it ha
 
 Our AI classifier analyzes HTTP responses to distinguish between:
 
-- **Legitimate pages** — Real content that should be reported as findings
-- **Soft 404 pages** — Error pages disguised as valid responses
+- **Legitimate pages**: Real content that should be reported as findings
+- **Soft 404 pages**: Error pages disguised as valid responses
 
 The classifier uses multiple detection techniques:
 
@@ -41,7 +41,7 @@ The classifier uses multiple detection techniques:
 
 ## Usage in Website Scanner
 
-The soft 404 detector is integrated into the [Website Scanner](/tools/website-vulnerability-scanner) to improve the accuracy of content discovery tests.
+The soft 404 detector is integrated into the [Website Scanner](/tools/website-scanner) to improve the accuracy of content discovery tests.
 
 ### Enabled tests
 
@@ -61,7 +61,7 @@ The soft 404 detector is enabled by default for these tests to ensure cleaner re
 
 ### How it improves results
 
-Without soft 404 detection, these tests might report hundreds of false positives—pages that appear to exist but are actually custom error pages. The ML classifier filters these out, so you only see legitimate discoveries.
+Without soft 404 detection, these tests might report hundreds of false positives, pages that appear to exist but are actually custom error pages. The ML classifier filters these out, so you only see legitimate discoveries.
 
 ## Usage in URL Fuzzer
 
@@ -100,15 +100,15 @@ The URL Fuzzer doesn't generate findings directly, but its results are cleaned b
 
 We take your data privacy seriously. Our AI features are designed with security and privacy in mind:
 
-- **Proprietary models** — We use our own AI models, not third-party services like OpenAI
-- **Secure infrastructure** — Data is processed within our secure, isolated infrastructure
-- **No external training** — Your data is never sent to external companies for model training
-- **Predictive, not generative** — Our models classify data rather than generate content, eliminating "hallucination" risks
+- **Proprietary models**: We use our own AI models, not third-party services like OpenAI
+- **Secure infrastructure**: Data is processed within our secure, isolated infrastructure
+- **No external training**: Your data is never sent to external companies for model training
+- **Predictive, not generative**: Our models classify data rather than generate content, eliminating "hallucination" risks
 
 For complete details on how we handle data in our AI features, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
 
 ## Related topics
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [Website Scanner](/tools/website-scanner)
 - [URL Fuzzer](/tools/url-fuzzer)
 - [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy)
