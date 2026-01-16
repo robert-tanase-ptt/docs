@@ -1,97 +1,128 @@
 ---
-title: "Joomla scanner"
-description: "Security testing for Joomla websites"
+title: "Joomla Scanner"
+description: "Security testing for Joomla websites using JoomlaVS"
 ---
 
 ## Overview
 
-The Joomla Scanner identifies vulnerabilities in Joomla installations, including core, extensions, and templates. It detects security issues specific to the Joomla CMS.
+The Joomla Scanner identifies vulnerabilities in Joomla installations, including core, components, modules, and templates. It uses JoomlaVS technology to detect security issues specific to the Joomla CMS.
 
-## What it tests
+The Joomla Scanner is a **vulnerability scanner**: it tests Joomla sites for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Scan results are presented as raw output showing discovered vulnerabilities and their details.
 
-<CardGroup cols={2}>
-  <Card title="Core vulnerabilities" icon="j">
-    Joomla core security issues
-  </Card>
-  <Card title="Extension vulnerabilities" icon="puzzle-piece">
-    Known vulnerable components
-  </Card>
-  <Card title="Template issues" icon="palette">
-    Template security problems
-  </Card>
-  <Card title="Misconfigurations" icon="gear">
-    Insecure Joomla settings
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **URL** | `https://example.com`, `https://example.com/joomla/` |
 
-<Steps>
-  <Step title="Enter Joomla URL">
-    Provide the URL of the Joomla site.
-  </Step>
-  <Step title="Select scan type">
-    Choose Light or Deep mode.
-  </Step>
-  <Step title="Run scan">
-    Execute the Joomla security assessment.
-  </Step>
-</Steps>
+<Note>
+Provide the complete path to the Joomla installation. If Joomla is installed in a subdirectory (e.g., `/joomla/`), include it in the URL.
+</Note>
 
-## Checks performed
+## Tests performed
 
-### Core checks
+The Joomla Scanner runs all tests in a single scan. There are no scan mode options.
 
-| Check | Description |
-|-------|-------------|
-| **Version detection** | Identify Joomla version |
-| **Core vulnerabilities** | Check for known Joomla CVEs |
-| **README.txt** | Detect exposed readme |
-| **Admin path** | Locate administrator directory |
+| Test | Description |
+|------|-------------|
+| **Joomla Version Detection** | Fingerprints the Joomla installation to identify the exact version |
+| **Joomla Core Vulnerabilities** | Checks detected version against vulnerability database |
+| **Component Enumeration** | Discovers installed components by testing known component names |
+| **Component Vulnerabilities** | Checks detected components against vulnerability database |
+| **Module Enumeration** | Discovers installed modules by testing known module names |
+| **Module Vulnerabilities** | Checks detected modules against vulnerability database |
+| **Template Enumeration** | Discovers installed templates by testing known template names |
+| **Template Vulnerabilities** | Checks detected templates against vulnerability database |
 
-### Extension checks
+## Test details
 
-| Check | Description |
-|-------|-------------|
-| **Component enumeration** | Discover installed components |
-| **Module enumeration** | Discover installed modules |
-| **Plugin enumeration** | Discover installed plugins |
-| **Vulnerability matching** | Check against security database |
+### Joomla version detection
 
-### Configuration checks
+The scanner fingerprints the Joomla installation by analyzing:
+- HTML meta tags and generator information
+- JavaScript and CSS file paths
+- XML manifest files
+- Known version-specific files
 
-| Check | Description |
-|-------|-------------|
-| **User enumeration** | Discover Joomla users |
-| **Debug mode** | Check for enabled debugging |
-| **Configuration.php** | Check for exposed configuration |
-| **Backup files** | Check for exposed backups |
+### Joomla core vulnerabilities
 
-## Common findings
+Cross-references the detected Joomla version against a vulnerability database to identify known CVEs. Results include vulnerability titles and reference URLs.
 
-| Finding | Risk | Recommendation |
-|---------|------|----------------|
-| Outdated Joomla | High | Update to latest version |
-| Vulnerable extension | Varies | Update or remove extension |
-| Exposed admin path | Low | Restrict access to /administrator |
-| Debug mode enabled | Medium | Disable in production |
-| Configuration exposure | Critical | Protect configuration.php |
+### Component enumeration
+
+Joomla components are extensions that handle the main content on pages. The scanner:
+- Tests for known component names by accessing their URLs
+- Identifies component versions from manifest files
+- Reports discovered components with their locations
+
+### Component vulnerabilities
+
+Checks detected components against a vulnerability database. For each vulnerable component, the scanner reports:
+- Vulnerability title
+- Reference URLs for more information
+
+### Module enumeration
+
+Joomla modules are lightweight extensions that display content in template positions. The scanner:
+- Tests for known module names
+- Identifies module versions
+- Reports discovered modules
+
+### Module vulnerabilities
+
+Checks detected modules against a vulnerability database and reports any known vulnerabilities.
+
+### Template enumeration
+
+Joomla templates control the visual appearance of the site. The scanner:
+- Tests for known template names
+- Identifies template versions
+- Reports discovered templates
+
+### Template vulnerabilities
+
+Checks detected templates against a vulnerability database and reports any known vulnerabilities.
+
+<Note>
+If the scanner finds more than 50 results for components, modules, or templates, the output is hidden due to a high likelihood of false positives. This typically indicates a WAF or other protection is interfering with the scan.
+</Note>
+
+## How it works
+
+The Joomla Scanner uses JoomlaVS and follows this approach:
+
+1. **Version detection**: Fingerprints the Joomla installation to determine the version
+2. **Core vulnerability check**: Matches version against vulnerability database
+3. **Component enumeration**: Actively tests for installed components by name
+4. **Component vulnerability check**: Matches components against vulnerability database
+5. **Module enumeration**: Actively tests for installed modules by name
+6. **Module vulnerability check**: Matches modules against vulnerability database
+7. **Template enumeration**: Actively tests for installed templates by name
+8. **Template vulnerability check**: Matches templates against vulnerability database
+
+<Note>
+The scanner produces raw text output rather than structured findings. Results are displayed in a console-style format with vulnerability details and reference links.
+</Note>
+
+## Why Joomla security matters
+
+- **Popular CMS**: Joomla is one of the most widely used content management systems
+- **Extension vulnerabilities**: Third-party components, modules, and templates are common attack vectors
+- **Outdated installations**: Many sites run outdated Joomla versions with known vulnerabilities
+- **Complex ecosystem**: The variety of extensions makes it difficult to track all vulnerabilities
+
+## Follow-up actions
+
+After identifying vulnerabilities:
+
+- **Update Joomla core**: Apply security patches immediately
+- **Update extensions**: Keep all components, modules, and templates updated
+- **Remove unused extensions**: Delete extensions that are not actively used
+- **Review discovered vulnerabilities**: Check the reference URLs for exploitation details and fixes
+- **Restrict admin access**: Consider IP-based restrictions on the /administrator path
+- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for additional testing
+- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
 
 <Tip>
 Regularly update Joomla core and all extensions. Many attacks target known vulnerabilities in outdated installations.
 </Tip>
-
-## Results
-
-For each finding:
-- **Component** — Core, extension, or template name
-- **Version** — Detected version
-- **Vulnerability** — CVE and description
-- **Severity** — Risk rating
-- **References** — Joomla security announcements
-
-## Related tools
-
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web testing
-- [WordPress Scanner](/tools/wordpress-scanner) — WordPress-specific testing
-- [Drupal Scanner](/tools/drupal-scanner) — Drupal-specific testing

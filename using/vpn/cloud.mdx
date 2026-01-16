@@ -7,6 +7,10 @@ description: "Deploy the VPN agent in AWS or Azure cloud environments"
 
 Deploy the VPN agent in your cloud environment to scan resources within your VPCs, virtual networks, and private subnets.
 
+<Info>
+VPN profiles require the **Internal network scanning** add-on.
+</Info>
+
 <Tabs>
   <Tab title="AWS">
     ## Prerequisites
@@ -57,13 +61,16 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
     **Outbound rules:**
     | Type | Port | Destination | Purpose |
     |------|------|-------------|---------|
-    | HTTPS | 443 | 0.0.0.0/0 | Platform communication |
-    | Custom UDP | 1194 | VPN endpoint | VPN tunnel |
+    | SSH | 22 | vpn.pentest-tools.com | Agent tunnel |
 
     **Inbound rules:**
     | Type | Port | Source | Purpose |
     |------|------|--------|---------|
     | SSH | 22 | Your IP | Management (optional) |
+
+    <Note>
+    The VPN Agent only requires outbound TCP port 22. No other ports need to be opened.
+    </Note>
 
     ### User data script
 
@@ -80,8 +87,9 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
       --name pentest-agent \
       --restart unless-stopped \
       --network host \
-      -e AGENT_TOKEN="your-token" \
-      pentesttools/vpn-agent:latest
+      --cap-add=NET_ADMIN \
+      --device /dev/net/tun \
+      pentesttoolscom/vpn_agent:latest <VPN_UUID>
     ```
 
     ## ECS/Fargate deployment
@@ -95,14 +103,18 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
       "containerDefinitions": [
         {
           "name": "agent",
-          "image": "pentesttools/vpn-agent:latest",
-          "environment": [
-            {"name": "AGENT_TOKEN", "value": "your-token"}
-          ],
+          "image": "pentesttoolscom/vpn_agent:latest",
+          "command": ["<VPN_UUID>"],
           "linuxParameters": {
             "capabilities": {
               "add": ["NET_ADMIN"]
-            }
+            },
+            "devices": [
+              {
+                "hostPath": "/dev/net/tun",
+                "containerPath": "/dev/net/tun"
+              }
+            ]
           }
         }
       ]
@@ -172,13 +184,16 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
     **Outbound rules:**
     | Priority | Name | Port | Protocol | Destination |
     |----------|------|------|----------|-------------|
-    | 100 | AllowHTTPS | 443 | TCP | Internet |
-    | 110 | AllowVPN | 1194 | UDP | Internet |
+    | 100 | AllowAgentTunnel | 22 | TCP | Internet |
 
     **Inbound rules:**
     | Priority | Name | Port | Protocol | Source |
     |----------|------|------|----------|--------|
     | 100 | AllowSSH | 22 | TCP | Your IP |
+
+    <Note>
+    The VPN Agent only requires outbound TCP port 22 to vpn.pentest-tools.com.
+    </Note>
 
     ### Cloud-init configuration
 
@@ -191,7 +206,7 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
     runcmd:
       - systemctl start docker
       - systemctl enable docker
-      - docker run -d --name pentest-agent --restart unless-stopped --network host -e AGENT_TOKEN="your-token" pentesttools/vpn-agent:latest
+      - docker run -d --name pentest-agent --restart unless-stopped --network host --cap-add=NET_ADMIN --device /dev/net/tun pentesttoolscom/vpn_agent:latest <VPN_UUID>
     ```
 
     ## Container instance deployment
@@ -202,10 +217,10 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
     az container create \
       --resource-group your-rg \
       --name pentest-agent \
-      --image pentesttools/vpn-agent:latest \
+      --image pentesttoolscom/vpn_agent:latest \
       --vnet your-vnet \
       --subnet your-subnet \
-      --environment-variables AGENT_TOKEN=your-token \
+      --command-line "<VPN_UUID>" \
       --restart-policy Always
     ```
 
@@ -221,11 +236,8 @@ Deploy the VPN agent in your cloud environment to scan resources within your VPC
         "containers": [{
           "name": "agent",
           "properties": {
-            "image": "pentesttools/vpn-agent:latest",
-            "environmentVariables": [{
-              "name": "AGENT_TOKEN",
-              "secureValue": "[parameters('agentToken')]"
-            }],
+            "image": "pentesttoolscom/vpn_agent:latest",
+            "command": ["[parameters('vpnUuid')]"],
             "resources": {
               "requests": {"cpu": 1, "memoryInGb": 1}
             }

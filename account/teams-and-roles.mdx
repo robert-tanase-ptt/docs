@@ -1,102 +1,168 @@
 ---
 title: "Teams and roles"
-description: "Manage team members and access control"
+description: "Collaborate with team members and control access to workspaces and resources"
 ---
 
-## Team Management
+## Overview
 
-Enterprise plans support multiple team members with role-based access control.
+Teams allow you to invite colleagues to collaborate on security testing projects. Team members share your subscription resources while maintaining separate accounts, and you control exactly what each person can access.
 
-## User Roles
+<Info>
+Teams is a plan feature available on paid subscriptions (NetSec, WebNetSec, and Pentest Suite).
+</Info>
 
-| Role | Permissions |
+## Team structure
+
+| Role | Description |
 |------|-------------|
-| **Owner** | Full access, billing, delete account |
-| **Admin** | Manage users, all features |
-| **Member** | Run scans, view results |
-| **Viewer** | Read-only access |
+| **Owner** | The account holder who manages the subscription, billing, and team membership |
+| **Team Member** | Invited users who access shared workspaces and resources |
 
-## Role Permissions Matrix
+The owner invites team members and controls what each person can access through sharing settings.
 
-| Permission | Owner | Admin | Member | Viewer |
-|------------|-------|-------|--------|--------|
-| View findings | ✓ | ✓ | ✓ | ✓ |
-| Run scans | ✓ | ✓ | ✓ | ✗ |
-| Manage assets | ✓ | ✓ | ✓ | ✗ |
-| Create workspaces | ✓ | ✓ | ✗ | ✗ |
-| Manage team | ✓ | ✓ | ✗ | ✗ |
-| Billing access | ✓ | ✗ | ✗ | ✗ |
-| Delete account | ✓ | ✗ | ✗ | ✗ |
+## Inviting team members
 
-## Inviting Team Members
+Only the account owner can invite new team members.
 
 <Steps>
-  <Step title="Go to Team Settings">
-    Navigate to Settings → Team.
+  <Step title="Navigate to Team">
+    Go to **Settings → Team**.
   </Step>
   <Step title="Click Invite">
-    Click "Invite Team Member".
+    Click the **Invite** button.
   </Step>
-  <Step title="Enter Details">
-    Provide email and select role.
+  <Step title="Enter Email">
+    Provide the email address of the person you want to invite.
   </Step>
   <Step title="Send Invitation">
-    User receives email invitation.
+    The invitee receives an email with instructions to activate their account.
   </Step>
 </Steps>
 
-## Managing Team Members
+<Note>
+Invited users must activate their account before they can access the platform. Until activated, they appear as pending in your team list.
+</Note>
 
-### Changing Roles
+## Sharing with Team Members
 
-1. Go to Settings → Team
-2. Find the team member
-3. Click Edit/Change Role
-4. Select new role
-5. Save changes
+From a single sharing page, you can configure access to both workspaces and resources for selected team members.
 
-### Removing Team Members
+### Permission levels
 
-1. Go to Settings → Team
-2. Find the team member
-3. Click Remove
-4. Confirm removal
+| Permission | What they can do |
+|------------|------------------|
+| **No access** | Cannot see or access the item |
+| **View** | Can view and use, but cannot make changes |
+| **Edit** | Full access to view, use, edit, and delete |
+
+### How to Configure Sharing
+
+<Steps>
+  <Step title="Go to Team">
+    Navigate to **Settings → Team**.
+  </Step>
+  <Step title="Select Team Members">
+    Select one or more team members from the list.
+  </Step>
+  <Step title="Click Share">
+    Click the **Share** button.
+  </Step>
+  <Step title="Configure Access">
+    The sharing page displays two sections:
+    - **Workspaces** (left): Set access levels for each of your workspaces
+    - **Items** (right): Set access levels for shareable resources
+  </Step>
+  <Step title="Save">
+    Click **Share** to apply your changes. Access updates immediately.
+  </Step>
+</Steps>
+
+### Workspaces
+
+Control which workspaces team members can access:
+
+| Permission | What they can do |
+|------------|------------------|
+| **No access** | Cannot see the workspace |
+| **View** | See assets, scans, and findings; cannot make changes |
+| **Edit** | Full access to run scans, manage assets, and modify findings |
+
+### Shareable items
+
+Configure access to these resource types:
+
+| Item | Description |
+|------|-------------|
+| **Wordlists** | Custom wordlists for fuzzing and enumeration |
+| **VPN Profiles** | VPN configurations for internal network scanning |
+| **Robots** | Pentest robot workflows |
+| **Scan Templates** | Saved scan configurations |
+| **Report Templates** | Pentest report templates |
+| **Finding Templates** | Custom finding definitions |
+| **Engagements** | Client engagement records |
+
+<Tip>
+You can quickly set the same permission for all workspaces or all items using the bulk selection options at the top of each section.
+</Tip>
+
+## Viewing shared access
+
+### What you've shared
+
+The main Team page shows:
+- All team members
+- Which workspaces each member can access
+- Which resources are shared with each member
+
+### What's Shared With You
+
+If you're a team member, go to **Settings → Team → Shared with me** to see:
+- Workspaces shared with you by the owner
+- Resources you have access to
+
+## Removing team members
+
+<Steps>
+  <Step title="Navigate to Team">
+    Go to **Settings → Team**.
+  </Step>
+  <Step title="Select Members">
+    Select the team members to remove.
+  </Step>
+  <Step title="Click Delete">
+    Click the **Delete** button.
+  </Step>
+  <Step title="Choose Content Handling">
+    Decide whether to move their assets and scan data to the owner account or delete it.
+  </Step>
+  <Step title="Confirm">
+    Confirm the removal.
+  </Step>
+</Steps>
 
 <Warning>
-Removing a team member immediately revokes their access. Any scheduled scans they created will continue to run.
+If a team member has running or waiting scans, you must stop them before removing the member.
 </Warning>
 
-## Workspace Access
-
-### Workspace-Level Permissions
-
-In addition to roles, access can be controlled per workspace:
-- Users can be granted access to specific workspaces
-- Workspace permissions override team-level for that workspace
-
-### Access Scenarios
-
-| Scenario | Setup |
-|----------|-------|
-| Full access | Admin role, all workspaces |
-| Limited access | Member role, specific workspaces |
-| Audit access | Viewer role, relevant workspaces |
-
-## Best Practices
+## Best practices
 
 <AccordionGroup>
-  <Accordion title="Least Privilege">
-    Give users the minimum access needed for their role.
+  <Accordion title="Use workspaces to organize access">
+    Create workspaces for different projects or clients, then share only the relevant workspaces with each team member.
   </Accordion>
-  <Accordion title="Regular Reviews">
-    Periodically review team membership and roles.
+  <Accordion title="Start with View permission">
+    Grant View access initially, then upgrade to Edit when team members need to run scans or make changes.
   </Accordion>
-  <Accordion title="Offboarding">
-    Remove access promptly when team members leave.
+  <Accordion title="Review sharing regularly">
+    Periodically review who has access to what, especially when team members change roles or leave.
+  </Accordion>
+  <Accordion title="Remove access promptly">
+    When someone leaves the team, remove their access immediately to maintain security.
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
-- [Account Security](/account/security)
 - [Organize Work with Workspaces](/using/workspaces/organize-work)
+- [Account Security](/account/security)
+- [Plan Overview](/plans-and-limits/plan-overview)

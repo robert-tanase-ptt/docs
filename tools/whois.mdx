@@ -1,95 +1,88 @@
 ---
-title: "WHOIS lookup"
+title: "WHOIS Lookup"
 description: "Look up domain registration and IP ownership information"
 ---
 
 ## Overview
 
-The WHOIS Lookup tool retrieves registration information for domains and IP addresses, providing ownership and administrative contact details.
+The WHOIS Lookup tool retrieves registration information for domains and IP addresses from internet registrars, providing ownership details, contact information, and administrative data.
 
-## What it provides
+WHOIS Lookup is a **utility tool**: it queries public registration databases. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and does not generate [findings](/using/findings/findings). Results are displayed as raw WHOIS output.
 
-<CardGroup cols={2}>
-  <Card title="Domain info" icon="globe">
-    Registration and expiration dates
-  </Card>
-  <Card title="Ownership" icon="user">
-    Registrant details
-  </Card>
-  <Card title="Contacts" icon="address-book">
-    Admin and technical contacts
-  </Card>
-  <Card title="Name servers" icon="server">
-    DNS configuration
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **Domain** | `example.com`, `corp.example.org` |
+| **IP address** | `192.168.1.1`, `8.8.8.8` |
 
-<Steps>
-  <Step title="Enter query">
-    Provide domain name or IP address.
-  </Step>
-  <Step title="Run lookup">
-    Execute the WHOIS query.
-  </Step>
-  <Step title="Review results">
-    Analyze registration data.
-  </Step>
-</Steps>
+## How it works
 
-## Domain WHOIS data
+The tool queries the appropriate internet registrar for the target:
+
+```bash
+whois -H <target>
+```
+
+For domains, it queries domain registrars (Verisign, ICANN, etc.). For IP addresses, it queries Regional Internet Registries (ARIN, RIPE, APNIC, etc.).
+
+## Information retrieved
+
+### For domains
 
 | Field | Description |
 |-------|-------------|
-| Registrar | Company that registered the domain |
-| Created | Domain registration date |
-| Expires | Domain expiration date |
-| Updated | Last modification date |
-| Name servers | DNS servers |
-| Status | Domain status codes |
+| **Registrar** | Company that registered the domain |
+| **Created** | Domain registration date |
+| **Expires** | Domain expiration date |
+| **Updated** | Last modification date |
+| **Name servers** | DNS servers for the domain |
+| **Status** | Domain status codes (clientTransferProhibited, etc.) |
+| **Registrant** | Owner name and organization |
+| **Admin contact** | Administrative contact details |
+| **Tech contact** | Technical contact details |
 
-## IP WHOIS data
+### For IP addresses
 
 | Field | Description |
 |-------|-------------|
-| Network | IP range/CIDR |
-| Organization | IP block owner |
-| Country | Geographic location |
-| Abuse contact | Security contact |
-
-## Use cases in security testing
-
-<CardGroup cols={2}>
-  <Card title="Reconnaissance" icon="magnifying-glass">
-    Gather target organization info
-  </Card>
-  <Card title="Scope validation" icon="check">
-    Verify target ownership
-  </Card>
-  <Card title="Contact discovery" icon="envelope">
-    Find security contacts
-  </Card>
-  <Card title="Infrastructure mapping" icon="sitemap">
-    Identify related assets
-  </Card>
-</CardGroup>
-
-## Privacy considerations
+| **Network** | IP range/CIDR block |
+| **Organization** | Company that owns the IP block |
+| **Country** | Geographic location |
+| **Address** | Organization address |
+| **Abuse contact** | Email for reporting abuse |
+| **Technical contact** | Technical support contact |
 
 <Note>
-Many domain registrations use privacy protection services that hide actual registrant details. This is normal and expected.
+Many domain registrations use privacy protection services (like WhoisGuard or PrivacyProtect) that hide actual registrant details. This is normal and expected.
 </Note>
 
-## WHOIS for security
+## Why use WHOIS Lookup
 
-Information useful for penetration testing:
-- Organization name for social engineering research
-- Email patterns for username guessing
-- IP ranges that might be in scope
-- Associated domains
+### Reconnaissance
 
-## Related tools
+- **Identify target organization**: Confirm who owns a domain or IP
+- **Find related infrastructure**: Discover IP ranges owned by the same organization
+- **Email patterns**: Identify email formats for username guessing
+- **Technical contacts**: Find security team contacts for responsible disclosure
 
-- [Domain Finder](/tools/domain-finder) — Discover related domains
-- [Subdomain Finder](/tools/subdomain-finder) — Enumerate subdomains
+### Scope validation
+
+- **Verify ownership**: Confirm targets belong to the organization in scope
+- **Identify boundaries**: Determine IP ranges that are in or out of scope
+- **Check subsidiaries**: Find related domains owned by the same entity
+
+### Security research
+
+- **Domain age**: Newly registered domains may indicate phishing
+- **Expiration dates**: Expiring domains could be takeover targets
+- **Historical changes**: Registration changes may indicate compromise
+
+## Follow-up actions
+
+After retrieving WHOIS data:
+
+- **Run [Domain Finder](/tools/domain-finder)**: Discover related domains owned by the same organization
+- **Run [Subdomain Finder](/tools/subdomain-finder)**: Enumerate subdomains for discovered domains
+- **Check IP ranges**: Use identified CIDR blocks to find additional assets
+- **Research contacts**: Use discovered emails for social engineering assessment scope

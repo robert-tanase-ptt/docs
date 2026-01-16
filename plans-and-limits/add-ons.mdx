@@ -29,7 +29,6 @@ The VPN add-on enables scanning of internal networks and targets that aren't acc
 - Scanning private IP ranges (10.x.x.x, 172.16.x.x, 192.168.x.x)
 - Accessing targets behind corporate firewalls
 - Reaching staging, development, or isolated network environments
-- Source IP masking for authorized red team exercises
 
 <Info>
 For complete VPN setup instructions, deployment options, and troubleshooting, see the [VPN profiles documentation](/using/vpn/overview).
@@ -65,11 +64,11 @@ When subscribing to a paid plan:
 To add an add-on to your current subscription:
 
 <Steps>
-  <Step title="Go to billing">
-    Navigate to **Settings → Billing → Manage subscription**.
+  <Step title="Go to your active plan">
+    Navigate to **My Account → Active plan**.
   </Step>
-  <Step title="Select add-ons">
-    Click **Add features** and select the add-on you want.
+  <Step title="Change add-ons">
+    Click **Change add-ons** and select the add-on you want to add.
   </Step>
   <Step title="Review pricing">
     The add-on cost is calculated as a percentage of your current plan. Charges are prorated for the remainder of your billing period.
@@ -87,40 +86,34 @@ Add-on pricing scales with your base plan. Both add-ons can be combined for user
 
 ### Viewing active add-ons
 
-Check your current add-ons in **Settings → Billing → Active plan**. You'll see:
+Check your current add-ons in **My Account → Active plan**. You'll see:
 
 - Which add-ons are active
 - When each add-on renews
 - Add-on costs on your subscription
 
-### Canceling an add-on
+### Removing an add-on
 
 To remove an add-on from your subscription:
 
-1. Go to **Settings → Billing → Manage subscription**
-2. Click **Remove** next to the add-on
-3. Confirm the cancellation
+1. Go to **My Account → Active plan**
+2. Click **Change add-ons**
+3. Deselect the add-on you want to remove
+4. Confirm the change
+
+<Info>
+**Upgrades are instant and prorated**: When you add an add-on, it activates immediately and you're charged a prorated amount for the remainder of your billing period.
+
+**Removals are scheduled**: When you remove an add-on, it remains active until the end of your current billing period. The add-on will not renew on your next billing date.
+</Info>
 
 <Warning>
-Canceling the VPN add-on immediately disables all VPN profiles and terminates active agent connections. Download any configurations you need before canceling.
+When the VPN add-on is removed at the end of your billing period, all VPN profiles are disabled and workspaces are unlinked from VPN profiles. Download any configurations you need before the removal takes effect.
 </Warning>
 
 <Warning>
-Canceling the White Label add-on reverts all reports and emails to default Pentest-Tools.com branding.
+When the White Label add-on is removed, all reports and emails revert to default Pentest-Tools.com branding.
 </Warning>
-
-## When to use add-ons vs. upgrade
-
-| Situation | Recommendation |
-|-----------|----------------|
-| Need internal network scanning only | VPN add-on |
-| Need branded reports for clients | White Label add-on |
-| Need more features + internal scanning | Consider upgrading plan + VPN add-on |
-| Need everything | Higher plan + both add-ons |
-
-<Tip>
-Add-ons are billed as a percentage of your plan cost. If you're considering multiple add-ons alongside a plan upgrade, compare the total cost of different combinations to find the best value.
-</Tip>
 
 ## Related topics
 

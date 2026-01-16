@@ -1,87 +1,112 @@
 ---
-title: "Subdomain finder"
-description: "Enumerate subdomains to map the attack surface"
+title: "Subdomain Finder"
+description: "Discover subdomains and determine the attack surface of an organization"
 ---
 
 ## Overview
 
-The Subdomain Finder discovers subdomains of a target domain, revealing additional attack surface that may host vulnerable applications, development servers, or forgotten assets.
+The Subdomain Finder discovers subdomains of a target domain using multiple discovery techniques. Finding subdomains is an important step in the information gathering phase of a penetration test, as subdomains often point to different applications and network ranges used by the target organization.
 
-## What it finds
+Subdomains sometimes host non-public applications (test, development, restricted) which are usually less secure than the public applications, making them primary attack targets.
 
-<CardGroup cols={2}>
-  <Card title="Production sites" icon="globe">
-    www, app, api subdomains
-  </Card>
-  <Card title="Development" icon="code">
-    dev, staging, test environments
-  </Card>
-  <Card title="Infrastructure" icon="server">
-    mail, vpn, dns servers
-  </Card>
-  <Card title="Cloud services" icon="cloud">
-    CDN, storage, SaaS integrations
-  </Card>
-</CardGroup>
+Subdomain Finder is a **discovery tool**: it enumerates subdomains but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
-## How to use
+## Scan types
 
-<Steps>
-  <Step title="Enter domain">
-    Provide the root domain to enumerate.
-  </Step>
-  <Step title="Select scan type">
-    Choose Light or Deep mode.
-  </Step>
-  <Step title="Run enumeration">
-    Execute subdomain discovery.
-  </Step>
-  <Step title="Review results">
-    Analyze discovered subdomains.
-  </Step>
-</Steps>
+| Technique | Light scan | Deep scan |
+|-----------|:----------:|:---------:|
+| [Passive detection](#passive-detection) | ✓ | ✓ |
+| [DNS records (NS, MX, TXT, AXFR)](#dns-records) | ✓ | ✓ |
+| [DNS enumeration](#dns-enumeration) | ✓ | ✓ |
+| [External APIs](#external-apis) | ✓ | ✓ |
+| [SSL certificates](#ssl-certificates) | ✓ | ✓ |
+| [Certificate Transparency Logs](#certificate-transparency-logs) | ✗ | ✓ |
+| [Google and Bing search](#google-and-bing-search) | ✗ | ✓ |
+| [HTML links search](#html-links-search) | ✗ | ✓ |
+| [Reverse DNS](#reverse-dns) | ✗ | ✓ |
+| [Alteration search](#alteration-search) | ✗ | ✓ |
+| [CNAME search](#cname-search) | ✗ | ✓ |
 
-## Enumeration methods
+**Custom scan** allows you to select which techniques to use and configure all parameters manually.
 
-| Method | Description |
-|--------|-------------|
-| **DNS brute force** | Test common subdomain names |
-| **Certificate transparency** | Query CT logs for issued certificates |
-| **DNS zone transfer** | Attempt AXFR if misconfigured |
-| **Public sources** | Search engines, archives, databases |
-| **Passive DNS** | Historical DNS record databases |
+## Parameters
 
-## Results
+| Parameter | Description |
+|-----------|-------------|
+| Target | The domain to enumerate (e.g., `example.com`). Must include a TLD. |
+| Scan type | Light, Deep, or Custom. See comparison table above. |
+| DNS enumeration wordlist | Wordlist for brute-forcing subdomains. You can use default wordlists or your own custom wordlists. See [Wordlists](/capabilities/wordlists). |
+| Include Whois information | Performs Whois queries to determine network owner (netname) and country for each IP. |
+| Detect web technologies | Fingerprints each subdomain to identify OS, server software, technologies, web platform, and page title. |
+| Include unresolved subdomains | Shows subdomains that were found but couldn't be resolved to an IP address. |
 
-For each subdomain:
-- **Subdomain name** — Full hostname
-- **IP addresses** — Resolved A/AAAA records
-- **HTTP status** — If web server responds
-- **Title** — Web page title if available
+## Discovery techniques
+
+### Passive detection
+
+Searches our database of historically cached subdomains. When you run scans, discovered subdomains are stored and can be retrieved in future scans for faster results.
+
+### DNS records
+
+Queries DNS records including:
+- **NS** (Name Server) records
+- **MX** (Mail Exchange) records
+- **TXT** records
+- **AXFR** (Zone Transfer): attempts to retrieve the full zone file if the DNS server is misconfigured
+
+### DNS enumeration
+
+Brute-forces subdomain names using a wordlist. Each word in the wordlist is prepended to the target domain and checked for DNS resolution.
+
+You can use the default wordlists or provide your own custom wordlist. Larger wordlists find more subdomains but take longer to complete.
+
+### Certificate transparency logs
+
+Queries Certificate Transparency (CT) logs for certificates issued for the target domain. CT logs are public records of SSL/TLS certificates, which often reveal subdomains that have been issued certificates.
+
+### External APIs
+
+Queries third-party data sources that aggregate subdomain information from various sources.
+
+### Google and Bing search
+
+Uses search engine queries (dorks) to find indexed subdomains. Search engines often index pages on subdomains that might not be found through other methods.
+
+### HTML links search
+
+Crawls the target website and extracts subdomain references from HTML links, JavaScript files, and other resources on the page.
+
+### SSL certificates
+
+Connects to the target and extracts subdomain information from the SSL certificate's Common Name (CN) and Subject Alternative Names (SAN) fields.
+
+### Reverse DNS
+
+Performs reverse DNS lookups on IP ranges associated with already-discovered subdomains. This can reveal additional subdomains hosted on the same infrastructure.
+
+### Alteration search
+
+Generates permutations and alterations of subdomains found during the scan. For example, if `api.example.com` is found, it might try `api2.example.com`, `api-dev.example.com`, etc.
+
+### CNAME search
+
+Performs CNAME lookups on discovered subdomains and searches the CNAME records for additional subdomain references.
 
 ## Why subdomain enumeration matters
 
 Subdomains often host:
-- **Development environments** — Less security, more bugs
-- **Legacy applications** — Outdated and vulnerable
-- **Internal tools** — Admin panels, dashboards
-- **Forgotten assets** — Abandoned but still running
-- **Third-party services** — Potentially misconfigured
+- **Development environments**: Less hardened, more vulnerabilities
+- **Legacy applications**: Outdated and potentially vulnerable
+- **Internal tools**: Admin panels, dashboards, monitoring
+- **Forgotten assets**: Abandoned but still running services
+- **Third-party services**: Potentially misconfigured integrations
 
-<Tip>
-After discovering subdomains, check for takeover risks with the [Subdomain Takeover](/tools/subdomain-takeover) scanner.
-</Tip>
+## Follow-up actions
 
-## Following up
+After discovering subdomains:
 
-After subdomain enumeration:
-- **Check for takeover risks** — Use [Subdomain Takeover](/tools/subdomain-takeover) scanner
-- **Scan for vulnerabilities** — Run [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
-- **Fingerprint technologies** — Use [Website Recon](/tools/website-recon)
-
-## Related tools
-
-- [Domain Finder](/tools/domain-finder) — Discover related domains
-- [Subdomain Takeover](/tools/subdomain-takeover) — Check for takeover risks
-- [Port Scanner](/tools/port-scanner) — Scan discovered hosts
-- [Website Recon](/tools/website-recon) — Fingerprint discovered services
+1. **Check for takeover risks**: Use [Subdomain Takeover](/tools/subdomain-takeover) to find dangling DNS entries
+2. **Scan for vulnerabilities**: Run [Website Scanner](/tools/website-scanner) on discovered web apps
+3. **Fingerprint services**: Use [Website Recon](/tools/website-recon) for detailed technology detection
+4. **Scan open ports**: Use [Port Scanner](/tools/port-scanner) on discovered hosts
+5. **Discover related domains**: Use [Domain Finder](/tools/domain-finder) to find domains owned by the same organization

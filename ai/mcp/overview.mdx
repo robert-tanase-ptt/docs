@@ -3,11 +3,11 @@ title: "MCP server"
 description: "Connect AI assistants to Pentest-Tools.com using the Model Context Protocol"
 ---
 
-The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server provides a standardized interface that allows any compatible AI model or agent to access your Pentest-Tools.com account—running scans, managing targets, retrieving findings, and generating reports.
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server provides a standardized interface that allows any compatible AI model or agent to access your Pentest-Tools.com account, running scans, managing targets, retrieving findings, and generating reports.
 
 Connect to our MCP server in Claude, Cursor, VS Code, and other clients using either the local server or our hosted remote server.
 
-## Setup Instructions
+## Setup instructions
 
 ### General
 
@@ -16,7 +16,7 @@ Our MCP server supports both local (stdio) and remote (HTTP) transports:
 | Transport | Address |
 |-----------|---------|
 | Local | `ptt mcp` (requires `pip install pentesttools[mcp]`) |
-| Remote | `https://mcp.pentest-tools.com:90001/mcp/` |
+| Remote | `https://mcp.pentest-tools.com/mcp/` |
 
 Authentication requires your Pentest-Tools.com API key. Get it from **My Account → API** in the web application.
 
@@ -40,7 +40,7 @@ Edit your Claude Desktop configuration file:
       "command": "ptt",
       "args": ["mcp"],
       "env": {
-        "PTT_KEY": "your_api_key_here"
+        "PTT_API_KEY": "your_api_key_here"
       }
     }
   }
@@ -63,7 +63,7 @@ Add to your Cursor MCP settings:
       "command": "ptt",
       "args": ["mcp"],
       "env": {
-        "PTT_KEY": "your_api_key_here"
+        "PTT_API_KEY": "your_api_key_here"
       }
     }
   }
@@ -77,7 +77,7 @@ Add to your Cursor MCP settings:
   "servers": {
     "ptt-mcp": {
       "type": "http",
-      "url": "https://mcp.pentest-tools.com:90001/mcp/",
+      "url": "https://mcp.pentest-tools.com/mcp/",
       "headers": {
         "PTT_API_KEY": "your_api_key_here"
       }
@@ -91,7 +91,7 @@ Add to your Cursor MCP settings:
 1. Press `Ctrl/Cmd + P` and search for **MCP: Add Server**
 2. Select **Command (stdio)**
 3. Enter: `ptt mcp`
-4. Set environment variable `PTT_KEY` to your API key
+4. Set environment variable `PTT_API_KEY` to your API key
 
 Or add manually to your settings:
 
@@ -103,7 +103,7 @@ Or add manually to your settings:
       "command": "ptt",
       "args": ["mcp"],
       "env": {
-        "PTT_KEY": "your_api_key_here"
+        "PTT_API_KEY": "your_api_key_here"
       }
     }
   }
@@ -119,7 +119,7 @@ Add to your Gemini CLI configuration:
   "mcpServers": {
     "ptt-mcp": {
       "type": "http",
-      "httpUrl": "https://mcp.pentest-tools.com:90001/mcp/",
+      "httpUrl": "https://mcp.pentest-tools.com/mcp/",
       "headers": {
         "PTT_API_KEY": "your_api_key_here"
       }
@@ -134,11 +134,11 @@ Configure other MCP-compatible tools with:
 
 | Setting | Local | Remote |
 |---------|-------|--------|
-| Command | `ptt` | — |
-| Arguments | `mcp` | — |
-| URL | — | `https://mcp.pentest-tools.com:90001/mcp/` |
-| Environment | `PTT_KEY=your_api_key` | — |
-| Headers | — | `PTT_API_KEY: your_api_key` |
+| Command | `ptt` | - |
+| Arguments | `mcp` | - |
+| URL | - | `https://mcp.pentest-tools.com/mcp/` |
+| Environment | `PTT_API_KEY=your_api_key` | - |
+| Headers | - | `PTT_API_KEY: your_api_key` |
 
 ## Installation
 
@@ -160,7 +160,7 @@ pip install -e .[mcp]
 Python 3.9 or higher is required.
 </Note>
 
-## Available Tools
+## Available tools
 
 The MCP server provides tools for:
 
@@ -173,8 +173,6 @@ The MCP server provides tools for:
 | Reports | Create, download, delete reports |
 | Workspaces | List, create, edit, delete workspaces |
 | Utilities | HTTP loggers, VPN profiles, report translation |
-
-See [Tools Reference](/ai/mcp/tools-reference) for complete documentation.
 
 ## Built-in Prompts
 
@@ -194,7 +192,7 @@ Pre-built prompts for common workflows:
     API access requires a plan that includes it. Check your plan details in **My Account → Subscription** or contact support if you receive a 403 error.
   </Accordion>
 
-  <Accordion title="Local vs Remote server—which should I use?">
+  <Accordion title="Local vs Remote server, which should I use?">
     Use the **local server** if you have Python installed and want faster response times. Use the **remote server** for simpler setup without local dependencies.
   </Accordion>
 
@@ -207,7 +205,7 @@ Pre-built prompts for common workflows:
   </Accordion>
 </AccordionGroup>
 
-## Next Steps
+## Related topics
 
-- [Tools Reference](/ai/mcp/tools-reference) — Complete list of MCP tools and parameters
-- [API Examples](/api-reference/examples) — Python examples for direct API usage
+- [API Examples](/api-reference/examples): Python examples for direct API usage
+- [Authentication](/api-reference/authentication): API authentication details

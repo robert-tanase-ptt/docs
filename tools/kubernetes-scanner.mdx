@@ -1,0 +1,187 @@
+---
+title: "Kubernetes Scanner"
+description: "Find misconfigurations and vulnerabilities in Kubernetes clusters"
+---
+
+## Overview
+
+The Kubernetes Scanner detects security misconfigurations and vulnerabilities in Kubernetes clusters. It scans for Kubernetes-specific services and runs both passive and active detection methods to identify security issues.
+
+The Kubernetes Scanner is a **vulnerability scanner**: it actively tests Kubernetes clusters for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+
+## Supported targets
+
+| Target type | Examples |
+|-------------|----------|
+| **IP address** | `192.168.1.1`, `10.0.0.5` |
+| **Hostname** | `k8s.example.com`, `api.cluster.local` |
+
+## Scan modes
+
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **Light** | Fast scan with passive detection | Quick reconnaissance |
+| **Deep** | Comprehensive scan with active detection | Full security audit |
+| **Custom** | User-configured ports and options | Targeted testing |
+
+### Parameters comparison
+
+| Parameter | Light | Deep | Custom |
+|-----------|:-----:|:----:|:------:|
+| **Ports scanned** | ~11 | ~77 | User-defined |
+| **Check alive** | ✓ | ✓ | Configurable |
+| [**Passive detections**](#passive-detections) | ✓ | ✓ | ✓ |
+| [**Active detections**](#active-detections) | ✗ | ✓ | Configurable |
+| **Authentication** | ✗ | ✓ | ✓ |
+
+### Detection methods comparison
+
+| Detection | Light | Deep | Custom |
+|-----------|:-----:|:----:|:------:|
+| [**Service fingerprinting**](#service-fingerprinting) | ✓ | ✓ | ✓ |
+| [**Version detection**](#version-detection) | ✓ | ✓ | ✓ |
+| [**Configuration enumeration**](#configuration-enumeration) | ✓ | ✓ | ✓ |
+| [**Exposed API detection**](#exposed-api-detection) | ✓ | ✓ | ✓ |
+| [**Vulnerability exploitation**](#vulnerability-exploitation) | ✗ | ✓ | Configurable |
+| [**Privilege escalation testing**](#privilege-escalation-testing) | ✗ | ✓ | Configurable |
+| [**Container escape checks**](#container-escape-checks) | ✗ | ✓ | Configurable |
+| [**RBAC enumeration**](#rbac-enumeration) | ✗ | ✓ | Configurable |
+
+<Warning>
+The Deep scan performs active detection methods that may exploit vulnerabilities to discover additional issues. Only run these against systems you have explicit authorization to test.
+</Warning>
+
+### Custom scan
+
+Full control over scan parameters:
+
+- Define custom port ranges, lists, or common port presets
+- Enable or disable active detection methods
+- Configure authenticated scanning with service account tokens
+
+## Custom scan options
+
+### Port selection
+
+| Option | Ports scanned | Description |
+|--------|---------------|-------------|
+| **Top 10 ports** | ~11 | Most common Kubernetes service ports |
+| **Top 100 ports** | ~77 | Extended list of common ports |
+| **Top 1000 ports** | ~608 | Comprehensive port coverage |
+| **Top 5000 ports** | ~2,009 | Extensive port scan |
+| **All** | 65,535 | Full port range |
+| **Range** | Variable | Custom port range (e.g., `6443-10250`) |
+| **List** | Variable | Comma-separated list of specific ports |
+
+<Note>
+The "Top X ports" presets are curated lists of ports commonly used by Kubernetes services. The actual port count may differ from the preset name.
+</Note>
+
+### Additional options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| **Check alive** | Verify the host is reachable before scanning | Enabled |
+| **Active detections** | Enable active detection methods | Enabled in Deep |
+
+<Tip>
+If the scanner shows zero open ports but you know ports are open, try disabling "Check alive". Some hosts don't respond to ICMP requests used for host discovery.
+</Tip>
+
+## Passive detections
+
+Non-intrusive checks that identify exposed services and misconfigurations without exploiting them. Available in all scan modes.
+
+### Service fingerprinting
+
+Identifies Kubernetes-related services running on open ports by analyzing service banners and response patterns. Detects API servers, kubelet, etcd, dashboards, and other components.
+
+### Version detection
+
+Extracts version information from identified services to determine the Kubernetes distribution and version. Used to check for known vulnerabilities affecting specific versions.
+
+### Configuration enumeration
+
+Queries accessible endpoints to gather configuration details without authentication. Identifies insecure defaults, exposed metrics endpoints, and debug interfaces.
+
+### Exposed API detection
+
+Checks if Kubernetes APIs (API server, kubelet, etcd) are accessible without authentication or with anonymous access enabled. Identifies critical exposure risks.
+
+## Active detections
+
+More thorough checks that leverage found vulnerabilities to discover additional issues. Only available in Deep and Custom scan modes.
+
+### Vulnerability exploitation
+
+Attempts to exploit detected vulnerabilities to confirm they are exploitable and to discover additional issues that may be accessible through the initial vulnerability.
+
+### Privilege escalation testing
+
+Tests for paths that could allow an attacker to escalate privileges within the cluster. Checks for overly permissive RBAC roles, hostPath mounts, and privileged containers.
+
+### Container escape checks
+
+Tests for container escape vectors including privileged mode, host namespace sharing, dangerous capabilities, and kernel vulnerabilities that could allow breaking out of containers.
+
+### RBAC enumeration
+
+Enumerates Role-Based Access Control configurations to identify overly permissive roles, dangerous bindings, and potential privilege escalation paths through RBAC misconfigurations.
+
+## What it detects
+
+| Category | Examples |
+|----------|----------|
+| **Exposed APIs** | Kubernetes API server, kubelet API, etcd |
+| **Dashboard exposure** | Unauthenticated Kubernetes Dashboard access |
+| **RBAC issues** | Misconfigured role bindings, excessive permissions |
+| **Service account issues** | Default service account tokens, mounted secrets |
+| **Container vulnerabilities** | Escape vectors, privileged containers |
+| **Network policies** | Missing or misconfigured network segmentation |
+
+## Authentication
+
+Provide a service account token to simulate an authenticated adversary. This reveals:
+
+- Internal misconfigurations not visible externally
+- What an attacker with valid credentials could access
+- Privilege escalation paths within the cluster
+
+The service account token must be a valid JWT in the format: `header.payload.signature`
+
+<Note>
+Authenticated scanning is only available in Deep and Custom scan modes. See [Authenticated scanning](/using/scans/authenticated-scanning#kubernetes-scanner) for configuration details.
+</Note>
+
+## How it works
+
+Our Kubernetes scanning engine is based on **kube-hunter**. We started with this engine, improved its accuracy and detection methods, and integrated them into our product.
+
+The scanner executes these steps:
+
+1. **Host discovery**: Checks if the target is alive (optional)
+2. **Port scanning**: Scans for Kubernetes-specific ports using Nmap
+3. **Service detection**: Identifies Kubernetes services on open ports
+4. **Passive detection**: Fingerprints services and enumerates configurations
+5. **Active detection**: Exploits vulnerabilities to find additional issues (Deep/Custom)
+6. **Reporting**: Generates findings with severity and remediation guidance
+
+## Why Kubernetes security matters
+
+- **Cluster compromise**: Exposed APIs can lead to full cluster takeover
+- **Container escape**: Misconfigurations allow breaking out of containers
+- **Lateral movement**: Weak RBAC enables access to other workloads
+- **Data exposure**: Secrets and configurations may be accessible
+- **Compliance**: Security frameworks require hardened Kubernetes deployments
+
+## Follow-up actions
+
+After identifying Kubernetes vulnerabilities:
+
+- **Restrict API access**: Implement network policies and authentication
+- **Review RBAC**: Apply principle of least privilege
+- **Secure the dashboard**: Disable or require authentication
+- **Audit service accounts**: Remove unnecessary permissions
+- **Run [Network Scanner](/tools/network-scanner)**: Test the underlying infrastructure
+- **Run [Cloud Scanner](/tools/cloud-scanner)**: Check cloud provider configurations
+- **Run [Port Scanner](/tools/port-scanner)**: Discover additional exposed services

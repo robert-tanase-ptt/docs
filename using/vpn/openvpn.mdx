@@ -1,117 +1,119 @@
 ---
-title: "OpenVPN configuration"
-description: "Set up VPN profiles using OpenVPN for internal network scanning"
+title: "Custom OpenVPN"
+description: "Set up VPN profiles using your own OpenVPN server"
 ---
 
 ## Overview
 
-OpenVPN is a flexible option for connecting Pentest-Tools.com to your internal network using standard VPN technology.
+If you already have an OpenVPN server in your internal network, you can configure Pentest-Tools.com to use it instead of deploying a VPN agent.
+
+<Info>
+VPN profiles require the **Internal network scanning** add-on.
+</Info>
+
+## When to Use Custom OpenVPN
+
+Use this option when:
+- You already have an OpenVPN server deployed
+- You want to use your existing VPN infrastructure
+- Corporate policy requires using your own VPN
+
+For most users, we recommend using the [VPN Agent](/using/vpn/virtual-machine) instead for easier setup.
 
 ## Prerequisites
 
-- OpenVPN client installed on a machine in your internal network
-- Outbound internet access
-- Network access to the targets you want to scan
+- An existing OpenVPN server accessible from the internet
+- OpenVPN configuration file (.ovpn)
+- Optional: Username and password if your server requires authentication
 
-## Setup Process
+## Setup process
 
 <Steps>
-  <Step title="Download Configuration">
-    Get your OpenVPN configuration file from the Pentest-Tools.com dashboard.
+  <Step title="Create VPN profile">
+    In Pentest-Tools.com, go to Settings → VPN Profiles → Create.
   </Step>
-  <Step title="Install OpenVPN">
-    Install the OpenVPN client on your internal machine.
+  <Step title="Select Custom OpenVPN">
+    Choose "Custom OpenVPN Server" as the type.
   </Step>
-  <Step title="Import Configuration">
-    Import the downloaded configuration file.
+  <Step title="Upload configuration">
+    Upload your .ovpn configuration file.
   </Step>
-  <Step title="Connect">
-    Establish the VPN connection.
+  <Step title="Add credentials">
+    If required, enter your OpenVPN username and password.
   </Step>
-  <Step title="Verify">
-    Confirm the connection status in your dashboard.
+  <Step title="Configure settings">
+    Set DNS servers and other options.
   </Step>
 </Steps>
 
-## Configuration File
+## Configuration file requirements
 
-The configuration file contains:
-- Connection endpoint
-- Authentication credentials
+Your .ovpn configuration file should contain:
+- Server endpoint (IP or hostname)
+- Port and protocol
+- Certificates and keys (inline or referenced)
 - Encryption settings
-- Routing configuration
 
 <Warning>
-Keep your OpenVPN configuration file secure. It contains credentials that allow access to scan through your network.
+The OpenVPN configuration will be stored securely. Credentials are encrypted at rest.
 </Warning>
 
-## Installation by Platform
+## OpenVPN Server Requirements
 
-<Tabs>
-  <Tab title="Linux">
-    ```bash
-    # Install OpenVPN
-    sudo apt-get install openvpn
+Your OpenVPN server must:
 
-    # Connect using config file
-    sudo openvpn --config pentest-tools.ovpn
-    ```
-  </Tab>
-  <Tab title="Windows">
-    1. Download OpenVPN client from openvpn.net
-    2. Install the client
-    3. Import the .ovpn configuration file
-    4. Connect from the system tray
-  </Tab>
-  <Tab title="macOS">
-    ```bash
-    # Install via Homebrew
-    brew install openvpn
+- Be reachable from the internet (or from our platform)
+- Allow connections from Pentest-Tools.com infrastructure
+- Route traffic to your internal network
 
-    # Connect using config file
-    sudo openvpn --config pentest-tools.ovpn
-    ```
+### Recommended server configuration
 
-    Or use Tunnelblick GUI client.
-  </Tab>
-</Tabs>
+```conf
+# Server config snippet
+port 1194
+proto udp
+dev tun
 
-## Running as a Service
-
-For persistent connections, configure OpenVPN to run as a system service:
-
-```bash
-# Copy config to OpenVPN directory
-sudo cp pentest-tools.ovpn /etc/openvpn/client.conf
-
-# Enable and start service
-sudo systemctl enable openvpn@client
-sudo systemctl start openvpn@client
+# Enable client routing to internal networks
+push "route 10.0.0.0 255.0.0.0"
+push "route 192.168.0.0 255.255.0.0"
 ```
 
-## Verifying Connection
+## Testing the Connection
 
-After connecting:
-1. Check the VPN status in your Pentest-Tools.com dashboard
-2. The profile should show as "Connected"
-3. Try running a scan against an internal target
+After configuration, use Test connection to verify your OpenVPN server is reachable:
+
+1. Go to **Settings → VPN Profiles**
+2. Click on your profile name to open the details panel
+3. Click **Test connection**
+4. The platform will attempt to connect to your OpenVPN server
+5. Status will show as **Success** if successful
+
+<Tip>
+After the test, check the **Connection logs** section in the profile details for detailed output. This is especially helpful when troubleshooting failed connections.
+</Tip>
+
+<Note>
+Unlike VPN Agent profiles, Custom OpenVPN profiles do not show Online/Offline status. The platform connects to your OpenVPN server on-demand when running scans. Use **Test connection** to verify your configuration works correctly.
+</Note>
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Connection fails">
-    - Verify outbound internet access
-    - Check firewall rules (allow UDP 1194 or TCP 443)
-    - Ensure configuration file is not corrupted
+    - Verify the OpenVPN server is reachable from Pentest-Tools.com infrastructure
+    - Check server firewall rules allow connections on the configured port
+    - Ensure the configuration file is valid and not corrupted
+    - Check the connection logs for specific error messages
   </Accordion>
   <Accordion title="Scans timeout">
-    - Verify the VPN machine can reach the target
+    - Verify the VPN server can reach the target
     - Check internal firewall rules
-    - Ensure proper routing is configured
+    - Ensure proper routing is configured on the OpenVPN server
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
 - [VPN Profiles Overview](/using/vpn/overview)
 - [Troubleshooting](/using/vpn/troubleshooting)

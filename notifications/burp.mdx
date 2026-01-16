@@ -1,12 +1,120 @@
 ---
-title: "Burp"
-description: "Integrate with Burp Suite for enhanced web application testing"
+title: "Burp Suite integration"
+description: "Push Burp Suite findings directly to Pentest-Tools.com"
 ---
-
-<Info>
-This page is under construction. Content coming soon.
-</Info>
 
 ## Overview
 
-Connect Pentest-Tools.com with Burp Suite to enhance your web application security testing workflow.
+The Burp Suite integration allows you to push selected issues from Burp Suite directly into your Pentest-Tools.com Findings. No more copy-paste, just clean, structured results ready for triage and reporting.
+
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="One-click export" icon="arrow-right">
+    Push findings from Burp to Pentest-Tools.com instantly.
+  </Card>
+  <Card title="Unified reporting" icon="file-lines">
+    Include Burp findings in your pentest reports.
+  </Card>
+  <Card title="Tracking" icon="list-check">
+    Track remediation across all vulnerability sources.
+  </Card>
+  <Card title="Collaboration" icon="users">
+    Share imported findings with your team.
+  </Card>
+</CardGroup>
+
+## How it works
+
+The integration uses a Burp Suite extension that connects directly to your Pentest-Tools.com account:
+
+1. Install the Burp Suite extension
+2. Configure the extension with your API key
+3. Select issues in Burp Suite
+4. Push them to a workspace in Pentest-Tools.com
+5. View and manage findings alongside your other scans
+
+## Setting up the integration
+
+<Steps>
+  <Step title="Generate an API key">
+    Go to **Settings → Integrations → Burp**, click the options menu, and select **Generate API key**.
+  </Step>
+  <Step title="Download the plugin">
+    Click **Download plugin** to get the Burp Suite extension JAR file.
+  </Step>
+  <Step title="Install in Burp Suite">
+    In Burp Suite, go to **Extender → Extensions → Add** and select the downloaded JAR file.
+  </Step>
+  <Step title="Configure the extension">
+    In the extension settings, enter your API key.
+  </Step>
+  <Step title="Start pushing findings">
+    Select issues in Burp Suite and use the extension to send them to Pentest-Tools.com.
+  </Step>
+</Steps>
+
+## Using the Extension
+
+Once installed and configured:
+
+1. Run your scans in Burp Suite as usual
+2. Select one or more issues you want to export
+3. Use the extension to push them to Pentest-Tools.com
+4. Choose the target workspace
+5. Findings appear in your Findings list
+
+## Managing imported findings
+
+Once imported, Burp Suite findings appear in your Findings list with a Burp Suite source indicator. You can:
+
+- View finding details
+- Change finding status
+- Add to pentest reports
+- Share with team members
+- Track remediation progress
+- Send to Jira or Nucleus
+
+## Best practices
+
+<Tip>
+Review findings in Burp Suite before pushing to avoid duplicates and ensure quality data.
+</Tip>
+
+- Push findings to the appropriate workspace for organization
+- Use consistent target naming across tools
+- Include detailed evidence in Burp for accurate reporting
+- Regularly sync findings to keep your data current
+
+<Warning>
+Keep your API key secure. Anyone with the key can push findings to your account.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Extension not connecting">
+    - Verify your API key is correct
+    - Check your internet connection
+    - Ensure the extension is enabled in Burp Suite
+  </Accordion>
+  <Accordion title="Findings not appearing">
+    - Verify you selected the correct workspace
+    - Check that the push completed successfully
+    - Refresh the Findings page
+  </Accordion>
+  <Accordion title="API key not working">
+    - Generate a new API key from the Integrations page
+    - Update the key in the Burp Suite extension
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Findings](/using/findings/findings)
+- [Report Templates](/using/reporting/report-templates)
+- [API Overview](/api-reference/overview)

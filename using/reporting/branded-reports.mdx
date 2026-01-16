@@ -3,10 +3,114 @@ title: "Branded reports & email settings"
 description: "Customize reports with your organization's branding and configure email delivery"
 ---
 
-<Info>
-This page is under construction. Content coming soon.
-</Info>
-
 ## Overview
 
-Create professional, branded reports and configure email settings to streamline report delivery to stakeholders.
+Create professional, branded reports by adding your company logo and customize how reports are delivered via email. These settings apply to all reports you generate.
+
+<Warning>
+This feature requires the **White Label add-on**. See [Add-ons](/plans-and-limits/add-ons) for pricing and how to enable it on your subscription.
+</Warning>
+
+## Custom logo
+
+Replace the default logo in your reports with your own company branding.
+
+### Uploading a logo
+
+<Steps>
+  <Step title="Navigate to Logo Settings">
+    Go to **Reports → Settings → Logo Settings**.
+  </Step>
+  <Step title="Upload Your Logo">
+    Click to upload your company logo image.
+  </Step>
+  <Step title="Adjust Positioning">
+    Configure margins to position the logo correctly on the report cover page:
+    - **Margin Top**
+    - **Margin Bottom**
+    - **Margin Left**
+    - **Margin Right**
+  </Step>
+  <Step title="Save Settings">
+    Save your logo settings. The logo will appear on all future reports.
+  </Step>
+</Steps>
+
+<Note>
+Your logo appears on the cover page of PDF and DOCX reports, replacing the default Pentest-Tools.com logo.
+</Note>
+
+### Removing a custom logo
+
+To revert to the default logo, delete your custom logo from the Logo Settings page.
+
+## Email settings
+
+Customize how report delivery emails appear to recipients.
+
+### Available settings
+
+| Setting | Description |
+|---------|-------------|
+| **Subject** | Email subject line (supports dynamic tags) |
+| **From (name)** | Sender name shown to recipients |
+| **Reply-to Email** | Address recipients reply to |
+| **Reply-to Name** | Name shown for reply-to |
+| **Introduction** | Opening text in the email body |
+| **Signature** | Closing signature in the email body |
+
+### Dynamic tags
+
+Use these tags in the email subject to insert dynamic values:
+
+| Tag | Inserts |
+|-----|---------|
+| `{{ TOOL }}` | The tool name that generated the scan |
+| `{{ TARGET }}` | The scanned target |
+| `{{ DATE }}` | The report generation date |
+
+### Configuring email settings
+
+<Steps>
+  <Step title="Navigate to Email Settings">
+    Go to **Reports → Settings → Email Settings**.
+  </Step>
+  <Step title="Customize Fields">
+    Fill in your preferred subject line, sender name, reply-to details, introduction, and signature.
+  </Step>
+  <Step title="Save Settings">
+    Save your email settings. They'll be used for all report delivery emails.
+  </Step>
+</Steps>
+
+<Tip>
+Include your company name in the "From (name)" field so recipients immediately recognize the email.
+</Tip>
+
+<Info>
+Want to send emails from your own domain instead of the default? Contact support to set up custom email domains.
+</Info>
+
+## Feature availability
+
+Custom logo and email settings require the **White Label add-on**, which can be added to any paid plan (NetSec, WebNetSec, or Pentest Suite).
+
+| Feature | Requires |
+|---------|----------|
+| Custom report logo | White Label add-on |
+| Logo positioning | White Label add-on |
+| Custom email subject | White Label add-on |
+| Custom sender name | White Label add-on |
+| Custom reply-to | White Label add-on |
+| Email introduction/signature | White Label add-on |
+
+<Tip>
+The White Label add-on also supports branded email notifications for scan completions and scheduled reports.
+</Tip>
+
+## Related topics
+
+- [Add-ons](/plans-and-limits/add-ons)
+- [Reporting Overview](/using/reporting/reporting-overview)
+- [Report Templates](/using/reporting/report-templates)
+- [Engagements](/using/reporting/engagements)

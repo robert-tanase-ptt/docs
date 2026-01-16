@@ -1,0 +1,319 @@
+---
+title: "Website Scanner"
+description: "Comprehensive web application security testing with active and passive vulnerability detection"
+---
+
+## Overview
+
+The Website Scanner performs comprehensive security testing of web applications. It crawls your application, identifies technologies, and tests for vulnerabilities through active payload injection and passive response analysis.
+
+The Website Scanner is a **vulnerability scanner**: it actively tests web applications for security weaknesses. Discovered technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+
+## Supported targets
+
+| Target type | Examples |
+|-------------|----------|
+| **URL** | `https://example.com`, `https://app.example.com/admin` |
+
+<Note>
+The scanner does not follow redirects. Provide the exact URL you want to scan. To scan a specific directory, include it in the URL (e.g., `https://example.com/app/`).
+</Note>
+
+## Scan modes
+
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **Light** | Fast, passive, non-intrusive scan | Quick reconnaissance |
+| **Deep** | Comprehensive assessment with all tests | Full security audit |
+| **Custom** | User-configured tests and options | Targeted testing |
+
+### Parameters comparison
+
+| Parameter | Light | Deep | Custom |
+|-----------|:-----:|:----:|:------:|
+| **Authentication** | ✗ | ✓ | ✓ |
+| **Spidering depth** | 4 | 10 | 1-10 |
+| **Maximum spider time** | 15 min | 1 hour | 10s-1h |
+| **Maximum IPs** | 10 | 1000 | - |
+| **Spidering approach** | Classic | Auto | Configurable |
+| **Requests per second** | - | 100 | 1-10,000 |
+
+### Tests comparison
+
+**[Initial tests](#initial-tests)**
+
+| Test | Light | Deep |
+|------|:-----:|:----:|
+| **Fingerprint Website** | ✓ | ✓ |
+| **Server Software Vulnerabilities** | ✓ | ✓ |
+| **Robots.txt** | ✓ | ✓ |
+| **JavaScript Libraries** | ✗ | ✓ |
+| **SSL/TLS Certificates** | ✓ | ✓ |
+| **Client Access Policies** | ✓ | ✓ |
+| **HTTP Debug Methods** | ✓ | ✓ |
+| **Security.txt File Missing** | ✓ | ✓ |
+| **CORS Misconfiguration** | ✗ | ✓ |
+| **Resource Discovery** | ✗ | ✓ |
+| **Find Sensitive Files** | ✗ | ✓ |
+| **Find Admin Consoles** | ✗ | ✓ |
+| **Find Interesting Files** | ✗ | ✓ |
+| **Information Disclosure** | ✗ | ✓ |
+| **Software Identification** | ✗ | ✓ |
+| **Misconfigurations** | ✗ | ✓ |
+| **Find GraphQL Endpoint** | ✗ | ✓ |
+| **Fuzz OpenAPI Locations** | ✗ | ✓ |
+
+**[Passive checks](#passive-checks)**
+
+| Test | Light | Deep |
+|------|:-----:|:----:|
+| **Security Headers** | ✓ | ✓ |
+| **Cookie Security** | ✓ | ✓ |
+| **Directory Listing** | ✓ | ✓ |
+| **Secure Communication** | ✓ | ✓ |
+| **Weak Password Submission** | ✓ | ✓ |
+| **Commented Code/Error Codes** | ✓ | ✓ |
+| **Clear Text Submission of Credentials** | ✓ | ✓ |
+| **Verify Domain Sources** | ✓ | ✓ |
+| **Mixed Encryptions Content** | ✓ | ✓ |
+| **Sensitive Data Crawl** | ✓ | ✓ |
+| **Find Login Interfaces** | ✓ | ✓ |
+| **Find File Upload** | ✓ | ✓ |
+| **Find OpenAPI Documents** | ✓ | ✓ |
+| **Path Disclosure** | ✓ | ✓ |
+| **SQL Statement in Request Parameter** | ✓ | ✓ |
+| **Password Returned in Later Response** | ✓ | ✓ |
+| **Session Token in URL** | ✓ | ✓ |
+| **API Endpoints** | ✓ | ✓ |
+
+**[Active checks](#active-checks)**
+
+| Test | Light | Deep |
+|------|:-----:|:----:|
+| **SQL Injection** | ✗ | ✓ |
+| **XSS** | ✗ | ✓ |
+| **Local File Inclusion** | ✗ | ✓ |
+| **OS Command Injection** | ✗ | ✓ |
+| **Server Side Request Forgery (SSRF)** | ✗ | ✓ |
+| **Open Redirect** | ✗ | ✓ |
+| **Broken Authentication** | ✗ | ✓ |
+| **PHP Code Injection** | ✗ | ✓ |
+| **Server-Side JavaScript Code Injection** | ✗ | ✓ |
+| **Ruby Code Injection** | ✗ | ✓ |
+| **Python Code Injection** | ✗ | ✓ |
+| **Perl Code Injection** | ✗ | ✓ |
+| **Log4j Remote Code Execution** | ✗ | ✓ |
+| **Server-Side Template Injection (SSTI)** | ✗ | ✓ |
+| **XML External Entity Injection (XXE)** | ✗ | ✓ |
+| **ViewState Remote Code Execution** | ✗ | ✓ |
+| **Prototype Pollution** | ✗ | ✓ |
+| **Exposed Backup Files** | ✗ | ✓ |
+| **Request URL Override** | ✗ | ✓ |
+| **HTTP Request Smuggling** | ✗ | ✓ |
+| **Cross-Site Request Forgery (CSRF)** | ✗ | ✓ |
+| **Insecure Deserialization** | ✗ | ✓ |
+| **NoSQL Injection** | ✗ | ✓ |
+| **Session Fixation** | ✗ | ✓ |
+| **Enumerable Parameter (IDOR)** | ✗ | ✓ |
+| **JWT Weaknesses** | ✗ | ✓ |
+| **Response Header Injection** | ✗ | ✓ |
+
+<Warning>
+The Deep scan performs active vulnerability testing and generates significant network traffic (~10,000+ HTTP requests). Most correctly configured security monitoring systems will detect this scan. Do not use it if you don't have proper authorization from the target website owner.
+</Warning>
+
+### Custom scan
+
+Full control over scan parameters:
+
+- Select specific tests to run
+- Configure spider settings
+- Set request rate limits
+- Configure authentication
+- Define URL exclusions and inclusions
+
+## Initial tests
+
+Initial tests identify technologies, configuration files, and potential entry points before active vulnerability testing begins. See the [tests comparison table](#tests-comparison) for Light vs Deep availability.
+
+| Test | Description |
+|------|-------------|
+| **Fingerprint Website** | Identifies web server software, frameworks, CMS platforms, and other technologies using Wappalyzer |
+| **Server Software Vulnerabilities** | Checks if detected software versions have known CVEs in vulnerability databases |
+| **Robots.txt** | Analyzes robots.txt for sensitive paths, directories, and disallowed content |
+| **JavaScript Libraries** | Identifies outdated JavaScript libraries with known vulnerabilities (jQuery, Angular, etc.) |
+| **SSL/TLS Certificates** | Validates certificate configuration, expiration, trust chain, and common SSL issues |
+| **Client Access Policies** | Checks crossdomain.xml and clientaccesspolicy.xml for overly permissive cross-domain rules |
+| **HTTP Debug Methods** | Tests if TRACE/TRACK methods are enabled, which can enable cross-site tracing (XST) attacks |
+| **Security.txt File Missing** | Checks for security.txt file per RFC 9116 that helps security researchers report issues |
+| **CORS Misconfiguration** | Tests Cross-Origin Resource Sharing headers for overly permissive or insecure configurations |
+| **Resource Discovery** | Fuzzes for common directories, files, and endpoints using extensive wordlists |
+| **Find Sensitive Files** | Searches for backup files (.bak, .old), configuration files, and credential files |
+| **Find Admin Consoles** | Discovers administrative interfaces like /admin, /wp-admin, /phpmyadmin, etc. |
+| **Find Interesting Files** | Searches for files that may reveal information: logs, database dumps, git repositories |
+| **Information Disclosure** | Looks for exposed debug information, stack traces, error details, and internal paths |
+| **Software Identification** | Identifies specific software components, plugins, and their versions |
+| **Misconfigurations** | Detects common web server and application misconfigurations that could lead to security issues |
+| **Find GraphQL Endpoint** | Discovers GraphQL API endpoints and checks for exposed introspection queries |
+| **Fuzz OpenAPI Locations** | Searches common locations for OpenAPI/Swagger specification files (openapi.json, swagger.yaml, etc.) |
+
+<Note>
+Some initial tests like "Find interesting files" and "Information disclosure" may take several hours to complete as they test many potential paths.
+</Note>
+
+## Passive checks
+
+Passive checks analyze server responses without sending attack payloads. These are safe and non-intrusive. See the [tests comparison table](#tests-comparison) for Light vs Deep availability.
+
+| Test | Description |
+|------|-------------|
+| **Security Headers** | Checks for CSP, HSTS, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, and other security headers |
+| **Cookie Security** | Validates Secure, HttpOnly, and SameSite cookie attributes to prevent session hijacking |
+| **Directory Listing** | Detects directory indexes that expose file listings to attackers |
+| **Secure Communication** | Checks for HTTPS enforcement, HSTS, and secure transport configuration |
+| **Weak Password Submission** | Checks if passwords are submitted over unencrypted HTTP connections |
+| **Commented Code/Error Codes** | Finds debug information, stack traces, HTML comments, and error messages in responses |
+| **Clear Text Submission of Credentials** | Detects credentials transmitted without TLS encryption |
+| **Verify Domain Sources** | Checks for resources (scripts, styles) loaded from untrusted third-party domains |
+| **Mixed Encryptions Content** | Detects HTTP resources loaded on HTTPS pages, which can be intercepted |
+| **Sensitive Data Crawl** | Identifies sensitive information like emails, phone numbers, and API keys in page content |
+| **Find Login Interfaces** | Discovers login pages, authentication forms, and password reset functionality |
+| **Find File Upload** | Identifies file upload functionality that could be exploited for malware upload |
+| **Find OpenAPI Documents** | Discovers exposed OpenAPI/Swagger specification files in responses |
+| **Path Disclosure** | Detects exposed filesystem paths in error messages and responses |
+| **SQL Statement in Request Parameter** | Detects SQL queries passed in URL parameters, indicating potential misconfiguration |
+| **Password Returned in Later Response** | Checks if submitted passwords appear in subsequent server responses |
+| **Session Token in URL** | Detects session IDs passed in URLs, which can be leaked via referer headers or logs |
+| **API Endpoints** | Identifies API endpoints discovered during crawling for further testing |
+
+## Active checks
+
+Active checks send payloads to identify exploitable vulnerabilities. These tests are only available in Deep scan mode. See the [tests comparison table](#tests-comparison) for Light vs Deep availability.
+
+<Warning>
+Active checks send attack payloads to your application. Only run these against systems you have explicit authorization to test.
+</Warning>
+
+| Test | Description |
+|------|-------------|
+| **SQL Injection** | Tests for SQL injection flaws in parameters that allow database queries to be manipulated |
+| **XSS** | Tests for reflected, stored, and DOM-based cross-site scripting vulnerabilities |
+| **Local File Inclusion** | Tests for path traversal (../) and local file read vulnerabilities (LFI) |
+| **OS Command Injection** | Tests for command execution on the underlying operating system via shell metacharacters |
+| **Server Side Request Forgery (SSRF)** | Tests if the server can be tricked into making requests to internal resources or third parties |
+| **Open Redirect** | Tests for URL redirect vulnerabilities that can be abused for phishing attacks |
+| **Broken Authentication** | Tests for authentication bypass, weak credentials, and session management flaws |
+| **PHP Code Injection** | Tests for PHP code execution via parameters (eval, include, etc.) |
+| **Server-Side JavaScript Code Injection** | Tests for Node.js/JavaScript code execution on the server |
+| **Ruby Code Injection** | Tests for Ruby code execution via ERB templates or eval |
+| **Python Code Injection** | Tests for Python code execution via eval, exec, or template injection |
+| **Perl Code Injection** | Tests for Perl code execution via backticks or system calls |
+| **Log4j Remote Code Execution** | Tests for Log4Shell (CVE-2021-44228) and related Log4j vulnerabilities |
+| **Server-Side Template Injection (SSTI)** | Tests for template engine exploitation in Jinja2, Twig, Freemarker, Velocity, etc. |
+| **XML External Entity Injection (XXE)** | Tests for XXE attacks that can read local files or perform SSRF via XML parsers |
+| **ViewState Remote Code Execution** | Tests for .NET ViewState deserialization leading to remote code execution |
+| **Prototype Pollution** | Tests for JavaScript prototype pollution that can lead to XSS or RCE |
+| **Exposed Backup Files** | Actively searches for backup files (.bak, ~, .swp) with sensitive content |
+| **Request URL Override** | Tests for host header injection and X-Forwarded-Host override attacks |
+| **HTTP Request Smuggling** | Tests for CL.TE and TE.CL request smuggling between front-end and back-end servers |
+| **Cross-Site Request Forgery (CSRF)** | Tests for missing or weak CSRF token protections on state-changing requests |
+| **Insecure Deserialization** | Tests for unsafe deserialization in Java, PHP, Python, and .NET leading to RCE |
+| **NoSQL Injection** | Tests for injection in MongoDB, CouchDB, and other NoSQL databases |
+| **Session Fixation** | Tests if the application accepts externally set session identifiers |
+| **Enumerable Parameter (IDOR)** | Tests for insecure direct object references by manipulating ID parameters |
+| **JWT Weaknesses** | Tests for JWT algorithm confusion (none, HS256/RS256), weak secrets, and expiration issues |
+| **Response Header Injection** | Tests for CRLF injection in HTTP headers that can lead to cache poisoning or XSS |
+
+## Engine options
+
+Engine options configure how the spider crawls your application to discover pages, forms, and functionality.
+
+### Spidering approach
+
+| Approach | Description | Use case |
+|----------|-------------|----------|
+| **Auto** | Automatically detects and uses the best approach | Most applications (default) |
+| **Classic** | Traditional HTML parsing and link following | Standard websites |
+| **SPA** | JavaScript-aware crawling with browser rendering | React, Angular, Vue apps |
+
+### Limits
+
+| Setting | Description | Range | Default |
+|---------|-------------|-------|---------|
+| **Spidering Depth** | Maximum crawl depth measured by the number of slashes in the URL | 1-10 | 10 |
+| **Maximum spidering time** | Maximum spider duration in seconds | 10-3600 | 3600 (1 hour) |
+| **Requests per second** | Rate limit for requests (actual speed may be lower) | 1-10,000 | 100 |
+
+### Included URLs
+
+Add URLs to be included in the spidering process. This allows the scanner to reach endpoints that are hard to find automatically or are not linked with other endpoints.
+
+Enter one URL per line:
+```
+https://www.example.com/hidden-page
+https://www.example.com/service-endpoint/
+```
+
+### Excluded URLs
+
+Add URLs to be excluded from the spidering process. This stops the scanner from processing endpoints and limits the scope, making it useful when certain areas do not require scanning for vulnerabilities.
+
+Enter one URL per line:
+```
+https://www.example.com/docs
+https://www.example.com/blog/
+```
+
+<Tip>
+Always exclude logout URLs, delete actions, and other destructive endpoints to maintain scan stability. Example exclusions: `/logout`, `/signout`, `/delete`, `/remove`.
+</Tip>
+
+### Subdomains in scope
+
+Add subdomains of the target to be scanned if requests to them are found during the spidering process. This allows the scanner to expand its scanning scope to specific subdomains of the target.
+
+If left empty, only the subdomain **api** will be considered in scope. For example, if `http://example.com` is the target, the subdomain `api.example.com` will be in scope by default.
+
+## Authentication
+
+Configure authentication to test protected areas of your application. Authentication is available in **Deep** and **Custom** scan modes only.
+
+| Method | Description | Use case |
+|--------|-------------|----------|
+| **Automatic login form** | Scanner fills and submits your login form | Simple login pages |
+| **Recorded authentication** | Replay Chrome Recorder JSON file | Complex multi-step logins |
+| **Cookie authentication** | Use existing session cookies | Any cookie-based auth |
+| **Header authentication** | Send custom headers (JWT, API keys) | API and token-based auth |
+
+<Note>
+For detailed authentication configuration, see [Authenticated scanning](/using/scans/authenticated-scanning#website-scanner).
+</Note>
+
+## How it works
+
+The Website Scanner follows a systematic approach:
+
+1. **Fingerprinting**: Identifies web server, technologies, and frameworks
+2. **Crawling**: Discovers pages, forms, and functionality using the selected spider approach. Uses [AI-powered soft 404 detection](/ai/soft404detector) to filter out false positives.
+3. **Initial testing**: Searches for sensitive files, admin panels, and configuration issues
+4. **Passive analysis**: Analyzes all responses for security issues without sending payloads
+5. **Active testing**: Injects payloads into parameters to test for vulnerabilities
+6. **Reporting**: Generates findings with evidence and remediation guidance
+
+## Why web application security matters
+
+- **Data breaches**: Web vulnerabilities are a leading cause of data theft
+- **OWASP Top 10**: Most common web vulnerabilities are well-documented but still prevalent
+- **Business impact**: Compromised applications lead to financial loss and reputation damage
+- **Compliance**: Security testing is required by PCI DSS, HIPAA, SOC 2, and other standards
+
+## Follow-up actions
+
+After identifying vulnerabilities:
+
+- **Prioritize by severity**: Address Critical and High findings first
+- **Validate findings**: Use [SQLi Exploiter](/tools/sqli-exploiter) to confirm SQL injection
+- **Test APIs**: Run [API Scanner](/tools/api-scanner) for REST and GraphQL endpoints
+- **Check CMS**: Use [WordPress Scanner](/tools/wordpress-scanner) for WordPress sites
+- **Find hidden content**: Run [URL Fuzzer](/tools/url-fuzzer) for additional discovery
+- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring

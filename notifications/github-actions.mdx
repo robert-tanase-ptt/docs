@@ -1,12 +1,160 @@
 ---
-title: "GitHub actions"
+title: "GitHub Actions"
 description: "Integrate security scanning into your GitHub Actions workflows"
 ---
 
-<Info>
-This page is under construction. Content coming soon.
-</Info>
-
 ## Overview
 
-Run Pentest-Tools.com scans as part of your CI/CD pipeline using GitHub Actions.
+The GitHub Actions integration allows you to run Pentest-Tools.com scans as part of your CI/CD pipeline, enabling automated security testing on every deployment.
+
+<Info>
+Available on **WebNetSec** and **Pentest Suite** plans.
+</Info>
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="Shift left security" icon="shield-check">
+    Catch vulnerabilities before they reach production.
+  </Card>
+  <Card title="Automated testing" icon="robot">
+    Run security scans automatically on every push or PR.
+  </Card>
+  <Card title="Fail conditions" icon="circle-xmark">
+    Fail builds when vulnerabilities exceed your threshold.
+  </Card>
+  <Card title="Flexible output" icon="file-export">
+    Get results in text or JSON format.
+  </Card>
+</CardGroup>
+
+## Setting up GitHub Actions
+
+<Steps>
+  <Step title="Create an action">
+    Go to Settings → Integrations → GitHub Actions → Create action.
+  </Step>
+  <Step title="Configure the action">
+    Set the target, scan type, output format, and fail condition.
+  </Step>
+  <Step title="Copy the secret">
+    Save the generated secret for use in your GitHub workflow.
+  </Step>
+  <Step title="Add to your workflow">
+    Add the action to your GitHub workflow YAML file.
+  </Step>
+</Steps>
+
+## Action configuration
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | A descriptive name for the action |
+| **Target** | The URL or IP to scan |
+| **Scan type** | Light or Deep scan preset |
+| **Output format** | `text` or `json` for results |
+| **Fail condition** | Severity threshold to fail the build |
+
+### Fail conditions
+
+Configure when your pipeline should fail:
+
+| Condition | Build fails when... |
+|-----------|---------------------|
+| None | Never fails based on findings |
+| Low | Low or higher severity found |
+| Medium | Medium or higher severity found |
+| High | High or higher severity found |
+| Critical | Critical severity found |
+
+## Example workflow
+
+```yaml
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Pentest-Tools.com scan
+        env:
+          PTT_SECRET: ${{ secrets.PTT_ACTION_SECRET }}
+        run: |
+          curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
+            -H "Authorization: Bearer $PTT_SECRET" \
+            -H "Content-Type: application/json" \
+            -d '{"action_name": "my-security-scan"}'
+```
+
+## Scan types
+
+| Type | Description | Use Case |
+|------|-------------|----------|
+| **Light** | Fast reconnaissance scan | Quick checks, PR validation |
+| **Deep** | Comprehensive vulnerability scan | Pre-production, scheduled scans |
+
+<Tip>
+Use Light scans for PR validation to keep CI times short, and schedule Deep scans for nightly or weekly runs.
+</Tip>
+
+## Output formats
+
+### Text output
+
+Human-readable summary of findings, ideal for quick review in logs.
+
+### JSON Output
+
+Structured data for programmatic processing:
+
+```json
+{
+  "scan_id": 12345,
+  "target": "example.com",
+  "findings": [
+    {
+      "title": "SQL Injection",
+      "severity": "high",
+      "description": "..."
+    }
+  ]
+}
+```
+
+## Best practices
+
+<Warning>
+Store your action secret in GitHub Secrets, never commit it to your repository.
+</Warning>
+
+- Use fail conditions appropriate to your pipeline stage
+- Run Light scans on PRs, Deep scans on main branch
+- Review findings before merging, even if build passes
+- Set up notifications for failed security checks
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Scan not running">
+    - Verify the action secret is correct
+    - Check that the action exists and is enabled
+    - Review GitHub Actions logs for errors
+  </Accordion>
+  <Accordion title="Build failing unexpectedly">
+    - Review the fail condition setting
+    - Check if findings meet the threshold
+    - Verify the target is accessible
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Generic CI/CD](/notifications/generic-cicd)
+- [API Overview](/api-reference/overview)
+- [Notifications Overview](/notifications/overview)

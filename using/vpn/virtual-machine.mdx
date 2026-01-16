@@ -1,11 +1,15 @@
 ---
 title: "Virtual machine"
-description: "Deploy the VPN agent as a virtual machine using Hyper-V, VMware, or VirtualBox"
+description: "Deploy the VPN agent as a virtual machine using VMware, Hyper-V, VirtualBox, or ESXi"
 ---
 
 ## Overview
 
 The VPN agent is available as a pre-configured virtual appliance for all major hypervisors. Choose your platform below.
+
+<Info>
+VPN profiles require the **Internal network scanning** add-on.
+</Info>
 
 ## System requirements
 
@@ -251,20 +255,41 @@ The VPN agent is available as a pre-configured virtual appliance for all major h
   </Tab>
 </Tabs>
 
+## Downloading the VM
+
+After creating a VPN profile in Pentest-Tools.com:
+
+1. Go to Settings → VPN Profiles
+2. Find your VPN profile
+3. Click the download button
+4. Select your hypervisor type (VMware, Hyper-V, VirtualBox, or ESXi)
+5. The customized VM image will be downloaded
+
+<Tip>
+Each downloaded VM is pre-configured with your VPN profile credentials.
+</Tip>
+
 ## Initial configuration
 
 After booting the VM:
 
-1. Log in with default credentials (provided in dashboard)
-2. Run the configuration wizard
-3. Enter your agent token
-4. Verify connectivity
+1. The agent starts automatically and connects to the platform
+2. Verify the connection status in your VPN profiles dashboard
+3. The profile should show as "Online"
 
 <Warning>
 Change the default password immediately after initial setup.
 </Warning>
 
+## Network requirements
+
+The VM needs outbound connectivity:
+
+| Protocol | Port | Destination | Purpose |
+|----------|------|-------------|---------|
+| TCP | 22 | vpn.pentest-tools.com | Agent tunnel |
+
 ## Related topics
 
-- [VPN profiles overview](/using/vpn/overview)
+- [VPN Profiles Overview](/using/vpn/overview)
 - [Troubleshooting](/using/vpn/troubleshooting)

@@ -11,9 +11,9 @@ Light scans are fast, surface-level assessments designed for quick results with 
 
 | Aspect | Details |
 |--------|---------|
-| **Speed** | Fast—typically completes in seconds to minutes |
-| **Coverage** | Scans common ports only (typically top 100) |
-| **Detection** | Version-based detection—compares service versions against known vulnerability databases |
+| **Speed** | Fast, typically completes in seconds to minutes |
+| **Coverage** | Common ports only (typically top 100) for network tools; shallow crawling and fewer checks for web tools |
+| **Detection** | Version-based detection, compares service versions against known vulnerability databases |
 | **Impact** | Low traffic, less likely to trigger IDS/IPS alerts |
 
 ### When to use Light scans
@@ -30,13 +30,13 @@ Light scans rely primarily on service version fingerprinting, which can produce 
 
 ## Deep
 
-Deep scans perform comprehensive assessments using multiple detection engines and extended port ranges.
+Deep scans perform comprehensive assessments with extended coverage and additional detection capabilities.
 
 | Aspect | Details |
 |--------|---------|
-| **Speed** | Slower—can take minutes to hours depending on target |
-| **Coverage** | Extended port ranges (typically top 1,000–5,000 ports) |
-| **Detection** | Multiple engines including version-based, Sniper, Nuclei, and active vulnerability checks |
+| **Speed** | Slower, can take minutes to hours depending on target |
+| **Coverage** | Extended port ranges for network tools; deeper spidering and more tests for web tools |
+| **Detection** | Multiple engines including version-based, Sniper, Nuclei, active vulnerability checks, and full enumeration |
 | **Impact** | Higher traffic volume, may be detected by security monitoring |
 
 ### When to use Deep scans
@@ -53,13 +53,13 @@ Deep scans generate more network traffic and may create noise in target logs. Co
 
 ## Custom
 
-Custom scans give you full control over scan parameters—engines, ports, and detection options.
+Custom scans give you full control over scan parameters, including tests, engines, and detection options.
 
 | Aspect | Details |
 |--------|---------|
 | **Speed** | Varies based on configuration |
-| **Coverage** | User-defined ports (specific list, range, or preset) |
-| **Detection** | User-selected engines and options |
+| **Coverage** | User-defined scope (ports for network tools, spidering settings for web tools) |
+| **Detection** | User-selected tests and engines |
 | **Impact** | Depends on configuration choices |
 
 ### When to use Custom scans
@@ -73,27 +73,16 @@ Custom scans give you full control over scan parameters—engines, ports, and de
 
 Depending on the tool, Custom mode may let you configure:
 
-- **Scanning engines** — Select which detection engines to run
-- **Port selection** — Specify exact ports, ranges, or predefined lists
-- **Protocol** — TCP or UDP scanning
-- **Rate limiting** — Control requests per second to reduce impact
+- **Scanning engines**: Select which detection engines or tests to run
+- **Port selection**: Specify exact ports, ranges, or predefined lists (network tools)
+- **Protocol**: TCP or UDP scanning (network tools)
+- **Spidering settings**: Configure crawl depth, approach, and time limits (web tools)
+- **URL inclusions/exclusions**: Control which paths to scan or skip (web tools)
+- **Authentication**: Configure credentials for protected areas (web tools)
+- **Rate limiting**: Control requests per second to reduce impact
 
 <Info>
 Custom scan options vary by tool. Check the specific tool's documentation for available parameters.
-</Info>
-
-## Availability by plan
-
-Scan type availability depends on your subscription:
-
-| Scan type | Free | NetSec | WebNetSec | Pentest Suite |
-|-----------|------|--------|-----------|---------------|
-| **Light** | ✓ All tools | ✓ All tools | ✓ All tools | ✓ All tools |
-| **Deep** | ✗ | ✓ Network tools | ✓ All tools | ✓ All tools |
-| **Custom** | ✗ | ✓ Network tools | ✓ All tools | ✓ All tools |
-
-<Info>
-See the [Feature matrix](/plans-and-limits/feature-matrix) for detailed tool-by-tool availability.
 </Info>
 
 ## Comparison summary
@@ -112,5 +101,4 @@ Start with a Light scan to understand the target landscape, then follow up with 
 
 ## Related topics
 
-- [Feature matrix](/plans-and-limits/feature-matrix) — Tool access by plan
-- [Plan overview](/plans-and-limits/plan-overview) — Compare subscription plans
+- [Plan overview](/plans-and-limits/plan-overview): Compare subscription plans

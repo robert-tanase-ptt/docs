@@ -3,102 +3,125 @@ title: "Change plan"
 description: "Upgrade, downgrade, or modify your subscription"
 ---
 
-## Changing Your Plan
+## Overview
 
-You can change your subscription plan at any time.
+You can change your subscription plan, asset limit, or add-ons at any time from **My Account → Active plan**.
 
-## Upgrading
+<Info>
+**AWS Marketplace customers**: If you purchased through AWS Marketplace, you must manage your subscription through AWS. See [Managing AWS subscriptions](/billing/payment-methods#aws-marketplace).
+</Info>
+
+<Info>
+**Custom plan customers**: If you have a custom or enterprise plan, contact our support team to make changes to your subscription.
+</Info>
+
+## How changes are classified
+
+Subscription changes are classified as **upgrades** or **downgrades** based on **price**, not features:
+
+| Change type | When it applies | Billing | Effect |
+|-------------|-----------------|---------|--------|
+| **Upgrade** | New plan costs **more** than current plan | Prorated charge immediately | Instant activation |
+| **Downgrade** | New plan costs **less** than current plan | No immediate charge | Takes effect at end of billing cycle |
+
+<Note>
+A change can be an "upgrade" even if you're moving to a plan with fewer features, what matters is whether you're paying more or less.
+
+**Example**: Moving from Pentest Suite with 5 assets to NetSec with 100 assets is classified as an **upgrade** because the NetSec 100-asset plan costs more than your current Pentest Suite 5-asset plan.
+</Note>
+
+## Making changes
+
+### Changing your plan
 
 <Steps>
-  <Step title="Go to Billing">
-    Navigate to Settings → Billing → Plans.
+  <Step title="Go to your active plan">
+    Navigate to **My Account → Active plan**.
   </Step>
-  <Step title="Select New Plan">
-    Choose the plan you want to upgrade to.
+  <Step title="Click Change plan">
+    Click the **Change plan** button.
   </Step>
-  <Step title="Review Changes">
-    See what features you'll gain.
+  <Step title="Select new plan and assets">
+    Choose your new plan (NetSec, WebNetSec, or Pentest Suite) and asset tier.
   </Step>
-  <Step title="Confirm">
-    Complete the upgrade.
+  <Step title="Review and confirm">
+    Review the pricing and changes, then confirm.
   </Step>
 </Steps>
 
-### Upgrade Billing
-
-- **Immediate access**: New features available right away
-- **Prorated charges**: Pay the difference for the current period
-- **Next renewal**: Full new plan price
-
-## Downgrading
+### Changing your asset limit
 
 <Steps>
-  <Step title="Go to Billing">
-    Navigate to Settings → Billing → Plans.
+  <Step title="Go to your active plan">
+    Navigate to **My Account → Active plan**.
   </Step>
-  <Step title="Select New Plan">
-    Choose the lower tier plan.
+  <Step title="Click Change asset limit">
+    Click the **Change asset limit** button.
   </Step>
-  <Step title="Review Impact">
-    Understand what you'll lose.
+  <Step title="Select new asset tier">
+    Choose your new asset tier.
   </Step>
-  <Step title="Confirm">
-    Schedule the downgrade.
+  <Step title="Review and confirm">
+    Review the pricing impact and confirm.
   </Step>
 </Steps>
 
-### Downgrade Considerations
+### Changing add-ons
+
+See [Add-ons](/plans-and-limits/add-ons) for details on adding or removing VPN and White Label add-ons.
+
+## Upgrades (paying more)
+
+When your new subscription costs **more** than your current one:
+
+- **Instant activation**: New features, assets, or add-ons are available immediately
+- **Prorated billing**: You're charged the difference for the remainder of your current billing period
+- **Next renewal**: Full new price applies at your next billing date
+
+<Tip>
+The platform calculates a prorated amount based on the days remaining in your billing cycle. You'll see this amount before confirming the upgrade.
+</Tip>
+
+## Downgrades (paying less)
+
+When your new subscription costs **less** than your current one:
+
+- **Scheduled change**: The downgrade takes effect at the end of your current billing cycle
+- **No immediate refund**: You continue using your current plan until the billing period ends
+- **Current features remain**: Full access to your current plan until the change takes effect
+
+### Downgrade considerations
 
 <Warning>
-Downgrading may affect your access to features, assets, and data.
+When the downgrade takes effect, you may lose access to features, assets, or capabilities. Review the impact before confirming.
 </Warning>
 
-| Impact | What Happens |
+| Impact | What happens |
 |--------|--------------|
-| Extra assets | May need to remove some |
-| Scheduled scans | May be disabled |
-| Team members | May lose access |
-| History | Some data may be limited |
+| Extra assets | Assets beyond your new limit become inaccessible |
+| Scheduled scans | May be reduced to fit new limits |
+| Team members | May lose access if Teams is not included |
+| Advanced features | Exploitation tools, authenticated scanning, etc. may be disabled |
 
-### When Downgrade Takes Effect
+### Canceling a scheduled downgrade
 
-- Takes effect at next billing cycle
-- Current features remain until then
-- Plan your transition
+If you have a scheduled downgrade pending, you can cancel it before it takes effect:
 
-## Plan Change Timeline
+1. Go to **My Account → Active plan**
+2. Click **Cancel scheduled changes**
+3. Your subscription will continue at its current level
 
-| Action | When It Happens |
-|--------|-----------------|
-| Upgrade | Immediate |
-| Downgrade | Next billing cycle |
-| Cancel | End of current period |
+## Summary
 
-## Billing Adjustments
+| Action | When it takes effect | Billing |
+|--------|---------------------|---------|
+| Upgrade (pay more) | Immediately | Prorated charge now |
+| Downgrade (pay less) | End of billing cycle | No charge until renewal |
+| Cancel subscription | End of billing cycle | No refund |
 
-### Upgrades
+## Related topics
 
-You're charged the prorated difference immediately, then the full new price at next renewal.
-
-### Downgrades
-
-Current period continues at current price. New lower price starts at next renewal.
-
-## Before Changing Plans
-
-<AccordionGroup>
-  <Accordion title="Review current usage">
-    Check that the new plan meets your needs.
-  </Accordion>
-  <Accordion title="Export data if downgrading">
-    Export any data that might be affected.
-  </Accordion>
-  <Accordion title="Notify team members">
-    If reducing seats, coordinate with your team.
-  </Accordion>
-</AccordionGroup>
-
-## Related Topics
-
-- [Plan Overview](/plans-and-limits/plan-overview)
-- [Cancel and Refunds](/billing/cancel-and-refunds)
+- [Plan overview](/plans-and-limits/plan-overview): Compare subscription plans
+- [Assets and limits](/plans-and-limits/assets-and-limits): Understand asset limits
+- [Add-ons](/plans-and-limits/add-ons): VPN and White Label add-ons
+- [Cancel and refunds](/billing/cancel-and-refunds): Cancellation policy

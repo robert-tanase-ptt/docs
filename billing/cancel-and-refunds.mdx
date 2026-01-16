@@ -1,111 +1,145 @@
 ---
 title: "Cancel and refunds"
-description: "Cancellation process and refund policies"
+description: "Cancellation process and refund policy"
 ---
 
-## Canceling Your Subscription
+## Canceling your subscription
 
-You can cancel your subscription at any time.
+Canceling your subscription is effectively a **downgrade to the Free plan**. The change takes effect at the end of your current billing period.
+
+<Info>
+**AWS Marketplace customers**: If you purchased through AWS Marketplace, you must cancel through AWS. See [Managing AWS subscriptions](/billing/payment-methods#aws-marketplace).
+</Info>
+
+<Info>
+**Custom plan customers**: If you have a custom or enterprise plan, contact our support team to cancel.
+</Info>
+
+### How to cancel
 
 <Steps>
-  <Step title="Go to Billing">
-    Navigate to Settings → Billing.
+  <Step title="Go to your active plan">
+    Navigate to **My Account → Active plan**.
   </Step>
-  <Step title="Click Cancel">
-    Select "Cancel Subscription".
+  <Step title="Click Change plan">
+    Click the **Change plan** button to open the plan selection page.
   </Step>
-  <Step title="Provide Feedback">
+  <Step title="Click Cancel subscription">
+    At the bottom of the plan selection page, click **Cancel subscription**.
+  </Step>
+  <Step title="Provide feedback">
     Optionally tell us why you're leaving.
   </Step>
-  <Step title="Confirm Cancellation">
+  <Step title="Confirm cancellation">
     Confirm to complete the cancellation.
   </Step>
 </Steps>
 
-## What Happens After Cancellation
+### What happens after cancellation
 
-| Aspect | What Happens |
+| Timing | What happens |
 |--------|--------------|
-| Access | Continues until period ends |
-| Data | Retained for 30 days |
-| Renewal | No future charges |
-| Reactivation | Can resubscribe anytime |
+| **Immediately** | Subscription marked as canceled, no future charges |
+| **Until end of billing period** | Full access to your current plan features |
+| **At end of billing period** | Account reverts to Free plan |
 
 <Note>
-Your subscription remains active until the end of your current billing period.
+Your subscription remains fully active until the end of your current billing period. You can continue using all paid features until then.
 </Note>
 
-## Data After Cancellation
+## What changes on the Free plan
 
-### Retention Period
+When your subscription ends, your account reverts to the Free plan with reduced capabilities:
 
-- Account data retained for 30 days
-- Can export data before deletion
-- Resubscribing restores access
-
-### Permanent Deletion
-
-After 30 days:
-- Scan results deleted
-- Findings removed
-- Assets cleared
-- Account anonymized
+| Feature | Paid plans | Free plan |
+|---------|------------|-----------|
+| Scan depth | Light, Deep, Custom | Light only |
+| API access | ✓ | ✗ |
+| Pentest robots | ✓ | ✗ |
+| Multiple workspaces | ✓ | ✗ |
+| Team members | ✓ | ✗ |
+| Scheduled scans | ✓ | ✗ |
+| Scan templates | ✓ | ✗ |
+| Custom wordlists | ✓ | ✗ |
+| Authenticated scanning | ✓ (WebNetSec+) | ✗ |
+| Exploitation tools | ✓ (Pentest Suite) | ✗ |
+| Scan data retention | Unlimited | 30 days |
 
 <Warning>
-Export any data you need before your retention period expires.
+Scheduled scans will be disabled when your subscription ends. Make sure to export any data you need before your billing period ends.
 </Warning>
 
-## Refund Policy
+## Your data after cancellation
 
-### Eligible for Refund
+### Data is retained
 
-- Within 14 days of purchase
-- No significant usage
-- First-time subscriptions
+When you cancel, **your data is not automatically deleted**:
 
-### Not Eligible
+- Existing scans, findings, and reports remain accessible
+- Assets and workspaces are preserved
+- You can still log in and view your data
 
-- After 14-day period
-- Significant platform usage
-- Renewal charges (can cancel instead)
-- Add-on purchases
+However, on the Free plan:
+- Scan data is retained for **30 days** by default
+- You cannot run Deep or Custom scans
+- Some features become inaccessible
 
-## Requesting a Refund
+### Reactivating your subscription
+
+You can resubscribe at any time:
+
+1. Log into your account
+2. Go to **My Account → Active plan**
+3. Choose a plan and complete payment
+4. Full access is restored immediately
+
+## Refund policy
+
+At Pentest-Tools.com, we aim to offer a solution that brings value from day one. However, if you find that our platform doesn't meet your expectations, we offer a **limited refund policy** applicable only under specific conditions.
+
+### Eligibility
+
+Refunds are available **only** under these conditions:
+
+- **First payment only**: Refunds apply only to the first payment made per account
+- **Within 10 days**: You must request a refund within 10 days of your first payment
+- **Cancel first**: You must cancel your subscription before requesting a refund
+- **First month only**: If your subscription continues into the second month, you are no longer eligible
+
+<Warning>
+Once a refund is processed, your account will be **closed automatically** and all associated data will be **permanently deleted**. Export any data you need before requesting a refund.
+</Warning>
+
+### Not eligible for refund
+
+- Requests made after 10 days from first payment
+- Second or subsequent payments
+- Accounts that already received a refund
+- Remaining time in your billing cycle (no partial refunds)
+- Downgrades (difference is not refunded)
+
+### Requesting a refund
 
 <Steps>
-  <Step title="Contact Support">
-    Email support with your refund request.
+  <Step title="Cancel your subscription">
+    First, [cancel your subscription](#how-to-cancel).
   </Step>
-  <Step title="Provide Details">
-    Include account email and reason.
+  <Step title="Contact support">
+    Reach out to our support team through one of these channels:
+    - **In-app chat**: Click the chat icon in the bottom right corner
+    - **Email**: Send your request to support@pentest-tools.com
+    - **Contact form**: Submit via [pentest-tools.com/contact](https://pentest-tools.com/contact)
   </Step>
-  <Step title="Review">
-    We'll review your request.
+  <Step title="Provide details">
+    Include your account email and reason for the refund.
   </Step>
   <Step title="Processing">
-    Refunds processed within 5-10 business days.
+    Refunds are processed as soon as possible. The refunded amount may take a few business days to appear depending on your payment provider.
   </Step>
 </Steps>
 
-## Pausing Instead of Canceling
+## Related topics
 
-If you need a temporary break:
-
-<Tip>
-Consider downgrading to the Free Edition instead of canceling to maintain your account and data.
-</Tip>
-
-## Reactivating
-
-After cancellation, you can resubscribe:
-1. Log into your account
-2. Go to Billing
-3. Choose a plan
-4. Complete payment
-
-If within 30 days, your previous data may be restored.
-
-## Related Topics
-
-- [Change Plan](/billing/change-plan)
-- [Payment Methods](/billing/payment-methods)
+- [Change plan](/billing/change-plan): Upgrade or downgrade instead of canceling
+- [Payment methods](/billing/payment-methods): Manage payment methods
+- [Plan overview](/plans-and-limits/plan-overview): Compare subscription plans

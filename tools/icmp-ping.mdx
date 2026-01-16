@@ -1,83 +1,68 @@
 ---
-title: "ICMP ping"
+title: "ICMP Ping"
 description: "Test host reachability using ICMP echo requests"
 ---
 
 ## Overview
 
-The ICMP Ping tool tests whether a target host is reachable over the network using ICMP echo requests.
+The ICMP Ping tool tests whether a target host is reachable over the network by sending ICMP echo requests and measuring response times. It also performs DNS resolution to show the IP address of hostnames.
 
-## What it does
+ICMP Ping is a **utility tool**: it checks basic network connectivity. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and does not generate [findings](/using/findings/findings). Results are displayed as raw ping output.
 
-<CardGroup cols={2}>
-  <Card title="Reachability" icon="wifi">
-    Check if host responds
-  </Card>
-  <Card title="Latency" icon="clock">
-    Measure response time
-  </Card>
-  <Card title="Packet loss" icon="chart-line">
-    Detect connectivity issues
-  </Card>
-</CardGroup>
+## Supported targets
 
-## How to use
+| Target type | Examples |
+|-------------|----------|
+| **IP address** | `192.168.1.1`, `8.8.8.8` |
+| **Hostname** | `example.com`, `server.example.org` |
 
-<Steps>
-  <Step title="Enter target">
-    Provide IP address or hostname.
-  </Step>
-  <Step title="Configure options">
-    Set packet count and timeout.
-  </Step>
-  <Step title="Run ping">
-    Execute the connectivity test.
-  </Step>
-  <Step title="Review results">
-    Analyze response data.
-  </Step>
-</Steps>
+## How it works
 
-## Options
+The tool sends 3 ICMP Echo Request packets to the target with a 1-second timeout per packet:
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| Count | Number of packets | 4 |
-| Timeout | Wait time per packet | 1 second |
-| Size | Packet size | 64 bytes |
+```bash
+ping -c 3 -W 1 <target>
+```
 
-## Results include
+For each packet, the tool records:
+- Whether a reply was received
+- Round-trip time (RTT) in milliseconds
+- TTL (Time To Live) value
 
-- Response status (success/failure)
-- Round-trip time (RTT)
+At the end, statistics are displayed:
+- Packets transmitted and received
 - Packet loss percentage
-- TTL information
+- Round-trip time statistics (min/avg/max)
 
-## Use cases
-
-- Verify target is online before scanning
-- Check network connectivity
-- Troubleshoot reachability issues
-- Quick host discovery
-
-<Note>
-Some hosts block ICMP traffic. A non-responsive ping doesn't necessarily mean the host is down.
-</Note>
-
-## Interpreting results
+## Output interpretation
 
 | Result | Meaning |
 |--------|---------|
-| Reply received | Host is up and reachable |
-| Request timeout | Host may be down or blocking ICMP |
-| Network unreachable | Routing issue |
-| Host unreachable | No route to host |
+| **Reply received** | Host is up and responds to ICMP |
+| **Request timeout** | Host may be down, unreachable, or blocking ICMP |
+| **Unknown host** | DNS resolution failed, hostname doesn't exist |
+| **Network unreachable** | No route to the target network |
+
+<Note>
+Many hosts and firewalls block ICMP traffic. A non-responsive ping doesn't necessarily mean the host is down. It may simply be filtering ICMP packets.
+</Note>
+
+## Why use ICMP Ping
+
+- **Quick reachability check**: Verify a host is online before running other scans
+- **DNS resolution**: Find the IP address of a hostname
+- **Network troubleshooting**: Diagnose connectivity issues
+- **Latency measurement**: Measure network round-trip time
+- **Basic host discovery**: Quick check if an IP is in use
 
 <Tip>
-If ICMP is blocked, try connecting to a known open port to verify host availability.
+If ICMP is blocked, use the [Port Scanner](/tools/port-scanner) to check if the host responds on known open ports like 80 or 443.
 </Tip>
 
-## Related tools
+## Follow-up actions
 
-- [Port Scanner](/tools/port-scanner) — Scan open ports
-- [Network Vulnerability Scanner](/tools/network-vulnerability-scanner) — Infrastructure assessment
+After confirming a host is reachable:
+
+- **Run [Port Scanner](/tools/port-scanner)**: Discover open ports and services
+- **Run [Network Scanner](/tools/network-scanner)**: Perform vulnerability assessment
+- **Check [Website Recon](/tools/website-recon)**: Fingerprint web technologies if port 80/443 is open

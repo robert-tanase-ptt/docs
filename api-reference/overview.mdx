@@ -9,7 +9,7 @@ Pentest-Tools.com makes it easy for security teams to discover, exploit, and rep
 
 Our REST API enables you to interact with the platform programmatically, integrating security scanning into your existing tools and workflows.
 
-## What You Can Do
+## What you can do
 
 <CardGroup cols={2}>
   <Card title="Targets" icon="crosshairs">
@@ -32,13 +32,13 @@ Our REST API enables you to interact with the platform programmatically, integra
   </Card>
 </CardGroup>
 
-## API Base URL
+## API base URL
 
-```
+```text
 https://app.pentest-tools.com/api/v2
 ```
 
-## Quick Start
+## Quick start
 
 ### 1. Get Your API Key
 
@@ -64,7 +64,7 @@ curl -X POST "https://app.pentest-tools.com/api/v2/scans" \
   -d '{"tool_id": 170, "target_name": "https://example.com"}'
 ```
 
-## Available Endpoints
+## Available endpoints
 
 | Resource | Endpoint | Operations |
 |----------|----------|------------|
@@ -80,7 +80,7 @@ curl -X POST "https://app.pentest-tools.com/api/v2/scans" \
 | Wordlists | `/wordlists` | List, get, delete, get contents |
 | Finding Templates | `/public/finding_templates` | List (public) |
 
-## Response Format
+## Response format
 
 All successful responses return JSON with data wrapped in a `data` field:
 
@@ -109,7 +109,7 @@ For list endpoints, the response includes an array:
 Error responses use a different format. See [Limits and Errors](/api-reference/limits-and-errors) for details.
 </Note>
 
-## Rate Limits
+## Rate limits
 
 API requests are rate limited per user:
 
@@ -121,11 +121,11 @@ API requests are rate limited per user:
 
 See [Limits and Errors](/api-reference/limits-and-errors) for full details.
 
-## OpenAPI Schema
+## OpenAPI schema
 
 This API reference is based on our public OpenAPI schema, available at:
 
-```
+```text
 https://app.pentest-tools.com/api-schema.yml
 ```
 
@@ -135,8 +135,8 @@ You can use this schema with tools like Postman, Insomnia, or code generators.
 
 If you have questions about the API, contact us at [support@pentest-tools.com](mailto:support@pentest-tools.com).
 
-## Next Steps
+## Next steps
 
-- [Authentication](/api-reference/authentication) — Get your API key and authenticate requests
-- [API Examples](/api-reference/examples) — Python examples for all endpoints
-- [Limits and Errors](/api-reference/limits-and-errors) — Rate limits and error handling
+- [Authentication](/api-reference/authentication): Get your API key and authenticate requests
+- [API Examples](/api-reference/examples): Python examples for all endpoints
+- [Limits and Errors](/api-reference/limits-and-errors): Rate limits and error handling

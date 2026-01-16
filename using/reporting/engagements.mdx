@@ -3,10 +3,113 @@ title: "Engagements"
 description: "Organize your penetration testing work into engagements"
 ---
 
+## What are engagements?
+
+Engagements represent client projects or contracts in the platform. They store client and contract details that get included in your pentest reports, making it easy to generate professional deliverables with accurate project information.
+
+Engagements can be shared with team members, allowing your entire team to use consistent client details in reports. See [Sharing engagements](#sharing-engagements) for details.
+
 <Info>
-This page is under construction. Content coming soon.
+When generating an **Editable pentest report**, you select both an Engagement (for client details) and a [Report Template](/using/reporting/report-templates) (for standard content sections).
 </Info>
 
-## Overview
+## Engagement details
 
-Engagements help you structure and manage penetration testing projects from start to finish.
+Each engagement includes the following fields:
+
+| Field | Description |
+|-------|-------------|
+| **Name** | Engagement identifier (e.g., "Acme Corp - Q1 2024 Pentest") |
+| **Client Company** | Name of the client organization |
+| **Contract Number** | Reference number for the engagement contract |
+| **Contract Date** | Date the contract was signed |
+| **Start Date** | When the engagement begins |
+| **End Date** | When the engagement concludes |
+
+## Managing engagements
+
+### Creating an engagement
+
+<Steps>
+  <Step title="Navigate to Engagements">
+    Go to **Reports → Engagements** in the main navigation.
+  </Step>
+  <Step title="Create New Engagement">
+    Click **Create engagement** to add a new project.
+  </Step>
+  <Step title="Fill in Details">
+    Enter the client company, contract information, and project dates.
+  </Step>
+  <Step title="Save">
+    Save the engagement for use in reports.
+  </Step>
+</Steps>
+
+### Editing and deleting engagements
+
+- Edit an engagement to update client details or dates
+- Delete engagements you no longer need
+
+<Note>
+The default engagement cannot be edited or deleted. It's provided as a fallback when you don't need specific client details.
+</Note>
+
+## Sharing engagements
+
+Engagements can be shared with team members (subusers) on your account. When you share engagements, team members can use them when generating reports.
+
+### Permission levels
+
+| Permission | What they can do |
+|------------|------------------|
+| **No access** | Cannot see or use your engagements |
+| **View** | Can view and use engagements in reports, but cannot edit or delete |
+| **Edit** | Full access to view, use, edit, and delete engagements |
+
+### How to share engagements
+
+1. Go to **Settings** → **Team**
+2. Select the team members you want to configure sharing for
+3. Click **Share**
+4. Set the **Engagements** permission level
+5. Click **Save**
+
+Shared engagements appear alongside your owned engagements when generating reports.
+
+<Tip>
+Share client engagements with your team so everyone working on the project can generate reports with consistent client details.
+</Tip>
+
+For more information about team management and sharing, see [Teams and roles](/account/teams-and-roles).
+
+## Using engagements in reports
+
+When generating a pentest report:
+
+1. Select your scans or findings
+2. Choose **Editable pentest report** as the report type
+3. Select an **Engagement** to include client and contract details
+4. Select a **[Report Template](/using/reporting/report-templates)** for standard sections
+5. Generate the report
+
+The engagement's client company, contract details, and dates are automatically included in the report.
+
+## Filtering engagements
+
+Use filters to find engagements quickly:
+
+- **Name**: Search by engagement name
+- **Client Company**: Filter by client
+- **Contract Number**: Search by contract reference
+- **Contract Date**: Filter by date range
+
+<Tip>
+Use descriptive engagement names that include the client name and timeframe to make them easy to find later.
+</Tip>
+
+## Related topics
+
+- [Reporting Overview](/using/reporting/reporting-overview)
+- [Report Templates](/using/reporting/report-templates)
+- [Branded Reports & Email Settings](/using/reporting/branded-reports)
+- [Teams and roles](/account/teams-and-roles)

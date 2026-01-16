@@ -1,101 +1,133 @@
 ---
-title: "Subdomain takeover"
-description: "Detect subdomain takeover vulnerabilities"
+title: "Subdomain Takeover"
+description: "Detect subdomains vulnerable to takeover attacks"
 ---
 
 ## Overview
 
-The Subdomain Takeover scanner detects subdomains vulnerable to takeover attacks, where attackers can claim abandoned cloud resources to serve malicious content from your domain.
+The Subdomain Takeover scanner discovers subdomains pointing to unclaimed cloud resources that attackers could claim to serve malicious content from your domain. It combines comprehensive subdomain discovery with takeover vulnerability detection.
+
+The Subdomain Takeover scanner is an **offensive tool**: it identifies exploitable misconfigurations in DNS records. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and does not generate [findings](/using/findings/findings). Results are displayed as a report listing vulnerable and safe subdomains.
+
+## Supported targets
+
+| Target type | Examples |
+|-------------|----------|
+| **Domain** | `example.com`, `corp.example.org` |
+
+<Note>
+Provide a domain name with a valid TLD. The tool will automatically discover subdomains and test each one for takeover vulnerabilities.
+</Note>
 
 ## What is subdomain takeover?
 
 Subdomain takeover occurs when:
-1. A subdomain points to a cloud service (AWS, Azure, Heroku, etc.)
-2. The cloud resource is deleted or unclaimed
-3. An attacker claims the resource
-4. Attacker now controls content on your subdomain
 
-## What it detects
+1. A subdomain has a DNS CNAME pointing to an external service (e.g., Heroku, GitHub Pages, AWS S3)
+2. The organization stops using the service and deletes the resource
+3. The DNS record remains, pointing to an unclaimed resource
+4. An attacker registers on the service and claims the abandoned resource
+5. The attacker now controls content served from your subdomain
 
-<CardGroup cols={2}>
-  <Card title="Dangling DNS" icon="link-slash">
-    CNAMEs pointing to unclaimed resources
-  </Card>
-  <Card title="Cloud services" icon="cloud">
-    Vulnerable cloud provider configurations
-  </Card>
-  <Card title="Third-party services" icon="building">
-    Abandoned SaaS integrations
-  </Card>
-</CardGroup>
+## How it works
 
-## How to use
+The scanner performs two phases:
 
-<Steps>
-  <Step title="Enter domain">
-    Provide domain or list of subdomains.
-  </Step>
-  <Step title="Run scan">
-    Check for takeover vulnerabilities.
-  </Step>
-  <Step title="Review results">
-    Analyze vulnerable subdomains.
-  </Step>
-</Steps>
+### Phase 1: Subdomain discovery
 
-## Commonly affected services
+Uses the same techniques as [Subdomain Finder](/tools/subdomain-finder) to enumerate subdomains:
 
-| Service | Indicator |
-|---------|-----------|
-| **AWS S3** | NoSuchBucket error |
-| **AWS CloudFront** | Bad request, distribution not found |
-| **GitHub Pages** | 404 There isn't a GitHub Pages site here |
-| **Heroku** | No such app |
-| **Azure** | NXDOMAIN on azurewebsites.net |
-| **Shopify** | Sorry, this shop is unavailable |
-| **Fastly** | Fastly error: unknown domain |
-| **Ghost** | Domain not configured |
-| **Tumblr** | There's nothing here |
+| Technique | Description |
+|-----------|-------------|
+| **DNS Enumeration** | Brute-force common subdomain names using wordlists |
+| **Certificate Transparency** | Query CT logs for issued certificates |
+| **External APIs** | Query third-party subdomain databases |
+| **Search Engines** | Extract subdomains from Bing and Google results |
+| **SSL Certificates** | Analyze certificate SANs for subdomain names |
+| **Website Crawling** | Extract subdomains from HTML links |
+| **Smart DNS Search** | Generate subdomain variations and permutations |
+| **Zone Transfer** | Attempt AXFR to retrieve full DNS zone |
 
-## Detection methods
+### Phase 2: Takeover detection
 
-| Method | Description |
-|--------|-------------|
-| **CNAME analysis** | Check if CNAME target is claimable |
-| **Response fingerprinting** | Match error pages to vulnerable services |
-| **DNS resolution** | Detect NXDOMAIN responses |
+For each discovered subdomain:
 
-## Results
+1. **DNS resolution**: Resolve the subdomain to get IP address
+2. **CNAME lookup**: Check if subdomain has a CNAME pointing to an external service
+3. **Port scanning**: Scan ports 80, 8080, 443, 8443 for web services
+4. **Response analysis**: Make HTTP requests and check for provider-specific error messages
+5. **Vulnerability determination**: Mark as vulnerable if error matches a known takeover pattern
 
-For each vulnerable subdomain:
-- **Subdomain** — Affected hostname
-- **Service** — Cloud provider/service
-- **CNAME** — DNS target
-- **Status** — Vulnerability confirmation
-- **Risk** — Takeover feasibility
+## Supported providers
 
-## Risk and impact
+The scanner detects takeover vulnerabilities for these services:
 
-Successful takeover allows attackers to:
-- **Serve malicious content** from your domain
-- **Steal cookies** set on parent domain
-- **Phish users** with legitimate-looking URLs
-- **Bypass security controls** that trust your domain
-- **Damage reputation** through defacement
+| Provider | Error indicator |
+|----------|-----------------|
+| **GitHub Pages** | "There isn't a GitHub Pages site here" |
+| **Heroku** | "No such app" |
+| **Shopify** | "Sorry, this shop is currently unavailable" |
+| **Fastly** | "Fastly error: unknown domain" |
+| **Tumblr** | "Whatever you were looking for doesn't currently exist at this address" |
+| **Ghost** | "The thing you were looking for is no longer here, or never was" |
+| **BitBucket** | "Repository not found" |
+| **Surge.sh** | "project not found" |
+| **WordPress.com** | "Do you want to register *.wordpress.com?" |
+| **UserVoice** | "This UserVoice subdomain is currently available!" |
+| **Help Scout** | "No settings were found for this company" |
+| **Help Juice** | "We could not find what you're looking for" |
+| **Readme.io** | "Project doesnt exist... yet!" |
+| **Jetbrains** | "is not a registered InCloud YouTrack" |
+| **Tilda** | "Please renew your subscription" |
+
+<Note>
+The scanner checks for specific error messages that indicate the cloud resource is unclaimed and available for takeover.
+</Note>
+
+## Why subdomain takeover matters
+
+Subdomain takeover is a serious vulnerability because:
+
+- **Common vulnerability**: Organizations frequently forget to remove DNS records when decommissioning services
+- **Easy to exploit**: Attackers only need to register on the cloud service and claim the subdomain
+- **Difficult to detect**: No logs or alerts when an attacker claims your subdomain
+- **High impact**: Full control of content served from a trusted subdomain
+- **Compliance risk**: May violate data protection requirements if attacker collects user data
+
+Successful subdomain takeover allows attackers to:
+
+- **Serve malicious content**: Host phishing pages, malware, or defacement on your domain
+- **Steal cookies**: Access cookies set on the parent domain (if not properly scoped)
+- **Bypass security controls**: Evade CSP, CORS, and other policies that trust your domain
+- **Phish users**: Create convincing phishing pages with legitimate-looking URLs
+- **Damage reputation**: Associate your brand with malicious or inappropriate content
+- **Send emails**: Some services allow sending emails from the subdomain
 
 <Warning>
-Subdomain takeover enables cookie theft for your entire domain if cookies are set without proper domain restrictions.
+Subdomain takeover can enable cookie theft across your entire domain if cookies are set without the `__Host-` prefix or explicit domain restrictions.
 </Warning>
 
 ## Remediation
 
 When vulnerabilities are found:
-1. **Remove dangling DNS records** — Delete CNAMEs pointing to unclaimed resources
-2. **Reclaim resources** — If still needed, recreate the cloud resource
-3. **Monitor continuously** — Set up alerts for DNS changes
-4. **Audit regularly** — Review DNS records and cloud assets
 
-## Related tools
+1. **Remove dangling DNS records**: Delete CNAME or A records pointing to unclaimed resources
+2. **Reclaim the resource**: If still needed, recreate the resource on the cloud provider
+3. **Audit DNS regularly**: Review DNS records when decommissioning services
+4. **Monitor for changes**: Set up alerts for DNS record modifications
+5. **Use subdomain inventory**: Maintain a list of active subdomains and their purposes
 
-- [Subdomain Finder](/tools/subdomain-finder) — Discover subdomains first
-- [Domain Finder](/tools/domain-finder) — Find related domains
+<Tip>
+Before deleting a cloud resource, always remove the corresponding DNS record first. This prevents the window of vulnerability between resource deletion and DNS cleanup.
+</Tip>
+
+## Follow-up actions
+
+After identifying vulnerable subdomains:
+
+- **Remediate immediately**: Subdomain takeover vulnerabilities are easily exploitable
+- **Check cookie scope**: Review if any cookies could be accessed from the vulnerable subdomain
+- **Audit all DNS**: Review complete DNS configuration for similar issues
+- **Run [Subdomain Finder](/tools/subdomain-finder)**: Comprehensive subdomain enumeration
+- **Check related domains**: Use [Domain Finder](/tools/domain-finder) to find other domains to test
+- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) to detect new vulnerabilities

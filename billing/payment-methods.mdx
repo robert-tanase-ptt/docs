@@ -1,87 +1,118 @@
 ---
 title: "Payment methods"
-description: "Accepted payment methods and billing setup"
+description: "Accepted payment methods and billing options"
 ---
 
-## Accepted Payment Methods
+## Payment processor
 
-<CardGroup cols={2}>
-  <Card title="Credit Cards" icon="credit-card">
-    Visa, Mastercard, American Express
-  </Card>
-  <Card title="Debit Cards" icon="credit-card">
-    Cards with Visa/MC/Amex logos
-  </Card>
-</CardGroup>
+Pentest-Tools.com uses [FastSpring](https://fastspring.com) as our payment processor. FastSpring is a PCI-compliant merchant of record that handles all payment processing, invoicing, and tax compliance.
 
-## Adding a Payment Method
+## Accepted payment methods
+
+### Credit and debit cards
+
+All major credit and debit cards are accepted globally:
+
+- Visa
+- Mastercard
+- American Express
+- Discover
+- JCB
+- UnionPay
+
+### Digital wallets
+
+- PayPal (available globally except Turkey)
+- Amazon Pay
+- Apple Pay
+- Google Pay
+
+### Bank transfers
+
+Bank transfers are available for custom deals, including annual and multi-year subscriptions. Since bank transfers are one-time payments, they require manual processing for each billing cycle.
+
+Supported currencies: USD, EUR, GBP, INR, BRL, TRY, and JPY.
+
+<Note>
+Bank transfers are not available for standard self-service subscriptions. Contact sales for custom billing arrangements.
+</Note>
+
+### Regional payment methods
+
+Depending on your location, additional payment methods may be available:
+
+| Method | Region | Currency |
+|--------|--------|----------|
+| iDEAL | Netherlands | EUR |
+| SEPA Direct Debit | EU | EUR |
+| Pix | Brazil | BRL |
+| Klarna Pay Now | AT, BE, CH, DE, GB, NL, SE | Local currencies |
+
+## AWS Marketplace
+
+Pentest-Tools.com is also available through [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-hbngy6inrni5s).
+
+### Purchasing via AWS Marketplace
+
+If you subscribe through AWS Marketplace:
+
+- Billing is consolidated with your AWS account
+- Payments are handled by AWS, not FastSpring
+- You can use AWS credits or your existing AWS payment method
+
+### Managing AWS subscriptions
+
+<Warning>
+Customers who purchased through AWS Marketplace **cannot** manage their subscription through the Pentest-Tools.com interface. All subscription changes must be made through AWS Marketplace.
+</Warning>
+
+In **My Account → Active plan**, AWS customers will see a **Manage contract** button that links directly to AWS Marketplace for subscription management.
+
+## Changing your payment method
+
+To update your payment method for an existing subscription:
 
 <Steps>
-  <Step title="Go to Billing">
-    Navigate to Settings → Billing.
+  <Step title="Go to your active plan">
+    Navigate to **My Account → Active plan**.
   </Step>
-  <Step title="Click Add Payment">
-    Select "Add Payment Method".
+  <Step title="Click Change payment method">
+    Click the **Change payment method** button.
   </Step>
-  <Step title="Enter Card Details">
-    Provide card number, expiration, and CVV.
+  <Step title="Enter new payment details">
+    A FastSpring payment window will open where you can enter your new card or payment details.
   </Step>
-  <Step title="Verify">
-    Complete any verification required.
+  <Step title="Confirm the change">
+    Complete the update. Your new payment method will be used for future renewals.
   </Step>
 </Steps>
 
-## Managing Payment Methods
+<Note>
+This option is only available for subscriptions purchased directly through Pentest-Tools.com. AWS Marketplace customers manage payment methods through AWS.
+</Note>
 
-### Default Payment Method
+## Billing information
 
-Your default payment method is used for:
-- Subscription renewals
-- Add-on purchases
-- Overage charges
+### Invoice details
 
-### Updating Card Details
+You can provide billing information for invoices:
 
-1. Go to Settings → Billing
-2. Find your payment method
-3. Click Edit
-4. Update details
-5. Save changes
-
-<Warning>
-Update your payment method before your card expires to avoid service interruption.
-</Warning>
-
-### Removing Payment Methods
-
-1. Ensure another payment method is default
-2. Click Remove on the card to delete
-3. Confirm removal
-
-## Billing Information
-
-### Invoice Details
-
-Provide billing information for invoices:
 - Company name
 - Billing address
-- Tax ID (if applicable)
+- VAT/Tax ID (if applicable)
 
-### Updating Billing Info
+### Updating billing info
 
-1. Go to Settings → Billing
-2. Click "Billing Information"
-3. Update fields
-4. Save
+Update your billing information in **My Account → Active plan** or during the checkout process.
 
-## Payment Security
+## Payment security
 
 <CardGroup cols={2}>
-  <Card title="Encrypted" icon="lock">
-    All payment data is encrypted.
-  </Card>
   <Card title="PCI Compliant" icon="shield-check">
-    We don't store full card numbers.
+    FastSpring is PCI DSS Level 1 compliant. We never store full card numbers.
+  </Card>
+  <Card title="Encrypted" icon="lock">
+    All payment data is encrypted in transit and at rest.
   </Card>
 </CardGroup>
 
@@ -91,24 +122,20 @@ Provide billing information for invoices:
   <Accordion title="Payment declined">
     - Verify card details are correct
     - Check available credit/funds
-    - Contact your bank if persists
+    - Try an alternative payment method
+    - Contact your bank if the issue persists
   </Accordion>
   <Accordion title="Card expired">
-    - Add a new payment method
-    - Update card expiration date
+    - Use **Change payment method** to add a new card
+    - Update before your next renewal date to avoid service interruption
+  </Accordion>
+  <Accordion title="Need invoice/wire transfer billing">
+    Contact sales for enterprise billing arrangements including NET 30 invoicing and wire transfers.
   </Accordion>
 </AccordionGroup>
 
-## Enterprise Billing
-
-Enterprise customers may have additional options:
-- Invoice billing (NET 30)
-- Purchase orders
-- Wire transfer
-
-Contact your account manager for enterprise billing arrangements.
-
-## Related Topics
+## Related topics
 
 - [Invoices](/billing/invoices)
-- [Change Plan](/billing/change-plan)
+- [Change plan](/billing/change-plan)
+- [Plan overview](/plans-and-limits/plan-overview)

@@ -7,7 +7,11 @@ description: "Send security alerts to Slack channels"
 
 The Slack integration delivers security notifications directly to your Slack workspace, enabling real-time team awareness.
 
-## Setting Up Slack
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Setting up Slack
 
 <Steps>
   <Step title="Go to Integrations">
@@ -24,7 +28,7 @@ The Slack integration delivers security notifications directly to your Slack wor
   </Step>
 </Steps>
 
-## Available Notifications
+## Available notifications
 
 | Event | Slack Support |
 |-------|---------------|
@@ -44,13 +48,13 @@ Slack notifications include:
 - Direct links to platform
 - Action buttons
 
-### Example Message
+### Example message
 
 ```
 🔴 Critical Finding Detected
 
 Target: example.com
-Tool: Website Vulnerability Scanner
+Tool: Website Scanner
 Finding: SQL Injection in login form
 
 [View Finding] [View Scan]
@@ -75,7 +79,7 @@ Finding: SQL Injection in login form
   </Tab>
 </Tabs>
 
-### Channel Examples
+### Channel examples
 
 | Channel | Purpose |
 |---------|---------|
@@ -83,14 +87,14 @@ Finding: SQL Injection in login form
 | #security-scans | All scan activity |
 | #project-client-a | Client-specific alerts |
 
-## Best Practices
+## Best practices
 
 <Tip>
 Create a dedicated channel for critical findings and enable notifications/alerts on that channel for immediate attention.
 </Tip>
 
 <Warning>
-Avoid sending all notifications to general channels—this creates noise and leads to ignored alerts.
+Avoid sending all notifications to general channels. This creates noise and leads to ignored alerts.
 </Warning>
 
 ## Troubleshooting
@@ -108,7 +112,7 @@ Avoid sending all notifications to general channels—this creates noise and lea
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+## Related topics
 
 - [Microsoft Teams](/notifications/chat/microsoft-teams)
 - [Notifications Overview](/notifications/overview)

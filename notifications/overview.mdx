@@ -1,86 +1,200 @@
 ---
-title: "Notifications overview"
-description: "Stay informed about scan results and security findings"
+title: "Notifications"
+description: "Get alerted about scan results based on custom conditions"
 ---
 
-## Why Notifications?
+## What are notifications?
 
-Notifications keep you informed about important security events without constantly checking the dashboard.
+Notifications allow you to receive alerts when scan results match specific conditions. Instead of manually checking every scan, you can set up rules to be notified only when something important happens.
 
-## Notification Types
-
-<CardGroup cols={2}>
-  <Card title="Scan Notifications" icon="bell">
-    Alerts when scans complete or fail.
-  </Card>
-  <Card title="Finding Alerts" icon="triangle-exclamation">
-    Immediate alerts for new findings.
-  </Card>
-  <Card title="System Notifications" icon="gear">
-    Account and platform updates.
-  </Card>
-  <Card title="Scheduled Reports" icon="calendar">
-    Regular summary reports.
-  </Card>
-</CardGroup>
-
-## Notification Channels
-
-| Channel | Use Case | Setup |
-|---------|----------|-------|
-| [Email](/notifications/email/configure-alerts) | Universal notifications | Built-in |
-| [Slack](/notifications/chat/slack) | Team collaboration | Integration |
-| [Microsoft Teams](/notifications/chat/microsoft-teams) | Enterprise communication | Integration |
-| [Jira](/notifications/chat/jira) | Ticket creation | Integration |
-| [Webhooks](/notifications/webhooks/overview) | Custom integrations | Configuration |
-
-## Configuring Notifications
+## How notifications work
 
 <Steps>
-  <Step title="Choose Channel">
-    Select where you want to receive notifications.
+  <Step title="Create a notification rule">
+    Define what conditions should trigger an alert.
   </Step>
-  <Step title="Set Up Integration">
-    Configure the connection.
+  <Step title="Choose a trigger type">
+    Select what type of scan results to monitor (vulnerability, ports, scan status, etc.).
   </Step>
-  <Step title="Define Triggers">
-    Choose what events trigger notifications.
+  <Step title="Set conditions">
+    Specify the exact criteria (e.g., risk level is at least High).
   </Step>
-  <Step title="Customize Content">
-    Set what information to include.
+  <Step title="Select destinations">
+    Choose where to send the notification (email, Slack, webhook, etc.).
   </Step>
 </Steps>
 
-## Notification Events
+## Trigger types
 
-| Event | Description |
-|-------|-------------|
-| Scan Started | Scan has begun |
-| Scan Completed | Scan finished successfully |
-| Scan Failed | Scan encountered an error |
-| New Finding | Vulnerability discovered |
-| Critical Finding | High-severity issue found |
+Notifications can be triggered based on different types of scan results:
 
-## Best Practices
+| Trigger | Description |
+|---------|-------------|
+| **Vulnerability** | Findings from vulnerability scans |
+| **Scan status** | Scan completion status (finished, failed, timed out, etc.) |
+| **Port Scanner** | Open ports discovered by the Port Scanner or Network Scanner |
+| **Technology found** | Technologies detected by Website Recon or SNMP Scanner |
+| **Subdomains** | Subdomains discovered by the Subdomain Finder |
+| **URL Fuzzer** | Items found by the URL Fuzzer |
+| **Password Auditor** | Credentials found by the Password Auditor |
+| **Domains** | Domains found by the Domain Finder |
+
+## Condition examples
+
+### Vulnerability conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Risk level** | is at least | Alert when risk is at least High |
+| **Finding name** | contains, is | Alert when finding contains "SQL Injection" |
+| **Confirmed tag** | is confirmed | Alert only for confirmed findings |
+| **Diff** | from previous scan | Alert when new vulnerabilities appear |
+
+### Scan status conditions
+
+| Status | Description |
+|--------|-------------|
+| Finished | Scan completed successfully |
+| Timed out | Scan exceeded time limit |
+| Stopped by user | Scan was manually stopped |
+| Failed to start | Scan could not start |
+| VPN connection error | VPN agent connectivity issue |
+| Authentication error | Login credentials failed |
+| Connection error | Target unreachable |
+| Aborted | Scan was aborted |
+
+### Port Scanner conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Open port** | is any of, is not one of, is greater than, in top N, contains all of | Alert on port 22, 23, 3389 |
+| **Protocol** | is, contains | Alert when SSH is detected |
+| **Diff** | from previous scan | Alert when new ports appear |
+
+### Subdomains conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Subdomain name** | contains | Alert when subdomain contains "admin" |
+| **Netname** | contains | Alert when netname contains "AMAZON" |
+| **Country** | contains | Alert when country contains "US" |
+| **Diff** | from previous scan | Alert when new subdomains appear |
+
+### URL Fuzzer Conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Items found** | at least | Alert when at least 10 items are found |
+| **HTTP code** | is | Alert when HTTP code is 200 |
+
+### Password Auditor conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Credentials found** | at least | Alert when at least 1 credential is found |
+
+### Domains conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Domain name** | contains | Alert when domain contains "example" |
+| **Company** | contains | Alert when company contains "Corp" |
+| **Email** | contains | Alert when email contains "@example.com" |
+| **Certainty** | at least | Alert when certainty is at least 80 |
+
+### Technology conditions
+
+| Condition | Operators | Example |
+|-----------|-----------|---------|
+| **Technology** | contains | Alert when "WordPress" is found |
+
+## Notification destinations
+
+<CardGroup cols={2}>
+  <Card title="Email" icon="envelope">
+    Send to your account email or custom addresses.
+  </Card>
+  <Card title="Slack" icon="slack" href="/notifications/chat/slack">
+    Send to a Slack channel.
+  </Card>
+  <Card title="Microsoft Teams" icon="microsoft" href="/notifications/chat/microsoft-teams">
+    Send to a Teams channel via webhook.
+  </Card>
+  <Card title="Discord" icon="discord" href="/notifications/chat/discord">
+    Send to a Discord channel via webhook.
+  </Card>
+  <Card title="Webhook" icon="webhook" href="/notifications/webhooks/overview">
+    Send to any HTTP endpoint.
+  </Card>
+  <Card title="Nucleus" icon="layer-group" href="/notifications/security/nucleus">
+    Send findings to Nucleus for vulnerability management.
+  </Card>
+</CardGroup>
+
+## Creating a Notification
+
+1. Go to **Notifications** in the sidebar
+2. Click **Add**
+3. Enter a **name** for the notification
+4. Select a **trigger type** (e.g., Vulnerability)
+5. Add **conditions** (e.g., Risk level is at least High)
+6. Select **destinations** under "Notification actions":
+   - Send to default email
+   - Send to additional emails (enter custom email addresses)
+   - Send to Webhook, Microsoft Teams, Slack, Discord, or Nucleus
+7. Click **Save**
 
 <Tip>
-Start with fewer notifications and add more as needed. Too many notifications leads to alert fatigue.
+You can add multiple conditions to a single notification. All conditions must match (AND logic) for the notification to trigger.
 </Tip>
 
+## Workspace scope
+
+Notifications are scoped to your current workspace. Each workspace can have its own set of notification rules.
+
+The notifications configured on this page are applied to **all scans** running in the current workspace, whether started manually, scheduled, or via API. A notification will be sent if a scan result matches **any** of the defined notification rules in the workspace.
+
+## Enabling and Disabling
+
+You can enable or disable notifications without deleting them:
+
+- **Enabled**: Notification will trigger when conditions match
+- **Disabled**: Notification is saved but won't trigger
+
+## Diff notifications
+
+A powerful feature is the ability to get notified when scan results **change** from previous scans:
+
+- **New vulnerabilities**: Get alerted when new findings appear
+- **New ports**: Get alerted when new ports are discovered
+- **New subdomains**: Get alerted when new subdomains are found
+
+This is useful for scheduled scans where you want to track changes over time.
+
+## Best practices
+
 <AccordionGroup>
-  <Accordion title="Prioritize Critical Alerts">
-    Set up immediate notifications for critical and high severity findings.
+  <Accordion title="Start with high-severity alerts">
+    Begin by setting up notifications for critical and high severity findings. Add more granular rules as needed.
   </Accordion>
-  <Accordion title="Use Appropriate Channels">
-    Email for summaries, Slack for real-time alerts, Jira for tracking.
+  <Accordion title="Use meaningful names">
+    Name notifications descriptively (e.g., "Critical vulns - Production") so you can easily manage them.
   </Accordion>
-  <Accordion title="Avoid Alert Fatigue">
-    Don't notify on every event—focus on actionable items.
+  <Accordion title="Combine conditions wisely">
+    Use multiple conditions to reduce noise. For example, "Risk level at least High" AND "Finding name contains SQL".
+  </Accordion>
+  <Accordion title="Leverage diff notifications">
+    For scheduled scans, use diff notifications to only alert on changes instead of every finding.
   </Accordion>
 </AccordionGroup>
 
-## Related Topics
+<Warning>
+Too many notifications can lead to alert fatigue. Focus on actionable alerts rather than notifying on everything.
+</Warning>
 
-- [Configure Email Alerts](/notifications/email/configure-alerts)
+## Related topics
+
 - [Slack Integration](/notifications/chat/slack)
+- [Microsoft Teams Integration](/notifications/chat/microsoft-teams)
 - [Webhooks](/notifications/webhooks/overview)
+- [Scheduled Scans](/using/scans/scheduled-scans)

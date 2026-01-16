@@ -3,10 +3,202 @@ title: "Generic CI/CD"
 description: "Integrate security scanning into any CI/CD pipeline"
 ---
 
-<Info>
-This page is under construction. Content coming soon.
-</Info>
-
 ## Overview
 
-Learn how to integrate Pentest-Tools.com scans into your existing CI/CD pipeline, regardless of the platform you use.
+The Generic CI/CD integration allows you to run Pentest-Tools.com scans from any CI/CD platform, including GitLab CI, Jenkins, CircleCI, Azure DevOps, and more.
+
+<Info>
+Available on **WebNetSec** and **Pentest Suite** plans.
+</Info>
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="Platform agnostic" icon="plug">
+    Works with any CI/CD system that can make HTTP requests.
+  </Card>
+  <Card title="Automated security" icon="shield-check">
+    Run scans as part of your deployment pipeline.
+  </Card>
+  <Card title="Fail conditions" icon="circle-xmark">
+    Stop deployments when vulnerabilities are detected.
+  </Card>
+  <Card title="Flexible output" icon="file-export">
+    Get results in text or JSON format.
+  </Card>
+</CardGroup>
+
+## Setting up CI/CD integration
+
+<Steps>
+  <Step title="Create a pipeline action">
+    Go to Settings → Integrations → Generic CI/CD → Create action.
+  </Step>
+  <Step title="Configure settings">
+    Set the target, scan type, output format, and fail condition.
+  </Step>
+  <Step title="Save the secret">
+    Copy the generated secret for your CI/CD configuration.
+  </Step>
+  <Step title="Add to your pipeline">
+    Call the API from your pipeline script.
+  </Step>
+</Steps>
+
+## Configuration options
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | Identifier for the pipeline action |
+| **Target** | URL or IP address to scan |
+| **Scan type** | Light or Deep scan preset |
+| **Output format** | `text` or `json` |
+| **Fail condition** | Severity threshold to fail |
+
+### Fail conditions
+
+| Condition | Pipeline fails when... |
+|-----------|------------------------|
+| None | Never fails based on findings |
+| Low | Low or higher severity found |
+| Medium | Medium or higher severity found |
+| High | High or higher severity found |
+| Critical | Only critical severity found |
+
+## Platform examples
+
+### GitLab CI
+
+```yaml
+security_scan:
+  stage: test
+  script:
+    - |
+      curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
+        -H "Authorization: Bearer $PTT_SECRET" \
+        -H "Content-Type: application/json" \
+        -d '{"action_name": "my-scan"}'
+  only:
+    - main
+```
+
+### Jenkins
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Security Scan') {
+            steps {
+                withCredentials([string(credentialsId: 'ptt-secret', variable: 'PTT_SECRET')]) {
+                    sh '''
+                        curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
+                            -H "Authorization: Bearer $PTT_SECRET" \
+                            -H "Content-Type: application/json" \
+                            -d '{"action_name": "my-scan"}'
+                    '''
+                }
+            }
+        }
+    }
+}
+```
+
+### CircleCI
+
+```yaml
+version: 2.1
+jobs:
+  security-scan:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Run security scan
+          command: |
+            curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
+              -H "Authorization: Bearer $PTT_SECRET" \
+              -H "Content-Type: application/json" \
+              -d '{"action_name": "my-scan"}'
+```
+
+### Azure DevOps
+
+```yaml
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
+        -H "Authorization: Bearer $(PTT_SECRET)" \
+        -H "Content-Type: application/json" \
+        -d '{"action_name": "my-scan"}'
+```
+
+## Output handling
+
+### Text format
+
+Suitable for console output and log review:
+
+```
+Scan completed for example.com
+Found 3 findings:
+  - HIGH: SQL Injection in /login
+  - MEDIUM: Missing security headers
+  - LOW: Information disclosure
+```
+
+### JSON Format
+
+Parse programmatically for custom handling:
+
+```json
+{
+  "scan_id": 12345,
+  "target": "example.com",
+  "status": "completed",
+  "findings": [...]
+}
+```
+
+## Best practices
+
+<Tip>
+Use environment variables or secrets management for your action secret. Never hardcode credentials in pipeline files.
+</Tip>
+
+<Warning>
+Ensure your CI/CD runner can reach app.pentest-tools.com. Check firewall rules if scans fail to start.
+</Warning>
+
+- Run Light scans for quick validation, Deep scans for thorough testing
+- Set fail conditions based on your pipeline stage (stricter for production)
+- Store scan results as artifacts for later review
+- Set appropriate timeouts for scan completion
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication failed">
+    - Verify the secret is correctly configured
+    - Check that the secret hasn't expired
+    - Ensure the environment variable is accessible
+  </Accordion>
+  <Accordion title="Scan timeout">
+    - Deep scans may take longer; adjust pipeline timeout
+    - Verify the target is accessible from the internet
+    - Check for network restrictions
+  </Accordion>
+  <Accordion title="Pipeline fails unexpectedly">
+    - Review the fail condition setting
+    - Check scan results for findings above threshold
+    - Verify the action name is correct
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [GitHub Actions](/notifications/github-actions)
+- [API Overview](/api-reference/overview)
+- [Notifications Overview](/notifications/overview)

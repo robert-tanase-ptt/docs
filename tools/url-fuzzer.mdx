@@ -1,144 +1,198 @@
 ---
-title: "URL fuzzer"
+title: "URL Fuzzer"
 description: "Discover hidden files, directories, and endpoints on web servers"
 ---
 
 ## Overview
 
-The URL Fuzzer discovers hidden content on web servers by testing common file and directory names. It finds backup files, admin panels, configuration files, and other resources not linked from the main application.
+The URL Fuzzer discovers hidden content on web servers by testing file and directory names from wordlists. It finds backup files, admin panels, configuration files, and other resources not linked from the main application.
 
-## What it finds
+The URL Fuzzer is a **discovery tool**: it identifies hidden resources but does not test them for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="Hidden directories" icon="folder">
-    Admin panels, backup folders
-  </Card>
-  <Card title="Backup files" icon="file-zipper">
-    .bak, .old, .backup files
-  </Card>
-  <Card title="Configuration files" icon="file-code">
-    Config files, .env, .git
-  </Card>
-  <Card title="Sensitive endpoints" icon="key">
-    Debug endpoints, API paths
-  </Card>
-</CardGroup>
+## Scan types
 
-## How to use
+| Scan type | Wordlist size | Features |
+|-----------|--------------|----------|
+| **Light** | 146 words | Quick scan with mutation enabled, no dynamic wordlist |
+| **Deep** | 43,004 words | Comprehensive scan with dynamic wordlist and mutation enabled |
+| **Custom** | Variable | Full control over all parameters |
+
+## Parameters
+
+### Target URL
+
+The URL to fuzz. You can optionally specify where to insert payloads using the `FUZZ` marker:
+
+```
+http://example.com/dirs/FUZZ/index.php?id=3
+http://example.com/dirs/profiles/user.php?name=FUZZ
+http://example.com/  (FUZZ is added at the end automatically)
+```
+
+<Note>
+The `FUZZ` marker can be placed in the URL path or query string, but **not** in the hostname. Only one `FUZZ` marker is allowed per scan.
+</Note>
+
+### Request options (Custom scan only)
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| **Method** | HTTP method (GET or POST) | GET |
+| **POST data** | POST body data, can contain `FUZZ` marker | - |
+| **Custom headers** | Additional headers sent with each request | - |
+| **Thread count** | Number of parallel requests (1-10) | 7 |
+| **Request timeout** | Timeout per request in seconds (0-43,200) | 4 |
+| **Delay between requests** | Delay in seconds (only when thread count is 1) | 0 |
+| **Max retries** | Maximum retries on connection error (0-10) | 3 |
+| **Retry delay factor** | Exponential backoff factor (0-120) | 1 |
+| **Force retry on HTTP codes** | Status codes that trigger a retry (e.g., 429, 500-505) | - |
+
+### Payload options (Custom scan only)
+
+#### Payload type
+
+| Type | Description |
+|------|-------------|
+| **Wordlist** | Use a wordlist file. Select from default wordlists or your own [custom wordlists](/capabilities/wordlists). |
+| **Sequence** | Generate a numeric sequence with configurable start, end, and step values (max 50,000 numbers). |
+
+#### Extension categories
+
+Each wordlist entry is tested with selected extension categories appended:
+
+| Category | Extensions |
+|----------|------------|
+| **No extension** | Tests entries as-is (directories, extensionless files) |
+| **Configuration files** | `.conf`, `.cfg`, `.txt`, `.xml`, `.json`, `.ini` |
+| **Source code files** | `.bat`, `.c`, `.java`, `.cpp`, `.cs`, `.h` |
+| **Archives** | `.zip`, `.tar`, `.tar.gz`, `.tgz`, `.gz`, `.7z`, `.bzip`, `.rar`, `.jar`, `.apk` |
+| **Database files** | `.sql`, `.mdb`, `.db`, `.nsf`, `.csv`, `.dbf` |
+| **Logs** | `.log`, `.err`, `.journal` |
+| **Backup files** | `.old`, `.back`, `.bkp`, `.bak`, `.tmp`, `.test`, `.dev`, `.prod` |
+| **Documents** | `.doc`, `.docx`, `.odt`, `.xls`, `.xlsx`, `.rtf`, `.pdf`, `.ppt`, `.pptx` |
+| **Web files** | `.asp`, `.aspx`, `.php`, `.jsp`, `.shtml`, `.htm`, `.html`, `.dll`, `.pl`, `.py`, `.cgi`, `.cfm`, `.sh`, `.js` |
+| **Custom extensions** | Your own extensions (up to 10, max 10 characters each) |
+
+#### Additional options
+
+| Option | Description |
+|--------|-------------|
+| **Add words from HTML** | Extends the wordlist with words extracted from the target page (links, text). Enabled by default for Deep scans. |
+| **Mutate words found** | Generates variations of discovered files (e.g., `config.php` → `config2.php`, `config_old.php`, `config-dev.php`, `config.php.bak`). Enabled by default. |
+| **Recursion** | For each discovered directory (status 200 or 403), starts a new search with the original wordlist. Up to 3 levels deep. |
+
+### Response filtering (Custom scan only)
+
+| Mode | Description |
+|------|-------------|
+| **Auto** | Discards 404 responses and auto-detects soft 404 pages (error pages that return 200, redirects to login, etc.) |
+| **Manual** | Apply custom match/ignore conditions |
+
+#### Manual filter conditions
+
+| Condition | Match | Ignore |
+|-----------|-------|--------|
+| **HTTP codes** | Only show responses with these codes (e.g., `200-205,301`) | Discard responses with these codes |
+| **Response size** | Only show responses matching size condition (e.g., `< 2` KB) | Discard responses matching size condition |
+| **Content contains** | Only show responses containing this string | Discard responses containing this string |
+
+<Tip>
+Use Auto filtering for most scans. Switch to Manual when you need precise control over which responses to include, such as filtering out a specific response size that generates false positives.
+</Tip>
+
+## How it works
 
 <Steps>
-  <Step title="Enter target URL">
-    Provide the base URL to fuzz.
+  <Step title="Parse target URL">
+    The fuzzer identifies where to insert payloads. If no `FUZZ` marker is specified, it's added at the end of the URL path.
   </Step>
-  <Step title="Select wordlist">
-    Choose a wordlist or use custom entries.
+  <Step title="Prepare wordlist">
+    Loads the selected wordlist. If "Add words from HTML" is enabled, extracts additional words from the target page (links, text content) and prepends them to the wordlist.
   </Step>
-  <Step title="Configure options">
-    Set extensions, recursion, and filters.
+  <Step title="Fuzz each extension category">
+    For each selected extension category, sends requests for every word in the wordlist with the extension appended.
   </Step>
-  <Step title="Run fuzzer">
-    Execute the content discovery.
+  <Step title="Filter responses">
+    In Auto mode, discards 404 pages and detects soft 404s using our [AI-powered Soft 404 detector](/ai/soft404detector). In Manual mode, applies custom match/ignore conditions.
+  </Step>
+  <Step title="Recursion (if enabled)">
+    For each discovered directory with status 200 or 403, starts a new scan using the original wordlist. Repeats up to the configured depth.
+  </Step>
+  <Step title="Mutation (if enabled)">
+    Generates variations of discovered filenames and tests them to find related files.
   </Step>
 </Steps>
 
-## Wordlist options
+### Mutation patterns
 
-| Wordlist | Size | Description |
-|----------|------|-------------|
-| **Small** | ~1K entries | Quick common files |
-| **Medium** | ~10K entries | Standard assessment |
-| **Large** | ~100K entries | Comprehensive discovery |
-| **Custom** | Variable | Your own wordlist |
+When mutation is enabled, the fuzzer generates variations like:
 
-## Common discoveries
+| Original | Mutations generated |
+|----------|---------------------|
+| `config.php` | `config.php.old`, `config.php.bak`, `config.php.bkp` |
+| `data.sql` | `data1.sql`, `data2.sql`, ..., `data10.sql` |
+| `admin/` | `admin-old/`, `admin_dev/`, `admin-test/`, `admins/` |
 
-| Type | Examples |
-|------|----------|
-| **Admin panels** | /admin, /administrator, /wp-admin |
-| **Backup files** | .bak, .old, .backup, .swp |
-| **Config files** | .env, config.php, web.config |
-| **Version control** | .git, .svn, .hg |
-| **Development** | /test, /dev, /staging |
-| **API endpoints** | /api, /v1, /graphql |
+Suffixes used: `1-10`, `old`, `back`, `bkp`, `bak`, `tmp`, `test`, `dev`, `prod`
 
-## Configuration options
-
-### Extensions
-
-Add file extensions to test:
-- PHP: `.php`, `.php.bak`
-- ASP: `.asp`, `.aspx`
-- Backup: `.bak`, `.old`, `.backup`
-- Config: `.conf`, `.config`, `.yml`
-
-### Recursion
-
-When enabled, discovered directories are also fuzzed:
-- Set maximum depth
-- Control directory-only recursion
-
-### Response filtering
-
-Filter results by:
-- **Status codes** — Include/exclude HTTP status codes
-- **Response size** — Filter by content length
-- **Response content** — Match/exclude patterns
-
-<Tip>
-Filter out common "not found" response sizes to reduce noise in results.
-</Tip>
-
-## Results
-
-For each discovered resource:
-- **URL** — Full path to resource
-- **Status code** — HTTP response code
-- **Size** — Response content length
-- **Content type** — MIME type
+Separators used: none, `-`, `_`
 
 ## Authentication
 
-The URL Fuzzer supports custom headers in **Custom** scan mode, allowing you to fuzz authenticated endpoints.
+For scanning authenticated endpoints, add custom headers in Custom scan mode:
 
-**How to configure:**
 1. Select **Custom** scan type
 2. Navigate to **Request options → Headers**
-3. Enter your authentication headers
+3. Add your authentication headers
 
-**Use for:**
-- JWT tokens
-- Authorization headers
-- Cookies
-- Custom User-Agent strings
+**Example headers:**
 
-**Example:**
 ```
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
-Cookie: session_id=abc123
-User-Agent: Custom-Scanner/1.0
+Cookie: session_id=abc123; JSESSIONID=xyz789
+X-API-Key: your-api-key-here
 ```
 
-[Full authentication guide →](/using/scans/authenticated-scanning#url-fuzzer)
+<Tip>
+For session-based authentication, capture the session cookie from your browser's developer tools after logging in.
+</Tip>
 
-## Security implications
+See the [authenticated scanning guide](/using/scans/authenticated-scanning#url-fuzzer) for detailed instructions.
 
-Discovering hidden content can reveal:
-- **Backup files** with source code or credentials
-- **Configuration files** exposing database passwords
-- **Admin interfaces** for privilege escalation
-- **Version control** directories with full source
-- **Debug endpoints** with sensitive information
+## Why URL fuzzing matters
+
+Discovering hidden content can reveal critical security issues:
+
+| Discovery | Risk |
+|-----------|------|
+| **Backup files** (`.bak`, `.old`, `.zip`) | Source code, credentials, database dumps |
+| **Configuration files** (`.env`, `config.php`, `web.config`) | Database passwords, API keys, internal paths |
+| **Admin interfaces** (`/admin`, `/manager`, `/phpmyadmin`) | Unauthorized access, privilege escalation |
+| **Version control** (`.git`, `.svn`, `.hg`) | Full source code repository with history |
+| **Debug endpoints** (`/debug`, `/test`, `/phpinfo.php`) | Server configuration, stack traces |
+| **API documentation** (`/swagger`, `/api-docs`, `/graphql`) | API structure, authentication methods |
 
 <Warning>
-Exposed .git directories can leak entire source code repositories including commit history.
+Exposed `.git` directories can leak your entire source code repository, including commit history and potentially sensitive data from previous commits.
 </Warning>
 
-## Related tools
+### Best practices
 
-- [Website Recon](/tools/website-recon) — Technology fingerprinting
-- [Google Hacking](/tools/google-hacking) — Find indexed sensitive content
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Full web app testing
+1. **Start with Light scan** for quick reconnaissance, then use Deep for thorough testing
+2. **Enable recursion** when testing directory structures
+3. **Use custom wordlists** tailored to the target technology (WordPress, Drupal, etc.): see [Wordlists](/capabilities/wordlists)
+4. **Reduce thread count** if you're triggering rate limits or WAF blocks
+5. **Review false positives**: soft 404 detection isn't perfect
 
-## Related topics
+## Follow-up actions
 
-- [Authenticated scanning](/using/scans/authenticated-scanning#url-fuzzer)
+Based on discovered content:
+
+| Discovery | Recommended action |
+|-----------|-------------------|
+| Admin panels, login pages | Test with [Website Scanner](/tools/website-scanner) |
+| API endpoints, Swagger docs | Run [API Scanner](/tools/api-scanner) |
+| Configuration files | Review for exposed credentials and sensitive data |
+| `.git` directory | Extract and analyze the repository for secrets |
+| Any web content | Run [Website Recon](/tools/website-recon) for technology fingerprinting |
+| Indexed content suspected | Use [Google Hacking](/tools/google-hacking) to find publicly indexed sensitive content |

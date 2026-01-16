@@ -1,5 +1,5 @@
 ---
-title: "Google hacking"
+title: "Google Hacking"
 description: "Find exposed data and security issues using Google dorks"
 ---
 
@@ -7,85 +7,99 @@ description: "Find exposed data and security issues using Google dorks"
 
 The Google Hacking tool uses advanced search operators (Google dorks) to discover exposed sensitive information, misconfigurations, and security issues indexed by search engines.
 
-## What it finds
+Google Hacking is a **discovery tool**: it helps you find publicly indexed information but does not test for vulnerabilities. Since searches are performed directly in your browser, this tool does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
-<CardGroup cols={2}>
-  <Card title="Exposed files" icon="file">
-    Documents, backups, configuration files
-  </Card>
-  <Card title="Login pages" icon="door-open">
-    Admin panels, login forms
-  </Card>
-  <Card title="Directory listings" icon="folder-open">
-    Open directory indexes
-  </Card>
-  <Card title="Error messages" icon="triangle-exclamation">
-    Debug info, stack traces
-  </Card>
-</CardGroup>
+<Note>
+This tool uses your browser to make requests to Google. Your browser must allow popups for the search results to open.
+</Note>
 
-## How to use
+## How it works
 
-<Steps>
-  <Step title="Enter target domain">
-    Specify the domain to investigate.
-  </Step>
-  <Step title="Select dork categories">
-    Choose which types of searches to run.
-  </Step>
-  <Step title="Run scan">
-    Execute the Google hacking queries.
-  </Step>
-  <Step title="Review results">
-    Analyze discovered items and assess risk.
-  </Step>
-</Steps>
+Unlike other tools on the platform, Google Hacking doesn't run a scan on our servers. Instead:
 
-## Dork categories
+1. Enter your target domain
+2. Click on a search category
+3. A new browser window opens with the Google search results
+4. Review the indexed content Google has found
+
+This approach means you're searching Google directly from your browser, giving you real-time results.
+
+## Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| Target | Domain name to search for (e.g., `example.com`). When you specify a domain, Google returns results for all subdomains as well. |
+
+## Search categories
+
+The tool provides pre-built search queries organized into categories:
+
+### Files and directories
 
 | Category | What it finds |
 |----------|---------------|
-| **Sensitive files** | Passwords, configs, backups |
-| **Exposed directories** | Open directory indexes |
-| **Login pages** | Admin panels, authentication forms |
-| **Error pages** | Debug information, stack traces |
-| **Database files** | SQL dumps, database exports |
-| **Log files** | Access and error logs |
-| **Documents** | PDFs, spreadsheets, presentations |
+| **Publicly exposed documents** | Word documents, presentations, spreadsheets, CSV files |
+| **Directory listing vulnerabilities** | Open directory indexes (`index of`) |
+| **Configuration files exposed** | XML, CONF, INI, ENV, YML, JSON, and other config files |
+| **Database files exposed** | SQL dumps, MDB, DBF files |
+| **Log files exposed** | Log files that may contain sensitive data |
+| **Backup and old files** | Files with .bak, .old, .backup extensions |
 
-## Example findings
+### Authentication pages
 
-- Exposed configuration files with database credentials
-- Publicly accessible admin panels
-- Backup files left on web servers (.bak, .old)
-- Directory listings revealing site structure
-- Debug pages exposing system information
-- Exposed source code files
-- Database export files (.sql)
+| Category | What it finds |
+|----------|---------------|
+| **Login pages** | Admin panels, sign-in forms, authentication endpoints |
+| **Signup pages** | Registration forms |
+
+### Errors and debug info
+
+| Category | What it finds |
+|----------|---------------|
+| **SQL errors** | Database error messages that may reveal structure |
+| **PHP errors / warnings** | PHP parse errors and warnings |
+| **phpinfo()** | Exposed PHP configuration pages |
+
+### External sources
+
+| Category | What it finds |
+|----------|---------------|
+| **Search Pastebin.com and pasting sites** | Target mentions on paste sites |
+| **Search Github.com and Gitlab.com** | Target references in code repositories |
+| **Search Stackoverflow.com** | Developer questions mentioning the target |
+| **Search in Wayback Machine** | Historical snapshots of the target |
+
+### Discovery
+
+| Category | What it finds |
+|----------|---------------|
+| **Find Subdomains** | Subdomains indexed by Google |
+| **Find Sub-Subdomains** | Second-level subdomains |
+| **Show only IP addresses** | IP-based results (opens multiple tabs) |
+
+## Why Google Hacking matters
+
+Google Hacking is valuable for:
+
+- **Passive reconnaissance**: Gather information without directly touching the target
+- **Data leak detection**: Find accidentally exposed sensitive files
+- **Attack surface discovery**: Identify subdomains and entry points
+- **Code exposure**: Check if internal code or credentials appear on public sites
 
 <Warning>
-Google Hacking searches public indexes. The information found is already publicly accessible, but it may reveal sensitive data that should be protected.
+Google Hacking searches public indexes. The information found is already publicly accessible, but discovering it may reveal sensitive data that should be protected.
 </Warning>
 
-## Why it works
-
-Search engines crawl and index web content. When sensitive files are accidentally exposed:
-- Search engines discover and index them
-- They become searchable via advanced operators
-- Attackers can find them without directly scanning your site
-
-## Best practices
-
 <Tip>
-Run Google Hacking scans regularly to detect accidentally exposed files before attackers do.
+Run these searches regularly to detect accidentally exposed files before attackers do. New exposures often happen after deployments.
 </Tip>
 
-- **Monitor continuously** — New exposures happen with deployments
-- **Remove indexed content** — Request removal from Google after fixing
-- **Use robots.txt wisely** — But don't rely on it for security
-- **Implement proper access controls** — Authentication and authorization
+## Follow-up actions
 
-## Related tools
+After discovering exposed information:
 
-- [Website Recon](/tools/website-recon) — Technology fingerprinting
-- [URL Fuzzer](/tools/url-fuzzer) — Direct file/directory discovery
+1. **Check external sources**: Don't just search your own site, check paste sites and code repositories where developers might have accidentally shared credentials
+2. **Use Wayback Machine**: Historical snapshots can reveal previously exposed content
+3. **Fingerprint technologies**: Use the [Website Recon](/tools/website-recon) tool on discovered URLs
+4. **Discover hidden files**: Use the [URL Fuzzer](/tools/url-fuzzer) to find files not indexed by Google
+5. **Enumerate subdomains**: Use the [Subdomain Finder](/tools/subdomain-finder) for active subdomain enumeration

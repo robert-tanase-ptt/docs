@@ -1,0 +1,127 @@
+---
+title: "People Hunter"
+description: "Discover email addresses and social media profiles associated with a target"
+---
+
+## Overview
+
+People Hunter identifies people associated with a target organization by discovering publicly exposed email addresses and social media profiles. It combines web crawling with external API queries to build a comprehensive list of contacts.
+
+People Hunter is a **discovery tool**: it gathers publicly available contact information but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
+
+## Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| Target | IP address or hostname to scan |
+
+## How it works
+
+<Steps>
+  <Step title="Port discovery">
+    Scans port 443 to check if the target runs an HTTPS web server.
+  </Step>
+  <Step title="Hostname extraction">
+    If scanning an IP address, extracts the hostname from the SSL certificate's Common Name (CN).
+  </Step>
+  <Step title="API queries">
+    Queries the [Tomba.io](https://tomba.io/) API to retrieve indexed email addresses associated with the domain.
+  </Step>
+  <Step title="Web crawling">
+    Uses the Katana crawler to discover and crawl pages on the target website (up to 10 minutes).
+  </Step>
+  <Step title="Information extraction">
+    Searches crawled content for email addresses and social media profile links using regex patterns.
+  </Step>
+  <Step title="Validation">
+    Validates discovered emails by performing DNS MX lookups and filters out emails from external domains.
+  </Step>
+  <Step title="Pattern analysis">
+    Groups discovered emails by username patterns and calculates the percentage of each pattern.
+  </Step>
+</Steps>
+
+### Email discovery
+
+The tool discovers emails using two techniques:
+
+| Technique | Description |
+|-----------|-------------|
+| **Active** | Regex pattern matching in crawled web pages (HTML, JavaScript, JSON, XML) |
+| **Passive** | External API queries via [Tomba.io](https://tomba.io/) for indexed email addresses |
+
+Discovered emails are:
+- **Validated** via DNS MX lookup (domain must have valid mail servers)
+- **Filtered** to only include emails matching the target domain
+- **Organized** by username pattern
+
+### Username patterns
+
+Emails are analyzed and grouped by their local part format:
+
+| Pattern | Example |
+|---------|---------|
+| **Single name** | `john@company.com` |
+| **First and last name with dot** | `john.doe@company.com` |
+| **First and last name with underscore** | `john_doe@company.com` |
+| **First and last name with hyphen** | `john-doe@company.com` |
+| **Unidentified pattern** | Other formats (e.g., `jdoe123@company.com`) |
+
+The pattern analysis shows the percentage of emails following each format, helping you predict email addresses for other employees.
+
+### Social media profiles
+
+The tool identifies links to social media profiles by matching URL patterns in crawled content:
+
+| Platform | Detected URLs |
+|----------|---------------|
+| **LinkedIn** | `linkedin.com/in/`, `linkedin.com/company/` |
+| **Facebook** | `facebook.com/`, `fb.com/`, `m.facebook.com/` |
+| **Twitter/X** | `twitter.com/` |
+| **Instagram** | `instagram.com/` |
+
+<Note>
+The tool filters out non-profile URLs like share buttons, login pages, and embedded content to reduce false positives.
+</Note>
+
+## Why OSINT matters
+
+People Hunter is valuable for:
+
+| Use case | Description |
+|----------|-------------|
+| **OSINT gathering** | Collect information about employees during reconnaissance |
+| **Social engineering** | Identify potential targets for phishing simulations |
+| **Email prediction** | Use pattern analysis to guess email addresses for known employees |
+| **Attack surface mapping** | Discover people and accounts associated with the organization |
+| **Credential stuffing prep** | Identify email formats for password spray attempts (with authorization) |
+
+<Warning>
+Use discovered information responsibly and in accordance with applicable laws. Always ensure you have proper authorization before using this data for security testing.
+</Warning>
+
+## Technical details
+
+- **Port scanned**: 443 (HTTPS)
+- **Crawl duration**: Up to 10 minutes per port
+- **Crawler**: Katana (high-speed web crawler)
+- **Email validation**: DNS MX record lookup with 2-second timeout
+- **Content types scanned**: HTML, JavaScript, JSON, XML
+
+## Limitations
+
+- Only scans port 443 by default
+- Requires an HTTPS web server on the target
+- Email discovery depends on publicly accessible content
+- Tomba API has rate limits that may affect results
+- Social media detection is limited to major platforms
+
+## Follow-up actions
+
+After discovering people and contact information:
+
+1. **Expand your search**: Use [Google Hacking](/tools/google-hacking) to find additional exposed data on paste sites and code repositories
+2. **Fingerprint technologies**: Run [Website Recon](/tools/website-recon) to understand the target's technology stack
+3. **Discover more subdomains**: Use [Subdomain Finder](/tools/subdomain-finder) to find additional subdomains that may expose more contacts
+4. **Find related domains**: Use [Domain Finder](/tools/domain-finder) to discover other domains owned by the organization
+5. **Test credentials**: With proper authorization, use [Password Auditor](/tools/password-auditor) for credential testing

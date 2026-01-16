@@ -9,29 +9,39 @@ Authenticated scanning tests your application while logged in as a user, discove
 Authenticated scanning is available on **Deep** and **Custom** scan types. It's not available on Light scans.
 </Info>
 
+## Before you begin
+
+Before configuring authenticated scanning, ensure you have:
+
+- **Test account credentials**: Dedicated accounts for scanning (not production user accounts)
+- **Extended session timeout**: Session configured to last longer than your scan duration
+- **CAPTCHA/2FA disabled**: On test accounts, or use Recorded/Cookie authentication to bypass
+- **Logout URLs identified**: To add to scan exclusions and prevent accidental logout
+
 ## Supported tools
 
 | Tool | Authentication methods |
 |------|----------------------|
-| [Website Scanner](/tools/website-vulnerability-scanner) | Automatic login form, Recorded, Cookies, Headers |
+| [Website Scanner](/tools/website-scanner) | Automatic login form, Recorded, Cookies, Headers |
 | [API Scanner](/tools/api-scanner) | Headers (JWT, Authorization) |
 | [WordPress Scanner](/tools/wordpress-scanner) | Basic authentication (username/password) |
 | [URL Fuzzer](/tools/url-fuzzer) | Headers (JWT, Authorization, Cookies, User-Agent) |
 | [SQLi Exploiter](/tools/sqli-exploiter) | Cookie header |
 | [Sniper](/tools/sniper) | SSH, WinRM, SMB, MySQL |
+| [Kubernetes Scanner](/tools/kubernetes-scanner) | Service account token (JWT) |
 
 ## Website Scanner
 
-The [Website Scanner](/tools/website-vulnerability-scanner) supports four authentication methods to handle different application types.
+The [Website Scanner](/tools/website-scanner) supports four authentication methods to handle different application types.
 
 ### Automatic login form
 
 The scanner automatically fills in and submits a login form. This method uses a two-stage approach:
 
-1. **Traditional detection** — Pattern-based selectors identify standard login form elements
-2. **AI-powered fallback** — If traditional detection fails, [AI-enhanced authentication](/ai/authentication) takes over to handle complex pages with iframes, dynamic loading, or non-standard layouts
+1. **Traditional detection**: Pattern-based selectors identify standard login form elements
+2. **AI-powered fallback**: If traditional detection fails, [AI-enhanced authentication](/ai/authentication) takes over to handle complex pages with iframes, dynamic loading, or non-standard layouts
 
-This makes automatic login form suitable for both simple and complex forms—the system automatically chooses the best approach.
+This makes automatic login form suitable for both simple and complex forms. The system automatically chooses the best approach.
 
 **Requirements:**
 - No CAPTCHA, 2FA, or SSO
@@ -42,7 +52,7 @@ This makes automatic login form suitable for both simple and complex forms—the
 3. Use **Check authentication** to verify the credentials work
 
 <Note>
-You don't need to configure anything for AI detection—it activates automatically when needed. See [AI-enhanced authentication](/ai/authentication) for details on how it works.
+You don't need to configure anything for AI detection. It activates automatically when needed. See [AI-enhanced authentication](/ai/authentication) for details on how it works.
 </Note>
 
 ### Recorded authentication
@@ -57,7 +67,7 @@ Record your login steps using Chrome's Recorder panel and upload the JSON file. 
     Click **Create a new recording** and give it a name.
   </Step>
   <Step title="Perform the login">
-    With recording active, perform a complete login exactly as you normally would—enter credentials, click buttons, handle any intermediate screens.
+    With recording active, perform a complete login exactly as you normally would. Enter credentials, click buttons, handle any intermediate screens.
   </Step>
   <Step title="Stop and configure">
     Click **End recording**. Set the **Timeout** to at least **15000ms** (15 seconds) to allow for network delays.
@@ -100,12 +110,12 @@ Keep your authenticated session active in the browser for the entire scan durati
 </Steps>
 
 **Format:**
-```
+```text
 cookie_name1=cookie_value1; cookie_name2=cookie_value2
 ```
 
 **Example:**
-```
+```text
 PHPSESSID=abc123def456; auth_token=xyz789; user_session=active
 ```
 
@@ -120,14 +130,14 @@ The cookie header should only contain the cookie name and value pairs, separated
 | Authentication check fails | Invalid or expired cookies | Re-login and get fresh cookies |
 | Scan fails after starting | Session expired during scan | Increase cookie lifetime in your application, or keep the browser session active |
 | Blank authentication check window | Wrong cookies provided | Verify you copied the correct session cookies |
-| Cookie size error | Cookies exceed 5000 characters | This is a platform limitation—use Header authentication instead |
+| Cookie size error | Cookies exceed 5000 characters | This is a platform limitation. Use Header authentication instead |
 
 ### Header authentication
 
 Set custom HTTP headers sent with each request. Useful for JWT tokens, Authorization headers, API keys, or any custom authentication headers.
 
 **Format:**
-```
+```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 X-Custom-Auth: your-token-here
 Cookie: session_id=abc123
@@ -155,7 +165,7 @@ The [API Scanner](/tools/api-scanner) supports header-based authentication for A
 2. Enter your authentication headers (one per line)
 
 **Format:**
-```
+```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 X-API-Key: your-api-key-here
 ```
@@ -194,7 +204,7 @@ The [URL Fuzzer](/tools/url-fuzzer) supports custom headers in **Custom** scan m
 - Any other custom headers required by your application
 
 **Example:**
-```
+```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 Cookie: session_id=abc123
 User-Agent: Custom-Scanner/1.0
@@ -209,7 +219,7 @@ The [SQLi Exploiter](/tools/sqli-exploiter) allows you to provide a cookie heade
 2. Enter your session cookie in the **Cookie** field
 
 **Format:**
-```
+```text
 PHPSESSID=abc123; auth_token=xyz789
 ```
 
@@ -222,7 +232,7 @@ The SQLi Exploiter uses cookies to maintain session state while testing vulnerab
 [Sniper](/tools/sniper) supports authenticated scans via four protocols, allowing you to extract system artifacts through an authenticated session.
 
 <Note>
-Authenticated Sniper scans don't search for vulnerabilities or run exploits—instead, they extract artifacts (system information, configurations, user data) through the authenticated session. This is useful for post-authentication reconnaissance.
+Authenticated Sniper scans don't search for vulnerabilities or run exploits. Instead, they extract artifacts (system information, configurations, user data) through the authenticated session. This is useful for post-authentication reconnaissance.
 </Note>
 
 | Protocol | Authentication options | Use case |
@@ -265,6 +275,49 @@ Authenticated Sniper scans don't search for vulnerabilities or run exploits—in
 2. Enter **username** and **password**
 3. Specify the **database name** to connect to
 
+## Kubernetes Scanner
+
+The [Kubernetes Scanner](/tools/kubernetes-scanner) supports authenticated scanning using a Kubernetes service account token. This simulates an authenticated adversary with valid cluster credentials.
+
+<Note>
+Authenticated scanning is only available in **Deep** and **Custom** scan modes. It's not available in Light scans.
+</Note>
+
+**What authenticated scanning reveals:**
+- Internal misconfigurations not visible externally
+- What an attacker with valid credentials could access
+- Privilege escalation paths within the cluster
+- RBAC issues and excessive permissions
+
+**How to configure:**
+1. Select **Deep** or **Custom** scan type
+2. Enable **Authentication**
+3. Paste your **Service account token**
+
+**Token format:**
+
+The service account token must be a valid JWT (JSON Web Token) in the format:
+
+```text
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Ii...
+```
+
+**How to get a service account token:**
+
+```bash
+kubectl create token <service-account-name> -n <namespace>
+```
+
+Or for older clusters:
+
+```bash
+kubectl get secret <service-account-secret> -n <namespace> -o jsonpath='{.data.token}' | base64 -d
+```
+
+<Tip>
+Create a dedicated service account for security testing with appropriate permissions. Avoid using highly privileged accounts like `cluster-admin` unless specifically testing privilege escalation.
+</Tip>
+
 ## Best practices
 
 <AccordionGroup>
@@ -300,9 +353,9 @@ Authenticated Sniper scans don't search for vulnerabilities or run exploits—in
 
 ### Scan starts but loses authentication
 
-- Session cookies may have expired—increase session lifetime in your application
-- The scanner may have triggered a logout—add logout URLs to exclusions
-- Tokens may have a short lifetime—use longer-lived tokens or refresh mechanism
+- Session cookies may have expired. Increase session lifetime in your application
+- The scanner may have triggered a logout. Add logout URLs to exclusions
+- Tokens may have a short lifetime. Use longer-lived tokens or refresh mechanism
 - For cookie auth, ensure you keep your browser session logged in throughout the scan
 
 ### CAPTCHA or 2FA blocking authentication
@@ -320,11 +373,12 @@ Authenticated Sniper scans don't search for vulnerabilities or run exploits—in
 
 ## Related topics
 
-- [AI-enhanced authentication](/ai/authentication) — How AI improves automatic login form detection
+- [AI-enhanced authentication](/ai/authentication): How AI improves automatic login form detection
 - [Scan types and depth](/using/scans/scan-types-and-depth)
-- [Website Vulnerability Scanner](/tools/website-vulnerability-scanner)
+- [Website Scanner](/tools/website-scanner)
 - [API Scanner](/tools/api-scanner)
 - [WordPress Scanner](/tools/wordpress-scanner)
 - [URL Fuzzer](/tools/url-fuzzer)
 - [SQLi Exploiter](/tools/sqli-exploiter)
 - [Sniper](/tools/sniper)
+- [Kubernetes Scanner](/tools/kubernetes-scanner)
