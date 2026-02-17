@@ -10,7 +10,7 @@ By default, Pentest-Tools.com scans targets over the public internet. VPN profil
 VPN profiles can be shared with team members, allowing your entire team to run scans through the same VPN connection. See [Sharing VPN Profiles](#sharing-vpn-profiles) for details.
 
 <Info>
-VPN profiles require the **Internal network scanning** add-on. [Learn more about add-ons](/plans-and-limits/plan-overview).
+  VPN profiles require the **Internal network scanning** add-on. [Learn more about add-ons](/plans-and-limits/plan-overview).
 </Info>
 
 ## How it works
@@ -35,46 +35,61 @@ VPN profiles require the **Internal network scanning** add-on. [Learn more about
 Choose the deployment method that fits your environment:
 
 <CardGroup cols={2}>
-  <Card title="Virtual machine" icon="server" href="/using/vpn/virtual-machine">
+  <Card icon="server" href="/using/vpn/virtual-machine" title="Virtual machine">
     Pre-configured appliance for VMware, Hyper-V, VirtualBox, or ESXi.
   </Card>
-  <Card title="Docker agent" icon="docker" href="/using/vpn/docker-agent">
+  <Card icon="docker" href="/using/vpn/docker-agent" title="Docker agent">
     Containerized agent for Docker environments.
   </Card>
-  <Card title="Cloud deployment" icon="cloud" href="/using/vpn/cloud">
+  <Card icon="cloud" href="/using/vpn/cloud" title="Cloud deployment">
     Deploy in AWS or Azure cloud environments.
   </Card>
-  <Card title="Custom OpenVPN" icon="shield-halved" href="/using/vpn/openvpn">
+  <Card icon="shield-halved" href="/using/vpn/openvpn" title="Custom OpenVPN">
     Use your own OpenVPN server configuration.
   </Card>
 </CardGroup>
 
+<Frame>
+  <img
+    src="/images/image.png"
+    alt="Image"
+    title="Image"
+    className="hidden dark:block"
+  />
+  <img
+    src="/images/vpn-deployment-methods.png"
+    alt="Image"
+    title="Image"
+    className="dark:hidden"
+  />
+</Frame>
+
 ## Use cases
 
-| Scenario | Description |
-|----------|-------------|
-| Internal applications | Scan intranet sites and internal tools |
-| Development environments | Test staging servers not exposed publicly |
-| Corporate networks | Assess internal infrastructure security |
-| Cloud VPCs | Scan private cloud resources |
-| Isolated segments | Test network segments with no internet access |
+| Scenario                 | Description                                   |
+| ------------------------ | --------------------------------------------- |
+| Internal applications    | Scan intranet sites and internal tools        |
+| Development environments | Test staging servers not exposed publicly     |
+| Corporate networks       | Assess internal infrastructure security       |
+| Cloud VPCs               | Scan private cloud resources                  |
+| Isolated segments        | Test network segments with no internet access |
 
 ## Network requirements
 
 The VPN agent requires **outbound** connectivity only:
 
-| Protocol | Port | Destination | Purpose |
-|----------|------|-------------|---------|
-| TCP | 22 | vpn.pentest-tools.com | Agent communication |
+| Protocol | Port | Destination           | Purpose             |
+| -------- | ---- | --------------------- | ------------------- |
+| TCP      | 22   | vpn.pentest-tools.com | Agent communication |
 
 <Tip>
-No inbound ports need to be opened. The agent initiates all connections outbound.
+  No inbound ports need to be opened. The agent initiates all connections outbound.
 </Tip>
 
 ## Security considerations
 
 <Warning>
-VPN agents have network access to your internal systems. Deploy them thoughtfully and restrict their network access appropriately.
+  VPN agents have network access to your internal systems. Deploy them thoughtfully and restrict their network access appropriately.
 </Warning>
 
 - Agents only communicate outbound to Pentest-Tools.com
@@ -86,14 +101,15 @@ VPN agents have network access to your internal systems. Deploy them thoughtfull
 
 When creating a VPN profile, you can configure:
 
-| Setting | Description |
-|---------|-------------|
-| **Name** | Descriptive name for the profile |
-| **DNS** | Custom DNS servers for resolving internal hostnames (must include 8.8.8.8) |
-| **Max parallel scans** | Limit concurrent scans through this profile |
-| **Workspaces** | Associate profile with specific workspaces |
+| Setting                | Description                                                                |
+| ---------------------- | -------------------------------------------------------------------------- |
+| **Name**               | Descriptive name for the profile                                           |
+| **DNS**                | Custom DNS servers for resolving internal hostnames (must include 8.8.8.8) |
+| **Max parallel scans** | Limit concurrent scans through this profile                                |
+| **Workspaces**         | Associate profile with specific workspaces                                 |
 
 For Custom OpenVPN profiles, you also configure:
+
 - **OVPN file**: Your OpenVPN configuration file
 - **User authentication**: Optional username and password if your OpenVPN server requires authentication
 
@@ -103,15 +119,15 @@ For Custom OpenVPN profiles, you also configure:
 
 For **VPN Agent** deployments only, the platform shows real-time agent status:
 
-| Status | Description |
-|--------|-------------|
-| **Online** | The agent is connected and ready to route scans |
-| **Offline** | The agent is not connected to the platform |
+| Status      | Description                                     |
+| ----------- | ----------------------------------------------- |
+| **Online**  | The agent is connected and ready to route scans |
+| **Offline** | The agent is not connected to the platform      |
 
 The status updates in real-time, so you'll see changes immediately when an agent connects or disconnects.
 
 <Note>
-Online/Offline status only applies to **VPN Agent** deployments (VM, Docker, Cloud). Custom OpenVPN profiles do not show online/offline status because the platform connects to your OpenVPN server on-demand when running scans.
+  Online/Offline status only applies to **VPN Agent** deployments (VM, Docker, Cloud). Custom OpenVPN profiles do not show online/offline status because the platform connects to your OpenVPN server on-demand when running scans.
 </Note>
 
 ### Test connection
@@ -125,33 +141,33 @@ Use the **Test connection** button to verify your VPN profile configuration. Thi
 
 The test attempts to establish a VPN tunnel and reports the result.
 
-| Profile Type | What Test Connection Does |
-|--------------|---------------------------|
-| **VPN Agent** | Verifies the agent is reachable and can establish a tunnel |
+| Profile Type       | What Test Connection Does                                                   |
+| ------------------ | --------------------------------------------------------------------------- |
+| **VPN Agent**      | Verifies the agent is reachable and can establish a tunnel                  |
 | **Custom OpenVPN** | Attempts to connect to your OpenVPN server using the uploaded configuration |
 
 ### Connection status
 
 After running a connection test, the profile shows one of these statuses:
 
-| Status | Description |
-|--------|-------------|
-| **Untested** | No connection test has been run yet |
-| **Success** | The VPN connection test was successful |
-| **Refused** | The connection was refused by the server |
-| **Timeout** | The connection attempt timed out |
-| **Auth Failed** | Invalid user credentials |
-| **TLS Error** | TLS key negotiation failed |
-| **Options Error** | Bad or unsupported configuration options |
-| **Unsupported** | Unsupported VPN configuration |
-| **Internal Error** | An internal error occurred |
+| Status             | Description                              |
+| ------------------ | ---------------------------------------- |
+| **Untested**       | No connection test has been run yet      |
+| **Success**        | The VPN connection test was successful   |
+| **Refused**        | The connection was refused by the server |
+| **Timeout**        | The connection attempt timed out         |
+| **Auth Failed**    | Invalid user credentials                 |
+| **TLS Error**      | TLS key negotiation failed               |
+| **Options Error**  | Bad or unsupported configuration options |
+| **Unsupported**    | Unsupported VPN configuration            |
+| **Internal Error** | An internal error occurred               |
 
 ### Connection logs
 
 When you click on a VPN profile, the details panel shows **Connection logs**. These logs contain output from the last connection test and are helpful for troubleshooting failed connections.
 
 <Tip>
-If the connection logs show "No logs. Run a connection test first.", run a test to populate the logs.
+  If the connection logs show "No logs. Run a connection test first.", run a test to populate the logs.
 </Tip>
 
 ## VPN Profile Details
@@ -165,6 +181,7 @@ Click on a VPN profile name to open the details panel, which shows:
 - **Connection logs**: Output from the last connection test
 
 From the details panel, you can also:
+
 - Test the connection
 - Deploy the agent (for VPN Agent profiles)
 - Edit or delete the profile
@@ -175,11 +192,11 @@ VPN profiles can be shared with team members (subusers) on your account. When yo
 
 ### Permission levels
 
-| Permission | What they can do |
-|------------|------------------|
-| **No access** | Cannot see or use your VPN profiles |
-| **View** | Can view and use VPN profiles to run scans, but cannot edit or delete |
-| **Edit** | Full access to view, use, edit, and delete VPN profiles |
+| Permission    | What they can do                                                      |
+| ------------- | --------------------------------------------------------------------- |
+| **No access** | Cannot see or use your VPN profiles                                   |
+| **View**      | Can view and use VPN profiles to run scans, but cannot edit or delete |
+| **Edit**      | Full access to view, use, edit, and delete VPN profiles               |
 
 ### How to share VPN profiles
 
@@ -192,7 +209,7 @@ VPN profiles can be shared with team members (subusers) on your account. When yo
 VPN profiles you share will appear in your team members' VPN profile list, allowing them to select your profiles when running scans.
 
 <Tip>
-Share VPN profiles with View permission so team members can run internal scans without accidentally modifying the VPN configuration.
+  Share VPN profiles with View permission so team members can run internal scans without accidentally modifying the VPN configuration.
 </Tip>
 
 For more information about team management and sharing, see [Teams and roles](/account/teams-and-roles).
@@ -200,10 +217,10 @@ For more information about team management and sharing, see [Teams and roles](/a
 ## Resource requirements
 
 | Resource | Minimum | Recommended |
-|----------|---------|-------------|
-| vCPUs | 1 | 2 |
-| Memory | 1 GB | 2 GB |
-| Disk | 10 GB | 20 GB |
+| -------- | ------- | ----------- |
+| vCPUs    | 1       | 2           |
+| Memory   | 1 GB    | 2 GB        |
+| Disk     | 10 GB   | 20 GB       |
 
 ## Related topics
 
