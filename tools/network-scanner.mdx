@@ -20,7 +20,7 @@ The Network Scanner is a **vulnerability scanner**: it actively tests your netwo
 To scan multiple hosts, add IP ranges (CIDR notation like `192.168.1.0/24`) or IP ranges (like `10.10.0.1-255`) from the [Assets page](/using/assets/assets#supported-target-formats). You can also [import multiple targets](/using/assets/assets#importing-multiple-targets) from a file.
 </Note>
 
-## Scan modes
+## Scan types
 
 | Mode | Description | Use case |
 |------|-------------|----------|
@@ -32,8 +32,8 @@ To scan multiple hosts, add IP ranges (CIDR notation like `192.168.1.0/24`) or I
 
 | Parameter | Light | Deep | Custom |
 |-----------|:-----:|:----:|:------:|
-| **TCP ports** | ~139 | ~3,847 | User-defined |
-| **UDP ports** | ~68 | ~784 | User-defined |
+| **TCP ports** | ~187 | ~3,847 | User-defined |
+| **UDP ports** | ~101 | ~1,000 | User-defined |
 | **Check alive** | ✓ | ✓ | Configurable |
 | **Extensive modules** | ✗ | ✓ | Configurable |
 | **Custom CVEs** | ✗ | ✗ | Up to 10 |
@@ -89,11 +89,11 @@ Sniper modules only work with TCP protocol. If you select UDP with Sniper enable
 
 | Option | TCP ports | UDP ports |
 |--------|-----------|-----------|
-| **Top 10 ports** | ~7 | ~8 |
-| **Top 100 ports** | ~85 | ~68 |
-| **Top 1000 ports** | ~617 | ~784 |
-| **Top 5000 ports** | ~2,012 | ~3,926 |
-| **OpenVAS default** | ~639 | - |
+| **Top 10 ports** | ~10 | ~10 |
+| **Top 100 ports** | ~112 | ~101 |
+| **Top 1000 ports** | ~1,009 | ~1,000 |
+| **Top 5000 ports** | ~5,003 | ~5,000 |
+| **OpenVAS default** | ~4,485 | - |
 | **Full port range** | 65,535 | 65,535 |
 
 You can also specify a **port range** (e.g., `1-1024`) or a **port list** (comma-separated, e.g., `22,80,443,8080`).
@@ -139,16 +139,6 @@ When using Nuclei or OpenVAS engines, you can adjust the request rate:
 <Tip>
 Lower the request rate when scanning production systems to reduce impact, or increase it for faster scans on test environments.
 </Tip>
-
-## Why network scanning matters
-
-Regular network scanning helps you:
-
-- **Discover exposed services**: Identify what's running and accessible on your network
-- **Find known vulnerabilities**: Detect CVEs and security issues before attackers do
-- **Verify patch status**: Confirm that security updates have been applied
-- **Detect misconfigurations**: Find insecure service settings and default configurations
-- **Meet compliance requirements**: Many frameworks require regular vulnerability assessments
 
 ## Follow-up actions
 

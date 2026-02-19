@@ -5,7 +5,7 @@ description: "How AI improves automatic login form detection for authenticated s
 
 ## Overview
 
-The AI-enhanced authentication feature improves the reliability of automatic login form detection in the [Website Scanner](/tools/website-scanner). By intelligently identifying page elements, AI helps complete logins on complex or dynamic web pages where traditional detection methods struggle.
+The AI-enhanced authentication feature improves the reliability of automatic login form detection in the [Website Scanner](/tools/website-scanner). By automatically identifying page elements, AI helps complete logins on complex or dynamic web pages where traditional detection methods struggle.
 
 ## How it works
 
@@ -16,7 +16,7 @@ When you select **Automatic Login Form** authentication in the Website Scanner, 
     The scanner first attempts to identify login form elements (username field, password field, submit button) using pattern-based selectors. This method works well for standard login forms.
   </Step>
   <Step title="AI-powered fallback">
-    If traditional detection fails, an AI agent takes over. The agent analyzes the page structure and intelligently identifies the correct form elements, even on complex pages with iframes, dynamic loading, or non-standard layouts.
+    If traditional detection fails, an AI agent takes over. The agent analyzes the page structure and identifies the correct form elements, even on complex pages with iframes, dynamic loading, or non-standard layouts.
   </Step>
 </Steps>
 
@@ -39,17 +39,11 @@ The AI component excels at scenarios that challenge traditional detection:
   </Card>
 </CardGroup>
 
-## Performance improvement
+## Reliability
 
-AI-enhanced authentication significantly improves success rates for automatic logins:
+AI-enhanced authentication is designed to improve login reliability on complex pages where selector-based detection fails.
 
-| Metric | Without AI | With AI |
-|--------|------------|---------|
-| Success rate | 84% | 92% |
-
-<Note>
-Based on analysis of 3,200 authenticated scans over a 60-day period.
-</Note>
+It is a fallback inside the **Automatic Login Form** flow, so you do not need to enable a separate setting.
 
 ## Using AI authentication
 
@@ -112,10 +106,10 @@ For details on all authentication methods, see [Authenticated scanning](/using/s
 
 Your authentication credentials are handled securely:
 
-- **Proprietary AI models**: We use our own AI infrastructure, not third-party services
+- **Azure OpenAI models**: The AI agent uses Azure-hosted OpenAI models within our controlled infrastructure
 - **Secure processing**: Credentials are processed within our isolated infrastructure
-- **No external sharing**: Your data is never sent to external companies
-- **No retention**: Authentication data is not logged or retained for AI purposes
+- **No external training**: Your data is not used to train any AI models
+- **No retention**: Authentication data is not logged or retained after the scan completes
 
 For complete details, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
 

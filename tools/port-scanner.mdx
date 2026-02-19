@@ -5,7 +5,7 @@ description: "Discover open TCP and UDP ports and running services on target hos
 
 ## Overview
 
-The Port Scanner identifies open TCP and UDP ports on target hosts using [Nmap](https://nmap.org/), the industry-standard port scanning tool. Knowing which network services are exposed to the Internet is essential for securing the network perimeter.
+The Port Scanner identifies open TCP and UDP ports on target hosts using [Nmap](https://nmap.org/), the industry-standard port scanning tool. Knowing which network services are exposed to the Internet is a key step in network security assessments.
 
 The Port Scanner is a **discovery tool**: it maps your network's exposed services but does not test them for vulnerabilities. Discovered ports, services, and OS information are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). It does not generate [findings](/using/findings/findings).
 
@@ -34,10 +34,10 @@ These parameters are only available when using **Custom** scan type:
 
 | Preset | TCP ports | UDP ports |
 |--------|-----------|-----------|
-| **Top 10 ports** | ~7 | ~8 |
-| **Top 100 ports** | ~85 | ~68 |
-| **Top 1000 ports** | ~617 | ~784 |
-| **Top 5000 ports** | ~2,012 | ~3,926 |
+| **Top 10 ports** | ~10 | ~10 |
+| **Top 100 ports** | ~112 | ~101 |
+| **Top 1000 ports** | ~1,009 | ~1,000 |
+| **Top 5000 ports** | ~5,003 | ~5,000 |
 | **Full port range** | 65,535 | 65,535 |
 
 You can also specify a **port range** (e.g., `1-1024` for privileged ports) or a **port list** (comma-separated, e.g., `22,80,443,3306,8080`).
@@ -72,12 +72,12 @@ Most scans should use **TCP SYN** (the default). Alternative techniques are usef
 
 | Scan type | TCP ports scanned | UDP ports scanned | Features |
 |-----------|-------------------|-------------------|----------|
-| **Light** | ~140 top ports | ~70 top ports | Service detection |
-| **Deep** | ~3,800 top ports | ~780 top ports | Service detection, OS detection |
+| **Light** | ~187 top ports | ~101 top ports | Service detection |
+| **Deep** | ~3,845 top ports | ~1,000 top ports | Service detection, OS detection |
 | **Custom** | User-defined | User-defined | All options configurable |
 
 <Tip>
-**Light** is a quick reconnaissance scan. **Deep** (the default) provides comprehensive coverage and is recommended for security assessments.
+**Light** is a quick reconnaissance scan. **Deep** (the default) covers a wide range of ports and is recommended for security assessments.
 </Tip>
 
 ## How it works
@@ -109,34 +109,6 @@ UDP scanning is slower than TCP because UDP is connectionless. The scanner must 
 <Tip>
 If the scanner reports "host seems down" or finds no open ports on a host you know is up, re-run the scan with **Check alive** disabled. The host may be blocking ICMP probes.
 </Tip>
-
-## Why port scanning matters
-
-Port scanning reveals your network's attack surface by identifying exposed services. Each open port represents a potential entry point that attackers can probe for vulnerabilities.
-
-### Common TCP services and their risks
-
-| Port | Service | Security concerns |
-|------|---------|-------------------|
-| 21 | FTP | Anonymous access, clear text credentials |
-| 22 | SSH | Brute force attacks, outdated versions |
-| 23 | Telnet | Clear text transmission |
-| 25 | SMTP | Open relay, email spoofing |
-| 80 | HTTP | Web vulnerabilities |
-| 443 | HTTPS | SSL/TLS misconfigurations |
-| 445 | SMB | EternalBlue, relay attacks |
-| 3306 | MySQL | Database exposure |
-| 3389 | RDP | Remote access risks, BlueKeep |
-
-### Common UDP services and their risks
-
-| Port | Service | Security concerns |
-|------|---------|-------------------|
-| 53 | DNS | Zone transfers, amplification attacks |
-| 123 | NTP | Amplification attacks, time manipulation |
-| 161 | SNMP | Information disclosure, default community strings |
-| 500 | IKE/IPSec | VPN endpoint discovery |
-| 1900 | SSDP/UPnP | Device discovery, amplification |
 
 ## Follow-up actions
 

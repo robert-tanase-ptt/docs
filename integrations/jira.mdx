@@ -5,7 +5,7 @@ description: "Create Jira tickets from security findings"
 
 ## Overview
 
-The Jira integration allows you to create Jira tickets directly from your security findings, streamlining the handoff to development teams for remediation.
+The Jira integration allows you to create Jira tickets directly from your security findings, which simplifies handing off issues to development teams for remediation.
 
 <Info>
 Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
@@ -15,7 +15,7 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Access integration settings">
-    Go to Settings → Integrations → Jira.
+    Go to Settings > Integrations > Jira.
   </Step>
   <Step title="Enter Jira URL">
     Add your Jira instance URL (e.g., `https://yourcompany.atlassian.net`).
@@ -43,30 +43,29 @@ API tokens cannot be viewed again after creation. Store your token securely.
 
 ## Creating Jira tickets
 
-Once configured, you can send findings to Jira:
+Once configured, you can send findings to Jira from the [findings list](/using/findings/findings) in two ways:
 
-1. Navigate to a finding in Pentest-Tools.com
-2. Click **Send to Jira**
-3. The ticket is created in your specified project
+**Single finding:** open a finding and click **Send to Jira**, or use the row action menu.
+
+**Multiple findings at once:** select findings from the list, then click **Send to Jira** in the toolbar. One ticket is created per finding.
+
+When sending in bulk, you can filter which findings to include:
+
+- Include or exclude false positives
+- Include or exclude informational findings
+- Include or exclude unverified findings
+- Include or exclude duplicates
 
 ### Ticket contents
 
-Created Jira tickets include:
+Each Jira ticket includes:
 
 | Field | Content |
 |-------|---------|
 | **Summary** | Finding name and target |
-| **Description** | Full finding details, evidence, and remediation |
+| **Description** | Full finding details, evidence, and remediation steps |
 | **Issue type** | Task |
 | **Labels** | `pentest-tools.com` |
-
-### Bulk ticket creation
-
-You can also send multiple findings to Jira at once:
-
-1. Select multiple findings from the findings list
-2. Click **Send to Jira**
-3. One ticket is created for each selected finding
 
 ## Tracking tickets
 
@@ -127,4 +126,4 @@ Use Jira labels and components to organize security tickets separately from regu
 ## Related topics
 
 - [Findings](/using/findings/findings)
-- [Notifications Overview](/notifications/overview)
+- [Notifications](/notifications/overview)

@@ -5,7 +5,7 @@ description: "Security testing for REST and GraphQL APIs"
 
 ## Overview
 
-The API Scanner tests REST and GraphQL APIs for security vulnerabilities. It understands API specifications (OpenAPI/Swagger, Postman collections) and uses GraphQL introspection to perform comprehensive security testing of your API endpoints.
+The API Scanner tests REST and GraphQL APIs for security vulnerabilities. It understands API specifications (OpenAPI/Swagger, Postman collections) and uses GraphQL introspection to test your API endpoints for security issues.
 
 The API Scanner is a **vulnerability scanner**: it actively tests APIs for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
 
@@ -15,12 +15,12 @@ The API Scanner is a **vulnerability scanner**: it actively tests APIs for secur
 |-------------|----------|
 | **URL** | `https://api.example.com`, `https://example.com/api/v1` |
 
-## Scan modes
+## Scan types
 
 | Mode | Description | Use case |
 |------|-------------|----------|
 | **Light** | Fast scan with basic security checks | Quick assessment |
-| **Deep** | Comprehensive assessment with all tests | Full security audit |
+| **Deep** | All tests enabled | Full security audit |
 | **Custom** | User-configured API type | Targeted testing |
 
 ### Parameters comparison
@@ -112,16 +112,16 @@ When **GraphQL** is selected, the Specification toggle is disabled. The scanner 
 
 ## API specification
 
-The **Specification** toggle controls whether you provide an API specification file. When enabled, you can provide a specification to ensure comprehensive endpoint coverage.
+The **Specification** toggle controls whether you provide an API specification file. When enabled, you can provide a specification to ensure full endpoint coverage.
 
 | Toggle state | Behavior |
 |--------------|----------|
 | **Enabled** | Provide an OpenAPI or Postman specification, and the scanner tests all documented endpoints |
 | **Disabled** | Scanner auto-discovers endpoints by fuzzing for OpenAPI locations and using introspection for GraphQL |
 
-<Note>
+<Tip>
 Providing an API specification significantly improves scan coverage by ensuring all endpoints are tested, especially for REST APIs where auto-discovery may miss undocumented endpoints.
-</Note>
+</Tip>
 
 ### OpenAPI URL
 
@@ -255,11 +255,11 @@ X-API-Key: your-api-key-here
 If your API uses multiple authentication mechanisms (e.g., both a Bearer token and an API key), include all required headers on separate lines.
 </Tip>
 
-For more details, see [Authenticated scanning → API Scanner](/using/scans/authenticated-scanning#api-scanner).
+For more details, see [Authenticated scanning > API Scanner](/using/scans/authenticated-scanning#api-scanner).
 
 ## How it works
 
-The API Scanner follows a systematic approach:
+The API Scanner works in these steps:
 
 1. **Discovery**: Identifies API type (REST or GraphQL) and parses specifications
 2. **Fingerprinting**: Identifies API framework and technology stack
@@ -269,13 +269,6 @@ The API Scanner follows a systematic approach:
 6. **Reporting**: Generates findings with evidence and remediation guidance
 
 For **REST APIs**, the scanner parses OpenAPI or Postman collection files to identify all available endpoints and their parameters. For **GraphQL APIs**, the scanner parses the introspection schema to discover available queries, mutations, and types.
-
-## Why API security matters
-
-- **Data breaches**: APIs often expose sensitive data and are a primary attack vector
-- **OWASP API Top 10**: API-specific vulnerabilities require specialized testing
-- **Business logic flaws**: APIs can expose internal business logic to attackers
-- **Authentication bypass**: Weak API authentication can lead to unauthorized access
 
 ## Follow-up actions
 

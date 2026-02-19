@@ -1,13 +1,15 @@
 ---
-title: "HTTP Handlers"
+title: "HTTP Request Logger"
 description: "Capture HTTP callbacks for out-of-band vulnerability testing"
 ---
 
 ## Overview
 
-HTTP Handlers provide callback endpoints that capture incoming HTTP requests, enabling you to validate out-of-band (OOB) vulnerabilities like SSRF, XXE, blind SQL injection, and command injection.
+HTTP Request Logger provides callback endpoints that capture incoming HTTP requests, so you can validate out-of-band (OOB) vulnerabilities like SSRF, XXE, blind SQL injection, and command injection.
 
-HTTP Handlers are an **exploit helper tool**: they receive callbacks triggered by vulnerable applications to prove exploitation. They do not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and do not generate [findings](/using/findings/findings). Captured requests are displayed in a custom report.
+This feature is sometimes referred to as **HTTP Handlers** in older documentation.
+
+HTTP Request Logger is an **exploit helper tool**: it receives callbacks triggered by vulnerable applications to prove exploitation. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and does not generate [findings](/using/findings/findings). Captured requests are displayed in a custom report.
 
 ## How it works
 
@@ -124,16 +126,8 @@ Verify command execution on the target server:
 
 Test time-of-check to time-of-use vulnerabilities by monitoring multiple requests.
 
-## Why use HTTP Handlers
-
-- **Prove OOB vulnerabilities**: Demonstrate that blind vulnerabilities are exploitable
-- **Capture server identity**: Identify internal IPs and server details from callbacks
-- **Validate exploitation**: Confirm payloads execute even without visible output
-- **Document findings**: Generate PDF reports with captured request details
-- **Correlate tests**: Use unique handlers per test case for clear attribution
-
 <Warning>
-HTTP Handlers may receive requests containing sensitive data from vulnerable applications. Handle captured data responsibly and delete after testing.
+HTTP Request Logger may receive requests containing sensitive data from vulnerable applications. Handle captured data responsibly and delete after testing.
 </Warning>
 
 ## Follow-up actions

@@ -5,7 +5,7 @@ description: "Receive scan notifications and alerts in your Discord server"
 
 ## Overview
 
-The Discord integration delivers security notifications to your Discord channels, keeping your team informed about scan results and findings.
+The Discord integration delivers scan results and findings to your Discord channels.
 
 <Info>
 Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
@@ -15,39 +15,22 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Create webhook in Discord">
-    In your Discord server, go to Server Settings → Integrations → Webhooks → New Webhook.
+    In your Discord server, go to Server Settings > Integrations > Webhooks > New Webhook.
   </Step>
   <Step title="Copy the webhook URL">
     Click "Copy Webhook URL" to copy it to your clipboard.
   </Step>
   <Step title="Configure in Pentest-Tools.com">
-    Go to Settings → Integrations → Discord.
+    Go to Settings > Integrations > Discord.
   </Step>
   <Step title="Add the webhook">
     Enter a name and paste the Discord webhook URL, then save.
   </Step>
 </Steps>
 
-## Creating a Discord Webhook
-
-In Discord:
-
-1. Open your Discord server
-2. Go to **Server Settings** → **Integrations**
-3. Click **Webhooks** → **New Webhook**
-4. Name the webhook (e.g., "Security Alerts")
-5. Select the channel for notifications
-6. Optionally customize the avatar
-7. Click **Copy Webhook URL**
-
 ## Available notifications
 
-| Event | Discord Support |
-|-------|-----------------|
-| Scan Complete | ✓ |
-| Scan Failed | ✓ |
-| New Finding | ✓ |
-| Critical Finding | ✓ |
+This integration receives all notification types configured in your workspace. See [Notifications overview](/notifications/overview) for trigger types and conditions.
 
 ## Message format
 
@@ -119,6 +102,6 @@ Keep your webhook URL confidential. Anyone with the URL can send messages to you
 
 ## Related topics
 
-- [Slack Integration](/notifications/chat/slack)
-- [Microsoft Teams Integration](/notifications/chat/microsoft-teams)
-- [Notifications Overview](/notifications/overview)
+- [Slack integration](/integrations/slack)
+- [Microsoft Teams integration](/integrations/microsoft-teams)
+- [Notifications](/notifications/overview)

@@ -1,11 +1,11 @@
 ---
 title: "Website Scanner"
-description: "Comprehensive web application security testing with active and passive vulnerability detection"
+description: "Web application security testing with active and passive vulnerability detection"
 ---
 
 ## Overview
 
-The Website Scanner performs comprehensive security testing of web applications. It crawls your application, identifies technologies, and tests for vulnerabilities through active payload injection and passive response analysis.
+The Website Scanner performs security testing of web applications. It crawls your application, identifies technologies, and tests for vulnerabilities through active payload injection and passive response analysis.
 
 The Website Scanner is a **vulnerability scanner**: it actively tests web applications for security weaknesses. Discovered technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
 
@@ -19,12 +19,12 @@ The Website Scanner is a **vulnerability scanner**: it actively tests web applic
 The scanner does not follow redirects. Provide the exact URL you want to scan. To scan a specific directory, include it in the URL (e.g., `https://example.com/app/`).
 </Note>
 
-## Scan modes
+## Scan types
 
 | Mode | Description | Use case |
 |------|-------------|----------|
 | **Light** | Fast, passive, non-intrusive scan | Quick reconnaissance |
-| **Deep** | Comprehensive assessment with all tests | Full security audit |
+| **Deep** | All tests enabled | Full security audit |
 | **Custom** | User-configured tests and options | Targeted testing |
 
 ### Parameters comparison
@@ -62,6 +62,7 @@ The scanner does not follow redirects. Provide the exact URL you want to scan. T
 | **Misconfigurations** | ✗ | ✓ |
 | **Find GraphQL Endpoint** | ✗ | ✓ |
 | **Fuzz OpenAPI Locations** | ✗ | ✓ |
+| **[AI-powered endpoint discovery](/ai/endpoint-discovery)** | ✗ | ✓ |
 
 **[Passive checks](#passive-checks)**
 
@@ -156,6 +157,7 @@ Initial tests identify technologies, configuration files, and potential entry po
 | **Misconfigurations** | Detects common web server and application misconfigurations that could lead to security issues |
 | **Find GraphQL Endpoint** | Discovers GraphQL API endpoints and checks for exposed introspection queries |
 | **Fuzz OpenAPI Locations** | Searches common locations for OpenAPI/Swagger specification files (openapi.json, swagger.yaml, etc.) |
+| **[AI-powered endpoint discovery](/ai/endpoint-discovery)** | Uses an AI browser agent to navigate the site and discover endpoints that traditional crawling misses |
 
 <Note>
 Some initial tests like "Find interesting files" and "Information disclosure" may take several hours to complete as they test many potential paths.
@@ -291,7 +293,7 @@ For detailed authentication configuration, see [Authenticated scanning](/using/s
 
 ## How it works
 
-The Website Scanner follows a systematic approach:
+The Website Scanner works in these steps:
 
 1. **Fingerprinting**: Identifies web server, technologies, and frameworks
 2. **Crawling**: Discovers pages, forms, and functionality using the selected spider approach. Uses [AI-powered soft 404 detection](/ai/soft404detector) to filter out false positives.
@@ -299,13 +301,6 @@ The Website Scanner follows a systematic approach:
 4. **Passive analysis**: Analyzes all responses for security issues without sending payloads
 5. **Active testing**: Injects payloads into parameters to test for vulnerabilities
 6. **Reporting**: Generates findings with evidence and remediation guidance
-
-## Why web application security matters
-
-- **Data breaches**: Web vulnerabilities are a leading cause of data theft
-- **OWASP Top 10**: Most common web vulnerabilities are well-documented but still prevalent
-- **Business impact**: Compromised applications lead to financial loss and reputation damage
-- **Compliance**: Security testing is required by PCI DSS, HIPAA, SOC 2, and other standards
 
 ## Follow-up actions
 

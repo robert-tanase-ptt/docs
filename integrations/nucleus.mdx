@@ -13,24 +13,7 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
 
 ## What is Nucleus?
 
-Nucleus is a vulnerability management platform that aggregates findings from multiple security tools, providing a unified view of your security posture.
-
-## Benefits
-
-<CardGroup cols={2}>
-  <Card title="Centralized management" icon="layer-group">
-    All findings in one place.
-  </Card>
-  <Card title="Deduplication" icon="filter">
-    Cross-tool finding correlation.
-  </Card>
-  <Card title="Workflows" icon="diagram-project">
-    Automated remediation workflows.
-  </Card>
-  <Card title="Reporting" icon="chart-bar">
-    Unified security metrics.
-  </Card>
-</CardGroup>
+Nucleus is a vulnerability management platform that aggregates findings from multiple security tools into a single view. It handles deduplication across tools, remediation workflows, and reporting.
 
 ## Setting up Nucleus
 
@@ -39,7 +22,7 @@ Nucleus is a vulnerability management platform that aggregates findings from mul
     In Nucleus, obtain your API key.
   </Step>
   <Step title="Configure credentials">
-    In Pentest-Tools.com, go to Settings → Integrations → Nucleus and enter your subdomain and API key.
+    In Pentest-Tools.com, go to Settings > Integrations > Nucleus and enter your subdomain and API key.
   </Step>
   <Step title="Add projects">
     Add Nucleus projects to send findings to.
@@ -51,22 +34,19 @@ Nucleus is a vulnerability management platform that aggregates findings from mul
 
 ## Sending findings
 
-### Manual send
+You can send findings to Nucleus from the [findings list](/using/findings/findings) in two ways:
 
-Send selected findings to Nucleus on demand:
+**Single finding:** open a finding and click **Send to Nucleus**, or use the row action menu.
 
-1. Select findings from your findings list
-2. Click **Send to Nucleus**
-3. Choose the Nucleus project
-4. Findings are uploaded to Nucleus
+**Multiple findings at once:** select findings from the list, then click **Send to Nucleus** in the toolbar. Choose the target Nucleus project and the findings are queued for upload. You get a notification when the upload completes.
 
-### Automatic notifications
+### Automatic sync via notifications
 
-Configure notifications to automatically send scan results to Nucleus:
+You can also configure [notifications](/notifications/overview) to send scan results to Nucleus automatically when scans complete:
 
-1. Create a notification setting
+1. Create a notification
 2. Select a Nucleus project as the destination
-3. Findings are sent when scans complete
+3. Findings are sent when scans finish
 
 ## Nucleus projects
 
@@ -128,6 +108,6 @@ After sending findings to Nucleus:
 
 ## Related topics
 
-- [Vanta Integration](/notifications/security/vanta)
+- [Vanta integration](/integrations/vanta)
 - [Findings](/using/findings/findings)
-- [Notifications Overview](/notifications/overview)
+- [Notifications](/notifications/overview)

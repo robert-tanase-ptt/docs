@@ -1,0 +1,157 @@
+---
+title: "Tools"
+description: "Security tool types, what they produce, and where they fit in your testing workflow"
+---
+
+## Overview
+
+Pentest-Tools.com has over 25 security tools covering reconnaissance, vulnerability scanning, exploitation, and validation. Each tool produces different types of output.
+
+This page explains what each category does so you can pick the right tools and interpret results correctly.
+
+## Tool categories
+
+Tools are grouped into six categories based on their purpose in the testing workflow.
+
+### Reconnaissance
+
+Reconnaissance tools gather information about your targets without testing for vulnerabilities. They help you map what's exposed before you start scanning.
+
+| Tool | What it does |
+|------|-------------|
+| [Google Hacking](/tools/google-hacking) | Finds exposed data using Google dorks |
+| [Domain Finder](/tools/domain-finder) | Discovers related domains via SSL certs, reverse whois, and other sources |
+| [Subdomain Finder](/tools/subdomain-finder) | Enumerates subdomains using multiple discovery techniques |
+| [Virtual Hosts Finder](/tools/virtual-hosts-finder) | Discovers virtual hosts sharing the same server |
+| [Port Scanner](/tools/port-scanner) | Identifies open TCP and UDP ports and running services |
+| [Website Recon](/tools/website-recon) | Fingerprints web technologies, CMS platforms, and frameworks |
+| [WAF Detector](/tools/waf-detector) | Identifies web application firewalls and attempts origin IP discovery |
+| [URL Fuzzer](/tools/url-fuzzer) | Discovers hidden paths, files, and directories |
+| [People Hunter](/tools/people-hunter) | Discovers email addresses and social media profiles via OSINT |
+
+Reconnaissance tools generally do not generate findings. Their output is informational: lists of discovered subdomains, open ports, technologies, or hidden paths. The exception is **Website Recon**, which can also produce findings for detected technologies.
+
+### Web vulnerability scanning
+
+Web vulnerability scanners actively test web applications, APIs, and CMS platforms for security weaknesses. These tools generate findings.
+
+| Tool | What it does |
+|------|-------------|
+| [Website Scanner](/tools/website-scanner) | Comprehensive web application testing with passive and active checks |
+| [API Scanner](/tools/api-scanner) | Tests REST and GraphQL APIs for vulnerabilities |
+| [WordPress Scanner](/tools/wordpress-scanner) | WordPress-specific vulnerability detection |
+| [Drupal Scanner](/tools/drupal-scanner) | Drupal-specific vulnerability detection |
+| [Joomla Scanner](/tools/joomla-scanner) | Joomla-specific vulnerability detection |
+| [SharePoint Scanner](/tools/sharepoint-scanner) | SharePoint security assessment |
+
+<Note>
+The WordPress and Drupal scanners use version-based detection only. Because they identify vulnerabilities by matching component versions against known CVEs rather than actively confirming them, their findings are capped at high severity.
+</Note>
+
+### Network vulnerability scanning
+
+Network vulnerability scanners assess infrastructure-level security, including network services, encryption, cloud configurations, and container orchestration.
+
+| Tool | What it does |
+|------|-------------|
+| [Network Scanner](/tools/network-scanner) | Network infrastructure vulnerability assessment using multiple engines |
+| [Password Auditor](/tools/password-auditor) | Tests for weak credentials across 17 service types |
+| [SSL/TLS Scanner](/tools/ssl-tls-scanner) | Analyzes SSL/TLS configuration and checks for known vulnerabilities |
+| [Cloud Scanner](/tools/cloud-scanner) | Tests cloud storage (AWS S3, Google Cloud Storage) for misconfigurations |
+| [Kubernetes Scanner](/tools/kubernetes-scanner) | Kubernetes cluster security assessment |
+
+Like web scanners, network scanners generate findings.
+
+### Offensive
+
+Offensive tools validate and exploit discovered vulnerabilities rather than just detecting them.
+
+| Tool | What it does |
+|------|-------------|
+| [Sniper](/tools/sniper) | Automated exploitation framework that extracts system artifacts |
+| [SQLi Exploiter](/tools/sqli-exploiter) | Exploits SQL injection vulnerabilities to extract database contents |
+| [Subdomain Takeover](/tools/subdomain-takeover) | Detects subdomains pointing to unclaimed cloud resources |
+
+Offensive tools do not generate findings in the traditional sense. Sniper produces detailed reports with extracted artifacts (system information, users, screenshots, filesystem data). SQLi Exploiter extracts database contents. Subdomain Takeover reports which subdomains are vulnerable to takeover.
+
+### Exploit handlers
+
+Exploit handlers are callback endpoints for out-of-band testing. Unlike other tools, they don't scan a target. They create persistent URLs that listen for incoming requests triggered by payloads you inject during testing.
+
+| Tool | What it does |
+|------|-------------|
+| [XSS Exploiter](/tools/xss-exploiter) | Captures XSS payload executions (cookies, screenshots, keystrokes) |
+| [HTTP Request Logger](/tools/http-request-logger) | Captures HTTP callbacks for SSRF, XXE, blind SQLi, and command injection testing |
+
+Exploit handlers do not create scans or generate findings. They create handler endpoints that remain active for 60 days, capturing callbacks from vulnerable targets.
+
+### Utilities
+
+Utility tools perform basic network checks and lookups.
+
+| Tool | What it does |
+|------|-------------|
+| [ICMP Ping](/tools/icmp-ping) | Tests host reachability via ICMP |
+| [WHOIS Lookup](/tools/whois) | Queries domain registration information |
+
+Utility tools produce raw output and do not generate findings.
+
+## What tools produce
+
+Different tools produce different types of output.
+
+### Findings
+
+Only vulnerability scanners generate [findings](/using/findings/findings): structured records of discovered security issues with severity ratings, descriptions, and remediation guidance. This includes all web and network vulnerability scanners listed above.
+
+Offensive tools, exploit handlers, and utilities do not generate findings. Among reconnaissance tools, only Website Recon generates findings.
+
+### Attack surface data
+
+Only four tools populate your [attack surface](/using/attack-surface/attack-surface-overview) view:
+
+| Tool | What it adds |
+|------|-------------|
+| [Port Scanner](/tools/port-scanner) | Open ports and service fingerprints |
+| [Network Scanner](/tools/network-scanner) | Ports, protocols, services, and technologies |
+| [Website Scanner](/tools/website-scanner) | URLs, technologies, and screenshots |
+| [Website Recon](/tools/website-recon) | URLs, technologies, and screenshots |
+
+No other tools contribute to the attack surface. To get a complete view of your external-facing infrastructure, run these four tools.
+
+### Scans
+
+Most tools create a [scan](/concepts/scans-and-statuses) object when you run them: a trackable job with a lifecycle (Waiting, Running, Finished, etc.) and results you can revisit.
+
+Three tools are exceptions:
+
+- **Google Hacking** does not create a scan. It runs entirely in your browser by opening Google search tabs with pre-built dorks. No server-side execution happens.
+- **XSS Exploiter** and **HTTP Request Logger** create persistent handler endpoints, not scans. They have no scan lifecycle. They listen for callbacks until they expire.
+
+## Scan types
+
+Many tools support different scan depths that let you control the tradeoff between speed and thoroughness. See [Scan types and depth](/using/scans/scan-types-and-depth) for details on how Light, Deep, and Custom modes work.
+
+Not all tools follow this pattern:
+
+- **14 tools** support the standard Light / Deep / Custom modes
+- **10 tools** operate in a single mode with no depth selection (Virtual Hosts Finder, Website Recon, WAF Detector, People Hunter, Drupal Scanner, Joomla Scanner, SharePoint Scanner, Cloud Scanner, ICMP Ping, WHOIS Lookup)
+- **Sniper** uses Unauthenticated / Authenticated modes instead
+- **Password Auditor** uses Dictionary / Password Spray attack types instead
+- **SQLi Exploiter** uses an Advanced toggle with Level and Risk settings
+- **Exploit handlers** have no scan modes since they don't create scans
+
+## Pentest robots
+
+[Pentest robots](/automation/robots/pentest-robots) are automation workflows that run multiple tools in sequence, passing data between steps. For example, a robot can run a Subdomain Finder, then feed discovered subdomains into a Website Scanner.
+
+Robots can be scheduled, shared with team members, and cloned for customization.
+
+## Related topics
+
+- [Tools reference](/tools/index)
+- [Scan types and depth](/using/scans/scan-types-and-depth)
+- [Scans and statuses](/concepts/scans-and-statuses)
+- [Findings](/using/findings/findings)
+- [Attack surface](/using/attack-surface/attack-surface-overview)
+- [Pentest robots](/automation/robots/pentest-robots)

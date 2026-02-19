@@ -5,7 +5,7 @@ description: "Discover subdomains and determine the attack surface of an organiz
 
 ## Overview
 
-The Subdomain Finder discovers subdomains of a target domain using multiple discovery techniques. Finding subdomains is an important step in the information gathering phase of a penetration test, as subdomains often point to different applications and network ranges used by the target organization.
+The Subdomain Finder enumerates subdomains of a target domain using multiple discovery techniques. Subdomains often point to different applications and network ranges used by the target organization, and discovering them helps map the full attack surface.
 
 Subdomains sometimes host non-public applications (test, development, restricted) which are usually less secure than the public applications, making them primary attack targets.
 
@@ -91,15 +91,6 @@ Generates permutations and alterations of subdomains found during the scan. For 
 ### CNAME search
 
 Performs CNAME lookups on discovered subdomains and searches the CNAME records for additional subdomain references.
-
-## Why subdomain enumeration matters
-
-Subdomains often host:
-- **Development environments**: Less hardened, more vulnerabilities
-- **Legacy applications**: Outdated and potentially vulnerable
-- **Internal tools**: Admin panels, dashboards, monitoring
-- **Forgotten assets**: Abandoned but still running services
-- **Third-party services**: Potentially misconfigured integrations
 
 ## Follow-up actions
 

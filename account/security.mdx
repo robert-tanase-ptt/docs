@@ -5,19 +5,19 @@ description: "Secure your Pentest-Tools.com account"
 
 ## Overview
 
-Protecting your account is critical. It has access to sensitive security testing data.
+Your account stores scan data, credentials, findings, and reports for systems you're authorized to test. Use the settings on this page to lock it down.
 
-Manage your security settings at [**My Account → Security**](https://app.pentest-tools.com/account/security/general).
+Manage your security settings at [**My Account > Security**](https://app.pentest-tools.com/account/security/general).
 
 ## Two-factor authentication (2FA)
 
-<Warning>
+<Tip>
 We strongly recommend enabling 2FA for all accounts.
-</Warning>
+</Tip>
 
 ### Enabling 2FA
 
-Go to [**My Account → Security → 2FA**](https://app.pentest-tools.com/account/security/tfa) to set up two-factor authentication.
+Go to [**My Account > Security > 2FA**](https://app.pentest-tools.com/account/security/tfa) to set up two-factor authentication.
 
 <Steps>
   <Step title="Scan the QR code">
@@ -42,22 +42,39 @@ Any TOTP-compatible authenticator app works, including:
 
 ### Disabling 2FA
 
-To disable 2FA:
-
-1. Go to [**My Account → Security**](https://app.pentest-tools.com/account/security/general)
-2. Click **Disable 2FA**
-3. Enter your current password to confirm
+<Steps>
+  <Step title="Go to Security settings">
+    Go to [**My Account > Security**](https://app.pentest-tools.com/account/security/general).
+  </Step>
+  <Step title="Disable 2FA">
+    Click **Disable 2FA**.
+  </Step>
+  <Step title="Confirm with password">
+    Enter your current password to confirm.
+  </Step>
+</Steps>
 
 ## Password
 
 ### Changing your password
 
-Go to [**My Account → Security**](https://app.pentest-tools.com/account/security/general) to change your password.
-
-1. Click **Change password**
-2. Enter your current password
-3. Enter and confirm your new password
-4. Click **Save**
+<Steps>
+  <Step title="Go to Security settings">
+    Go to [**My Account > Security**](https://app.pentest-tools.com/account/security/general).
+  </Step>
+  <Step title="Click Change password">
+    Click **Change password**.
+  </Step>
+  <Step title="Enter current password">
+    Enter your current password.
+  </Step>
+  <Step title="Set new password">
+    Enter and confirm your new password.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
 
 The page also shows when you last changed your password.
 
@@ -72,7 +89,7 @@ If you signed up using Google or Microsoft SSO and haven't set a password yet, y
 
 ## Login history
 
-Review your login history for suspicious activity at [**My Account → Security → Login history**](https://app.pentest-tools.com/account/security/login_history).
+Review your login history for suspicious activity at [**My Account > Security > Login history**](https://app.pentest-tools.com/account/security/login_history).
 
 Each login event shows:
 
@@ -100,5 +117,5 @@ See [API Authentication](/api-reference/authentication) for more details.
 
 ## Related topics
 
-- [Teams and roles](/account/teams-and-roles): Manage team access
-- [API Authentication](/api-reference/authentication): API key management
+- [Teams and roles](/account/teams-and-roles)
+- [API Authentication](/api-reference/authentication)

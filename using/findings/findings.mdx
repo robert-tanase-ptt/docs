@@ -1,9 +1,9 @@
 ---
-title: "Overview"
+title: "Findings overview"
 description: "View, triage, and manage security findings discovered by your scans"
 ---
 
-Findings are security vulnerabilities and issues discovered during scans. The findings list is your central hub for reviewing, triaging, and managing all discovered issues across your assets.
+Findings are security vulnerabilities and issues discovered during scans. The findings list is where you review and triage all discovered issues across your assets.
 
 ## Viewing findings
 
@@ -30,12 +30,12 @@ Use filters to focus on what matters:
 - **By scan date**: Filter by when findings were discovered
 
 <Tip>
-Start your triage by filtering for Critical and High severity findings, these represent the greatest risk to your organization.
+Start your triage by filtering for Critical and High severity findings. These represent the greatest risk to your organization.
 </Tip>
 
 ## Finding details
 
-Select any finding to view comprehensive information:
+Select any finding to view full details:
 
 - **Description**: What the vulnerability is and why it's a security concern
 - **Evidence**: Proof of the vulnerability (request/response data, screenshots, payloads)
@@ -96,14 +96,26 @@ Document your findings with:
 
 ### Bulk operations
 
-Select multiple findings to:
+Select multiple findings from the list to apply changes in batch. All bulk operations are available from the toolbar that appears when you select findings.
 
-- Change status in batch
-- Change risk level in batch
-- Change verified status in batch
-- Send to integrations (Jira, Nucleus)
-- Clone findings
-- Delete findings (only for manually added or imported findings)
+| Operation | What it does |
+|-----------|-------------|
+| **Change status** | Set the same status on all selected findings |
+| **Change risk level** | Override severity for all selected findings |
+| **Change verified** | Mark selected findings as verified or unverified |
+| **Send to [Jira](/integrations/jira)** | Creates one Jira ticket per selected finding |
+| **Send to [Nucleus](/integrations/nucleus)** | Sends selected findings to a Nucleus project |
+| **Clone** | Duplicates each selected finding |
+| **Delete** | Removes selected findings (manually added and Burp imports only) |
+| **Generate report** | Creates a report from the selected findings |
+
+<Note>
+Status, risk level, and verified changes automatically propagate to duplicate findings in the same group. You don't need to update duplicates individually.
+</Note>
+
+<Warning>
+Findings created by scans cannot be deleted from the findings list. To remove them, delete the scan that produced them.
+</Warning>
 
 ## Add manual findings
 
@@ -122,7 +134,7 @@ When running multiple scans, the same vulnerability may be detected more than on
 - Affected parameter
 
 <Note>
-Deduplication groups findings but doesn't delete them, you can always see the full history.
+Deduplication groups findings but doesn't delete them. You can always see the full history.
 </Note>
 
 ## Reporting
@@ -135,5 +147,8 @@ Export your findings for stakeholder communication and compliance documentation.
 
 ## Related topics
 
-- [Finding templates](/using/findings/templates)
-- [Reporting overview](/using/reporting/reporting-overview)
+- [Finding templates](/using/findings/templates): standardize finding documentation
+- [Reporting overview](/using/reporting/reporting-overview): generate reports from findings
+- [Jira integration](/integrations/jira): create Jira tickets from findings
+- [Nucleus integration](/integrations/nucleus): send findings to Nucleus
+- [Burp Suite integration](/integrations/burp): import Burp findings into the platform

@@ -1,11 +1,11 @@
 ---
 title: "Virtual machine"
-description: "Deploy the VPN agent as a virtual machine using VMware, Hyper-V, VirtualBox, or ESXi"
+description: "Deploy the VPN agent as a virtual machine using VMware, Hyper-V, or VirtualBox"
 ---
 
 ## Overview
 
-The VPN agent is available as a pre-configured virtual appliance for all major hypervisors. Choose your platform below.
+The VPN agent is available as a pre-configured virtual appliance. You download it from the dashboard, import it into your hypervisor, and boot it. The agent connects to the platform automatically.
 
 <Info>
 VPN profiles require the **Internal network scanning** add-on.
@@ -18,278 +18,92 @@ VPN profiles require the **Internal network scanning** add-on.
 | vCPUs | 1 | 2 |
 | Memory | 1 GB | 2 GB |
 | Disk | 10 GB | 20 GB |
-| Network | 1 adapter | 1 adapter |
-
-<Tabs>
-  <Tab title="VMware">
-    ## Prerequisites
-
-    - VMware ESXi, vSphere, Workstation, or Fusion
-    - Outbound internet access from the VM network
-    - Network access to internal targets
-
-    ## Installation
-
-    <Steps>
-      <Step title="Download OVA">
-        Download the VMware OVA file from your dashboard.
-      </Step>
-      <Step title="Deploy OVA">
-        Import the OVA into your VMware environment.
-      </Step>
-      <Step title="Configure network">
-        Attach the VM to the appropriate network.
-      </Step>
-      <Step title="Power on">
-        Start the virtual machine.
-      </Step>
-      <Step title="Configure agent">
-        Complete the initial configuration with your agent token.
-      </Step>
-    </Steps>
-
-    ## Deploying the OVA
-
-    <Tabs>
-      <Tab title="vSphere/ESXi">
-        1. Open vSphere Client
-        2. Right-click on your datacenter or cluster
-        3. Select **Deploy OVF Template**
-        4. Browse to the downloaded OVA file
-        5. Follow the deployment wizard
-        6. Select appropriate datastore and network
-      </Tab>
-      <Tab title="Workstation">
-        1. Go to **File** → **Open**
-        2. Select the OVA file
-        3. Choose import location
-        4. Accept license agreement
-        5. Start the imported VM
-      </Tab>
-      <Tab title="Fusion">
-        1. Go to **File** → **Import**
-        2. Select the OVA file
-        3. Choose save location
-        4. Complete the import
-        5. Start the VM
-      </Tab>
-    </Tabs>
-
-    ## Network configuration
-
-    ### Port group selection
-
-    Connect the agent to a port group that provides:
-    - Access to target networks
-    - Outbound internet connectivity
-
-    ### VLAN considerations
-
-    If scanning across VLANs:
-    - Place agent in a VLAN with routing to targets
-    - Or use a trunk port with appropriate VLAN access
-
-    ## VMware Tools
-
-    The appliance includes VMware Tools for:
-    - Better performance
-    - Clean shutdown support
-    - Guest customization
-  </Tab>
-
-  <Tab title="Hyper-V">
-    ## Prerequisites
-
-    - Windows Server or Windows 10/11 Pro with Hyper-V enabled
-    - Hyper-V Manager installed
-    - Outbound internet access
-    - Network access to internal targets
-
-    ## Installation
-
-    <Steps>
-      <Step title="Download appliance">
-        Download the Hyper-V virtual appliance from your dashboard.
-      </Step>
-      <Step title="Extract files">
-        Extract the downloaded archive to a location accessible by Hyper-V.
-      </Step>
-      <Step title="Import VM">
-        Import the virtual machine using Hyper-V Manager.
-      </Step>
-      <Step title="Configure network">
-        Connect the VM to the appropriate virtual switch.
-      </Step>
-      <Step title="Start and configure">
-        Boot the VM and complete the initial setup.
-      </Step>
-    </Steps>
-
-    ## Importing the VM
-
-    1. Open **Hyper-V Manager**
-    2. Click **Action** → **Import Virtual Machine**
-    3. Browse to the extracted appliance folder
-    4. Select **Copy the virtual machine**
-    5. Complete the import wizard
-
-    ## Network configuration
-
-    ### Virtual switch setup
-
-    Connect the agent to a virtual switch that has:
-    - Access to your internal network
-    - Outbound internet connectivity
-
-    ```powershell
-    # Create an external virtual switch (if needed)
-    New-VMSwitch -Name "External" -NetAdapterName "Ethernet" -AllowManagementOS $true
-    ```
-
-    ### Connecting the VM
-
-    ```powershell
-    # Connect VM to switch
-    Connect-VMNetworkAdapter -VMName "PentestAgent" -SwitchName "External"
-    ```
-
-    ## Management
-
-    ### Via Hyper-V Manager
-    - Start/stop the VM
-    - Modify resource allocation
-    - Manage snapshots
-
-    ### Via console
-    Access the VM console for:
-    - Network configuration
-    - Agent status
-    - Troubleshooting
-  </Tab>
-
-  <Tab title="VirtualBox">
-    ## Prerequisites
-
-    - Oracle VirtualBox installed (version 6.0+)
-    - Outbound internet access
-    - Network access to internal targets
-
-    ## Installation
-
-    <Steps>
-      <Step title="Download OVA">
-        Download the VirtualBox OVA from your dashboard.
-      </Step>
-      <Step title="Import appliance">
-        Import the OVA into VirtualBox.
-      </Step>
-      <Step title="Configure network">
-        Set up network adapter settings.
-      </Step>
-      <Step title="Start VM">
-        Power on the virtual machine.
-      </Step>
-      <Step title="Configure agent">
-        Enter your agent token to complete setup.
-      </Step>
-    </Steps>
-
-    ## Importing the appliance
-
-    1. Open VirtualBox
-    2. Go to **File** → **Import Appliance**
-    3. Browse to the downloaded OVA file
-    4. Review settings and adjust if needed
-    5. Click **Import**
-
-    ## Network configuration
-
-    ### Bridged adapter (recommended)
-
-    For direct network access:
-
-    1. Select the VM → **Settings** → **Network**
-    2. Set **Attached to**: Bridged Adapter
-    3. Select your physical network interface
-    4. Click **OK**
-
-    ### NAT network
-
-    For isolated environments with routing:
-
-    1. Create a NAT Network in VirtualBox preferences
-    2. Attach the VM to the NAT Network
-    3. Configure port forwarding if needed
-
-    ### Host-only + NAT
-
-    For dual-homed setups:
-
-    ```
-    Adapter 1: NAT (for internet access)
-    Adapter 2: Host-Only (for target access)
-    ```
-
-    ## Managing the VM
-
-    ### VBoxManage commands
-
-    ```bash
-    # Start VM headless
-    VBoxManage startvm "PentestAgent" --type headless
-
-    # Stop VM gracefully
-    VBoxManage controlvm "PentestAgent" acpipowerbutton
-
-    # Check status
-    VBoxManage showvminfo "PentestAgent" --machinereadable | grep VMState
-    ```
-
-    ### Snapshots
-
-    Take snapshots before making changes:
-
-    ```bash
-    VBoxManage snapshot "PentestAgent" take "pre-update"
-    ```
-  </Tab>
-</Tabs>
+| Network | 1 adapter with outbound internet access and access to internal targets | |
 
 ## Downloading the VM
 
-After creating a VPN profile in Pentest-Tools.com:
+1. Go to **Settings > VPN Profiles**
+2. Click on your VPN profile and open the deployment menu
+3. Select **Virtual Machine**
+4. Download the format that matches your hypervisor:
 
-1. Go to Settings → VPN Profiles
-2. Find your VPN profile
-3. Click the download button
-4. Select your hypervisor type (VMware, Hyper-V, VirtualBox, or ESXi)
-5. The customized VM image will be downloaded
+| Hypervisor | Format |
+|-----------|--------|
+| VMware Workstation / ESXi / Fusion | `.vmdk` |
+| VirtualBox | `.ova` |
+| Hyper-V | `.vhd` |
 
-<Tip>
-Each downloaded VM is pre-configured with your VPN profile credentials.
-</Tip>
+Each download is pre-configured with your VPN profile credentials.
 
-## Initial configuration
+## Installation
+
+<Tabs>
+  <Tab title="VMware">
+    ### VMware Workstation / Fusion
+
+    The `.vmdk` file is a virtual disk, not a standalone appliance. You need to create a new VM that uses it.
+
+    1. Go to **File > New Virtual Machine**
+    2. Choose **Custom** configuration
+    3. When prompted for the disk, select **Use an existing virtual disk** and browse to the downloaded `.vmdk` file
+    4. Complete the wizard (Linux / Ubuntu 64-bit, 1+ vCPU, 1+ GB RAM)
+    5. Start the VM
+
+    ### vSphere / ESXi
+
+    1. Open vSphere Client
+    2. Right-click on your datacenter or cluster
+    3. Select **Deploy OVF Template**
+    4. Browse to the downloaded file
+    5. Follow the deployment wizard, selecting the appropriate datastore and network
+  </Tab>
+
+  <Tab title="VirtualBox">
+    1. Open VirtualBox
+    2. Go to **File > Import Appliance**
+    3. Browse to the downloaded `.ova` file
+    4. Review settings and click **Import**
+    5. Start the VM
+  </Tab>
+
+  <Tab title="Hyper-V">
+    1. Open **Hyper-V Manager**
+    2. Click **Action > Import Virtual Machine**
+    3. Browse to the extracted appliance folder
+    4. Select **Copy the virtual machine**
+    5. Complete the import wizard and start the VM
+  </Tab>
+</Tabs>
+
+## Network configuration
+
+Connect the VM to a network that has:
+- Outbound internet access (TCP port 22 to vpn.pentest-tools.com)
+- Access to the internal targets you want to scan
+
+If you need to scan across VLANs, place the agent in a VLAN with routing to your targets, or use a trunk port with the appropriate VLAN access.
+
+## Verifying the connection
 
 After booting the VM:
 
 1. The agent starts automatically and connects to the platform
-2. Verify the connection status in your VPN profiles dashboard
-3. The profile should show as "Online"
+2. Go to **Settings > VPN Profiles** and check that your profile shows as **Online**
+3. Use the **Test connection** button to verify end-to-end connectivity
 
 <Warning>
-Change the default password immediately after initial setup.
+The default credentials are `root` / `vpnagent007` and `tc` / `vpnagent007`. Change these passwords immediately after the first boot.
 </Warning>
 
 ## Network requirements
-
-The VM needs outbound connectivity:
 
 | Protocol | Port | Destination | Purpose |
 |----------|------|-------------|---------|
 | TCP | 22 | vpn.pentest-tools.com | Agent tunnel |
 
+No inbound ports need to be opened.
+
 ## Related topics
 
-- [VPN Profiles Overview](/using/vpn/overview)
+- [VPN profiles overview](/using/vpn/overview)
 - [Troubleshooting](/using/vpn/troubleshooting)

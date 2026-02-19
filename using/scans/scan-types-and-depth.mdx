@@ -24,13 +24,13 @@ Light scans are fast, surface-level assessments designed for quick results with 
 - Testing scan configurations before committing to a full scan
 - Targets where you want to minimize traffic
 
-<Warning>
+<Note>
 Light scans rely primarily on service version fingerprinting, which can produce **false positives** if services report inaccurate versions. Always validate critical findings.
-</Warning>
+</Note>
 
 ## Deep
 
-Deep scans perform comprehensive assessments with extended coverage and additional detection capabilities.
+Deep scans perform full assessments with extended coverage and additional detection capabilities.
 
 | Aspect | Details |
 |--------|---------|
@@ -45,7 +45,7 @@ Deep scans perform comprehensive assessments with extended coverage and addition
 - Compliance requirements
 - Pre-release security testing
 - Annual security reviews
-- When you need comprehensive coverage
+- When you need full coverage
 
 <Note>
 Deep scans generate more network traffic and may create noise in target logs. Coordinate with system owners when scanning production environments.
@@ -90,13 +90,13 @@ Custom scan options vary by tool. Check the specific tool's documentation for av
 | | Light | Deep | Custom |
 |---|-------|------|--------|
 | **Speed** | Fast | Slow | Varies |
-| **Coverage** | Basic | Comprehensive | User-defined |
+| **Coverage** | Basic | Full | User-defined |
 | **False positives** | More likely | Less likely | Depends on config |
 | **Target impact** | Low | High | User-controlled |
 | **Best for** | Quick checks | Full audits | Specific needs |
 
 <Tip>
-Start with a Light scan to understand the target landscape, then follow up with Deep or Custom scans on areas of concern.
+Start with a Light scan to get a quick read on the target, then follow up with Deep or Custom scans on areas of concern.
 </Tip>
 
 ## Related topics

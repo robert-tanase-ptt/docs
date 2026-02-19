@@ -142,7 +142,7 @@ Separators used: none, `-`, `_`
 For scanning authenticated endpoints, add custom headers in Custom scan mode:
 
 1. Select **Custom** scan type
-2. Navigate to **Request options → Headers**
+2. Navigate to **Request options > Headers**
 3. Add your authentication headers
 
 **Example headers:**
@@ -158,31 +158,6 @@ For session-based authentication, capture the session cookie from your browser's
 </Tip>
 
 See the [authenticated scanning guide](/using/scans/authenticated-scanning#url-fuzzer) for detailed instructions.
-
-## Why URL fuzzing matters
-
-Discovering hidden content can reveal critical security issues:
-
-| Discovery | Risk |
-|-----------|------|
-| **Backup files** (`.bak`, `.old`, `.zip`) | Source code, credentials, database dumps |
-| **Configuration files** (`.env`, `config.php`, `web.config`) | Database passwords, API keys, internal paths |
-| **Admin interfaces** (`/admin`, `/manager`, `/phpmyadmin`) | Unauthorized access, privilege escalation |
-| **Version control** (`.git`, `.svn`, `.hg`) | Full source code repository with history |
-| **Debug endpoints** (`/debug`, `/test`, `/phpinfo.php`) | Server configuration, stack traces |
-| **API documentation** (`/swagger`, `/api-docs`, `/graphql`) | API structure, authentication methods |
-
-<Warning>
-Exposed `.git` directories can leak your entire source code repository, including commit history and potentially sensitive data from previous commits.
-</Warning>
-
-### Best practices
-
-1. **Start with Light scan** for quick reconnaissance, then use Deep for thorough testing
-2. **Enable recursion** when testing directory structures
-3. **Use custom wordlists** tailored to the target technology (WordPress, Drupal, etc.): see [Wordlists](/capabilities/wordlists)
-4. **Reduce thread count** if you're triggering rate limits or WAF blocks
-5. **Review false positives**: soft 404 detection isn't perfect
 
 ## Follow-up actions
 

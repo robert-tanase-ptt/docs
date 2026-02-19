@@ -5,7 +5,7 @@ description: "Discover email addresses and social media profiles associated with
 
 ## Overview
 
-People Hunter identifies people associated with a target organization by discovering publicly exposed email addresses and social media profiles. It combines web crawling with external API queries to build a comprehensive list of contacts.
+People Hunter identifies people associated with a target organization by discovering publicly exposed email addresses and social media profiles. It combines web crawling with external API queries to build a list of contacts.
 
 People Hunter is a **discovery tool**: it gathers publicly available contact information but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
@@ -83,18 +83,6 @@ The tool identifies links to social media profiles by matching URL patterns in c
 <Note>
 The tool filters out non-profile URLs like share buttons, login pages, and embedded content to reduce false positives.
 </Note>
-
-## Why OSINT matters
-
-People Hunter is valuable for:
-
-| Use case | Description |
-|----------|-------------|
-| **OSINT gathering** | Collect information about employees during reconnaissance |
-| **Social engineering** | Identify potential targets for phishing simulations |
-| **Email prediction** | Use pattern analysis to guess email addresses for known employees |
-| **Attack surface mapping** | Discover people and accounts associated with the organization |
-| **Credential stuffing prep** | Identify email formats for password spray attempts (with authorization) |
 
 <Warning>
 Use discovered information responsibly and in accordance with applicable laws. Always ensure you have proper authorization before using this data for security testing.

@@ -5,7 +5,7 @@ description: "Send security alerts to Slack channels"
 
 ## Overview
 
-The Slack integration delivers security notifications directly to your Slack workspace, enabling real-time team awareness.
+The Slack integration delivers security notifications directly to your Slack workspace.
 
 <Info>
 Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
@@ -15,7 +15,7 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Go to Integrations">
-    Navigate to Settings → Integrations → Slack.
+    Navigate to Settings > Integrations > Slack.
   </Step>
   <Step title="Connect Slack">
     Click "Add to Slack" and authorize the app.
@@ -30,15 +30,9 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
 
 ## Available notifications
 
-| Event | Slack Support |
-|-------|---------------|
-| Scan Complete | ✓ |
-| Scan Failed | ✓ |
-| New Finding | ✓ |
-| Critical Finding | ✓ |
-| Status Change | ✓ |
+This integration receives all notification types configured in your workspace. See [Notifications overview](/notifications/overview) for trigger types and conditions.
 
-## Message Format
+## Message format
 
 Slack notifications include:
 
@@ -60,7 +54,7 @@ Finding: SQL Injection in login form
 [View Finding] [View Scan]
 ```
 
-## Channel Strategies
+## Channel strategies
 
 <Tabs>
   <Tab title="Single Channel">
@@ -93,9 +87,9 @@ Finding: SQL Injection in login form
 Create a dedicated channel for critical findings and enable notifications/alerts on that channel for immediate attention.
 </Tip>
 
-<Warning>
+<Tip>
 Avoid sending all notifications to general channels. This creates noise and leads to ignored alerts.
-</Warning>
+</Tip>
 
 ## Troubleshooting
 
@@ -114,5 +108,5 @@ Avoid sending all notifications to general channels. This creates noise and lead
 
 ## Related topics
 
-- [Microsoft Teams](/notifications/chat/microsoft-teams)
-- [Notifications Overview](/notifications/overview)
+- [Microsoft Teams](/integrations/microsoft-teams)
+- [Notifications](/notifications/overview)

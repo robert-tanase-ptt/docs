@@ -35,7 +35,7 @@ The classifier uses multiple detection techniques:
     Analyzes page content for common error indicators and patterns.
   </Accordion>
   <Accordion title="Machine learning classification">
-    Uses trained models to classify ambiguous responses with high accuracy.
+    Uses trained models to classify ambiguous responses.
   </Accordion>
 </AccordionGroup>
 
@@ -79,31 +79,12 @@ When fuzzing for hidden files and directories, the URL Fuzzer sends many request
 The URL Fuzzer doesn't generate findings directly, but its results are cleaned by the ML classifier to show only legitimate discoveries.
 </Note>
 
-## Benefits
-
-<CardGroup cols={2}>
-  <Card title="Fewer false positives" icon="filter">
-    Eliminates noise from custom error pages
-  </Card>
-  <Card title="Cleaner reports" icon="file-check">
-    Only legitimate findings appear in your results
-  </Card>
-  <Card title="Time savings" icon="clock">
-    Less time spent reviewing false positives
-  </Card>
-  <Card title="Higher accuracy" icon="bullseye">
-    ML models trained on real-world data
-  </Card>
-</CardGroup>
-
 ## AI data handling
 
-We take your data privacy seriously. Our AI features are designed with security and privacy in mind:
-
-- **Proprietary models**: We use our own AI models, not third-party services like OpenAI
+- **Proprietary models**: The soft 404 detector uses our own self-hosted classification models
 - **Secure infrastructure**: Data is processed within our secure, isolated infrastructure
-- **No external training**: Your data is never sent to external companies for model training
-- **Predictive, not generative**: Our models classify data rather than generate content, eliminating "hallucination" risks
+- **No external training**: Your data is not used to train any AI models
+- **Predictive, not generative**: These models classify data rather than generate content, eliminating "hallucination" risks
 
 For complete details on how we handle data in our AI features, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
 
