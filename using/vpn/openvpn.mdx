@@ -11,7 +11,7 @@ If you already have an OpenVPN server in your internal network, you can configur
 VPN profiles require the **Internal network scanning** add-on.
 </Info>
 
-## When to Use Custom OpenVPN
+## When to use Custom OpenVPN
 
 Use this option when:
 - You already have an OpenVPN server deployed
@@ -30,7 +30,7 @@ For most users, we recommend using the [VPN Agent](/using/vpn/virtual-machine) i
 
 <Steps>
   <Step title="Create VPN profile">
-    In Pentest-Tools.com, go to Settings → VPN Profiles → Create.
+    In Pentest-Tools.com, go to Settings > VPN Profiles > Create.
   </Step>
   <Step title="Select Custom OpenVPN">
     Choose "Custom OpenVPN Server" as the type.
@@ -58,13 +58,18 @@ Your .ovpn configuration file should contain:
 The OpenVPN configuration will be stored securely. Credentials are encrypted at rest.
 </Warning>
 
-## OpenVPN Server Requirements
+## OpenVPN server requirements
 
 Your OpenVPN server must:
 
-- Be reachable from the internet (or from our platform)
-- Allow connections from Pentest-Tools.com infrastructure
+- Be reachable from the Pentest-Tools.com scanning infrastructure
 - Route traffic to your internal network
+
+### Whitelisting Pentest-Tools.com
+
+When using a Custom OpenVPN profile, the platform connects to your OpenVPN server from `vpn2.pentest-tools.com` (`109.74.200.91`). Make sure your firewall allows inbound connections from this address on the port your OpenVPN server uses.
+
+The full list of scanner IP addresses (used for all scan traffic, not just VPN) is available at [Source IP addresses](https://support.pentest-tools.com/source-ip-addresses).
 
 ### Recommended server configuration
 
@@ -79,11 +84,11 @@ push "route 10.0.0.0 255.0.0.0"
 push "route 192.168.0.0 255.255.0.0"
 ```
 
-## Testing the Connection
+## Testing the connection
 
-After configuration, use Test connection to verify your OpenVPN server is reachable:
+After configuration, verify your OpenVPN server is reachable:
 
-1. Go to **Settings → VPN Profiles**
+1. Go to **Settings > VPN Profiles**
 2. Click on your profile name to open the details panel
 3. Click **Test connection**
 4. The platform will attempt to connect to your OpenVPN server
@@ -101,7 +106,7 @@ Unlike VPN Agent profiles, Custom OpenVPN profiles do not show Online/Offline st
 
 <AccordionGroup>
   <Accordion title="Connection fails">
-    - Verify the OpenVPN server is reachable from Pentest-Tools.com infrastructure
+    - Verify the OpenVPN server is reachable from `vpn2.pentest-tools.com` (`109.74.200.91`)
     - Check server firewall rules allow connections on the configured port
     - Ensure the configuration file is valid and not corrupted
     - Check the connection logs for specific error messages
@@ -115,5 +120,5 @@ Unlike VPN Agent profiles, Custom OpenVPN profiles do not show Online/Offline st
 
 ## Related topics
 
-- [VPN Profiles Overview](/using/vpn/overview)
+- [VPN profiles overview](/using/vpn/overview)
 - [Troubleshooting](/using/vpn/troubleshooting)

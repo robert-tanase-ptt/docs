@@ -5,7 +5,7 @@ description: "Deploy the VPN agent as a Docker container for internal network sc
 
 ## Overview
 
-The Docker agent is a containerized VPN agent ideal for environments already using Docker or Kubernetes.
+The Docker agent is a containerized VPN agent for environments already running Docker. It works on Linux, Windows, and macOS (including Apple Silicon).
 
 <Info>
 VPN profiles require the **Internal network scanning** add-on.
@@ -14,7 +14,7 @@ VPN profiles require the **Internal network scanning** add-on.
 ## Prerequisites
 
 - Docker installed and running
-- Outbound connectivity to vpn.pentest-tools.com on port 22
+- Outbound connectivity to vpn.pentest-tools.com on TCP port 22
 - Network access to internal targets from the Docker host
 
 ## Quick start
@@ -23,39 +23,25 @@ VPN profiles require the **Internal network scanning** add-on.
   <Step title="Create VPN profile">
     In Pentest-Tools.com, create a new VPN profile and copy the VPN UUID.
   </Step>
-  <Step title="Pull the image">
-    Download the agent Docker image.
-  </Step>
-  <Step title="Run the container">
-    Start the agent container with your VPN UUID.
+  <Step title="Pull and run">
+    Run the following command, replacing `<VPN_UUID>` with your UUID:
+
+    ```bash
+    docker pull pentesttoolscom/vpn_agent:latest && \
+    docker run -d \
+      --name pentest-agent \
+      --restart unless-stopped \
+      --cap-add=NET_ADMIN \
+      --device /dev/net/tun \
+      pentesttoolscom/vpn_agent:latest <VPN_UUID>
+    ```
+
+    You can also copy this command directly from the deployment menu in **Settings > VPN Profiles**.
   </Step>
   <Step title="Verify connection">
-    Confirm the agent is connected in your dashboard.
+    Go to **Settings > VPN Profiles** and check that your profile shows as **Online**.
   </Step>
 </Steps>
-
-## Installation
-
-### Pull the Image
-
-```bash
-docker pull pentesttoolscom/vpn_agent:latest
-```
-
-### Run the Agent
-
-```bash
-docker run -d \
-  --name pentest-agent \
-  --restart unless-stopped \
-  --cap-add=NET_ADMIN \
-  --device /dev/net/tun \
-  pentesttoolscom/vpn_agent:latest <VPN_UUID>
-```
-
-<Note>
-Replace `<VPN_UUID>` with the UUID from your VPN profile in the dashboard.
-</Note>
 
 ## Required capabilities
 
@@ -63,14 +49,16 @@ The agent needs these Linux capabilities:
 
 | Capability | Purpose |
 |------------|---------|
-| `NET_ADMIN` | Required for VPN tunnel management |
-| `/dev/net/tun` | TUN device for VPN tunnel |
+| `NET_ADMIN` | VPN tunnel management |
+| `/dev/net/tun` | TUN device for the VPN tunnel |
 
 ## Network modes
 
+By default, the container uses Docker's bridge network. Depending on your setup, you may need a different mode.
+
 ### Host network mode
 
-For direct access to the host network:
+Gives the container direct access to the host's network interfaces:
 
 ```bash
 docker run -d \
@@ -81,7 +69,11 @@ docker run -d \
   pentesttoolscom/vpn_agent:latest <VPN_UUID>
 ```
 
-### Custom network
+<Warning>
+Host network mode exposes the container's ports directly on the host machine. This can cause conflicts if ports 80, 443, or 1194 are already in use on the host. It also means the agent's network traffic is not isolated from the host.
+</Warning>
+
+### Custom Docker network
 
 To scan containers in a specific Docker network:
 
@@ -96,8 +88,9 @@ docker run -d \
 
 ## Docker Compose
 
+Set your VPN UUID as the `command` in the Compose file:
+
 ```yaml
-version: '3'
 services:
   vpn-agent:
     image: pentesttoolscom/vpn_agent:latest
@@ -107,11 +100,21 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun
-    command: ["<VPN_UUID>"]
     network_mode: host
+    command: "<VPN_UUID>"
 ```
 
-## Managing the Agent
+<Note>
+Replace `<VPN_UUID>` with the UUID from your VPN profile.
+</Note>
+
+Start the agent in the background:
+
+```bash
+docker compose up -d
+```
+
+## Managing the agent
 
 ```bash
 # View logs
@@ -120,66 +123,27 @@ docker logs pentest-agent
 # Check status
 docker ps | grep pentest-agent
 
-# Stop agent
+# Restart
+docker restart pentest-agent
+
+# Stop
 docker stop pentest-agent
 
-# Start agent
-docker start pentest-agent
-
-# Remove agent
+# Remove
 docker rm -f pentest-agent
 ```
-
-## Kubernetes deployment
-
-For Kubernetes environments:
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: pentest-agent
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: pentest-agent
-  template:
-    metadata:
-      labels:
-        app: pentest-agent
-    spec:
-      containers:
-      - name: agent
-        image: pentesttoolscom/vpn_agent:latest
-        args: ["<VPN_UUID>"]
-        securityContext:
-          capabilities:
-            add: ["NET_ADMIN"]
-        volumeMounts:
-        - name: tun
-          mountPath: /dev/net/tun
-      volumes:
-      - name: tun
-        hostPath:
-          path: /dev/net/tun
-```
-
-<Tip>
-Use Kubernetes secrets to manage the VPN UUID securely.
-</Tip>
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Container exits immediately">
-    - Check if VPN UUID is provided as argument
+    - Check that the VPN UUID is provided as an argument after the image name
     - Verify `--cap-add=NET_ADMIN` is set
     - Ensure `/dev/net/tun` device is mounted
     - Check container logs: `docker logs pentest-agent`
   </Accordion>
   <Accordion title="Cannot reach internal targets">
-    - Verify container network mode allows access to targets
+    - Verify the container's network mode allows access to targets
     - Check host firewall rules
     - Try `--network host` mode
   </Accordion>
@@ -187,6 +151,6 @@ Use Kubernetes secrets to manage the VPN UUID securely.
 
 ## Related topics
 
-- [VPN Profiles Overview](/using/vpn/overview)
-- [Cloud Deployment](/using/vpn/cloud)
+- [VPN profiles overview](/using/vpn/overview)
+- [Cloud deployment](/using/vpn/cloud)
 - [Troubleshooting](/using/vpn/troubleshooting)

@@ -5,9 +5,7 @@ description: "Fingerprint technologies and gather intelligence about web applica
 
 ## Overview
 
-Website Recon performs reconnaissance on web applications, identifying the technologies used on both the server-side and client-side. This information is essential for planning security assessments and understanding your target's technology stack.
-
-Website Recon is a **discovery tool**: it identifies technologies but does not test for vulnerabilities. Discovered technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). It does not generate [findings](/using/findings/findings).
+Website Recon identifies server-side and client-side technologies used by a web application. It is primarily a discovery tool, but it also generates [findings](/using/findings/findings) for detected technologies. Discovered technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview).
 
 ## Parameters
 
@@ -17,7 +15,7 @@ Website Recon is a **discovery tool**: it identifies technologies but does not t
 
 ## How it works
 
-Website Recon uses [Wappalyzer](https://www.wappalyzer.com/) as its scanning engine. Wappalyzer maintains a database of over **900 web technologies** across **50+ categories**, enabling accurate identification of the software powering a website.
+Website Recon uses [Wappalyzer](https://www.wappalyzer.com/) as its scanning engine. Wappalyzer maintains a database of over 900 web technologies across 50+ categories.
 
 The tool analyzes multiple elements of the website:
 
@@ -51,14 +49,14 @@ Website Recon identifies technologies across many categories:
 | **Caching** | Varnish, Redis, Memcached |
 | **Reverse proxies** | nginx, HAProxy, Envoy |
 
-## Why web reconnaissance matters
+## How recon results feed into testing
 
-Technology fingerprinting is the first phase of a penetration test. Knowing what software powers a target helps you:
+Technology fingerprinting typically happens early in a penetration test. Knowing what software a target runs lets you:
 
-- **Select appropriate scanners**: Use CMS-specific tools when WordPress, Drupal, or Joomla is detected
-- **Identify version-specific vulnerabilities**: Match detected versions against known CVEs
-- **Understand application architecture**: Plan targeted testing approaches
-- **Prioritize testing areas**: Focus on known-vulnerable components first
+- Use CMS-specific tools when WordPress, Drupal, or Joomla is detected
+- Match detected versions against known CVEs
+- Plan targeted testing based on the application architecture
+- Focus on known-vulnerable components first
 
 <Tip>
 When Website Recon detects **WordPress**, a recommendation appears to run the [WordPress Scanner](/tools/wordpress-scanner) for a more thorough CMS-specific assessment.
@@ -75,13 +73,11 @@ Operating System: Linux
 ```
 
 The next steps would be:
-1. **Check for known vulnerabilities**: WordPress 4.1 has known security issues
-2. **Run specialized scans**: Use the WordPress Scanner for CMS-specific testing
-3. **Plan exploits**: Server and OS information help select appropriate exploits
+1. Check for known vulnerabilities -- WordPress 4.1 has known security issues
+2. Run the [WordPress Scanner](/tools/wordpress-scanner) for CMS-specific testing
+3. Use the server and OS information to select appropriate exploits
 
 ## Follow-up actions
-
-Based on reconnaissance results, consider these next steps:
 
 | Discovery | Recommended action |
 |-----------|-------------------|

@@ -23,7 +23,7 @@ Each workspace includes:
 | Findings | Vulnerabilities discovered in workspace scans |
 | Attack surface data | Technology fingerprints and discovered hosts |
 | Notification settings | Workspace-specific alert configurations |
-| Handlers | XSS and HTTP handlers scoped to the workspace |
+| Handlers | XSS Exploiter and HTTP Request Logger data scoped to the workspace |
 
 <Note>
 Each workspace can optionally have a VPN profile assigned, allowing all scans within that workspace to route through your internal network. Learn more about [VPN profiles](/using/vpn/overview).
@@ -31,40 +31,46 @@ Each workspace can optionally have a VPN profile assigned, allowing all scans wi
 
 ## Creating a workspace
 
-1. Click the workspace dropdown at the top of the sidebar
-2. Select **Create workspace**
-3. Enter a name and optional description
-4. Click **Create**
+<Steps>
+  <Step title="Open the workspace dropdown">
+    Click the workspace dropdown at the top of the sidebar.
+  </Step>
+  <Step title="Create workspace">
+    Select **Create workspace**.
+  </Step>
+  <Step title="Enter details">
+    Enter a name and optional description.
+  </Step>
+  <Step title="Confirm">
+    Click **Create**.
+  </Step>
+</Steps>
 
 ## Switching workspaces
 
-1. Click the workspace dropdown at the top of the sidebar
-2. Select the workspace you want to switch to
-3. The interface updates to show that workspace's assets, scans, and findings
+<Steps>
+  <Step title="Open the workspace dropdown">
+    Click the workspace dropdown at the top of the sidebar.
+  </Step>
+  <Step title="Select a workspace">
+    Select the workspace you want to switch to.
+  </Step>
+  <Step title="View workspace contents">
+    The interface updates to show that workspace's assets, scans, and findings.
+  </Step>
+</Steps>
 
 ## Organization strategies
 
-<Tabs>
-  <Tab title="By Client">
-    **Best for**: Consulting firms and MSPs
-
-    Create one workspace per client to keep their data separate.
-  </Tab>
-  <Tab title="By Project">
-    **Best for**: Internal security teams
-
-    Create workspaces for specific initiatives like "Q4 Assessment" or "New Product Launch".
-  </Tab>
-  <Tab title="By Environment">
-    **Best for**: DevSecOps teams
-
-    Separate workspaces for Development, Staging, and Production environments.
-  </Tab>
-</Tabs>
+| Strategy | Good for | Example |
+|----------|----------|---------|
+| By client | Consulting firms and MSPs | One workspace per client to keep data separate |
+| By project | Internal security teams | Workspaces for initiatives like "Q4 Assessment" or "New Product Launch" |
+| By environment | DevSecOps teams | Separate workspaces for Development, Staging, and Production |
 
 ## Sharing workspaces
 
-Share workspaces with subusers (colleagues) on your account. When sharing, you grant one of the following access levels:
+Share workspaces with team members on your account. When sharing, you grant one of the following access levels:
 
 | Access level | What they can do |
 |--------------|------------------|
@@ -85,7 +91,7 @@ Use workspace sharing to collaborate on client engagements. Share a client works
 
 ### For workspace owners
 
-- Share workspaces from the workspace page or from **Settings → Team → Sharing**
+- Share workspaces from the workspace page or from **Settings > Team > Sharing**
 - Choose which workspaces to share and with which team members
 - Set appropriate access levels for each team member
 - Revoke access at any time by removing sharing permissions
@@ -101,8 +107,8 @@ Use workspace sharing to collaborate on client engagements. Share a client works
 
 When deleting a workspace, you choose what happens to its contents:
 
-- **Move assets** – Transfer all assets and their data to your default workspace
-- **Delete everything** – Permanently remove all assets, scans, and findings
+- **Move assets**: Transfer all assets and their data to your default workspace
+- **Delete everything**: Permanently remove all assets, scans, and findings
 
 <Warning>
 Deleting a workspace cannot be undone. If you choose to delete everything, all associated scan history and findings are permanently removed.
@@ -127,5 +133,5 @@ Deleting a workspace cannot be undone. If you choose to delete everything, all a
 
 ## Related topics
 
-- [Teams and subusers](/account/teams-and-roles)
+- [Teams and roles](/account/teams-and-roles)
 - [VPN profiles](/using/vpn/overview)

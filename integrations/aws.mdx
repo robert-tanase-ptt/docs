@@ -35,7 +35,7 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
     In AWS, create an IAM user with read-only permissions.
   </Step>
   <Step title="Configure integration">
-    In Pentest-Tools.com, go to Settings → Integrations → AWS.
+    In Pentest-Tools.com, go to Settings > Integrations > AWS.
   </Step>
   <Step title="Enter credentials">
     Add your AWS Access Key ID and Secret Access Key.
@@ -105,7 +105,7 @@ Use private IP import with VPN if you need to scan instances that aren't publicl
 
 ### Region selection
 
-Select which AWS regions to import from. Running instances and buckets are discovered in the selected regions.
+Select which AWS regions to import from. EC2 instances are discovered in the selected regions. S3 buckets are global; the `s3:ListAllMyBuckets` API returns all buckets regardless of region selection.
 
 ## Imported targets
 
@@ -154,4 +154,4 @@ When targets are imported:
 
 - [Assets](/using/assets/assets)
 - [VPN Profiles](/using/vpn/overview)
-- [Notifications Overview](/notifications/overview)
+- [Notifications](/notifications/overview)

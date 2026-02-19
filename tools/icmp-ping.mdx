@@ -47,14 +47,6 @@ At the end, statistics are displayed:
 Many hosts and firewalls block ICMP traffic. A non-responsive ping doesn't necessarily mean the host is down. It may simply be filtering ICMP packets.
 </Note>
 
-## Why use ICMP Ping
-
-- **Quick reachability check**: Verify a host is online before running other scans
-- **DNS resolution**: Find the IP address of a hostname
-- **Network troubleshooting**: Diagnose connectivity issues
-- **Latency measurement**: Measure network round-trip time
-- **Basic host discovery**: Quick check if an IP is in use
-
 <Tip>
 If ICMP is blocked, use the [Port Scanner](/tools/port-scanner) to check if the host responds on known open ports like 80 or 443.
 </Tip>

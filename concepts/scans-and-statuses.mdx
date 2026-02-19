@@ -43,15 +43,15 @@ These labels map to the runtime `ScanStatus` enum used by the platform.
 
 ## Status flow
 
-```
+```text
 Waiting → Running → Finished
-                ↘ Stopped
-                ↘ Timeout
-                ↘ Start Error / Aborted / VPN Error / Authentication Error / Connection Error / Skipped
+  ↘              ↘ Stopped
+  Start Error    ↘ Timeout
+                 ↘ Aborted / VPN Error / Authentication Error / Connection Error / Skipped
 ```
 
 <Note>
-Running and Waiting are the only active states. Everything else is terminal; Finished, Stopped, and Timeout retain partial or full results, while error states do not.
+Running and Waiting are the only active states. Everything else is terminal. Finished, Stopped, and Timeout retain partial or full results, while error states do not.
 </Note>
 
 ## Understanding scan results

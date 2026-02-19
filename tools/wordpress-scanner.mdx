@@ -19,12 +19,12 @@ The WordPress Scanner is a **vulnerability scanner**: it actively tests WordPres
 Provide the complete path to the WordPress installation. If WordPress is installed in a subdirectory (e.g., `/blog/`), include it in the URL.
 </Note>
 
-## Scan modes
+## Scan types
 
 | Mode | Description | Use case |
 |------|-------------|----------|
 | **Light** | Passive detection, minimal requests | Quick assessment |
-| **Deep** | Aggressive detection with full enumeration | Comprehensive audit |
+| **Deep** | Aggressive detection with full enumeration | Full audit |
 | **Custom** | User-configured detection and enumeration | Targeted testing |
 
 ### Parameters comparison
@@ -156,7 +156,7 @@ For detailed authentication configuration, see [Authenticated scanning](/using/s
 
 ## How it works
 
-The WordPress Scanner uses WPScan technology and follows a systematic approach:
+The WordPress Scanner uses WPScan technology and works in these steps:
 
 1. **Version detection**: Identifies WordPress core version from meta tags, scripts, and readme files
 2. **Theme detection**: Identifies the active theme and its version
@@ -168,13 +168,6 @@ The WordPress Scanner uses WPScan technology and follows a systematic approach:
 <Note>
 Vulnerability detection is version-based. The scanner identifies component versions and matches them against known vulnerabilities. Since vulnerabilities are discovered using version-based testing only, the risk level for findings will not exceed 'high' severity.
 </Note>
-
-## Why WordPress security matters
-
-- **High-value target**: WordPress powers 40%+ of websites, making it a prime target for attackers
-- **Plugin vulnerabilities**: Third-party plugins are the most common attack vector
-- **Outdated installations**: Many sites run outdated WordPress, plugins, or themes
-- **Default configurations**: XML-RPC, user enumeration, and other defaults can be exploited
 
 ## Follow-up actions
 

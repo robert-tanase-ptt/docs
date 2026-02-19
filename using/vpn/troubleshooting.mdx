@@ -10,83 +10,63 @@ VPN profiles require the **Internal network scanning** add-on.
 ## Common issues
 
 <AccordionGroup>
-  <Accordion title="VPN Agent shows Offline">
-    **Applies to**: VPN Agent (VM, Docker, Cloud) only
+  <Accordion title="VPN agent shows Offline">
+    Applies to VPN Agent (VM, Docker, Cloud) only.
 
-    **Symptoms**: Agent shows as Offline in the dashboard
-
-    **Solutions**:
-    - Verify outbound internet access from agent
+    - Verify outbound internet access from the agent
     - Check firewall rules allow TCP port 22 to vpn.pentest-tools.com
     - Confirm the VPN UUID is correct
-    - Restart the agent service
+    - Restart the agent
     - Run a connection test and check the connection logs
   </Accordion>
 
   <Accordion title="Scans timeout or fail">
-    **Symptoms**: Scans against internal targets fail or timeout
-
-    **Solutions**:
-    - Verify agent can reach target (ping/telnet test)
-    - Check internal firewall rules
-    - Ensure proper network routing
-    - Verify target is responding on expected ports
+    - Verify the agent can reach the target (ping or telnet from the agent)
+    - Check internal firewall rules between the agent and the target
+    - Verify routing is configured correctly
+    - Confirm the target is responding on the expected ports
   </Accordion>
 
   <Accordion title="Intermittent connectivity">
-    **Symptoms**: Agent connects and disconnects randomly
-
-    **Solutions**:
-    - Check network stability
-    - Verify sufficient resources (CPU, memory)
+    - Check network stability on the agent's host
+    - Verify the agent has sufficient CPU and memory
     - Review agent logs for errors
-    - Check for IP/port conflicts
+    - Check for IP or port conflicts
   </Accordion>
 
   <Accordion title="Slow scan performance">
-    **Symptoms**: Scans take much longer than expected
-
-    **Solutions**:
-    - Check network latency to targets
-    - Verify agent resource utilization
-    - Consider agent placement (closer to targets)
+    - Check network latency between the agent and targets
+    - Verify agent resource utilization (CPU, memory)
+    - Consider placing the agent closer to the targets
     - Check for bandwidth limitations
   </Accordion>
 </AccordionGroup>
 
-## Using connection logs
+## Connection logs
 
-The platform provides connection logs that capture output from VPN connection tests. These logs are available for **both VPN Agents and Custom OpenVPN profiles** and are invaluable for diagnosing issues.
+Both VPN Agent and Custom OpenVPN profiles provide connection logs for diagnosing issues.
 
-### Viewing connection logs
+To view them:
 
-1. Go to **Settings → VPN Profiles**
-2. Click on the VPN profile name to open the details panel
-3. Scroll to the **Connection logs** section
+1. Go to **Settings > VPN Profiles**
+2. Click on the profile name to open the details panel
+3. Scroll to **Connection logs**
 
-If the logs show "No logs. Run a connection test first.", click the **Test connection** button to generate logs.
+If the logs are empty, click **Test connection** to generate them.
 
-### Understanding connection test results
+### Connection test statuses
 
-After running a connection test, you'll see one of these statuses:
+| Status | Meaning |
+|--------|---------|
+| **Success** | Connection established |
+| **Refused** | Firewall blocking or wrong server address |
+| **Timeout** | Network unreachable or DNS issues |
+| **Auth Failed** | Wrong username or password |
+| **TLS Error** | Mismatched certificates or outdated TLS |
+| **Options Error** | Incompatible options in config file |
+| **Unsupported** | Unsupported VPN features in config |
 
-| Status | Meaning | Typical Cause |
-|--------|---------|---------------|
-| **Success** | Connection established | No issues |
-| **Refused** | Server rejected connection | Firewall blocking, wrong server address |
-| **Timeout** | No response from server | Network unreachable, DNS issues |
-| **Auth Failed** | Credentials rejected | Wrong username/password |
-| **TLS Error** | Certificate/encryption issue | Mismatched certificates, outdated TLS |
-| **Options Error** | Configuration problem | Incompatible options in config file |
-| **Unsupported** | Config not supported | Unsupported VPN features in config |
-
-<Tip>
-The connection logs often contain specific error messages that indicate exactly what went wrong. Look for lines containing "error", "failed", or "refused".
-</Tip>
-
-## Diagnostic steps
-
-### 1. Check Agent Status
+## Checking agent status
 
 <Tabs>
   <Tab title="Docker">
@@ -96,9 +76,6 @@ The connection logs often contain specific error messages that indicate exactly 
 
     # View logs
     docker logs pentest-agent --tail 100
-
-    # Check resource usage
-    docker stats pentest-agent
     ```
   </Tab>
   <Tab title="VM">
@@ -108,73 +85,11 @@ The connection logs often contain specific error messages that indicate exactly 
 
     # View logs
     journalctl -u pentest-agent -n 100
-
-    # Check connectivity
-    curl -v https://app.pentest-tools.com
     ```
   </Tab>
 </Tabs>
 
-### 2. Test Network Connectivity
-
-```bash
-# Test outbound internet
-curl -I https://app.pentest-tools.com
-
-# Test internal target reachability
-ping internal-target.local
-nc -zv internal-target.local 80
-```
-
-### 3. Check Firewall Rules
-
-Ensure this is allowed:
-
-| Direction | Protocol | Port | Destination |
-|-----------|----------|------|-------------|
-| Outbound | TCP | 22 | vpn.pentest-tools.com |
-
-<Note>
-The VPN Agent uses SSH (port 22) for outbound communication. No other ports need to be opened. The VPN tunnel is established through this SSH connection.
-</Note>
-
-## Log analysis
-
-### Platform connection logs
-
-The connection logs in the VPN profile details panel show output from connection tests. Common messages include:
-
-| Message | Meaning | Action |
-|---------|---------|--------|
-| `VPN connection test was successful` | Connection works | None needed |
-| `Connection was refused` | Server rejected connection | Check firewall rules, verify server address |
-| `Connection timed out` | No response | Check network connectivity |
-| `Invalid user credentials` | Auth failed | Verify OpenVPN username/password |
-| `TLS Key Negotiation failed` | Certificate issue | Check certificates, system time |
-
-### Agent container/VM logs
-
-For deeper troubleshooting, check the agent logs directly:
-
-```bash
-# Docker
-docker logs pentest-agent > agent-logs.txt 2>&1
-
-# Include system info
-uname -a >> agent-logs.txt
-docker version >> agent-logs.txt
-```
-
-### Collecting logs for support
-
-When contacting support, include:
-1. Connection logs from the platform (copy from the VPN profile details panel)
-2. Agent container/VM logs
-3. System information and agent version
-
-## Resolution procedures
-
-### Restart agent
+## Restarting the agent
 
 <Tabs>
   <Tab title="Docker">
@@ -182,52 +97,23 @@ When contacting support, include:
     docker restart pentest-agent
     ```
   </Tab>
-  <Tab title="Service">
+  <Tab title="VM">
     ```bash
     sudo systemctl restart pentest-agent
     ```
   </Tab>
 </Tabs>
 
-### Reinstall Agent
+## Contacting support
 
-If issues persist:
+If you can't resolve the issue, collect this information before contacting support:
 
-1. Remove existing agent
-2. Download fresh configuration/image
-3. Redeploy with new token if needed
-
-### Network troubleshooting
-
-<Steps>
-  <Step title="Verify Basic Connectivity">
-    Test internet access and DNS resolution.
-  </Step>
-  <Step title="Check Routing">
-    Verify routes to internal targets exist.
-  </Step>
-  <Step title="Test Port Access">
-    Confirm required ports are open.
-  </Step>
-  <Step title="Review Firewall Logs">
-    Check for blocked traffic.
-  </Step>
-</Steps>
-
-## Getting support
-
-If you can't resolve the issue:
-
-1. Collect agent logs
-2. Note your agent ID and affected targets
-3. Document steps already tried
-4. Contact support with this information
-
-<Note>
-Include the agent version and deployment type when contacting support.
-</Note>
+1. Connection logs from the VPN profile details panel
+2. Agent logs (Docker: `docker logs pentest-agent`, VM: `journalctl -u pentest-agent`)
+3. Agent deployment type (Docker, VM, or Cloud)
+4. Steps you've already tried
 
 ## Related topics
 
-- [VPN Profiles Overview](/using/vpn/overview)
-- [Docker Agent](/using/vpn/docker-agent)
+- [VPN profiles overview](/using/vpn/overview)
+- [Docker agent](/using/vpn/docker-agent)

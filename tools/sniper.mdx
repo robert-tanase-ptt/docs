@@ -39,9 +39,9 @@ Sniper uses provided credentials to establish a legitimate session and extracts 
 
 | Option | TCP ports | Description |
 |--------|-----------|-------------|
-| **Top 100 ports** | ~85 | Quick scan (default) |
-| **Top 1000 ports** | ~617 | Standard assessment |
-| **Top 5000 ports** | ~2,012 | Extended coverage |
+| **Top 100 ports** | ~112 | Quick scan (default) |
+| **Top 1000 ports** | ~1,009 | Standard assessment |
+| **Top 5000 ports** | ~5,003 | Extended coverage |
 | **Full port range** | 65,535 | All ports (slow) |
 | **Port range** | Variable | Specify start and end port (e.g., 1-1024) |
 | **Port list** | Variable | Comma-separated list (e.g., 22,80,443,3389) |
@@ -126,13 +126,6 @@ Artifacts are data extracted from the target system after successful exploitatio
 | **Network configuration** | IP addresses, network masks, gateways |
 | **Network neighbors** | Devices in the same local network (layer 2) |
 | **Network connections** | Open ports and established TCP connections |
-
-## Why use Sniper?
-
-- **Bridge the gap**: Go beyond vulnerability scanners that produce noise and false positives
-- **Validate findings**: Prove that a vulnerability is actually exploitable
-- **Red team efficiency**: Automate common attack patterns
-- **Evidence collection**: Gather artifacts for reports and remediation prioritization
 
 <Tip>
 Use "Safe exploits only" when testing production systems to avoid potential service disruption.

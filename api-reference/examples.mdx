@@ -3,6 +3,8 @@ title: "API examples"
 description: "Python examples for all API endpoints and common workflows"
 ---
 
+These examples use Python and the `requests` library to cover the most common workflows: managing targets, running scans, retrieving findings, and generating reports. Each section builds on the setup below, so start there before copying individual snippets.
+
 ## Setup
 
 ```python
@@ -11,7 +13,7 @@ import time
 import requests
 from enum import IntEnum
 
-API_KEY = "YOUR_API_KEY"  # Get from Account Settings → API
+API_KEY = "YOUR_API_KEY"  # Get from Account Settings > API
 API_URL = "https://app.pentest-tools.com/api/v2"
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
@@ -22,10 +24,12 @@ HEADERS = {
 class Tool(IntEnum):
     """Available scanning tools and their IDs"""
     SUBDOMAIN_FINDER = 20
+    WHOIS_LOOKUP = 30
     PORT_SCANNER = 70
     URL_FUZZER = 90
     VHOSTS_FINDER = 160
     WEBSITE_SCANNER = 170
+    ICMP_PING = 240
     SHAREPOINT_SCANNER = 260
     WORDPRESS_SCANNER = 270
     DRUPAL_SCANNER = 280
@@ -33,6 +37,7 @@ class Tool(IntEnum):
     WEBSITE_RECON = 310
     SUBDOMAIN_TAKEOVER = 320
     NETWORK_SCANNER = 350
+    SQLI_EXPLOITER = 380
     DOMAIN_FINDER = 390
     PASSWORD_AUDITOR = 400
     SSL_SCANNER = 450
@@ -40,6 +45,7 @@ class Tool(IntEnum):
     WAF_DETECTOR = 500
     API_SCANNER = 510
     CLOUD_SCANNER = 520
+    PEOPLE_HUNTER = 530
     KUBERNETES_SCANNER = 540
 ```
 
@@ -71,7 +77,7 @@ for target in targets:
     print(f"{target['id']}: {target['name']}")
 ```
 
-### Create a Target
+### Create a target
 
 ```python
 def create_target(name: str, description: str = "", workspace_id: int = None) -> int:
@@ -99,7 +105,7 @@ target_id = create_target(
 print(f"Created target: {target_id}")
 ```
 
-### Get Target by ID
+### Get target by ID
 
 ```python
 def get_target(target_id: int) -> dict:
@@ -117,7 +123,7 @@ target = get_target(12345)
 print(f"Target: {target['name']}")
 ```
 
-### Delete a Target
+### Delete a target
 
 ```python
 def delete_target(target_id: int) -> bool:
@@ -138,7 +144,7 @@ if delete_target(12345):
 
 ## Scans
 
-### Start a Scan
+### Start a scan
 
 ```python
 def start_scan(
@@ -207,7 +213,7 @@ scan = get_scan(12345)
 print(f"Status: {scan['status_name']}, Progress: {scan['progress']}%")
 ```
 
-### List Scans
+### List scans
 
 ```python
 def get_scans(
@@ -244,7 +250,7 @@ for scan in running_scans:
     print(f"Scan {scan['id']}: {scan['tool_name']} - {scan['progress']}%")
 ```
 
-### Get Scan Output
+### Get scan output
 
 ```python
 def get_scan_output(scan_id: int) -> dict:
@@ -262,7 +268,7 @@ output = get_scan_output(12345)
 print(json.dumps(output, indent=2))
 ```
 
-### Stop a Scan
+### Stop a scan
 
 ```python
 def stop_scan(scan_id: int) -> bool:
@@ -279,7 +285,7 @@ if stop_scan(12345):
     print("Scan stopped")
 ```
 
-### Delete a Scan
+### Delete a scan
 
 ```python
 def delete_scan(scan_id: int) -> bool:
@@ -295,7 +301,7 @@ def delete_scan(scan_id: int) -> bool:
 
 ## Workspaces
 
-### List Workspaces
+### List workspaces
 
 ```python
 def get_workspaces() -> list:
@@ -314,7 +320,7 @@ for ws in workspaces:
     print(f"{ws['id']}: {ws['name']} ({ws['scan_count']} scans, {ws['target_count']} targets)")
 ```
 
-### Create a Workspace
+### Create a workspace
 
 ```python
 def create_workspace(name: str, description: str = "") -> int:
@@ -336,7 +342,7 @@ def create_workspace(name: str, description: str = "") -> int:
 workspace_id = create_workspace("Q4 2024 Audit", "External penetration test")
 ```
 
-### Update a Workspace
+### Update a workspace
 
 ```python
 def update_workspace(workspace_id: int, name: str = None, description: str = None) -> bool:
@@ -355,7 +361,7 @@ def update_workspace(workspace_id: int, name: str = None, description: str = Non
     return response.status_code == 204
 ```
 
-### Delete a Workspace
+### Delete a workspace
 
 ```python
 def delete_workspace(workspace_id: int) -> bool:
@@ -371,7 +377,7 @@ def delete_workspace(workspace_id: int) -> bool:
 
 ## Findings
 
-### List Findings
+### List findings
 
 ```python
 def get_findings(
@@ -408,7 +414,7 @@ for finding in findings:
     print(f"[{finding['cvss_score']}] {finding['name']}")
 ```
 
-### Get Finding Details
+### Get finding details
 
 ```python
 def get_finding(finding_id: int) -> dict:
@@ -432,7 +438,7 @@ print(f"Description: {finding['description']}")
 
 ## Reports
 
-### Create a Report
+### Create a report
 
 ```python
 def create_report(
@@ -483,7 +489,7 @@ report_id = create_report(
 print(f"Report {report_id} is being generated")
 ```
 
-### Get Report Status
+### Get report status
 
 ```python
 def get_report(report_id: int) -> dict:
@@ -501,7 +507,7 @@ report = get_report(12345)
 print(f"Status: {report['status']}")
 ```
 
-### Download a Report
+### Download a report
 
 ```python
 def download_report(report_id: int, output_path: str) -> bool:
@@ -531,7 +537,7 @@ if download_report(12345, "pentest_report.pdf"):
 
 ## HTTP Loggers
 
-### Create an HTTP Logger
+### Create an HTTP logger
 
 ```python
 def create_http_logger(label: str) -> int:
@@ -549,7 +555,7 @@ def create_http_logger(label: str) -> int:
 logger_id = create_http_logger("SSRF Test - Production")
 ```
 
-### List HTTP Loggers
+### List HTTP loggers
 
 ```python
 def get_http_loggers() -> list:
@@ -568,7 +574,7 @@ for logger in loggers:
     print(f"{logger['label']}: {logger['num_requests']} requests captured")
 ```
 
-### Get Logger Data
+### Get logger data
 
 ```python
 def get_http_logger_data(logger_id: int) -> list:
@@ -587,7 +593,7 @@ for request in data:
     print(f"{request['method']} from {request['source_ip']}")
 ```
 
-### Clear Logger Data
+### Clear logger data
 
 ```python
 def clear_http_logger_data(logger_id: int) -> bool:
@@ -603,7 +609,7 @@ def clear_http_logger_data(logger_id: int) -> bool:
 
 ## VPN Profiles
 
-### List VPN Profiles
+### List VPN profiles
 
 ```python
 def get_vpn_profiles() -> list:
@@ -626,7 +632,7 @@ for profile in profiles:
 
 ## Complete workflows
 
-### Full Scan Workflow with Polling
+### Full scan workflow with polling
 
 ```python
 def run_scan_and_wait(
@@ -690,7 +696,7 @@ with open("scan_results.json", "w") as f:
     json.dump(output, f, indent=2)
 ```
 
-### Batch Scanning Multiple Targets
+### Batch scanning multiple targets
 
 ```python
 def batch_scan(
@@ -738,11 +744,11 @@ targets = [
 scan_ids = batch_scan(
     targets=targets,
     tool_id=Tool.WEBSITE_SCANNER,
-    tool_params={"scan_type": "full"}
+    tool_params={"scan_type": "deep"}
 )
 ```
 
-### Wait for Multiple Scans
+### Wait for multiple scans
 
 ```python
 def wait_for_scans(scan_ids: list, poll_interval: int = 30) -> dict:
@@ -776,7 +782,7 @@ finished = [sid for sid, status in statuses.items() if status == "finished"]
 print(f"{len(finished)}/{len(scan_ids)} scans completed successfully")
 ```
 
-### Generate Report After Scans
+### Generate report after scans
 
 ```python
 def scan_and_report(
@@ -828,7 +834,7 @@ def scan_and_report(
 report_path = scan_and_report(
     targets=["https://example.com", "https://api.example.com"],
     tool_id=Tool.WEBSITE_SCANNER,
-    tool_params={"scan_type": "full"},
+    tool_params={"scan_type": "deep"},
     report_format="pdf"
 )
 print(f"Report saved to: {report_path}")
@@ -845,6 +851,6 @@ API_KEY = os.environ.get("PENTEST_TOOLS_API_KEY")
 
 ## Related topics
 
-- [API Overview](/api-reference/overview)
+- [API overview](/api-reference/overview)
 - [Authentication](/api-reference/authentication)
-- [Limits and Errors](/api-reference/limits-and-errors)
+- [Limits and errors](/api-reference/limits-and-errors)

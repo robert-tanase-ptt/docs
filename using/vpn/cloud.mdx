@@ -5,7 +5,7 @@ description: "Deploy the VPN agent in AWS or Azure cloud environments"
 
 ## Overview
 
-Deploy the VPN agent in your cloud environment to scan resources within your VPCs, virtual networks, and private subnets.
+You can deploy the VPN agent directly in your cloud environment to scan resources inside your VPCs and virtual networks. Both AWS and Azure are supported through their respective marketplaces.
 
 <Info>
 VPN profiles require the **Internal network scanning** add-on.
@@ -13,256 +13,87 @@ VPN profiles require the **Internal network scanning** add-on.
 
 <Tabs>
   <Tab title="AWS">
-    ## Prerequisites
+    ## Deploying on AWS
 
-    - AWS account with appropriate permissions
-    - VPC with subnets you want to scan
-    - Outbound internet access (NAT Gateway or Internet Gateway)
-
-    ## Deployment options
-
-    <CardGroup cols={2}>
-      <Card title="EC2 instance" icon="server">
-        Deploy as a standalone EC2 instance.
-      </Card>
-      <Card title="ECS/Fargate" icon="docker">
-        Run as a containerized task.
-      </Card>
-    </CardGroup>
-
-    ## EC2 deployment
+    The VPN agent is available as a pre-configured AMI on the AWS Marketplace.
 
     <Steps>
-      <Step title="Launch instance">
-        Launch an EC2 instance from the AWS Marketplace or using the provided AMI.
+      <Step title="Launch from AWS Marketplace">
+        Go to the [Pentest-Tools.com VPN Agent on AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-647574sstaf66) and click **Continue to Subscribe**.
       </Step>
-      <Step title="Configure security group">
-        Allow outbound traffic to Pentest-Tools.com.
+      <Step title="Configure the instance">
+        Choose your instance type (t3.micro or larger) and select the VPC and subnet where your targets are located.
       </Step>
-      <Step title="Configure networking">
-        Place in subnet with access to targets.
+      <Step title="Configure the security group">
+        The agent only needs outbound TCP port 22 to `vpn.pentest-tools.com`. No inbound ports are required, though you may want SSH access (port 22 from your IP) for management.
       </Step>
-      <Step title="Configure agent">
-        SSH in and configure with your agent token.
+      <Step title="Activate the agent">
+        SSH into the instance as `ubuntu` using your key pair. An interactive prompt asks for your VPN UUID (found on the [VPN Profiles](https://app.pentest-tools.com) page). Enter the UUID, and the agent starts automatically.
+
+        <Warning>
+        SSH access is removed from the instance after initial setup. Complete all network or OS-level configuration before entering the VPN UUID.
+        </Warning>
+      </Step>
+      <Step title="Verify connection">
+        Check that your VPN profile shows as **Online** in the dashboard.
       </Step>
     </Steps>
 
-    ### Instance requirements
+    ### Instance recommendations
 
     | Specification | Recommendation |
     |---------------|----------------|
-    | Instance Type | t3.micro or larger |
-    | AMI | Amazon Linux 2 or Ubuntu |
+    | Instance type | t3.micro or larger |
     | Storage | 10 GB gp3 |
-    | Network | Private subnet with NAT |
-
-    ### Security group rules
-
-    **Outbound rules:**
-    | Type | Port | Destination | Purpose |
-    |------|------|-------------|---------|
-    | SSH | 22 | vpn.pentest-tools.com | Agent tunnel |
-
-    **Inbound rules:**
-    | Type | Port | Source | Purpose |
-    |------|------|--------|---------|
-    | SSH | 22 | Your IP | Management (optional) |
-
-    <Note>
-    The VPN Agent only requires outbound TCP port 22. No other ports need to be opened.
-    </Note>
-
-    ### User data script
-
-    ```bash
-    #!/bin/bash
-    # Install Docker
-    yum update -y
-    yum install -y docker
-    systemctl start docker
-    systemctl enable docker
-
-    # Run agent
-    docker run -d \
-      --name pentest-agent \
-      --restart unless-stopped \
-      --network host \
-      --cap-add=NET_ADMIN \
-      --device /dev/net/tun \
-      pentesttoolscom/vpn_agent:latest <VPN_UUID>
-    ```
-
-    ## ECS/Fargate deployment
-
-    For containerized deployments:
-
-    ```json
-    {
-      "family": "pentest-agent",
-      "networkMode": "awsvpc",
-      "containerDefinitions": [
-        {
-          "name": "agent",
-          "image": "pentesttoolscom/vpn_agent:latest",
-          "command": ["<VPN_UUID>"],
-          "linuxParameters": {
-            "capabilities": {
-              "add": ["NET_ADMIN"]
-            },
-            "devices": [
-              {
-                "hostPath": "/dev/net/tun",
-                "containerPath": "/dev/net/tun"
-              }
-            ]
-          }
-        }
-      ]
-    }
-    ```
-
-    ## VPC configuration
-
-    <Note>
-    Place the agent in a subnet with routing to the resources you want to scan.
-    </Note>
 
     ### Multi-VPC scanning
 
-    To scan across VPCs:
-    - Use VPC Peering
-    - Use Transit Gateway
-    - Deploy agents in each VPC
+    To scan resources across VPCs, you can use VPC Peering or Transit Gateway to route traffic, or deploy a separate agent in each VPC.
   </Tab>
 
   <Tab title="Azure">
-    ## Prerequisites
+    ## Deploying on Azure
 
-    - Azure subscription
-    - Virtual network with subnets to scan
-    - Outbound internet access
-
-    ## Deployment options
-
-    <CardGroup cols={2}>
-      <Card title="Virtual machine" icon="server">
-        Deploy as an Azure VM.
-      </Card>
-      <Card title="Container instance" icon="docker">
-        Run as Azure Container Instance.
-      </Card>
-    </CardGroup>
-
-    ## VM deployment
+    The VPN agent is available on the Azure Marketplace.
 
     <Steps>
-      <Step title="Create VM">
-        Create a virtual machine in your target virtual network.
+      <Step title="Launch from Azure Marketplace">
+        Go to the [Pentest-Tools.com VPN Agent on Azure Marketplace](https://marketplace.microsoft.com/en-us/product/virtual-machine/pentest-tools.pentest-tools-vpn-agent?tab=Overview) and click **Get It Now**.
       </Step>
-      <Step title="Configure NSG">
-        Set up Network Security Group rules.
+      <Step title="Configure the VM">
+        Select the virtual network and subnet where your targets are located. Standard_B1s or larger is sufficient.
       </Step>
-      <Step title="Install agent">
-        SSH/RDP in and install the agent.
+      <Step title="Configure the NSG">
+        Allow outbound TCP port 22 to `vpn.pentest-tools.com`. No other outbound rules are needed. Optionally allow inbound SSH from your IP for management.
       </Step>
-      <Step title="Configure">
-        Enter your agent token.
+      <Step title="Activate the agent">
+        SSH into the VM as `ubuntu` using your key pair. An interactive prompt asks for your VPN UUID (found on the [VPN Profiles](https://app.pentest-tools.com) page). Enter the UUID, and the agent starts automatically.
+
+        <Warning>
+        SSH access is removed from the VM after initial setup. Complete all network or OS-level configuration before entering the VPN UUID.
+        </Warning>
+      </Step>
+      <Step title="Verify connection">
+        Check that your VPN profile shows as **Online** in the dashboard.
       </Step>
     </Steps>
 
-    ### VM specifications
+    ### VM recommendations
 
     | Specification | Recommendation |
     |---------------|----------------|
     | Size | Standard_B1s or larger |
-    | OS | Ubuntu 20.04 LTS |
     | Disk | 32 GB Standard SSD |
-    | Network | Place in target VNet |
 
-    ### Network security group
+    ### Multi-VNet scanning
 
-    **Outbound rules:**
-    | Priority | Name | Port | Protocol | Destination |
-    |----------|------|------|----------|-------------|
-    | 100 | AllowAgentTunnel | 22 | TCP | Internet |
-
-    **Inbound rules:**
-    | Priority | Name | Port | Protocol | Source |
-    |----------|------|------|----------|--------|
-    | 100 | AllowSSH | 22 | TCP | Your IP |
-
-    <Note>
-    The VPN Agent only requires outbound TCP port 22 to vpn.pentest-tools.com.
-    </Note>
-
-    ### Cloud-init configuration
-
-    ```yaml
-    #cloud-config
-    package_update: true
-    packages:
-      - docker.io
-
-    runcmd:
-      - systemctl start docker
-      - systemctl enable docker
-      - docker run -d --name pentest-agent --restart unless-stopped --network host --cap-add=NET_ADMIN --device /dev/net/tun pentesttoolscom/vpn_agent:latest <VPN_UUID>
-    ```
-
-    ## Container instance deployment
-
-    ### Azure CLI
-
-    ```bash
-    az container create \
-      --resource-group your-rg \
-      --name pentest-agent \
-      --image pentesttoolscom/vpn_agent:latest \
-      --vnet your-vnet \
-      --subnet your-subnet \
-      --command-line "<VPN_UUID>" \
-      --restart-policy Always
-    ```
-
-    ### ARM template
-
-    ```json
-    {
-      "type": "Microsoft.ContainerInstance/containerGroups",
-      "apiVersion": "2021-03-01",
-      "name": "pentest-agent",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "containers": [{
-          "name": "agent",
-          "properties": {
-            "image": "pentesttoolscom/vpn_agent:latest",
-            "command": ["[parameters('vpnUuid')]"],
-            "resources": {
-              "requests": {"cpu": 1, "memoryInGb": 1}
-            }
-          }
-        }],
-        "osType": "Linux",
-        "restartPolicy": "Always"
-      }
-    }
-    ```
-
-    ## Virtual network configuration
-
-    <Note>
-    Ensure the subnet has a route to the resources you want to scan and outbound internet access.
-    </Note>
-
-    ### VNet peering
-
-    To scan across virtual networks:
-    - Set up VNet peering
-    - Configure route tables
-    - Or deploy agents in each VNet
+    To scan across virtual networks, set up VNet peering, or deploy a separate agent in each VNet.
   </Tab>
 </Tabs>
+
+<Note>
+You can also deploy the VPN agent using the [Docker image](/using/vpn/docker-agent) on any cloud VM instead of using the marketplace images. The marketplace images are pre-configured for convenience.
+</Note>
 
 ## Related topics
 

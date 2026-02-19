@@ -50,7 +50,7 @@ Preview at `http://localhost:3000`.
 
 ## Writing guidelines
 
-Follow the conventions in `.cursor/rules/docs-rules.mdc`:
+Follow the conventions in `.cursor/rules`:
 
 - Use Mintlify components (`<Steps>`, `<Tabs>`, `<CardGroup>`, etc.)
 - Write in second person ("you")

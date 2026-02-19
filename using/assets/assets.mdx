@@ -18,10 +18,10 @@ Your subscription's asset limit determines how many assets you can add. One asse
 
 When you add a target, the platform automatically creates or associates it with the appropriate asset:
 
-1. **You provide a target** – For example, `https://example.com/app`
-2. **The system extracts the asset** – The hostname `example.com` becomes the asset
-3. **Target links to asset** – The URL target is associated with the `example.com` asset
-4. **Scans run on the target** – Tools scan the specific URL you provided
+1. **You provide a target**: For example, `https://example.com/app`
+2. **The system extracts the asset**: The hostname `example.com` becomes the asset
+3. **Target links to asset**: The URL target is associated with the `example.com` asset
+4. **Scans run on the target**: Tools scan the specific URL you provided
 
 ### Example: One asset, multiple targets
 
@@ -116,7 +116,7 @@ If you have an AWS integration configured, you can import targets directly from 
 4. Click **Import**
 
 <Info>
-AWS import requires a configured AWS integration. See [AWS integration](/notifications/aws) for setup instructions.
+AWS import requires a configured AWS integration. See [AWS integration](/integrations/aws) for setup instructions.
 </Info>
 
 ## Managing assets and targets
@@ -181,9 +181,9 @@ When adding or importing targets, you can enable the **Include only alive target
 
 The alive check is particularly useful when:
 
-- **Importing IP ranges** – Avoid cluttering your asset list with offline hosts
-- **Scanning internal networks** – Filter out unused IP addresses in a CIDR block
-- **Validating targets** – Confirm hosts are reachable before adding them
+- **Importing IP ranges**: Avoid cluttering your asset list with offline hosts
+- **Scanning internal networks**: Filter out unused IP addresses in a CIDR block
+- **Validating targets**: Confirm hosts are reachable before adding them
 
 <Note>
 The alive check takes longer than adding targets directly, but results in a cleaner asset list with only reachable hosts.
@@ -195,13 +195,13 @@ The platform uses a customized version of Nmap's host discovery to determine if 
 
 <AccordionGroup>
   <Accordion title="ICMP probes">
-    - **Echo request** – Sends ICMP type 8 packets expecting echo replies. Often blocked by firewalls but reliable on internal networks.
-    - **Timestamp request** – Sends ICMP queries expecting reply code 14. Useful when echo requests are blocked.
-    - **Netmask request** – Sends ICMP queries expecting reply code 18. Another alternative when echo requests are blocked.
+    - **Echo request**: Sends ICMP type 8 packets expecting echo replies. Often blocked by firewalls but reliable on internal networks.
+    - **Timestamp request**: Sends ICMP queries expecting reply code 14. Useful when echo requests are blocked.
+    - **Netmask request**: Sends ICMP queries expecting reply code 18. Another alternative when echo requests are blocked.
   </Accordion>
   <Accordion title="TCP probes">
-    - **SYN probes** – Sends empty TCP packets with the SYN flag to the top 100 ports.
-    - **ACK probes** – Sends TCP packets with ACK flags, expecting RST responses.
+    - **SYN probes**: Sends empty TCP packets with the SYN flag to the top 100 ports.
+    - **ACK probes**: Sends TCP packets with ACK flags, expecting RST responses.
   </Accordion>
   <Accordion title="UDP probes">
     Sends UDP packets to common ports (53, 113, 161, 162, 497, 40125). An ICMP "port unreachable" response indicates the host is alive. This bypasses firewalls that only filter TCP traffic.
@@ -239,7 +239,7 @@ For detailed information about how asset limits work, see [Assets and limits](/p
 
 ## Related topics
 
-- [Assets and limits](/plans-and-limits/assets-and-limits) – How assets affect your subscription
-- [Workspaces](/using/workspaces/organize-work) – Group assets by project or client
-- [Attack surface overview](/using/attack-surface/attack-surface-overview) – View all discovered targets
-- [AWS integration](/notifications/aws) – Import targets from AWS
+- [Assets and limits](/plans-and-limits/assets-and-limits): How assets affect your subscription
+- [Workspaces](/using/workspaces/organize-work): Group assets by project or client
+- [Attack surface overview](/using/attack-surface/attack-surface-overview): View all discovered targets
+- [AWS integration](/integrations/aws): Import targets from AWS

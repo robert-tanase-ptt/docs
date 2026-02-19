@@ -46,7 +46,7 @@ Identifies the web server software (Apache, Nginx), technology stack (PHP versio
 
 ### Drupal fingerprinting
 
-Uses Droopescan to detect the exact Drupal version. Version detection is crucial for identifying applicable vulnerabilities.
+Uses Droopescan to detect the exact Drupal version. Version detection is needed to identify applicable vulnerabilities.
 
 ### Drupal core vulnerabilities
 
@@ -138,7 +138,7 @@ Drupalgeddon vulnerabilities allow complete site takeover. Affected Drupal versi
 
 ## How it works
 
-The Drupal Scanner follows a systematic approach:
+The Drupal Scanner works in these steps:
 
 1. **Server fingerprinting**: Identifies web server, technology, and OS
 2. **Drupal detection**: Confirms Drupal installation and determines version
@@ -148,13 +148,6 @@ The Drupal Scanner follows a systematic approach:
 6. **Reporting**: Generates findings with CVE details, CVSS/EPSS scores, and remediation guidance
 
 The scanner uses Droopescan for version detection and implements additional custom security tests.
-
-## Why Drupal security matters
-
-- **High-value target**: Drupal powers government sites, enterprises, and universities
-- **Drupalgeddon history**: Critical RCE vulnerabilities have allowed mass compromises
-- **Module vulnerabilities**: Third-party modules can introduce security weaknesses
-- **Complex updates**: Drupal's update process can leave sites running vulnerable versions
 
 ## Follow-up actions
 

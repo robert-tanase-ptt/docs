@@ -3,7 +3,7 @@ title: "Scheduled scans"
 description: "Automate your security testing with scheduled and recurring scans"
 ---
 
-Scheduled scans automate your security testing by running scans at specified intervals, helping you maintain continuous security visibility without manual intervention.
+Scheduled scans automate your security testing by running scans at specified intervals, so you don't have to run them manually.
 
 ## What can you schedule?
 
@@ -11,20 +11,6 @@ You can schedule two types of scans:
 
 - **Individual tools**: Schedule any [security tool](/tools) to run automatically (e.g., [Network Scanner](/tools/network-scanner), [Website Scanner](/tools/website-scanner), [Port Scanner](/tools/port-scanner))
 - **Pentest Robots**: Schedule [Pentest Robots](/automation/robots/pentest-robots) to run automated, multi-tool assessments on a recurring basis
-
-## Why schedule scans?
-
-<CardGroup cols={3}>
-  <Card title="Consistency" icon="clock">
-    Regular testing on a predictable schedule
-  </Card>
-  <Card title="Automation" icon="robot">
-    Reduce manual work and human error
-  </Card>
-  <Card title="Coverage" icon="calendar-check">
-    Ensure nothing falls through the cracks
-  </Card>
-</CardGroup>
 
 ## Creating a scheduled scan
 
@@ -65,15 +51,15 @@ If you schedule a Monthly or Quarterly scan starting on the last day of a month 
 
 ## Vanta compliance integration
 
-When scheduling a scan, you can optionally send the results to [Vanta](/notifications/security/vanta) for automated compliance monitoring and evidence collection.
+When scheduling a scan, you can optionally send the results to [Vanta](/integrations/vanta) for automated compliance monitoring and evidence collection.
 
 **To enable Vanta integration:**
-1. First, [configure the Vanta integration](/notifications/security/vanta) in your account settings
+1. First, [configure the Vanta integration](/integrations/vanta) in your account settings
 2. When scheduling a scan, toggle **Send to Vanta** to **On**
 
-<Warning>
+<Note>
 If Vanta is not configured, the "Send to Vanta" toggle will be disabled. You'll need to set up the integration first.
-</Warning>
+</Note>
 
 **Benefits of sending to Vanta:**
 - Automated compliance evidence collection
@@ -109,7 +95,7 @@ Use **Disable** instead of **Delete** if you want to temporarily pause a schedul
 
 ## Notifications
 
-Scheduled scans work seamlessly with the [notifications system](/notifications/overview). Configure alerts to stay informed about your automated scans:
+Scheduled scans work with the [notifications system](/notifications/overview). Configure alerts to stay informed about your automated scans:
 
 | Notification | When it triggers |
 |--------------|------------------|
@@ -157,5 +143,5 @@ Schedule intensive scans during off-peak hours to minimize impact on production 
 - [Scan types and depth](/using/scans/scan-types-and-depth)
 - [Authenticated scanning](/using/scans/authenticated-scanning)
 - [Notifications overview](/notifications/overview)
-- [Vanta integration](/notifications/security/vanta)
+- [Vanta integration](/integrations/vanta)
 - [Plan overview](/plans-and-limits/plan-overview)

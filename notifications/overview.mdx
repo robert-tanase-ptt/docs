@@ -33,7 +33,7 @@ Notifications can be triggered based on different types of scan results:
 | **Vulnerability** | Findings from vulnerability scans |
 | **Scan status** | Scan completion status (finished, failed, timed out, etc.) |
 | **Port Scanner** | Open ports discovered by the Port Scanner or Network Scanner |
-| **Technology found** | Technologies detected by Website Recon or SNMP Scanner |
+| **Technology found** | Technologies detected by Website Scanner or Website Recon |
 | **Subdomains** | Subdomains discovered by the Subdomain Finder |
 | **URL Fuzzer** | Items found by the URL Fuzzer |
 | **Password Auditor** | Credentials found by the Password Auditor |
@@ -80,7 +80,7 @@ Notifications can be triggered based on different types of scan results:
 | **Country** | contains | Alert when country contains "US" |
 | **Diff** | from previous scan | Alert when new subdomains appear |
 
-### URL Fuzzer Conditions
+### URL Fuzzer conditions
 
 | Condition | Operators | Example |
 |-----------|-----------|---------|
@@ -114,35 +114,45 @@ Notifications can be triggered based on different types of scan results:
   <Card title="Email" icon="envelope">
     Send to your account email or custom addresses.
   </Card>
-  <Card title="Slack" icon="slack" href="/notifications/chat/slack">
+  <Card title="Slack" icon="slack" href="/integrations/slack">
     Send to a Slack channel.
   </Card>
-  <Card title="Microsoft Teams" icon="microsoft" href="/notifications/chat/microsoft-teams">
+  <Card title="Microsoft Teams" icon="microsoft" href="/integrations/microsoft-teams">
     Send to a Teams channel via webhook.
   </Card>
-  <Card title="Discord" icon="discord" href="/notifications/chat/discord">
+  <Card title="Discord" icon="discord" href="/integrations/discord">
     Send to a Discord channel via webhook.
   </Card>
-  <Card title="Webhook" icon="webhook" href="/notifications/webhooks/overview">
+  <Card title="Webhook" icon="webhook" href="/integrations/webhooks">
     Send to any HTTP endpoint.
   </Card>
-  <Card title="Nucleus" icon="layer-group" href="/notifications/security/nucleus">
+  <Card title="Nucleus" icon="layer-group" href="/integrations/nucleus">
     Send findings to Nucleus for vulnerability management.
   </Card>
 </CardGroup>
 
-## Creating a Notification
+## Creating a notification
 
-1. Go to **Notifications** in the sidebar
-2. Click **Add**
-3. Enter a **name** for the notification
-4. Select a **trigger type** (e.g., Vulnerability)
-5. Add **conditions** (e.g., Risk level is at least High)
-6. Select **destinations** under "Notification actions":
-   - Send to default email
-   - Send to additional emails (enter custom email addresses)
-   - Send to Webhook, Microsoft Teams, Slack, Discord, or Nucleus
-7. Click **Save**
+<Steps>
+  <Step title="Go to Notifications">
+    Click **Notifications** in the sidebar.
+  </Step>
+  <Step title="Add a notification">
+    Click **Add** and enter a name.
+  </Step>
+  <Step title="Select a trigger type">
+    Choose what to monitor, for example, Vulnerability or Port Scanner.
+  </Step>
+  <Step title="Set conditions">
+    Add one or more conditions, for example, Risk level is at least High.
+  </Step>
+  <Step title="Select destinations">
+    Under **Notification actions**, choose where to send alerts: your default email, additional addresses, or an integration like Slack, Teams, Discord, Webhook, or Nucleus.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The notification activates immediately.
+  </Step>
+</Steps>
 
 <Tip>
 You can add multiple conditions to a single notification. All conditions must match (AND logic) for the notification to trigger.
@@ -154,7 +164,7 @@ Notifications are scoped to your current workspace. Each workspace can have its 
 
 The notifications configured on this page are applied to **all scans** running in the current workspace, whether started manually, scheduled, or via API. A notification will be sent if a scan result matches **any** of the defined notification rules in the workspace.
 
-## Enabling and Disabling
+## Enabling and disabling
 
 You can enable or disable notifications without deleting them:
 
@@ -163,7 +173,7 @@ You can enable or disable notifications without deleting them:
 
 ## Diff notifications
 
-A powerful feature is the ability to get notified when scan results **change** from previous scans:
+You can also get notified when scan results **change** from previous scans:
 
 - **New vulnerabilities**: Get alerted when new findings appear
 - **New ports**: Get alerted when new ports are discovered
@@ -183,18 +193,18 @@ This is useful for scheduled scans where you want to track changes over time.
   <Accordion title="Combine conditions wisely">
     Use multiple conditions to reduce noise. For example, "Risk level at least High" AND "Finding name contains SQL".
   </Accordion>
-  <Accordion title="Leverage diff notifications">
+  <Accordion title="Use diff notifications">
     For scheduled scans, use diff notifications to only alert on changes instead of every finding.
   </Accordion>
 </AccordionGroup>
 
-<Warning>
+<Tip>
 Too many notifications can lead to alert fatigue. Focus on actionable alerts rather than notifying on everything.
-</Warning>
+</Tip>
 
 ## Related topics
 
-- [Slack Integration](/notifications/chat/slack)
-- [Microsoft Teams Integration](/notifications/chat/microsoft-teams)
-- [Webhooks](/notifications/webhooks/overview)
-- [Scheduled Scans](/using/scans/scheduled-scans)
+- [Slack integration](/integrations/slack)
+- [Microsoft Teams integration](/integrations/microsoft-teams)
+- [Webhooks](/integrations/webhooks)
+- [Scheduled scans](/using/scans/scheduled-scans)

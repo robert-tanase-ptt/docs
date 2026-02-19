@@ -5,7 +5,7 @@ description: "Discover domain names owned by a company and map its attack surfac
 
 ## Overview
 
-The Domain Finder discovers additional domain names owned by a target organization. Finding all domains belonging to a company is an important step in the information gathering phase of a penetration test or bug bounty activities, as these associated domains could expose resources that are less secure than the main domain.
+The Domain Finder discovers additional domain names owned by a target organization. These associated domains may expose resources that are less secure than the main domain, making domain discovery a useful step during penetration tests and bug bounty activities.
 
 Domain Finder is a **discovery tool**: it identifies related domains but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
@@ -66,7 +66,7 @@ Performs a multi-step Whois analysis:
 2. **Reverse lookup on company**: Finds all domains registered under the same company name
 3. **Reverse lookup on email**: Finds all domains registered with the same contact email
 
-This is one of the most reliable techniques, as domain registration data directly links domains to their owners.
+Domain registration data directly links domains to their owners, making this an effective technique.
 
 ## How results are scored
 
@@ -81,15 +81,6 @@ Each discovered domain receives a **certainty score** based on multiple factors:
 | Redirect analysis | Whether domains redirect to each other |
 
 The **Minimum weight** parameter filters out low-confidence results. The default of 30 provides a good balance between coverage and accuracy. Increase it to see only high-confidence matches; decrease it to see more potential matches that may need manual verification.
-
-## Why domain discovery matters
-
-Domain Finder is valuable for:
-
-- **Attack surface mapping**: Discover the full scope of an organization's online presence
-- **Penetration testing**: Find additional domains to include in your testing scope
-- **Bug bounty**: Identify domains that may be in scope but less monitored
-- **M&A due diligence**: Discover domains belonging to acquired companies
 
 <Note>
 Not all discovered domains may belong to your target. Always verify ownership before adding domains to your testing scope.

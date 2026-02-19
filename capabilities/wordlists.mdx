@@ -26,7 +26,7 @@ The following tools support custom wordlists:
 The URL Fuzzer uses wordlists to discover hidden directories, files, and endpoints on web servers.
 
 - **Light scan**: Uses a smaller, focused wordlist for quick discovery
-- **Deep scan**: Uses a comprehensive wordlist for thorough coverage
+- **Deep scan**: Uses a large wordlist for wider coverage
 - **Custom**: Use your own wordlist for specific testing needs
 
 ### Password auditor
@@ -51,7 +51,7 @@ Pentest-Tools.com includes several default wordlists that are available to all u
 | Common usernames | Frequently used usernames for credential testing |
 | Common passwords | Popular passwords for dictionary attacks |
 | URL Fuzzer (Light) | Small wordlist for quick directory discovery |
-| URL Fuzzer (Deep) | Comprehensive wordlist for thorough fuzzing |
+| URL Fuzzer (Deep) | Large wordlist for thorough fuzzing |
 | Subdomain enumeration | Common subdomain prefixes |
 
 <Tip>
@@ -62,7 +62,7 @@ Default wordlists cannot be edited or deleted. They're maintained by Pentest-Too
 
 To create a custom wordlist:
 
-1. Go to **Settings** → **Wordlists**
+1. Go to **Settings > Wordlists**
 2. Click **Create wordlist**
 3. Enter a **name** and optional **description**
 4. Add your words (one per line)
@@ -75,9 +75,9 @@ To create a custom wordlist:
 | Maximum size | 16 MB |
 | Maximum word length | 200 characters |
 
-<Warning>
+<Note>
 Some Unicode characters may take up more space than English characters. If your wordlist fails to save, try reducing its size.
-</Warning>
+</Note>
 
 ### Best practices for custom wordlists
 
@@ -100,7 +100,7 @@ Some Unicode characters may take up more space than English characters. If your 
 
 ### Editing wordlists
 
-1. Go to **Settings** → **Wordlists**
+1. Go to **Settings > Wordlists**
 2. Click on the wordlist you want to edit
 3. Modify the contents, name, or description
 4. Save your changes
@@ -109,7 +109,7 @@ After saving, the system reports the number of distinct, non-empty words in your
 
 ### Deleting wordlists
 
-1. Go to **Settings** → **Wordlists**
+1. Go to **Settings > Wordlists**
 2. Select the wordlist(s) to delete
 3. Click **Delete**
 
@@ -121,9 +121,9 @@ Deleted wordlists cannot be recovered. If a scheduled scan or robot uses a delet
 
 You can share wordlists with team members:
 
-1. Go to **Settings** → **Sharing**
-2. Find the team member you want to share with
-3. Set the **Wordlists** permission level
+1. Go to **Team** in the sidebar
+2. Select the team member you want to share with
+3. Click **Share** and set the **Wordlists** permission level
 
 ### Permission levels
 
@@ -146,13 +146,13 @@ When launching a scan that supports wordlists:
 3. Choose your wordlist from the dropdown
 4. The dropdown shows both your own wordlists and those shared with you
 
-### Wordlists in Scheduled Scans
+### Wordlists in scheduled scans
 
 Scheduled scans remember your wordlist selection. If the wordlist is later deleted:
 - The scheduled scan falls back to the default wordlist
 - You'll be notified of the change
 
-### Wordlists in Robots
+### Wordlists in robots
 
 Pentest robots can use wordlists for tools like URL Fuzzer and Password Auditor. Configure the wordlist when setting up the robot block.
 
@@ -164,13 +164,13 @@ Here are some popular external sources for security testing wordlists:
 - [fuzzdb](https://github.com/fuzzdb-project/fuzzdb) - Attack patterns and primitives
 - [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings) - Useful payloads
 
-<Warning>
+<Note>
 When using external wordlists, ensure they comply with your testing authorization and scope.
-</Warning>
+</Note>
 
 ## Related topics
 
 - [URL Fuzzer](/tools/url-fuzzer)
 - [Password Auditor](/tools/password-auditor)
 - [Subdomain Finder](/tools/subdomain-finder)
-- [Teams and Roles](/account/teams-and-roles)
+- [Teams and roles](/account/teams-and-roles)

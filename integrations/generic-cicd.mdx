@@ -32,7 +32,7 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Create a pipeline action">
-    Go to Settings → Integrations → Generic CI/CD → Create action.
+    Go to Settings > Integrations > Generic CI/CD > Create action.
   </Step>
   <Step title="Configure settings">
     Set the target, scan type, output format, and fail condition.
@@ -44,6 +44,7 @@ Available on **WebNetSec** and **Pentest Suite** plans.
     Call the API from your pipeline script.
   </Step>
 </Steps>
+
 
 ## Configuration options
 
@@ -63,7 +64,7 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 | Low | Low or higher severity found |
 | Medium | Medium or higher severity found |
 | High | High or higher severity found |
-| Critical | Only critical severity found |
+| Critical | Critical severity found |
 
 ## Platform examples
 
@@ -135,6 +136,10 @@ jobs:
         -d '{"action_name": "my-scan"}'
 ```
 
+<Warning>
+Scans run asynchronously. The POST request starts a scan and returns immediately; it does not wait for results. To fail the pipeline based on findings, you need to poll the scan status until it completes, then check the results. See [API examples](/api-reference/examples) for the polling pattern.
+</Warning>
+
 ## Output handling
 
 ### Text format
@@ -149,7 +154,7 @@ Found 3 findings:
   - LOW: Information disclosure
 ```
 
-### JSON Format
+### JSON format
 
 Parse programmatically for custom handling:
 
@@ -158,9 +163,21 @@ Parse programmatically for custom handling:
   "scan_id": 12345,
   "target": "example.com",
   "status": "completed",
-  "findings": [...]
+  "findings": [
+    {
+      "title": "SQL Injection",
+      "severity": "high",
+      "cvss_score": 8.6,
+      "description": "SQL injection vulnerability found in the login parameter.",
+      "url": "https://example.com/login"
+    }
+  ]
 }
 ```
+
+<Note>
+This is a simplified example. See the [API reference](/api-reference/overview) for the complete finding schema.
+</Note>
 
 ## Best practices
 
@@ -168,9 +185,9 @@ Parse programmatically for custom handling:
 Use environment variables or secrets management for your action secret. Never hardcode credentials in pipeline files.
 </Tip>
 
-<Warning>
+<Tip>
 Ensure your CI/CD runner can reach app.pentest-tools.com. Check firewall rules if scans fail to start.
-</Warning>
+</Tip>
 
 - Run Light scans for quick validation, Deep scans for thorough testing
 - Set fail conditions based on your pipeline stage (stricter for production)
@@ -199,6 +216,6 @@ Ensure your CI/CD runner can reach app.pentest-tools.com. Check firewall rules i
 
 ## Related topics
 
-- [GitHub Actions](/notifications/github-actions)
-- [API Overview](/api-reference/overview)
-- [Notifications Overview](/notifications/overview)
+- [GitHub Actions](/integrations/github-actions)
+- [API overview](/api-reference/overview)
+- [Notifications](/notifications/overview)

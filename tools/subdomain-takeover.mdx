@@ -5,7 +5,7 @@ description: "Detect subdomains vulnerable to takeover attacks"
 
 ## Overview
 
-The Subdomain Takeover scanner discovers subdomains pointing to unclaimed cloud resources that attackers could claim to serve malicious content from your domain. It combines comprehensive subdomain discovery with takeover vulnerability detection.
+The Subdomain Takeover scanner discovers subdomains pointing to unclaimed cloud resources that attackers could claim to serve malicious content from your domain. It combines subdomain discovery with takeover vulnerability detection.
 
 The Subdomain Takeover scanner is an **offensive tool**: it identifies exploitable misconfigurations in DNS records. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and does not generate [findings](/using/findings/findings). Results are displayed as a report listing vulnerable and safe subdomains.
 
@@ -83,25 +83,6 @@ The scanner detects takeover vulnerabilities for these services:
 <Note>
 The scanner checks for specific error messages that indicate the cloud resource is unclaimed and available for takeover.
 </Note>
-
-## Why subdomain takeover matters
-
-Subdomain takeover is a serious vulnerability because:
-
-- **Common vulnerability**: Organizations frequently forget to remove DNS records when decommissioning services
-- **Easy to exploit**: Attackers only need to register on the cloud service and claim the subdomain
-- **Difficult to detect**: No logs or alerts when an attacker claims your subdomain
-- **High impact**: Full control of content served from a trusted subdomain
-- **Compliance risk**: May violate data protection requirements if attacker collects user data
-
-Successful subdomain takeover allows attackers to:
-
-- **Serve malicious content**: Host phishing pages, malware, or defacement on your domain
-- **Steal cookies**: Access cookies set on the parent domain (if not properly scoped)
-- **Bypass security controls**: Evade CSP, CORS, and other policies that trust your domain
-- **Phish users**: Create convincing phishing pages with legitimate-looking URLs
-- **Damage reputation**: Associate your brand with malicious or inappropriate content
-- **Send emails**: Some services allow sending emails from the subdomain
 
 <Warning>
 Subdomain takeover can enable cookie theft across your entire domain if cookies are set without the `__Host-` prefix or explicit domain restrictions.

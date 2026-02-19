@@ -1,0 +1,138 @@
+---
+title: "AI-powered endpoint discovery"
+description: "How AI-driven browser agents discover hidden endpoints and expand scan coverage"
+---
+
+## Overview
+
+AI-powered endpoint discovery uses an AI browser agent to navigate your target website and uncover endpoints that traditional crawling misses. The agent interacts with the site like a real user: clicking links, submitting forms, and exploring dynamic content to build a more complete map of your application's attack surface.
+
+This feature is integrated into the [Website Scanner](/tools/website-scanner) and runs alongside the standard spider to increase endpoint coverage.
+
+## How it works
+
+When enabled, AI endpoint discovery runs as a parallel process during the spidering phase of a Website Scanner scan.
+
+<Steps>
+  <Step title="Spider starts">
+    The Website Scanner begins its standard crawling process against the target URL.
+  </Step>
+  <Step title="AI agent launches in parallel">
+    An AI-driven browser agent starts navigating the target site in a real browser. The agent explores the application by interacting with page elements, following navigation flows, and discovering content that static crawling cannot reach.
+  </Step>
+  <Step title="Requests are captured">
+    As the agent browses, all HTTP requests and responses are recorded, including URLs, methods, headers, and status codes.
+  </Step>
+  <Step title="Endpoints feed back into the scanner">
+    Discovered endpoints are filtered for scope and validity, then added to the spider's queue. The scanner tests these endpoints for vulnerabilities just like any other discovered page.
+  </Step>
+</Steps>
+
+<Note>
+The AI agent runs with a timeout of half the scan's maximum time. For a scan with a 60-minute limit, the agent runs for up to 30 minutes.
+</Note>
+
+## What it discovers
+
+The AI agent is effective at finding endpoints that traditional spiders struggle with:
+
+<CardGroup cols={2}>
+  <Card title="JavaScript-driven navigation" icon="code">
+    Pages and routes rendered entirely by client-side JavaScript frameworks
+  </Card>
+  <Card title="Interactive workflows" icon="hand-pointer">
+    Multi-step flows that require clicking buttons, expanding menus, or filling forms
+  </Card>
+  <Card title="Dynamic content" icon="arrows-rotate">
+    Content loaded via AJAX requests or single-page application routing
+  </Card>
+  <Card title="Hidden functionality" icon="eye-slash">
+    Endpoints accessible only through specific user interactions
+  </Card>
+</CardGroup>
+
+Each discovered endpoint includes:
+
+- **URL** and **HTTP method** (GET, POST, etc.)
+- **Request headers** sent during the interaction
+- **Response status code** and headers
+- **POST data** when applicable
+
+## Enabling endpoint discovery
+
+AI-powered endpoint discovery runs when the Website Scanner includes `ai_endpoint_discovery` in the `discovery` modules list.
+
+<Steps>
+  <Step title="Configure your scan">
+    Start a Website Scanner scan with `scan_type` set to `custom`.
+  </Step>
+  <Step title="Enable the module">
+    Add `ai_endpoint_discovery` to the `discovery` list in `tool_params`.
+  </Step>
+  <Step title="Use automatic spidering">
+    Keep the spider approach set to `auto` so endpoint discovery can run alongside the regular crawler.
+  </Step>
+  <Step title="Run the scan">
+    Start the scan and review results when it finishes.
+  </Step>
+</Steps>
+
+<Note>
+AI-powered endpoint discovery is not available in Light scan mode.
+</Note>
+
+### Generated finding
+
+When AI endpoint discovery runs during a scan, it generates a test entry in the scan results:
+
+> **AI-powered endpoint discovery** - Performed AI-powered endpoint discovery
+
+This confirms the feature ran and contributed to the scan's crawling phase.
+
+## How it complements traditional spidering
+
+The AI agent and the traditional spider run concurrently, each contributing endpoints to the same scanning pipeline.
+
+| Approach | Strengths | Limitations |
+|----------|-----------|-------------|
+| **Traditional spider** | Fast, efficient for static sites, handles large volumes of pages | Misses JavaScript-rendered content and interactive flows |
+| **AI browser agent** | Navigates dynamic content, interacts with UI elements, discovers hidden routes | Slower due to real browser interaction, limited by timeout |
+
+By combining both approaches, the Website Scanner achieves broader endpoint coverage than either method alone. Endpoints discovered by the AI agent go through the same vulnerability testing pipeline as traditionally spidered pages.
+
+## API usage
+
+You can enable AI endpoint discovery via the API by including `ai_endpoint_discovery` in `tool_params.discovery`:
+
+```json
+{
+  "target_name": "https://example.com",
+  "tool_id": 170,
+  "tool_params": {
+    "scan_type": "custom",
+    "discovery": ["ai_endpoint_discovery"]
+  }
+}
+```
+
+<Note>
+See [API examples](/api-reference/examples) and the OpenAPI reference tab for the full Website Scanner parameters schema.
+</Note>
+
+## AI data handling
+
+The AI endpoint discovery feature processes target website content through our AI infrastructure:
+
+- **Azure-hosted models**: The AI agent uses Azure OpenAI models within our controlled infrastructure
+- **Target data only**: Only the target website's publicly accessible content is processed
+- **No external sharing**: Your scan data is never sent to external companies for training
+- **No retention**: Website content processed by the AI agent is not stored after the scan completes
+
+For complete details, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
+
+## Related topics
+
+- [Website Scanner](/tools/website-scanner)
+- [AI-enhanced authentication](/ai/authentication)
+- [Soft 404 detector](/ai/soft404detector)
+- [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy)

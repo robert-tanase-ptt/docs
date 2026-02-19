@@ -16,19 +16,19 @@ The SSL/TLS Scanner is a **vulnerability scanner**: it actively tests SSL/TLS co
 | **IP address** | `192.168.1.1`, `10.0.0.5` |
 | **Hostname** | `example.com`, `mail.example.com` |
 
-## Scan modes
+## Scan types
 
 | Mode | Description | Use case |
 |------|-------------|----------|
 | **Light** | Scan port 443 only | Quick HTTPS check |
-| **Deep** | Scan ~2,012 TCP ports | Full infrastructure audit |
+| **Deep** | Scan ~5,003 TCP ports | Full infrastructure audit |
 | **Custom** | User-configured ports and engines | Targeted testing |
 
 ### Parameters comparison
 
 | Parameter | Light | Deep | Custom |
 |-----------|:-----:|:----:|:------:|
-| **TCP ports** | 443 | ~2,012 | User-defined |
+| **TCP ports** | 443 | ~5,003 | User-defined |
 | **Certificate engine** | ✓ | ✓ | Configurable |
 | **Vulnerability engine** | ✓ | ✓ | Configurable |
 
@@ -39,9 +39,9 @@ The SSL/TLS Scanner is a **vulnerability scanner**: it actively tests SSL/TLS co
 | [**Certificate**](#certificate-checks) | ✓ | ✓ | ✓ |
 | [**Vulnerability**](#vulnerability-checks) | ✓ | ✓ | ✓ |
 
-<Warning>
-The Deep scan tests ~2,012 ports and may take significant time. Use Light mode for quick HTTPS checks or Custom mode to specify exact ports.
-</Warning>
+<Note>
+The Deep scan tests ~5,003 ports and may take significant time. Use Light mode for quick HTTPS checks or Custom mode to specify exact ports.
+</Note>
 
 ### Custom scan
 
@@ -57,10 +57,10 @@ Full control over scan parameters:
 
 | Option | TCP ports | Description |
 |--------|-----------|-------------|
-| **Top 10 ports** | ~7 | Fastest scan |
-| **Top 100 ports** | ~85 | Quick discovery |
-| **Top 1000 ports** | ~617 | Standard assessment |
-| **Top 5000 ports** | ~2,012 | Extended coverage |
+| **Top 10 ports** | ~10 | Fastest scan |
+| **Top 100 ports** | ~112 | Quick discovery |
+| **Top 1000 ports** | ~1,009 | Standard assessment |
+| **Top 5000 ports** | ~5,003 | Extended coverage |
 | **Full port range** | 65,535 | All ports (slow) |
 | **Port range** | Variable | Specify start and end (e.g., `1-1024`) |
 | **Port list** | Variable | Comma-separated (e.g., `443,8443,993`) |
@@ -127,13 +127,6 @@ The SSL/TLS Scanner uses a scanning engine based on **testssl.sh** with custom e
 3. **Cipher enumeration**: Tests which cipher suites the server accepts
 4. **Vulnerability testing**: Runs specific checks for known SSL/TLS vulnerabilities
 5. **Certificate analysis**: Validates the certificate chain and configuration
-
-## Why SSL/TLS security matters
-
-- **Data protection**: Weak SSL/TLS allows attackers to decrypt sensitive communications
-- **Compliance**: PCI DSS, HIPAA, and other regulations require strong encryption
-- **Trust**: Modern browsers warn users about insecure configurations
-- **Attack surface**: Deprecated protocols and weak ciphers are actively exploited
 
 <Tip>
 Aim for TLS 1.2+ with strong cipher suites. Disable SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1.

@@ -25,13 +25,14 @@
             "pages": [
               "using/workspaces/organize-work",
               "using/assets/assets",
+              "concepts/tools",
               {
                 "group": "Scans",
                 "pages": [
+                  "concepts/scans-and-statuses",
                   "using/scans/scan-types-and-depth",
                   "using/scans/authenticated-scanning",
-                  "using/scans/scheduled-scans",
-                  "concepts/scans-and-statuses"
+                  "using/scans/scheduled-scans"
                 ]
               },
               {
@@ -93,8 +94,8 @@
               {
                 "group": "Exploit handlers",
                 "pages": [
-                  "tools/xss-handlers",
-                  "tools/http-handlers"
+                  "tools/xss-exploiter",
+                  "tools/http-request-logger"
                 ]
               },
               {
@@ -121,20 +122,21 @@
               },
               "automation/robots/pentest-robots",
               "account/teams-and-roles",
+              "notifications/overview",
               {
                 "group": "Integrations",
                 "pages": [
-                  "notifications/chat/microsoft-teams",
-                  "notifications/chat/slack",
-                  "notifications/webhooks/overview",
-                  "notifications/chat/jira",
-                  "notifications/chat/discord",
-                  "notifications/security/vanta",
-                  "notifications/github-actions",
-                  "notifications/burp",
-                  "notifications/generic-cicd",
-                  "notifications/aws",
-                  "notifications/security/nucleus"
+                  "integrations/slack",
+                  "integrations/microsoft-teams",
+                  "integrations/discord",
+                  "integrations/webhooks",
+                  "integrations/jira",
+                  "integrations/burp",
+                  "integrations/github-actions",
+                  "integrations/generic-cicd",
+                  "integrations/aws",
+                  "integrations/vanta",
+                  "integrations/nucleus"
                 ]
               },
               {
@@ -153,7 +155,6 @@
                   "using/vpn/troubleshooting"
                 ]
               },
-              "notifications/overview",
               "capabilities/wordlists"
             ]
           },
@@ -162,7 +163,8 @@
             "pages": [
               "ai/mcp/overview",
               "ai/soft404detector",
-              "ai/authentication"
+              "ai/authentication",
+              "ai/endpoint-discovery"
             ]
           },
           {

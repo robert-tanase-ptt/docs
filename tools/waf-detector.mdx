@@ -5,7 +5,7 @@ description: "Identify web application firewalls protecting target websites"
 
 ## Overview
 
-The WAF Detector identifies whether a target website is protected by a Web Application Firewall (WAF) and attempts to determine which WAF product is in use. It can detect over **70 different WAF products** and even attempts to find the origin IP address to bypass the WAF.
+The WAF Detector identifies whether a target website is protected by a Web Application Firewall (WAF) and attempts to determine which WAF product is in use. It can detect **97 different WAF products** and attempts to find the origin IP address to bypass the WAF.
 
 The WAF Detector is a **discovery tool**: it identifies protection mechanisms but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
 
@@ -24,7 +24,7 @@ The tool uses a multi-stage approach to detect WAF presence:
     Sends a request containing a combined payload that simulates multiple attack types (XSS, SQLi, directory traversal, RCE, XXE). This is designed to trigger WAF responses.
   </Step>
   <Step title="Response analysis">
-    Analyzes the response using pattern matching against 70+ known WAF signatures. Checks HTTP headers, response body, and status codes.
+    Analyzes the response using pattern matching against 97 known WAF signatures. Checks HTTP headers, response body, and status codes.
   </Step>
   <Step title="Generic detection">
     If no specific WAF is identified, performs additional tests to detect WAF behavior:
@@ -51,7 +51,7 @@ The tool analyzes multiple signals to identify WAF presence:
 
 ### Supported WAFs
 
-The tool can identify 70+ WAF products, including major vendors like Cloudflare, AWS WAF, Akamai Kona, Imperva Incapsula, F5 BIG-IP ASM, Fortinet FortiWeb, Barracuda, Sucuri, ModSecurity, Wordfence, and many more.
+The tool can identify 97 WAF products, including Cloudflare, AWS WAF, Akamai Kona, Imperva Incapsula, F5 BIG-IP ASM, Fortinet FortiWeb, Barracuda, Sucuri, ModSecurity, and Wordfence.
 
 <Note>
 Detection is based on [identYwaf](https://github.com/stamparm/identYwaf) signatures.
@@ -72,31 +72,6 @@ Each discovered IP is validated by:
 1. Requesting the page with the original Host header
 2. Comparing the response's HTML structure similarity (must be ≥90%)
 3. Running WAF detection again to confirm bypass
-
-## Why detect WAFs?
-
-Understanding WAF presence helps you:
-
-- **Adjust scanning strategy**: Slow down scans to avoid triggering rate limits
-- **Interpret results accurately**: Distinguish WAF blocks from real vulnerabilities
-- **Plan manual testing**: Use WAF bypass techniques where appropriate
-- **Document infrastructure**: Include WAF details in penetration test reports
-- **Reduce false negatives**: Know that some vulnerabilities may exist but be blocked
-
-### Testing implications
-
-**With WAF detected:**
-- Scans may trigger blocks or rate limiting
-- Expect more false negatives in vulnerability scans
-- Some attack payloads will be filtered
-- Consider using encoded or obfuscated payloads for manual testing
-- Document the WAF in your final report
-
-**No WAF detected:**
-- Direct access to the application
-- More accurate scan results expected
-- Full payload testing possible
-- Faster scanning without rate limiting concerns
 
 <Tip>
 When a WAF is detected, consider using the discovered origin IP (if found) to scan the application directly. However, always confirm you have authorization to test the origin server.

@@ -5,7 +5,7 @@ description: "Integrate security scanning into your GitHub Actions workflows"
 
 ## Overview
 
-The GitHub Actions integration allows you to run Pentest-Tools.com scans as part of your CI/CD pipeline, enabling automated security testing on every deployment.
+The GitHub Actions integration allows you to run Pentest-Tools.com scans as part of your CI/CD pipeline.
 
 <Info>
 Available on **WebNetSec** and **Pentest Suite** plans.
@@ -32,7 +32,7 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Create an action">
-    Go to Settings → Integrations → GitHub Actions → Create action.
+    Go to Settings > Integrations > GitHub Actions > Create action.
   </Step>
   <Step title="Configure the action">
     Set the target, scan type, output format, and fail condition.
@@ -44,6 +44,7 @@ Available on **WebNetSec** and **Pentest Suite** plans.
     Add the action to your GitHub workflow YAML file.
   </Step>
 </Steps>
+
 
 ## Action configuration
 
@@ -69,6 +70,8 @@ Configure when your pipeline should fail:
 
 ## Example workflow
 
+The POST request starts a scan and returns immediately. To block the pipeline until the scan finishes, poll the scan status and exit with a non-zero code if findings exceed your threshold.
+
 ```yaml
 name: Security Scan
 
@@ -86,11 +89,47 @@ jobs:
         env:
           PTT_SECRET: ${{ secrets.PTT_ACTION_SECRET }}
         run: |
-          curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
+          # Trigger the scan
+          RESPONSE=$(curl -sf -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
             -H "Authorization: Bearer $PTT_SECRET" \
             -H "Content-Type: application/json" \
-            -d '{"action_name": "my-security-scan"}'
+            -d '{"action_name": "my-security-scan"}')
+
+          SCAN_ID=$(echo "$RESPONSE" | jq -r '.data.id')
+          echo "Scan started: $SCAN_ID"
+
+          # Poll until the scan finishes
+          while true; do
+            STATUS=$(curl -sf "https://app.pentest-tools.com/api/v2/scans/$SCAN_ID" \
+              -H "Authorization: Bearer $PTT_SECRET" \
+              | jq -r '.data.status_name')
+
+            echo "Status: $STATUS"
+
+            if [[ "$STATUS" == "finished" ]]; then
+              break
+            elif [[ "$STATUS" == "failed"* || "$STATUS" == "timed out" || "$STATUS" == "aborted" ]]; then
+              echo "Scan ended with status: $STATUS"
+              exit 1
+            fi
+
+            sleep 30
+          done
+
+          # Fail if high or critical findings exist
+          HIGH_COUNT=$(curl -sf "https://app.pentest-tools.com/api/v2/scans/$SCAN_ID/output" \
+            -H "Authorization: Bearer $PTT_SECRET" \
+            | jq '[.data[] | select(.risk_level >= 3)] | length')
+
+          if [[ "$HIGH_COUNT" -gt 0 ]]; then
+            echo "Found $HIGH_COUNT high or critical findings"
+            exit 1
+          fi
 ```
+
+<Note>
+`jq` is pre-installed on GitHub-hosted runners. If you use a self-hosted runner, install it first.
+</Note>
 
 ## Scan types
 
@@ -109,7 +148,7 @@ Use Light scans for PR validation to keep CI times short, and schedule Deep scan
 
 Human-readable summary of findings, ideal for quick review in logs.
 
-### JSON Output
+### JSON output
 
 Structured data for programmatic processing:
 
@@ -155,6 +194,6 @@ Store your action secret in GitHub Secrets, never commit it to your repository.
 
 ## Related topics
 
-- [Generic CI/CD](/notifications/generic-cicd)
-- [API Overview](/api-reference/overview)
-- [Notifications Overview](/notifications/overview)
+- [Generic CI/CD](/integrations/generic-cicd)
+- [API overview](/api-reference/overview)
+- [Notifications](/notifications/overview)

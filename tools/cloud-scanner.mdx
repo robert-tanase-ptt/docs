@@ -59,7 +59,7 @@ If "Detect cloud provider" is disabled, the scanner tests for vulnerabilities ac
 | **ACL misconfigurations** | Overly permissive access control lists |
 | **Interesting files** | Sensitive files like wp-config, backups, keys |
 
-### Google cloud storage
+### Google Cloud Storage
 
 | Check | Description |
 |-------|-------------|
@@ -83,17 +83,6 @@ The Cloud Scanner performs these steps:
 4. **Permission testing**: Tests what operations are allowed (read, write, list)
 5. **Configuration analysis**: Checks security settings like ACLs, IAM policies, encryption
 6. **Interesting file search**: Looks for sensitive filenames in accessible buckets
-
-## Why cloud security matters
-
-- **Data exposure**: Misconfigured buckets have caused major data breaches
-- **Compliance**: Regulations require proper access controls on cloud storage
-- **Attack surface**: Public buckets are actively scanned by attackers
-- **Data integrity**: Writable buckets allow attackers to modify or inject content
-
-<Warning>
-Publicly writable buckets allow attackers to upload malicious content, host phishing pages, or modify existing files.
-</Warning>
 
 ## Follow-up actions
 

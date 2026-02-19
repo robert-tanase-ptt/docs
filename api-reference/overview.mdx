@@ -1,13 +1,13 @@
 ---
-title: "Overview"
+title: "API overview"
 description: "Programmatic access to Pentest-Tools.com capabilities"
 ---
 
 ## Introduction
 
-Pentest-Tools.com makes it easy for security teams to discover, exploit, and report common vulnerabilities while saving time for custom work and more creative hacking.
+The Pentest-Tools.com REST API lets you manage targets, run scans, retrieve findings, and generate reports programmatically.
 
-Our REST API enables you to interact with the platform programmatically, integrating security scanning into your existing tools and workflows.
+Use it to integrate security scanning into your existing tools and workflows.
 
 ## What you can do
 
@@ -40,22 +40,22 @@ https://app.pentest-tools.com/api/v2
 
 ## Quick start
 
-### 1. Get Your API Key
+### 1. Get your API key
 
-Generate an API key from **My Account → API** in the web application.
+Generate an API key from **My Account > API** in the web application.
 
-<Note>
+<Info>
 API access requires a plan that includes it. Check your plan details if you receive a 403 error.
-</Note>
+</Info>
 
-### 2. Make Your First Request
+### 2. Make your first request
 
 ```bash
 curl -X GET "https://app.pentest-tools.com/api/v2/targets" \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-### 3. Start a Scan
+### 3. Start a scan
 
 ```bash
 curl -X POST "https://app.pentest-tools.com/api/v2/scans" \
@@ -138,5 +138,5 @@ If you have questions about the API, contact us at [support@pentest-tools.com](m
 ## Next steps
 
 - [Authentication](/api-reference/authentication): Get your API key and authenticate requests
-- [API Examples](/api-reference/examples): Python examples for all endpoints
-- [Limits and Errors](/api-reference/limits-and-errors): Rate limits and error handling
+- [API examples](/api-reference/examples): Python examples for all endpoints
+- [Limits and errors](/api-reference/limits-and-errors): Rate limits and error handling
