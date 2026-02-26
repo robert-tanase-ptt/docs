@@ -30,30 +30,28 @@ To request deletion of your personal data, contact [data.privacy@pentest-tools.c
 
 ## AI data policy
 
-Our platform uses AI-powered features like the [Soft 404 detector](/ai/soft404detector) to improve scan accuracy. Here is how we handle your data for those features.
+Our platform includes AI-powered features: the [Soft 404 detector](/ai/soft404detector), [endpoint discovery](/ai/endpoint-discovery), and [AI-enhanced authentication](/ai/authentication).
 
 ### Our AI infrastructure
 
 Our AI features use different models depending on the task:
 
-- **Proprietary models** for classification tasks like soft 404 detection, hosted on our own infrastructure (Linode for servers, Vast.ai for model hosting)
-- **Azure-hosted models** for browser-based AI features like endpoint discovery and authentication, running within our controlled Azure infrastructure
-- Infrastructure partners are contractually prohibited from accessing or using your data for any purpose beyond providing the service
+- Proprietary models for classification tasks like soft 404 detection, hosted on our own infrastructure (Linode for servers, Vast.ai for model hosting)
+- Azure-hosted models for browser-based AI features like endpoint discovery and authentication, running within our controlled Azure infrastructure
+
+All infrastructure partners are contractually prohibited from accessing or using your data for any purpose beyond providing the service.
 
 ### Data handling
 
-- **No training on your data**: Your scan data is not used to train any AI models, whether proprietary or third-party
-- **No data logging for AI debugging**: We do not log or retain your data for AI-related debugging purposes
-- **No retention window**: We do not have a data retention window for AI processing
-- **No external sharing**: Your data is not shared with any party outside of the infrastructure needed to run the feature
+Your scan data is not used to train any AI models, whether proprietary or third-party. We do not log or retain your data for AI-related debugging, and there is no retention window for AI processing. Your data is not shared with any party outside the infrastructure needed to run the feature.
 
 ### Model training
 
-Our foundational models were trained on a combination of public data and de-identified, aggregated historical user data. We are not currently training new models. If we develop future AI features that could use user data, we will be transparent and provide a clear opt-out.
+Our foundational models were trained on public data and de-identified, aggregated historical user data. We are not currently training new models. If we develop future AI features that could use your data, we will say so clearly and give you a way to opt out.
 
 ### About AI accuracy
 
-Our AI features do not hallucinate. That term describes generative AI systems, like chatbots, that can produce false information. Our models are predictive, not generative: they classify data rather than create content. A failure would be a misclassification, not an invention. We test our models for accuracy to keep that error rate low.
+Our AI features do not hallucinate. Our models classify data rather than create it, and each runs inside a rule-based pipeline. If something goes wrong, the scan continues without it. A failure means a missed classification. Not an invention.
 
 ## Responsible disclosure
 

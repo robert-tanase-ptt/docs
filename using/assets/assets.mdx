@@ -10,7 +10,7 @@ Pentest-Tools.com uses two related concepts for organizing what you scan:
 | Concept | Description | Example |
 |---------|-------------|---------|
 | **Asset** | A top-level resource you add to the platform. Assets are the unit for subscription limits. | `example.com`, `192.168.1.1` |
-| **Target** | A specific scannable item derived from an asset. Tools run scans against targets. | `https://example.com/app`, `https://example.com/api/v1` |
+| **Target** | A specific scannable item associated with an asset. Tools run scans against targets. | `https://example.com/app`, `https://example.com/api/v1` |
 
 <Info>
 Your subscription's asset limit determines how many assets you can add. One asset can have multiple targets, all counted under that single asset.
@@ -66,6 +66,11 @@ All of these targets belong to the single `example.com` asset, counting as **one
 | URL | `https://example.com/app` | `example.com` |
 | URL with port | `https://example.com:8443/admin` | `example.com` |
 | IP range (CIDR) | `192.168.1.0/24` | Individual IPs |
+| IP range (dash) | `192.168.1.1-100` | Individual IPs |
+
+<Note>
+CIDR notation supports masks from /24 to /30. Masks outside this range are rejected.
+</Note>
 
 <Note>
 Different tools accept different target types. For example, the Website Scanner requires a URL, while the Port Scanner accepts hostnames or IP addresses.
@@ -149,6 +154,8 @@ Moving a target also moves its associated scan history and findings to the new w
 Deleting an asset removes all associated targets, scans, findings, and attack surface data permanently. This action cannot be undone.
 </Warning>
 
+Use **Group by asset** to see assets as top-level rows and act on them directly.
+
 **To delete targets (keeping the asset):**
 1. Select the specific targets you want to remove
 2. Click **Delete**
@@ -164,10 +171,10 @@ Deleting an asset removes all associated targets, scans, findings, and attack su
 Some tools discover additional information during scanning:
 
 - **Subdomain Finder** discovers subdomains under your domain asset
-- **Website Recon** identifies linked pages and endpoints
+- **Website Recon** identifies web technologies, CMS platforms, and frameworks
 - **Port Scanner** finds services that may expose web interfaces
 
-Discovered items appear in the scan results and in the attack surface view. To add them as assets or targets, you need to manually add them from the scan results.
+Discovered items appear in the scan results. Results from Website Recon and Port Scanner are also merged into the [attack surface view](/using/attack-surface/attack-surface-overview) automatically. To add discovered subdomains or hosts as targets, add them manually from the scan results.
 
 <Tip>
 Use the attack surface view to see all discovered hosts, ports, and technologies across your scans.

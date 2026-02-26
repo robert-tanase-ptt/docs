@@ -22,12 +22,14 @@ Each finding in the list displays:
 
 Use filters to focus on what matters:
 
+- **By finding name**: Search by vulnerability name, with partial matching supported
 - **By risk level**: View only Critical and High findings, exclude informational items
 - **By status**: Track remediation progress (Open, Fixed, Accepted, etc.)
 - **By target**: Scope to specific targets
 - **By source**: Filter by scanner type or manually added findings
 - **By verified status**: Show only verified or unverified findings
 - **By scan date**: Filter by when findings were discovered
+- **By workspace**: Scope findings to a specific workspace. Hidden by default; enable the column using the **Show all owned workspaces** toggle.
 
 <Tip>
 Start your triage by filtering for Critical and High severity findings. These represent the greatest risk to your organization.
@@ -36,6 +38,12 @@ Start your triage by filtering for Critical and High severity findings. These re
 ## Finding details
 
 Select any finding to view full details:
+
+- **Risk level**: Current severity rating (Critical, High, Medium, Low, Info)
+- **Status**: Current triage status (Open, Fixed, Accepted, Ignored, False Positive)
+- **Verified**: Whether the finding has been manually confirmed
+
+All three can be changed directly from the detail view. Each change optionally includes a reason, which is recorded and applied to duplicate findings in the same group.
 
 - **Description**: What the vulnerability is and why it's a security concern
 - **Evidence**: Proof of the vulnerability (request/response data, screenshots, payloads)
