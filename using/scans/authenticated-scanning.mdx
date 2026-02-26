@@ -15,7 +15,7 @@ Before configuring authenticated scanning, ensure you have:
 
 - **Test account credentials**: Dedicated accounts for scanning (not production user accounts)
 - **Extended session timeout**: Session configured to last longer than your scan duration
-- **CAPTCHA/2FA disabled**: On test accounts, or use Recorded/Cookie authentication to bypass
+- **CAPTCHA/2FA disabled**: Neither automatic nor recorded authentication supports CAPTCHA or 2FA. Use Cookie or Header authentication with a pre-authenticated session, or disable them on test accounts.
 - **Logout URLs identified**: To add to scan exclusions and prevent accidental logout
 
 ## Supported tools
@@ -328,7 +328,7 @@ Create a dedicated service account for security testing with appropriate permiss
     Web scans can take several hours to complete. Ensure your session cookies or tokens don't expire during the scan. If possible, increase the session lifetime in your target application during testing.
   </Accordion>
   <Accordion title="Disable MFA for test accounts">
-    Multi-factor authentication prevents automated scanning. Disable it for test accounts or use recorded authentication to capture the full login flow including MFA steps.
+    Multi-factor authentication prevents automated scanning. Disable it for test accounts, or use Cookie or Header authentication with a pre-authenticated session.
   </Accordion>
   <Accordion title="Exclude logout URLs">
     Configure scan exclusions to prevent the scanner from accidentally logging itself out during testing. Common patterns to exclude: `/logout`, `/signout`, `/session/destroy`.
@@ -362,8 +362,7 @@ Create a dedicated service account for security testing with appropriate permiss
 
 - Remove CAPTCHA from the test environment during scanning
 - Disable 2FA for test accounts
-- Use Cookie or Header authentication with an already-authenticated session
-- Use Recorded authentication if you can complete login manually (including 2FA steps)
+- Use Cookie or Header authentication with a pre-authenticated session
 
 ### Authentication works but scan finds nothing
 

@@ -1,0 +1,97 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Pentest-Tools.com – Mintlify doc theme overrides
+   Colors aligned to the public website design system (Inter, dark-blue scale)
+
+   Dark mode uses ONLY html.dark selectors (not @media prefers-color-scheme)
+   because Mintlify controls dark mode via the .dark class on <html>.
+   Using @media queries would conflict when the OS preference differs
+   from the Mintlify toggle (e.g. Firefox in OS dark mode + docs light mode).
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --ptt-dark-bg: #171717;
+  --ptt-dark-surface: #1e1e1e;
+  --ptt-cta: #4497fa;
+  --ptt-cta-hover: #266abc;
+}
+
+/* ── CTA button ──────────────────────────────────────────────────── */
+
+#topbar-cta-button {
+  background: var(--ptt-cta);
+  border-color: var(--ptt-cta);
+  color: #fff;
+}
+
+#topbar-cta-button:hover,
+#topbar-cta-button:focus-visible {
+  background: var(--ptt-cta-hover);
+  border-color: var(--ptt-cta-hover);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+
+#footer {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DARK MODE — html.dark only
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Navbar ──────────────────────────────────────────────────────── */
+
+html.dark #header,
+html.dark #navbar {
+  background: var(--ptt-dark-bg);
+  border-bottom-color: rgba(180, 214, 255, 0.15);
+}
+
+html.dark #navbar a,
+html.dark #header a {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+html.dark #navbar a:hover,
+html.dark #header a:hover {
+  color: #fff;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+
+html.dark #sidebar {
+  background: var(--ptt-dark-surface);
+  border-right-color: rgba(77, 112, 163, 0.35);
+}
+
+/* ── Content area ────────────────────────────────────────────────── */
+
+html.dark #content-area,
+html.dark #content-container {
+  background: var(--ptt-dark-bg);
+}
+
+/* ── Inline code ─────────────────────────────────────────────────── */
+
+html.dark #content-container :not(pre) > code {
+  background: rgba(77, 112, 163, 0.35);
+  color: #ecf5ff;
+}
+
+/* ── Table headers ───────────────────────────────────────────────── */
+
+html.dark #content-container table thead tr {
+  background: #1e2a3a !important;
+}
+
+html.dark #content-container table thead th,
+html.dark #content-container table thead td {
+  color: #e2e8f0 !important;
+  font-weight: 600;
+}
+
+html.dark #content-container table,
+html.dark #content-container table th,
+html.dark #content-container table td {
+  border-color: rgba(77, 112, 163, 0.3);
+}

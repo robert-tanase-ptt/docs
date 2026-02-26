@@ -1,0 +1,96 @@
+---
+title: "Follow redirects"
+description: "Control how scanning tools handle HTTP redirects before scanning begins"
+---
+
+## Overview
+
+When you scan a URL that redirects to another location, the scanner has to decide which URL to actually test. The "Follow redirects" setting controls this: whether the scanner follows the redirect and tests the destination, or stays on the original URL you entered.
+
+This is a target validation step. It runs before scanning starts, not during the scan itself. The platform checks whether the target URL redirects, validates whether the destination is within the configured scope, and updates the scan target accordingly.
+
+The default is **Same-domain only**, which covers the most common redirect patterns: HTTP to HTTPS upgrades and bare domain to `www` redirects.
+
+## Supported tools
+
+The follow redirects option is available for any tool that accepts a URL as a target.
+
+| Tool | Notes |
+|------|-------|
+| [Website Scanner](/tools/website-scanner) | Disabled automatically when authentication is configured |
+| [API Scanner](/tools/api-scanner) | Disabled automatically when authentication is configured |
+| [URL Fuzzer](/tools/url-fuzzer) | Always active |
+| [WordPress Scanner](/tools/wordpress-scanner) | Disabled automatically when authentication is configured |
+| [SQLi Exploiter](/tools/sqli-exploiter) | Disabled automatically when authentication is configured |
+| [XSS Exploiter](/tools/xss-exploiter) | Disabled automatically when authentication is configured |
+
+<Note>
+When you configure authentication for a tool, redirect following is disabled automatically. The scanner tests the original URL to avoid redirect loops with login pages.
+</Note>
+
+## Options
+
+The default is **Same-domain only** (`same_domain`).
+
+| Option | API value | Description |
+|--------|-----------|-------------|
+| **Never** | `none` | Scan the original URL. Ignore all redirects. |
+| **Same-host only** | `same_host` | Follow redirects within the same hostname. Allows protocol (HTTP to HTTPS) and path changes, but not subdomain or domain changes. |
+| **Same-domain only** | `same_domain` | Follow redirects within the same registrable domain. Allows subdomain changes in addition to protocol and path changes. |
+| **Always** | `allow_all` | Follow redirects to any destination, including a different domain. |
+
+## How it works
+
+Before a scan starts, the platform checks whether the target URL redirects. Based on the result:
+
+- **Redirect within scope**: the scan target is updated to the redirected URL and the scan proceeds normally
+- **Redirect out of scope**: the scan is rejected with an error
+- **No redirect**: the scan runs against the original URL
+
+### Redirect types
+
+The levels are cumulative. Same-domain only allows everything Same-host only allows, plus subdomain changes. Always allows any redirect.
+
+| Redirect type | Minimum level needed |
+|---|---|
+| Protocol change (`http://example.com` to `https://example.com`) | Same-host only |
+| Path change (`example.com` to `example.com/login`) | Same-host only |
+| Subdomain change (`example.com` to `www.example.com`) | Same-domain only |
+| Different domain (`example.com` to `other.com`) | Always |
+
+## When to use each option
+
+**Never.** Use when you want to test the exact URL you entered, regardless of where it redirects. Good for testing redirect behavior itself, or when the redirect destination is outside your engagement scope.
+
+**Same-host only.** Use when the target may redirect between HTTP and HTTPS or to a different path on the same server, but you want to stay strictly on the same hostname.
+
+**Same-domain only** is the right choice for most scans. It handles HTTP to HTTPS upgrades and www-prefixed redirects without risking unintended scope expansion.
+
+**Always.** Use when you have explicit authorization to test the redirect destination and know it may be on a different domain.
+
+<Warning>
+**Always** follows redirects to any domain. Only use this when your scope explicitly covers the redirect destination.
+</Warning>
+
+## API
+
+Use the `redirect_level` parameter when starting scans via the API. The default is `same_domain`.
+
+Valid values: `none`, `same_host`, `same_domain`, `allow_all`.
+
+```bash
+curl -X POST https://pentest-tools.com/api/v2/scans \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tool_id": 170,
+    "target_name": "https://example.com",
+    "redirect_level": "same_domain"
+  }'
+```
+
+## Related topics
+
+- [Authenticated scanning](/using/scans/authenticated-scanning): when authentication is configured, redirect following is disabled automatically
+- [Website Scanner](/tools/website-scanner)
+- [API Scanner](/tools/api-scanner)

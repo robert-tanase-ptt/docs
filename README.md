@@ -63,6 +63,8 @@ Follow the conventions in `.cursor/rules`:
 | File | Purpose |
 |------|---------|
 | `docs.json` | Site navigation and configuration |
+| `style.css` | Global Mintlify style overrides for Pentest-Tools branding |
+| `brand.js` | Lightweight UI behavior enhancements for docs branding |
 | `tools/index.mdx` | Tools overview page |
 | `using/scans/authenticated-scanning.mdx` | Authentication guide for all tools |
 | `ai/authentication.mdx` | AI-enhanced authentication feature |

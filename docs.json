@@ -2,12 +2,42 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "Pentest-Tools.com docs",
+  "description": "Official product, API, and integration documentation for Pentest-Tools.com.",
   "colors": {
     "primary": "#2A76D1",
     "light": "#4497FA",
     "dark": "#00327C"
   },
-  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://pentest-tools.com"
+  },
+  "favicon": {
+    "light": "/favicon.svg",
+    "dark": "/favicon.svg"
+  },
+  "fonts": {
+    "heading": {
+      "family": "Inter",
+      "weight": 700
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400
+    }
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "css": "/style.css",
+  "js": "/brand.js",
+  "background": {
+    "color": {
+      "light": "#F8FAFB",
+      "dark": "#171717"
+    }
+  },
   "navigation": {
     "tabs": [
       {
@@ -32,7 +62,9 @@
                   "concepts/scans-and-statuses",
                   "using/scans/scan-types-and-depth",
                   "using/scans/authenticated-scanning",
-                  "using/scans/scheduled-scans"
+                  "using/scans/follow-redirects",
+                  "using/scans/scheduled-scans",
+                  "using/scans/portlists"
                 ]
               },
               {
@@ -49,17 +81,22 @@
             "pages": [
               "tools/index",
               {
-                "group": "Reconnaissance",
+                "group": "Web reconnaissance",
                 "pages": [
                   "tools/google-hacking",
+                  "tools/website-recon",
+                  "tools/url-fuzzer",
+                  "tools/waf-detector",
+                  "tools/people-hunter"
+                ]
+              },
+              {
+                "group": "Network & cloud reconnaissance",
+                "pages": [
                   "tools/domain-finder",
                   "tools/subdomain-finder",
                   "tools/virtual-hosts-finder",
-                  "tools/port-scanner",
-                  "tools/website-recon",
-                  "tools/waf-detector",
-                  "tools/url-fuzzer",
-                  "tools/people-hunter"
+                  "tools/port-scanner"
                 ]
               },
               {

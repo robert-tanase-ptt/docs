@@ -19,7 +19,7 @@ The URL Fuzzer is a **discovery tool**: it identifies hidden resources but does 
 
 ## Parameters
 
-### Target URL
+### Target
 
 The URL to fuzz. You can optionally specify where to insert payloads using the `FUZZ` marker:
 
@@ -113,7 +113,7 @@ Use Auto filtering for most scans. Switch to Manual when you need precise contro
     For each selected extension category, sends requests for every word in the wordlist with the extension appended.
   </Step>
   <Step title="Filter responses">
-    In Auto mode, discards 404 pages and detects soft 404s using our [AI-powered Soft 404 detector](/ai/soft404detector). In Manual mode, applies custom match/ignore conditions.
+    In Auto mode, discards 404 pages and detects soft 404s using an in-house heuristic detector. An [AI classifier](/ai/soft404detector) then runs a second pass on any response the heuristic marks as valid, to reduce false positives. In Manual mode, applies custom match/ignore conditions.
   </Step>
   <Step title="Recursion (if enabled)">
     For each discovered directory with status 200 or 403, starts a new scan using the original wordlist. Repeats up to the configured depth.
@@ -165,7 +165,7 @@ Based on discovered content:
 
 | Discovery | Recommended action |
 |-----------|-------------------|
-| Admin panels, login pages | Test with [Website Scanner](/tools/website-scanner) |
+| Any discovered page (admin panels, login pages, etc.) | Test with [Website Scanner](/tools/website-scanner) |
 | API endpoints, Swagger docs | Run [API Scanner](/tools/api-scanner) |
 | Configuration files | Review for exposed credentials and sensitive data |
 | `.git` directory | Extract and analyze the repository for secrets |

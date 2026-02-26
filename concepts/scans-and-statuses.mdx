@@ -34,8 +34,8 @@ These labels map to the runtime `ScanStatus` enum used by the platform.
 | **Finished** | Scanner completed and results are ready | Review findings and download the report |
 | **Stopped** | You or the system stopped the run | Rerun after adjusting scope or timing |
 | **Timeout** | Scan exceeded the allowed duration | Narrow scope or increase timeout where supported |
-| **Start Error** | Scan failed before it could start | Check target reachability and configuration, then retry |
-| **Aborted** | Platform terminated the scan unexpectedly | Retry; contact support if it recurs |
+| **Start Error** | Scan failed before it could start | Contact support (internal tool issue) |
+| **Aborted** | Platform terminated the scan unexpectedly | Contact support |
 | **VPN Error** | Required VPN connection could not be established | Verify VPN agent status and credentials |
 | **Authentication Error** | Provided auth to the target failed | Update credentials or verification tokens |
 | **Connection Error** | Network connection to target failed | Confirm DNS/ports/firewall and try again |
@@ -51,21 +51,25 @@ Waiting → Running → Finished
 ```
 
 <Note>
-Running and Waiting are the only active states. Everything else is terminal. Finished, Stopped, and Timeout retain partial or full results, while error states do not.
+Running and Waiting are the only active states. Everything else is terminal. Finished, Stopped, and Timeout retain partial or full results. Aborted and VPN Error may also retain partial results if the scan ran for some time before stopping. Authentication Error, Connection Error, and Skipped produce no results. The scan never started.
 </Note>
 
 ## Understanding scan results
 
 When a scan completes, you'll see:
 
-- **Findings count**: Number of vulnerabilities discovered
-- **Severity breakdown**: Distribution by severity level
-- **Scan duration**: How long the scan took
-- **Coverage**: What was tested
+| | |
+|---|---|
+| **Findings count** | Number of vulnerabilities discovered |
+| **Severity breakdown** | Distribution by severity level |
+| **Scan duration** | How long the scan took |
+| **Coverage** | What was tested |
 
 <Note>
 A completed scan with zero findings doesn't mean the target is secure. It means the scanner didn't detect vulnerabilities with its current checks.
 </Note>
+
+Some tools don't generate structured findings. They return tool-specific output instead: discovered hosts, raw console output, or takeover reports. See [Tools](/concepts/tools) for details on what each one returns.
 
 ## Common issues
 
@@ -83,7 +87,7 @@ A completed scan with zero findings doesn't mean the target is secure. It means 
     Ensure the VPN agent is online and the tunnel profile is valid. Restart the agent if needed.
   </Accordion>
   <Accordion title="Stopped or Aborted">
-    If you stopped it manually, rerun when ready. For Aborted, retry once; if repeated, contact support with the scan ID.
+    If you stopped it manually, rerun when ready. For Aborted, contact support with the scan ID.
   </Accordion>
 </AccordionGroup>
 

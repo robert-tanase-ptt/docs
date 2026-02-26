@@ -1,21 +1,21 @@
 ---
 title: "Website Recon"
-description: "Fingerprint technologies and gather intelligence about web applications"
+description: "Identify technologies running on any web application"
 ---
 
 ## Overview
 
-Website Recon identifies server-side and client-side technologies used by a web application. It is primarily a discovery tool, but it also generates [findings](/using/findings/findings) for detected technologies. Discovered technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview).
+Website Recon identifies server-side and client-side technologies on a web application. It generates [findings](/using/findings/findings) for each detected technology and adds results to your [Attack Surface](/using/attack-surface/attack-surface-overview).
 
 ## Parameters
 
 | Parameter | Description |
 |-----------|-------------|
-| Target URL | The address of the website to analyze. Must start with `http://` or `https://`. |
+| Target | The address of the website to analyze. Must start with `http://` or `https://`. |
 
 ## How it works
 
-Website Recon uses [Wappalyzer](https://www.wappalyzer.com/) as its scanning engine. Wappalyzer maintains a database of over 900 web technologies across 50+ categories.
+Website Recon uses [Wappalyzer](https://www.wappalyzer.com/) as its scanning engine. Wappalyzer maintains a database of over 7,900 technologies across 100+ categories.
 
 The tool analyzes multiple elements of the website:
 
@@ -28,7 +28,7 @@ The tool analyzes multiple elements of the website:
 | **HTML comments** | Development tools, build systems |
 | **Website favicon** | Platform identification (e.g., WordPress, Drupal) |
 
-The tool also captures a **screenshot** of the website for visual reference.
+It also takes a screenshot of the website.
 
 ## Technology categories
 
@@ -72,8 +72,8 @@ Server: Apache 2.2
 Operating System: Linux
 ```
 
-The next steps would be:
-1. Check for known vulnerabilities -- WordPress 4.1 has known security issues
+Next steps:
+1. Search for WordPress 4.1 CVEs
 2. Run the [WordPress Scanner](/tools/wordpress-scanner) for CMS-specific testing
 3. Use the server and OS information to select appropriate exploits
 
