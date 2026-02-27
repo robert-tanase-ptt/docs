@@ -24,14 +24,21 @@ Authentication requires your Pentest-Tools.com API key. Get it from **My Account
 API access requires a plan that includes it. See [Authentication](/api-reference/authentication) for details.
 </Info>
 
-### Claude
+### Claude Code
 
-**Claude Desktop**
+```shell
+claude mcp add --transport http ptt-mcp https://mcp.pentest-tools.com/mcp/ --header "PTT_API_KEY: <your_api_key_here>"
+```
+
+### Claude Desktop
 
 Edit your Claude Desktop configuration file:
 
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- Linux: `~/.config/Claude/claude_desktop_config.json`
+
+**Local server**
 
 ```json
 {
@@ -47,13 +54,30 @@ Edit your Claude Desktop configuration file:
 }
 ```
 
+**Remote server**
+
+Claude Desktop only supports local, stdio-based communication. Its paid plan Connectors don't support custom headers, so you need `npx mcp-remote` as a local bridge to the remote server. Make sure npm is installed before you start.
+
+```json
+{
+  "mcpServers": {
+    "ptt-mcp": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.pentest-tools.com/mcp/", "--header", "PTT_API_KEY:<your_api_key_here>"]
+    }
+  }
+}
+```
+
 Restart Claude Desktop after saving.
 
 ### Cursor
 
-**Local server**
+[Install in Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=ptt-mcp&config=eyJ1cmwiOiJodHRwczovL21jcC5wZW50ZXN0LXRvb2xzLmNvbS9tY3AvIiwiaGVhZGVycyI6eyJQVFRfQVBJX0tFWSI6IiJ9fQ) sets up the remote server. You'll need to add your API key after installation.
 
-Add to your Cursor MCP settings:
+Or configure manually:
+
+**Local server**
 
 ```json
 {
@@ -112,14 +136,18 @@ Or add manually to your settings:
 
 ### Gemini CLI
 
-Add to your Gemini CLI configuration:
+```shell
+gemini mcp add ptt-mcp --transport http https://mcp.pentest-tools.com/mcp/ --header "PTT_API_KEY: <your_api_key_here>"
+```
+
+Or add manually to `~/.gemini/settings.json`:
 
 ```json
 {
   "mcpServers": {
     "ptt-mcp": {
+      "url": "https://mcp.pentest-tools.com/mcp/",
       "type": "http",
-      "httpUrl": "https://mcp.pentest-tools.com/mcp/",
       "headers": {
         "PTT_API_KEY": "your_api_key_here"
       }
@@ -157,7 +185,7 @@ pip install -e .[mcp]
 ```
 
 <Note>
-Python 3.9 or higher is required.
+Python 3.10 or higher is required.
 </Note>
 
 ## Available tools
@@ -174,6 +202,8 @@ The MCP server provides tools for:
 | Workspaces | List, create, edit, delete workspaces |
 | Utilities | HTTP loggers, VPN profiles, report translation |
 
+The server also exposes read-only resources (scans, targets, workspaces, findings, reports, HTTP loggers, and wordlists) that give the AI background context without tool calls.
+
 ## Built-in prompts
 
 Pre-built prompts for common workflows:
@@ -184,6 +214,49 @@ Pre-built prompts for common workflows:
 | `subdomains` | Discover all subdomains for a domain |
 | `is_up` | Check if a target is accessible |
 | `summary` | Executive summary for scans in a workspace |
+| `vibeseccoding` | Deploy, scan, and remediate a Dockerized application via terminal commands |
+
+## Use cases
+
+Use the MCP server to chain tools together and run multi-step security workflows through natural language.
+
+### Rapid reconnaissance
+
+Map a target's attack surface without running each scanner manually. Ask the AI to perform a recon scan, and it will call the subdomain finder, review the results, and run the network scanner on live assets to find open ports.
+
+### Smart vulnerability triage
+
+Ask the AI to pull findings from a workspace and summarize only the critical SQL injection vulnerabilities from that week. It filters by your criteria and explains the results, which is faster than scrolling through the dashboard.
+
+### Report translation
+
+The `translate_report` tool fetches the report, translates each finding, imports the translated versions, and generates a new report for your regional teams. The limit is 50 findings per hour, so start with smaller reports or allow extra time for large ones.
+
+<Tip>
+When downloading a PDF report via MCP, tell the AI to save it to a local file rather than display it. The API returns raw binary data, which can flood your context window with unreadable text.
+</Tip>
+
+### Executive reporting
+
+Use the `summary` prompt to get a risk overview with remediation priorities, written for people who don't need to know what a CVE is.
+
+### Secure coding
+
+For developers using agentic IDEs like Cursor or Copilot. Run a scan on your local Docker app, and the AI reads the relevant source files, proposes patches, and confirms the fix with a follow-up scan.
+
+## Limitations
+
+**Tool count:** The server exposes a small number of tools on purpose. Most LLM clients perform worse as the tool count grows.
+
+**Progress reporting:** Scans report progress via scan ID and status updates. Some clients, including VS Code, can't display progress bars for long-running operations.
+
+**Authenticated scanning:** The Website Scanner supports login form, cookie, and header authentication, but not recorded authentication. The AI builds these parameters itself, so it may need a few attempts for complex configurations. Provide explicit examples in your prompts.
+
+**Plan limits:** Your scan capacity (parallel scans, assets per cycle, and queued scans) depends on your subscription. Hitting these limits causes queuing, delays, or errors.
+
+**Parallel scanning:** All tools are asynchronous, but running multiple scans in parallel is unreliable at the moment.
+
+**Report translation quota:** `translate_report` is limited to roughly 50 findings per hour.
 
 ## FAQ
 
@@ -192,12 +265,16 @@ Pre-built prompts for common workflows:
     API access requires a plan that includes it. Check your plan details in **My Account > Subscription** or contact support if you receive a 403 error.
   </Accordion>
 
-  <Accordion title="Local vs Remote server, which should I use?">
+  <Accordion title="Local vs remote server, which should I use?">
     Use the **local server** if you have Python installed and want faster response times. Use the **remote server** for simpler setup without local dependencies.
   </Accordion>
 
   <Accordion title="Why is authenticated scanning difficult for the AI?">
     Website Scanner authentication has complex configuration options. LLMs may need a few attempts to construct parameters correctly. Provide explicit examples in your prompts for best results.
+  </Accordion>
+
+  <Accordion title="How do I scan internal or private targets?">
+    Use `get_vpn_profiles` to retrieve your VPN profile UUIDs, then pass `vpn_profile_uuid` to your scan tool. If a target IP is private (RFC 1918), always include a VPN profile. Don't wait for the scan to fail before checking.
   </Accordion>
 
   <Accordion title="How do I know what tools the AI is calling?">

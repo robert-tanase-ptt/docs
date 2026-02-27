@@ -32,16 +32,16 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Create an action">
-    Go to Settings > Integrations > GitHub Actions > Create action.
+    Go to Settings > Integrations > GitHub Actions and click Create action.
   </Step>
   <Step title="Configure the action">
-    Set the target, scan type, output format, and fail condition.
+    Set the target, scan type, output format, fail condition, and the name of the GitHub secret that will hold your Pentest-Tools API key.
   </Step>
-  <Step title="Copy the secret">
-    Save the generated secret for use in your GitHub workflow.
+  <Step title="Add your API key to GitHub Secrets">
+    In your GitHub repository, go to Settings > Secrets and variables > Actions. Add your Pentest-Tools API key using the secret name from step 2.
   </Step>
   <Step title="Add to your workflow">
-    Add the action to your GitHub workflow YAML file.
+    Copy the generated YAML and add it to a file in `.github/workflows/`.
   </Step>
 </Steps>
 
@@ -52,9 +52,10 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 |---------|-------------|
 | **Name** | A descriptive name for the action |
 | **Target** | The URL or IP to scan |
-| **Scan type** | Light or Deep scan preset |
-| **Output format** | `text` or `json` for results |
+| **Scan type** | `light` or `deep` |
+| **Output format** | `text` or `json` |
 | **Fail condition** | Severity threshold to fail the build |
+| **Secret name** | Name of the GitHub repository secret holding your Pentest-Tools API key |
 
 ### Fail conditions
 
@@ -70,66 +71,35 @@ Configure when your pipeline should fail:
 
 ## Example workflow
 
-The POST request starts a scan and returns immediately. To block the pipeline until the scan finishes, poll the scan status and exit with a non-zero code if findings exceed your threshold.
+The integration generates a YAML snippet using the `pentesttoolscom/pentesttools-github-action` action. Add it to a file in `.github/workflows/`. The action handles scan execution and output. No polling required.
 
 ```yaml
-name: Security Scan
+jobs:
+  test_deep_scan:
+    runs-on: ubuntu-latest
+    name: Run a deep scan.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run scan
+        uses: pentesttoolscom/pentesttools-github-action@master
+        id: ptt
+        with:
+          target: https://your-website.com
+          format: text
+          fail: high
+          type: deep
+          key: ${{ secrets.PTT_API_KEY }}
+      - name: Print result
+        run: echo "${{ steps.ptt.outputs.result }}"
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: '0 0 * * *'
   pull_request:
-    branches: [main]
-
-jobs:
-  security-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Pentest-Tools.com scan
-        env:
-          PTT_SECRET: ${{ secrets.PTT_ACTION_SECRET }}
-        run: |
-          # Trigger the scan
-          RESPONSE=$(curl -sf -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
-            -H "Authorization: Bearer $PTT_SECRET" \
-            -H "Content-Type: application/json" \
-            -d '{"action_name": "my-security-scan"}')
-
-          SCAN_ID=$(echo "$RESPONSE" | jq -r '.data.id')
-          echo "Scan started: $SCAN_ID"
-
-          # Poll until the scan finishes
-          while true; do
-            STATUS=$(curl -sf "https://app.pentest-tools.com/api/v2/scans/$SCAN_ID" \
-              -H "Authorization: Bearer $PTT_SECRET" \
-              | jq -r '.data.status_name')
-
-            echo "Status: $STATUS"
-
-            if [[ "$STATUS" == "finished" ]]; then
-              break
-            elif [[ "$STATUS" == "failed"* || "$STATUS" == "timed out" || "$STATUS" == "aborted" ]]; then
-              echo "Scan ended with status: $STATUS"
-              exit 1
-            fi
-
-            sleep 30
-          done
-
-          # Fail if high or critical findings exist
-          HIGH_COUNT=$(curl -sf "https://app.pentest-tools.com/api/v2/scans/$SCAN_ID/output" \
-            -H "Authorization: Bearer $PTT_SECRET" \
-            | jq '[.data[] | select(.risk_level >= 3)] | length')
-
-          if [[ "$HIGH_COUNT" -gt 0 ]]; then
-            echo "Found $HIGH_COUNT high or critical findings"
-            exit 1
-          fi
 ```
 
-<Note>
-`jq` is pre-installed on GitHub-hosted runners. If you use a self-hosted runner, install it first.
-</Note>
+The `key` references the GitHub repository secret you configured. Set `fail` to the severity level that should fail the build — `high` means the job fails if any high or critical findings are found.
 
 ## Scan types
 
