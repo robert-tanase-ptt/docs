@@ -18,7 +18,7 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
     Discover EC2 instances and S3 buckets automatically.
   </Card>
   <Card title="Stay current" icon="arrows-rotate">
-    Keep your target list in sync with your infrastructure.
+    Re-import at any time to pick up new instances and buckets.
   </Card>
   <Card title="Multi-region" icon="globe">
     Import from multiple AWS regions at once.
@@ -98,6 +98,8 @@ Use the principle of least privilege. Only grant the permissions needed for the 
 |--------|-------------|
 | **Public IP** | Import the public IP address of instances |
 | **Private IP** | Import the private IP address (requires VPN) |
+
+Only running EC2 instances are imported. Stopped and terminated instances are skipped.
 
 <Tip>
 Use private IP import with VPN if you need to scan instances that aren't publicly accessible.

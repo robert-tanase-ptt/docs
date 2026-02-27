@@ -32,16 +32,20 @@ Only the account owner can invite new team members.
     Click the **Invite** button.
   </Step>
   <Step title="Enter email">
-    Provide the email address of the person you want to invite.
+    Enter the email address of the person you want to invite. The invitation can only be accepted by someone without an existing Pentest-Tools account.
   </Step>
   <Step title="Send invitation">
-    The invitee receives an email with instructions to activate their account.
+    The invitee gets an email with an activation link. They set their own name and password when they activate.
   </Step>
 </Steps>
 
 <Note>
-Invited users must activate their account before they can access the platform. Until activated, they appear as pending in your team list.
+Invited users must activate before they can access the platform. Until then, they appear as pending in your team list. Invitations expire after one month. To cancel a pending invitation, go to the Invitations tab on the Team page.
 </Note>
+
+<Warning>
+Invitations can only be accepted by people who don't already have a Pentest-Tools account. Existing account holders cannot join a team this way.
+</Warning>
 
 ## Sharing with team members
 
@@ -96,7 +100,6 @@ Configure access to these resource types:
 | **Wordlists** | Custom wordlists for fuzzing and enumeration |
 | **VPN Profiles** | VPN configurations for internal network scanning |
 | **Robots** | Pentest robot workflows |
-| **Scan Templates** | Saved scan configurations |
 | **Report Templates** | Pentest report templates |
 | **Finding Templates** | Custom finding definitions |
 | **Engagements** | Client engagement records |
@@ -133,7 +136,7 @@ If you're a team member, go to **Team > Shared with me** in the sidebar to see:
     Click the **Delete** button.
   </Step>
   <Step title="Choose content handling">
-    Decide whether to move their assets and scan data to the owner account or delete it.
+    Choose whether to transfer the member's workspaces and scan data to your account, or delete everything. Either way, engagements, report templates, and scheduled scans are removed.
   </Step>
   <Step title="Confirm">
     Confirm the removal.

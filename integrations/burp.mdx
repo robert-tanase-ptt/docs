@@ -68,6 +68,10 @@ Once installed and configured:
 4. Choose the target workspace
 5. Findings appear in your Findings list
 
+<Note>
+The import is rate-limited to 50 findings per hour. If you hit the limit, wait before pushing more.
+</Note>
+
 ## Managing imported findings
 
 Once imported, Burp Suite findings appear in your Findings list with a Burp Suite source indicator. You can:
@@ -88,7 +92,6 @@ Review findings in Burp Suite before pushing to avoid duplicates and ensure qual
 - Push findings to the appropriate workspace for organization
 - Use consistent target naming across tools
 - Include detailed evidence in Burp for accurate reporting
-- Regularly sync findings to keep your data current
 
 <Warning>
 Keep your API key secure. Anyone with the key can push findings to your account.

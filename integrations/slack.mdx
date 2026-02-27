@@ -20,11 +20,11 @@ Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
   <Step title="Connect Slack">
     Click "Add to Slack" and authorize the app.
   </Step>
-  <Step title="Select Channel">
-    Choose which Slack channel receives notifications.
+  <Step title="Select channel">
+    The channel is selected during Slack's authorization screen, not in Pentest-Tools.com. To use a different channel, disconnect the integration and reconnect.
   </Step>
-  <Step title="Configure Alerts">
-    Set which events trigger Slack messages.
+  <Step title="Set up notification rules">
+    In Pentest-Tools.com, go to Notifications and add the connected Slack channel as a destination for the notification rules you want.
   </Step>
 </Steps>
 
@@ -36,11 +36,10 @@ This integration receives all notification types configured in your workspace. S
 
 Slack notifications include:
 
-- Event type and timestamp
-- Target/asset information
-- Severity indicators
-- Direct links to platform
-- Action buttons
+- Tool name, scan status, and target
+- Trigger condition that matched
+- Scan result summary with risk level counts
+- Link to the full report
 
 ### Example message
 
@@ -100,9 +99,8 @@ Avoid sending all notifications to general channels. This creates noise and lead
     - Check integration status
   </Accordion>
   <Accordion title="Too many messages">
-    - Filter by severity
-    - Use a dedicated channel
-    - Enable digest mode if available
+    - Tighten your notification rules to filter by severity or tool
+    - Route high-volume alerts to a dedicated channel instead of a shared one
   </Accordion>
 </AccordionGroup>
 

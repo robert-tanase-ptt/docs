@@ -108,7 +108,7 @@ Your endpoint should:
 - Accept HTTP POST requests
 - Return a 2xx status code on success
 - Handle the JSON or multipart/form-data (for PDF) content type
-- Respond within 30 seconds
+- Respond within 10 seconds
 
 ## Headers
 
@@ -124,9 +124,9 @@ Webhook requests include these headers:
 
 If your endpoint fails to respond:
 
-- The request is retried up to 3 times
-- Retries use exponential backoff
-- Failed webhooks are logged for review
+- The request is retried up to 5 times
+- There is a 3-second pause between each attempt
+- If failures persist, you'll get an email notification (at most once every 24 hours)
 
 <Warning>
 If webhooks consistently fail, they may be disabled. Check your endpoint is accessible and returning successful responses.

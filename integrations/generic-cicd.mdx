@@ -32,16 +32,16 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 
 <Steps>
   <Step title="Create a pipeline action">
-    Go to Settings > Integrations > Generic CI/CD > Create action.
+    Go to Settings > Integrations > Generic CI/CD and click Create action.
   </Step>
   <Step title="Configure settings">
-    Set the target, scan type, output format, and fail condition.
+    Set the target URL, scan type, output format, and fail condition.
   </Step>
-  <Step title="Save the secret">
-    Copy the generated secret for your CI/CD configuration.
+  <Step title="Get your API key">
+    The Docker command takes your Pentest-Tools API key as the `--key` argument. Store it as a secret in your CI/CD system — don't paste it directly into pipeline files.
   </Step>
-  <Step title="Add to your pipeline">
-    Call the API from your pipeline script.
+  <Step title="Run the Docker command">
+    Copy the generated Docker command and add it to your pipeline. It runs in any CI/CD system that supports Docker.
   </Step>
 </Steps>
 
@@ -52,7 +52,7 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 |---------|-------------|
 | **Name** | Identifier for the pipeline action |
 | **Target** | URL or IP address to scan |
-| **Scan type** | Light or Deep scan preset |
+| **Scan type** | `light` or `deep` |
 | **Output format** | `text` or `json` |
 | **Fail condition** | Severity threshold to fail |
 
@@ -66,79 +66,21 @@ Available on **WebNetSec** and **Pentest Suite** plans.
 | High | High or higher severity found |
 | Critical | Critical severity found |
 
-## Platform examples
+## Running the scan
 
-### GitLab CI
+The integration generates a Docker command using the `pentesttoolscom/ptt-scan` image. Run it from any pipeline that supports Docker — GitLab CI, Jenkins, CircleCI, Azure DevOps, or anything else.
 
-```yaml
-security_scan:
-  stage: test
-  script:
-    - |
-      curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
-        -H "Authorization: Bearer $PTT_SECRET" \
-        -H "Content-Type: application/json" \
-        -d '{"action_name": "my-scan"}'
-  only:
-    - main
+```bash
+docker run --rm pentesttoolscom/ptt-scan:latest \
+  --key <API_KEY> \
+  --fail high \
+  run website_scanner \
+  --format text \
+  --scan_type deep \
+  https://your-website.com
 ```
 
-### Jenkins
-
-```groovy
-pipeline {
-    agent any
-    stages {
-        stage('Security Scan') {
-            steps {
-                withCredentials([string(credentialsId: 'ptt-secret', variable: 'PTT_SECRET')]) {
-                    sh '''
-                        curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
-                            -H "Authorization: Bearer $PTT_SECRET" \
-                            -H "Content-Type: application/json" \
-                            -d '{"action_name": "my-scan"}'
-                    '''
-                }
-            }
-        }
-    }
-}
-```
-
-### CircleCI
-
-```yaml
-version: 2.1
-jobs:
-  security-scan:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run:
-          name: Run security scan
-          command: |
-            curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
-              -H "Authorization: Bearer $PTT_SECRET" \
-              -H "Content-Type: application/json" \
-              -d '{"action_name": "my-scan"}'
-```
-
-### Azure DevOps
-
-```yaml
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      curl -X POST https://app.pentest-tools.com/api/v2/ci-cd/run \
-        -H "Authorization: Bearer $(PTT_SECRET)" \
-        -H "Content-Type: application/json" \
-        -d '{"action_name": "my-scan"}'
-```
-
-<Warning>
-Scans run asynchronously. The POST request starts a scan and returns immediately; it does not wait for results. To fail the pipeline based on findings, you need to poll the scan status until it completes, then check the results. See [API examples](/api-reference/examples) for the polling pattern.
-</Warning>
+Use the API key stored in your CI/CD secrets for `<API_KEY>`. The other values come from your action configuration in Pentest-Tools.com.
 
 ## Output handling
 
