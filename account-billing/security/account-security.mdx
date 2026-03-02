@@ -1,0 +1,119 @@
+---
+title: "Account security"
+description: "Secure your Pentest-Tools.com account"
+---
+
+Your account stores scan data, credentials, findings, and reports for systems you're authorized to test. Use the settings on this page to lock it down.
+
+Manage your security settings at [**My Account > Security**](https://app.pentest-tools.com/account/security/general).
+
+## Two-factor authentication (2FA)
+
+<Tip>
+We strongly recommend enabling 2FA for all accounts.
+</Tip>
+
+### Enabling 2FA
+
+Go to [**My Account > Security > 2FA**](https://app.pentest-tools.com/account/security/tfa) to set up two-factor authentication.
+
+<Steps>
+  <Step title="Scan the QR code">
+    Use an authenticator app to scan the QR code displayed on the page. Alternatively, you can manually enter the secret key.
+  </Step>
+  <Step title="Enter the verification code">
+    Enter the 6-digit code from your authenticator app to verify the setup.
+  </Step>
+</Steps>
+
+Once enabled, you'll need to enter a code from your authenticator app each time you log in.
+
+### Supported authenticator apps
+
+Any TOTP-compatible authenticator app works, including:
+
+- [Authy](https://authy.com/)
+- [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2)
+- [LastPass Authenticator](https://lastpass.com/auth/)
+- Microsoft Authenticator
+- 1Password
+
+### Disabling 2FA
+
+<Steps>
+  <Step title="Go to Security settings">
+    Go to [**My Account > Security**](https://app.pentest-tools.com/account/security/general).
+  </Step>
+  <Step title="Disable 2FA">
+    Click **Disable 2FA**.
+  </Step>
+  <Step title="Confirm with password">
+    Enter your current password to confirm.
+  </Step>
+</Steps>
+
+## Password
+
+### Changing your password
+
+<Steps>
+  <Step title="Go to Security settings">
+    Go to [**My Account > Security**](https://app.pentest-tools.com/account/security/general).
+  </Step>
+  <Step title="Click Change password">
+    Click **Change password**.
+  </Step>
+  <Step title="Enter current password">
+    Enter your current password.
+  </Step>
+  <Step title="Set new password">
+    Enter and confirm your new password.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+The page also shows when you last changed your password.
+
+<Note>
+If you signed up using Google or Microsoft SSO and haven't set a password yet, you'll see **Set password** instead of **Change password**.
+</Note>
+
+### Password requirements
+
+- Minimum 8 characters
+- We recommend using a password manager and a unique password for this service
+
+## Login history
+
+Review your login history for suspicious activity at [**My Account > Security > Login history**](https://app.pentest-tools.com/account/security/login_history).
+
+Each login event shows:
+
+| Field | Description |
+|-------|-------------|
+| Date | When the login occurred |
+| IP address | The IP address used |
+| Location | Country and city (when available) |
+| Client | Browser/device information |
+
+<Tip>
+Regularly review your login history for unauthorized access attempts. If you see suspicious activity, change your password immediately and enable 2FA.
+</Tip>
+
+## API key security
+
+For API access, follow these best practices:
+
+- Generate separate keys for different purposes
+- Rotate keys periodically
+- Revoke unused keys
+- Never share keys in code or logs
+
+See [API Authentication](/api-reference/authentication) for more details.
+
+## Related topics
+
+- [Teams and roles](/capabilities/teams-and-roles)
+- [API Authentication](/api-reference/authentication)

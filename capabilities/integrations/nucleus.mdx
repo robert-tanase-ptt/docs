@@ -1,0 +1,111 @@
+---
+title: "Nucleus integration"
+description: "Send security findings to Nucleus for vulnerability management"
+---
+
+The Nucleus integration lets you send security findings to Nucleus for vulnerability management.
+
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## What is Nucleus?
+
+Nucleus is a vulnerability management platform that aggregates findings from multiple security tools into a single view. It handles deduplication across tools, remediation workflows, and reporting.
+
+## Setting up Nucleus
+
+<Steps>
+  <Step title="Get API credentials">
+    In Nucleus, obtain your API key.
+  </Step>
+  <Step title="Configure credentials">
+    In Pentest-Tools.com, go to Settings > Integrations > Nucleus and enter your subdomain and API key.
+  </Step>
+  <Step title="Add projects">
+    Add Nucleus projects to send findings to.
+  </Step>
+  <Step title="Start sending">
+    Send findings manually from the findings list, or set up a notification to push findings to Nucleus when a scan completes.
+  </Step>
+</Steps>
+
+## Sending findings
+
+You can send findings to Nucleus from the [findings list](/core/findings/findings) in two ways:
+
+**Single finding:** open a finding and click **Send to Nucleus**, or use the row action menu.
+
+**Multiple findings at once:** select findings from the list, then click **Send to Nucleus** in the toolbar. Choose the target Nucleus project and the findings are queued for upload. You get a notification when the upload completes.
+
+### Automatic sync via notifications
+
+You can also configure [notifications](/capabilities/notifications) to send scan results to Nucleus automatically when scans complete:
+
+1. Create a notification
+2. Select a Nucleus project as the destination
+3. Findings are sent when scans finish
+
+## Nucleus projects
+
+Add multiple Nucleus projects to organize findings:
+
+| Field | Description |
+|-------|-------------|
+| **Project name** | Display name in Pentest-Tools.com |
+| **Project ID** | The Nucleus project identifier |
+
+<Tip>
+Create different projects for different environments (production, staging) or teams.
+</Tip>
+
+## What gets sent
+
+| Data | Description |
+|------|-------------|
+| **Findings** | Vulnerability details and evidence |
+| **Asset info** | Target IP, hostname, URL |
+| **Severity** | Mapped to Nucleus levels |
+| **Scan info** | Tool and scan details |
+
+### Severity mapping
+
+| Pentest-Tools.com | Nucleus |
+|-------------------|---------|
+| Critical | Critical |
+| High | High |
+| Medium | Medium |
+| Low | Low |
+| Info | Informational |
+
+## Tracking sent findings
+
+After sending findings to Nucleus:
+
+- Findings show a Nucleus indicator
+- You can track which findings have been sent
+- Avoid duplicate submissions
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Findings not appearing in Nucleus">
+    - Verify API credentials are correct
+    - Check the project ID exists in Nucleus
+    - Review the subdomain configuration
+  </Accordion>
+  <Accordion title="API key invalid">
+    - Regenerate your API key in Nucleus
+    - Update the credentials in Pentest-Tools.com
+  </Accordion>
+  <Accordion title="Duplicate findings">
+    - Check Nucleus deduplication rules
+    - Verify you haven't already sent the findings
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Vanta integration](/capabilities/integrations/vanta)
+- [Findings](/core/findings/findings)
+- [Notifications](/capabilities/notifications)

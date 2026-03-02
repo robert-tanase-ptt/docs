@@ -3,9 +3,7 @@ title: "Soft 404 detector"
 description: "AI-powered detection of soft 404 error pages for cleaner scan results"
 ---
 
-## Overview
-
-The Soft 404 detector uses machine learning to identify pages that return a 200 OK status code but actually represent error or non-existent content. This helps eliminate false positives and delivers cleaner, more actionable scan results.
+The Soft 404 detector uses machine learning to identify pages that return a 200 OK status code but actually represent error or non-existent content. This reduces false positives in scan results.
 
 ## What is a soft 404?
 
@@ -41,7 +39,7 @@ The classifier uses multiple detection techniques:
 
 ## Usage in Website Scanner
 
-The soft 404 detector is integrated into the [Website Scanner](/tools/website-scanner) to improve the accuracy of content discovery tests.
+The soft 404 detector is integrated into the [Website Scanner](/tools/website-scanner).
 
 ### Enabled tests
 
@@ -56,7 +54,7 @@ The classifier runs automatically when the following tests are enabled in the **
 | **Software identification** | Server software identified |
 
 <Note>
-The soft 404 detector is enabled by default for these tests to ensure cleaner results.
+The soft 404 detector is enabled by default for these tests.
 </Note>
 
 ### How it improves results
@@ -65,7 +63,7 @@ Without soft 404 detection, these tests might report hundreds of false positives
 
 ## Usage in URL Fuzzer
 
-The soft 404 detector is also integrated into the [URL Fuzzer](/tools/url-fuzzer) to clean up fuzzing results.
+The soft 404 detector is also integrated into the [URL Fuzzer](/tools/url-fuzzer).
 
 ### How it works
 
@@ -82,14 +80,14 @@ The URL Fuzzer doesn't generate findings directly, but its results are cleaned b
 ## AI data handling
 
 - **Proprietary models**: The soft 404 detector uses our own self-hosted classification models
-- **Secure infrastructure**: Data is processed within our secure, isolated infrastructure
+- **Secure infrastructure**: Data is processed within our isolated infrastructure
 - **No external training**: Your data is not used to train any AI models
 - **Predictive, not generative**: These models classify data rather than generate content, eliminating "hallucination" risks
 
-For complete details on how we handle data in our AI features, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
+For complete details on how we handle data in our AI features, see our [AI Data Policy](/account-billing/security/where-to-find-policies#ai-data-policy).
 
 ## Related topics
 
 - [Website Scanner](/tools/website-scanner)
 - [URL Fuzzer](/tools/url-fuzzer)
-- [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy)
+- [AI Data Policy](/account-billing/security/where-to-find-policies#ai-data-policy)

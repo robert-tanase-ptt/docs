@@ -3,11 +3,9 @@ title: "AI-powered endpoint discovery"
 description: "How AI-driven browser agents discover hidden endpoints and expand scan coverage"
 ---
 
-## Overview
-
 AI-powered endpoint discovery uses an AI browser agent to navigate your target website and uncover endpoints that traditional crawling misses. The agent interacts with the site like a real user: clicking links, submitting forms, and exploring dynamic content to build a more complete map of your application's attack surface.
 
-This feature is integrated into the [Website Scanner](/tools/website-scanner) and runs alongside the standard spider to increase endpoint coverage.
+This feature is integrated into the [Website Scanner](/tools/website-scanner) and runs alongside the standard spider.
 
 ## How it works
 
@@ -98,7 +96,7 @@ The AI agent and the traditional spider run concurrently, each contributing endp
 | **Traditional spider** | Fast, efficient for static sites, handles large volumes of pages | Misses JavaScript-rendered content and interactive flows |
 | **AI browser agent** | Navigates dynamic content, interacts with UI elements, discovers hidden routes | Slower due to real browser interaction, limited by timeout |
 
-By combining both approaches, the Website Scanner achieves broader endpoint coverage than either method alone. Endpoints discovered by the AI agent go through the same vulnerability testing pipeline as traditionally spidered pages.
+Together, the two cover more endpoints than either method alone. Endpoints discovered by the AI agent go through the same vulnerability testing pipeline as traditionally spidered pages.
 
 ## API usage
 
@@ -128,11 +126,11 @@ The AI endpoint discovery feature processes target website content through our A
 - **No external sharing**: Your scan data is never sent to external companies for training
 - **No retention**: Website content processed by the AI agent is not stored after the scan completes
 
-For complete details, see our [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy).
+For complete details, see our [AI Data Policy](/account-billing/security/where-to-find-policies#ai-data-policy).
 
 ## Related topics
 
 - [Website Scanner](/tools/website-scanner)
 - [AI-enhanced authentication](/ai/authentication)
 - [Soft 404 detector](/ai/soft404detector)
-- [AI Data Policy](/trust-and-legal/where-to-find-policies#ai-data-policy)
+- [AI Data Policy](/account-billing/security/where-to-find-policies#ai-data-policy)

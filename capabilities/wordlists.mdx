@@ -3,9 +3,7 @@ title: "Wordlists"
 description: "Manage and use custom wordlists for fuzzing and brute-force testing"
 ---
 
-## Overview
-
-Wordlists are collections of words, paths, usernames, or passwords used by various security testing tools. Pentest-Tools.com provides default wordlists for common use cases, and you can create your own custom wordlists for specialized testing.
+Wordlists are collections of words, paths, usernames, or passwords used by various security testing tools. Pentest-Tools.com includes default wordlists, and you can create custom ones.
 
 <Info>
 Creating and managing custom wordlists is available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans. All users can view and use the default wordlists.
@@ -36,11 +34,9 @@ The Password Auditor uses two types of wordlists:
 - **Username wordlists**: Lists of common usernames to test
 - **Password wordlists**: Lists of common passwords to attempt
 
-This allows for dictionary attacks and password spraying against various services.
-
 ### Subdomain finder
 
-When performing DNS enumeration, the Subdomain Finder uses a wordlist of potential subdomain names to discover valid subdomains through brute-force resolution.
+The Subdomain Finder tests each name in the wordlist against DNS to find valid subdomains.
 
 ## Default wordlists
 
@@ -165,7 +161,7 @@ Here are some popular external sources for security testing wordlists:
 - [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings) - Useful payloads
 
 <Note>
-When using external wordlists, ensure they comply with your testing authorization and scope.
+When using external wordlists, check that they comply with your testing authorization and scope.
 </Note>
 
 ## Related topics
@@ -173,4 +169,4 @@ When using external wordlists, ensure they comply with your testing authorizatio
 - [URL Fuzzer](/tools/url-fuzzer)
 - [Password Auditor](/tools/password-auditor)
 - [Subdomain Finder](/tools/subdomain-finder)
-- [Teams and roles](/account/teams-and-roles)
+- [Teams and roles](/capabilities/teams-and-roles)

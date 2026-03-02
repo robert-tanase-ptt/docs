@@ -7,7 +7,7 @@ description: "Security testing for Microsoft SharePoint deployments"
 
 The SharePoint Scanner identifies vulnerabilities and misconfigurations in Microsoft SharePoint deployments. It tests for exposed web services, user enumeration, accessible default pages, and configuration issues.
 
-The SharePoint Scanner is a **vulnerability scanner**: it tests SharePoint sites for security weaknesses from an anonymous user's perspective. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+The SharePoint Scanner is a **vulnerability scanner**: it tests SharePoint sites for security weaknesses from an anonymous user's perspective. It does not add data to your [Attack Surface](/capabilities/attack-surface). Identified vulnerabilities are reported as [findings](/core/findings/findings).
 
 ## Supported targets
 
@@ -165,8 +165,8 @@ After identifying vulnerabilities:
 - **Remove FrontPage extensions**: If not needed, remove legacy FrontPage components
 - **Review indexed pages**: Check Google dork results and remove sensitive pages from search
 - **Scan for exploits**: Run [Sniper](/tools/sniper) to test for SharePoint RCE vulnerabilities
-- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
+- **Schedule regular scans**: Set up [Scheduled scans](/core/scans/scheduled-scans) for continuous monitoring
 
 <Warning>
-SharePoint vulnerabilities can expose sensitive corporate documents and enable remote code execution. Regular security assessments are critical.
+SharePoint vulnerabilities can expose sensitive corporate documents and enable remote code execution. Unpatched public-facing SharePoint servers are a frequent ransomware entry point.
 </Warning>

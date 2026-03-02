@@ -47,31 +47,33 @@
             "group": "Intro",
             "pages": [
               "index",
-              "concepts/core-concepts"
+              "core-concepts"
             ]
           },
           {
             "group": "Core",
             "pages": [
-              "using/workspaces/organize-work",
-              "using/assets/assets",
-              "concepts/tools",
+              "core/workspaces",
+              "core/assets",
+              "core/tools",
               {
                 "group": "Scans",
                 "pages": [
-                  "concepts/scans-and-statuses",
-                  "using/scans/scan-types-and-depth",
-                  "using/scans/authenticated-scanning",
-                  "using/scans/follow-redirects",
-                  "using/scans/scheduled-scans",
-                  "using/scans/portlists"
+                  "core/scans/scans-and-statuses",
+                  "core/scans/scan-types-and-depth",
+                  "core/scans/authenticated-scanning",
+                  "core/scans/follow-redirects",
+                  "core/scans/scheduled-scans",
+                  "core/scans/scan-groups",
+                  "core/scans/portlists",
+                  "core/scans/source-ip-addresses"
                 ]
               },
               {
                 "group": "Findings",
                 "pages": [
-                  "using/findings/findings",
-                  "using/findings/templates"
+                  "core/findings/findings",
+                  "core/findings/templates"
                 ]
               }
             ]
@@ -147,49 +149,49 @@
           {
             "group": "Capabilities",
             "pages": [
-              "using/attack-surface/attack-surface-overview",
+              "capabilities/attack-surface",
               {
                 "group": "Reports",
                 "pages": [
-                  "using/reporting/reporting-overview",
-                  "using/reporting/report-templates",
-                  "using/reporting/engagements",
-                  "using/reporting/branded-reports"
+                  "capabilities/reports/reporting-overview",
+                  "capabilities/reports/report-templates",
+                  "capabilities/reports/engagements",
+                  "capabilities/reports/branded-reports"
                 ]
               },
-              "automation/robots/pentest-robots",
-              "account/teams-and-roles",
-              "notifications/overview",
+              "capabilities/pentest-robots",
+              "capabilities/teams-and-roles",
+              "capabilities/notifications",
               {
                 "group": "Integrations",
                 "pages": [
-                  "integrations/slack",
-                  "integrations/microsoft-teams",
-                  "integrations/discord",
-                  "integrations/webhooks",
-                  "integrations/jira",
-                  "integrations/burp",
-                  "integrations/github-actions",
-                  "integrations/generic-cicd",
-                  "integrations/aws",
-                  "integrations/vanta",
-                  "integrations/nucleus"
+                  "capabilities/integrations/slack",
+                  "capabilities/integrations/microsoft-teams",
+                  "capabilities/integrations/discord",
+                  "capabilities/integrations/webhooks",
+                  "capabilities/integrations/jira",
+                  "capabilities/integrations/burp",
+                  "capabilities/integrations/github-actions",
+                  "capabilities/integrations/generic-cicd",
+                  "capabilities/integrations/aws",
+                  "capabilities/integrations/vanta",
+                  "capabilities/integrations/nucleus"
                 ]
               },
               {
                 "group": "VPN profiles",
                 "pages": [
-                  "using/vpn/overview",
+                  "capabilities/vpn/overview",
                   {
                     "group": "VPN agent",
                     "pages": [
-                      "using/vpn/virtual-machine",
-                      "using/vpn/docker-agent",
-                      "using/vpn/cloud"
+                      "capabilities/vpn/virtual-machine",
+                      "capabilities/vpn/docker-agent",
+                      "capabilities/vpn/cloud"
                     ]
                   },
-                  "using/vpn/openvpn",
-                  "using/vpn/troubleshooting"
+                  "capabilities/vpn/openvpn",
+                  "capabilities/vpn/troubleshooting"
                 ]
               },
               "capabilities/wordlists"
@@ -210,25 +212,26 @@
               {
                 "group": "Plans & limits",
                 "pages": [
-                  "plans-and-limits/plan-overview",
-                  "plans-and-limits/assets-and-limits",
-                  "plans-and-limits/add-ons"
+                  "account-billing/plans-and-limits/plan-overview",
+                  "account-billing/plans-and-limits/assets-and-limits",
+                  "account-billing/plans-and-limits/add-ons"
                 ]
               },
               {
                 "group": "Billing & subscription",
                 "pages": [
-                  "billing/payment-methods",
-                  "billing/change-plan",
-                  "billing/cancel-and-refunds",
-                  "billing/invoices"
+                  "account-billing/billing/payment-methods",
+                  "account-billing/billing/change-plan",
+                  "account-billing/billing/cancel-and-refunds",
+                  "account-billing/billing/invoices"
                 ]
               },
               {
                 "group": "Security & data protection",
                 "pages": [
-                  "account/security",
-                  "trust-and-legal/where-to-find-policies"
+                  "account-billing/security/account-security",
+                  "account-billing/security/data-security",
+                  "account-billing/security/where-to-find-policies"
                 ]
               }
             ]
@@ -254,5 +257,56 @@
         ]
       }
     ]
-  }
+  },
+  "redirects": [
+    { "source": "/concepts/core-concepts", "destination": "/core-concepts" },
+    { "source": "/using/workspaces/organize-work", "destination": "/core/workspaces" },
+    { "source": "/using/assets/assets", "destination": "/core/assets" },
+    { "source": "/concepts/tools", "destination": "/core/tools" },
+    { "source": "/concepts/scans-and-statuses", "destination": "/core/scans/scans-and-statuses" },
+    { "source": "/using/scans/scan-types-and-depth", "destination": "/core/scans/scan-types-and-depth" },
+    { "source": "/using/scans/authenticated-scanning", "destination": "/core/scans/authenticated-scanning" },
+    { "source": "/using/scans/follow-redirects", "destination": "/core/scans/follow-redirects" },
+    { "source": "/using/scans/scheduled-scans", "destination": "/core/scans/scheduled-scans" },
+    { "source": "/using/scans/scan-groups", "destination": "/core/scans/scan-groups" },
+    { "source": "/using/scans/portlists", "destination": "/core/scans/portlists" },
+    { "source": "/using/scans/source-ip-addresses", "destination": "/core/scans/source-ip-addresses" },
+    { "source": "/using/findings/findings", "destination": "/core/findings/findings" },
+    { "source": "/using/findings/templates", "destination": "/core/findings/templates" },
+    { "source": "/using/attack-surface/attack-surface-overview", "destination": "/capabilities/attack-surface" },
+    { "source": "/using/reporting/reporting-overview", "destination": "/capabilities/reports/reporting-overview" },
+    { "source": "/using/reporting/report-templates", "destination": "/capabilities/reports/report-templates" },
+    { "source": "/using/reporting/engagements", "destination": "/capabilities/reports/engagements" },
+    { "source": "/using/reporting/branded-reports", "destination": "/capabilities/reports/branded-reports" },
+    { "source": "/automation/robots/pentest-robots", "destination": "/capabilities/pentest-robots" },
+    { "source": "/account/teams-and-roles", "destination": "/capabilities/teams-and-roles" },
+    { "source": "/notifications/overview", "destination": "/capabilities/notifications" },
+    { "source": "/integrations/slack", "destination": "/capabilities/integrations/slack" },
+    { "source": "/integrations/microsoft-teams", "destination": "/capabilities/integrations/microsoft-teams" },
+    { "source": "/integrations/discord", "destination": "/capabilities/integrations/discord" },
+    { "source": "/integrations/webhooks", "destination": "/capabilities/integrations/webhooks" },
+    { "source": "/integrations/jira", "destination": "/capabilities/integrations/jira" },
+    { "source": "/integrations/burp", "destination": "/capabilities/integrations/burp" },
+    { "source": "/integrations/github-actions", "destination": "/capabilities/integrations/github-actions" },
+    { "source": "/integrations/generic-cicd", "destination": "/capabilities/integrations/generic-cicd" },
+    { "source": "/integrations/aws", "destination": "/capabilities/integrations/aws" },
+    { "source": "/integrations/vanta", "destination": "/capabilities/integrations/vanta" },
+    { "source": "/integrations/nucleus", "destination": "/capabilities/integrations/nucleus" },
+    { "source": "/using/vpn/overview", "destination": "/capabilities/vpn/overview" },
+    { "source": "/using/vpn/virtual-machine", "destination": "/capabilities/vpn/virtual-machine" },
+    { "source": "/using/vpn/docker-agent", "destination": "/capabilities/vpn/docker-agent" },
+    { "source": "/using/vpn/cloud", "destination": "/capabilities/vpn/cloud" },
+    { "source": "/using/vpn/openvpn", "destination": "/capabilities/vpn/openvpn" },
+    { "source": "/using/vpn/troubleshooting", "destination": "/capabilities/vpn/troubleshooting" },
+    { "source": "/plans-and-limits/plan-overview", "destination": "/account-billing/plans-and-limits/plan-overview" },
+    { "source": "/plans-and-limits/assets-and-limits", "destination": "/account-billing/plans-and-limits/assets-and-limits" },
+    { "source": "/plans-and-limits/add-ons", "destination": "/account-billing/plans-and-limits/add-ons" },
+    { "source": "/billing/payment-methods", "destination": "/account-billing/billing/payment-methods" },
+    { "source": "/billing/change-plan", "destination": "/account-billing/billing/change-plan" },
+    { "source": "/billing/cancel-and-refunds", "destination": "/account-billing/billing/cancel-and-refunds" },
+    { "source": "/billing/invoices", "destination": "/account-billing/billing/invoices" },
+    { "source": "/account/security", "destination": "/account-billing/security/account-security" },
+    { "source": "/trust-and-legal/data-security", "destination": "/account-billing/security/data-security" },
+    { "source": "/trust-and-legal/where-to-find-policies", "destination": "/account-billing/security/where-to-find-policies" }
+  ]
 }

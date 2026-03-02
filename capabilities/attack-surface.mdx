@@ -1,0 +1,113 @@
+---
+title: "Attack surface"
+description: "View and manage discovered assets aggregated from scan results"
+---
+
+## What is the attack surface view?
+
+The attack surface view aggregates data from your scan results into an inventory of discovered assets. It is not an autonomous discovery engine.
+
+<Info>
+All attack surface data lives inside your current workspace. Every IP, hostname, port, URL, and technology entry keeps a link back to the scan and tool that produced it, so you can jump directly to the originating results.
+</Info>
+
+## How data gets into the attack surface
+
+The attack surface view is populated in two ways:
+
+1. **Adding targets**: When you add a target or asset to your workspace, it appears in the attack surface view as a bare IP or hostname.
+2. **Running scans**: When you run scans with the four supported tools listed below, results are automatically merged into your attack surface inventory.
+
+<Note>
+Only scans initiated from the UI or by scan robots populate the attack surface. API-initiated scans do not add data to the attack surface view.
+</Note>
+
+### Supported tools and what they contribute
+
+| Tool | Data added to attack surface |
+|------|------------------------------|
+| **Port Scanner** (TCP or UDP) | IPs, hostnames (via reverse DNS), open ports (TCP/UDP), service names, service versions, OS detection |
+| **Website Scanner** | Technologies (name and type), URLs, screenshots |
+| **Website Recon** | Technologies, URLs, screenshots. For IP targets: also hostnames and ports |
+| **Network Scanner** | Ports, protocols, services, OS, technologies |
+
+New discoveries are merged into your workspace inventory: new ports, URLs, and other entries are appended. Existing entries are updated rather than replaced, so data already recorded for that entry stays intact.
+
+<Note>
+If a scan finds an additional port, the attack surface view adds that port to the existing IP/host entry. Other ports and technologies already recorded are preserved.
+</Note>
+
+## Asset types tracked
+
+The attack surface tracks the following asset types:
+
+- **IP addresses**: with OS information where detected
+- **Hostnames**: linked to their resolved IP addresses
+- **Ports and services**: port number, type (TCP/UDP), protocol, server name and version
+- **URLs**: scheme, path, HTTP status code, page title, and screenshots
+- **Technologies**: name and type (e.g., web framework, CMS, server software)
+
+## Grouping and navigation
+
+Use **Group by** to organize results by any of six views:
+
+- IP address
+- Hostname
+- Port
+- Protocol
+- Service
+- Technology
+
+Switching the grouping changes only the view; the underlying data remains the same. You can drill into an item to open the scan that created it.
+
+## Continuous monitoring
+
+The attack surface view does not run background scans on its own. To monitor your attack surface over time:
+
+1. **Schedule recurring scans** using the four supported tools (Port Scanner, Website Scanner, Website Recon, Network Scanner).
+2. **Set up notifications** to be alerted when new assets, ports, or technologies are discovered.
+
+Each time a scheduled scan completes, new results are merged into your attack surface inventory.
+
+## Exports
+
+You can export the current attack surface at any time:
+
+- **CSV**: full data (IPs, hosts, ports, protocols, services, URLs, technologies)
+- **CSV (network only)**: network-layer fields only (no URLs or technologies)
+- **JSON**: structured export of the full dataset
+
+Exports respect your current grouping, so you keep the structure you see in the UI.
+
+## Getting started
+
+<Steps>
+  <Step title="Add root assets">
+    Add your primary domains, IPs, or network ranges as targets in your workspace.
+  </Step>
+  <Step title="Run scans with supported tools">
+    Run Port Scanner, Website Scanner, Website Recon, or Network Scanner against your targets.
+  </Step>
+  <Step title="Review the attack surface view">
+    Open the attack surface view to see aggregated results grouped by IP, hostname, port, or other dimensions.
+  </Step>
+  <Step title="Schedule recurring scans">
+    Set up scheduled scans to keep your attack surface data current over time.
+  </Step>
+</Steps>
+
+## Attack surface vs vulnerability management
+
+The attack surface view shows what is exposed: the assets and services an attacker can reach. Vulnerability management (the findings view) shows what is broken on those exposed assets.
+
+Reducing your attack surface means removing or hiding exposure: closing unnecessary ports, retiring unused services, or restricting public access. Fixing vulnerabilities means patching or mitigating weaknesses on assets that are already exposed. The first limits what an attacker can reach; the second limits what they can do once they get there.
+
+## What happens when you delete a target
+
+Deleting a target removes all associated scans and findings permanently. Attack surface entries derived from those scans are also removed. If the same IP or hostname was discovered by another scan that is still present, it remains in the attack surface view.
+
+## Related topics
+
+- [Tools reference](/tools/index)
+- [Scheduled scans](/core/scans/scheduled-scans)
+- [Notifications](/capabilities/notifications)

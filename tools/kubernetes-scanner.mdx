@@ -7,7 +7,7 @@ description: "Find misconfigurations and vulnerabilities in Kubernetes clusters"
 
 The Kubernetes Scanner detects security misconfigurations and vulnerabilities in Kubernetes clusters. It scans for Kubernetes-specific services and runs both passive and active detection methods to identify security issues.
 
-The Kubernetes Scanner is a **vulnerability scanner**: it actively tests Kubernetes clusters for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+The Kubernetes Scanner is a **vulnerability scanner**: it actively tests Kubernetes clusters for security weaknesses. It does not add data to your [Attack Surface](/capabilities/attack-surface). Identified vulnerabilities are reported as [findings](/core/findings/findings).
 
 ## Supported targets
 
@@ -77,7 +77,7 @@ Full control over scan parameters:
 The "Top X ports" presets are curated lists of ports commonly used by Kubernetes services. The actual port count may differ from the preset name.
 </Note>
 
-See [Port lists](/using/scans/portlists) for the exact ports covered by each preset.
+See [Port lists](/core/scans/portlists) for the exact ports covered by each preset.
 
 ### Additional options
 
@@ -112,7 +112,7 @@ Checks if Kubernetes APIs (API server, kubelet, etcd) are accessible without aut
 
 ## Active detections
 
-More thorough checks that leverage found vulnerabilities to discover additional issues. Only available in Deep and Custom scan modes.
+More thorough checks that exploit found vulnerabilities to discover additional issues. Only available in Deep and Custom scan modes.
 
 ### Vulnerability exploitation
 
@@ -152,7 +152,7 @@ Provide a service account token to simulate an authenticated adversary. This rev
 The service account token must be a valid JWT in the format: `header.payload.signature`
 
 <Note>
-Authenticated scanning is only available in Deep and Custom scan modes. See [Authenticated scanning](/using/scans/authenticated-scanning#kubernetes-scanner) for configuration details.
+Authenticated scanning is only available in Deep and Custom scan modes. See [Authenticated scanning](/core/scans/authenticated-scanning#kubernetes-scanner) for configuration details.
 </Note>
 
 ## How it works

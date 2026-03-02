@@ -1,0 +1,129 @@
+---
+title: "Report templates"
+description: "Customize and manage report templates for consistent deliverables"
+---
+
+## What are report templates?
+
+Report templates define the reusable text sections in your pentest reports. Using them keeps reports consistent and cuts preparation time when working across multiple clients or projects.
+
+Templates can be shared with team members, allowing your entire team to use consistent report formatting. See [Sharing templates](#sharing-templates) for details.
+
+<Info>
+Report templates are used when generating **Editable pentest reports**. When you create a pentest report, you select a template and an [Engagement](/capabilities/reports/engagements) to populate the report with your standard content and client details.
+</Info>
+
+## Template types
+
+| Type | Description |
+|------|-------------|
+| **Default templates** | System-provided templates you can use as-is or as a starting point |
+| **Custom templates** | Templates you create and own, tailored to your workflow |
+
+## Template sections
+
+Each report template contains the following editable sections:
+
+| Section | Purpose |
+|---------|---------|
+| **Name** | Template identifier for selection when generating reports |
+| **Background** | Context about the engagement or project |
+| **Objectives** | Goals of the security assessment |
+| **Executive Summary** | High-level overview for stakeholders |
+| **Scope** | What was tested and any exclusions |
+| **Approach** | How the testing was conducted |
+| **Methodology** | Detailed testing methodology and standards followed |
+| **Disclaimer** | Legal disclaimers and limitations |
+
+<Tip>
+Create templates for common engagement types (external penetration tests, web application assessments, API reviews) so you can generate reports quickly.
+</Tip>
+
+## Managing templates
+
+### Creating a custom template
+
+<Steps>
+  <Step title="Navigate to report templates">
+    Go to **Reports > Report Templates** in the main navigation.
+  </Step>
+  <Step title="Create new template">
+    Click **Create template** to start a new custom template.
+  </Step>
+  <Step title="Fill in sections">
+    Complete each section with your standard content. You can include placeholders that you'll customize per engagement.
+  </Step>
+  <Step title="Save template">
+    Save the template for reuse across future reports.
+  </Step>
+</Steps>
+
+### Editing and deleting templates
+
+- You can edit or delete your custom templates at any time
+- Default templates cannot be modified, but you can use them as a starting point for custom templates
+
+## Using templates in reports
+
+When generating a pentest report:
+
+1. Select your scans or findings to include
+2. Choose **Editable pentest report** as the report type
+3. Select a **Report Template** to populate standard sections
+4. Select an **[Engagement](/capabilities/reports/engagements)** to include client and contract details
+5. Specify the report author
+6. Generate the report in your preferred format
+
+The template content combines with your scan findings and engagement details to create a finished pentest report.
+
+## Sharing templates
+
+Report templates can be shared with team members on your account. When you share templates, team members can use them to generate reports with consistent formatting.
+
+### Permission levels
+
+| Permission | What they can do |
+|------------|------------------|
+| **No access** | Cannot see or use your templates |
+| **View** | Can view and use templates to generate reports, but cannot edit or delete |
+| **Edit** | Full access to view, use, edit, and delete templates |
+
+### How to share templates
+
+1. Go to **Settings > Team**
+2. Select the team members you want to configure sharing for
+3. Click **Share**
+4. Set the **Report Templates** permission level
+5. Click **Save**
+
+Templates you share will appear in your team members' template list, allowing them to select your templates when generating pentest reports.
+
+<Tip>
+Share templates with View permission so team members can use them without editing the content.
+</Tip>
+
+For more information about team management and sharing, see [Teams and roles](/capabilities/teams-and-roles).
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Create client-specific templates">
+    Different clients may have different reporting requirements. Create templates tailored to specific industries or compliance needs.
+  </Accordion>
+  <Accordion title="Keep templates current">
+    Review and update your templates periodically to reflect current methodologies and best practices.
+  </Accordion>
+  <Accordion title="Use clear naming conventions">
+    Name templates descriptively (e.g., "External Pentest - Financial Services") so you can quickly find the right one.
+  </Accordion>
+  <Accordion title="Share templates with your team">
+    Build a shared library of approved templates so reports look the same regardless of who generates them.
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Reporting overview](/capabilities/reports/reporting-overview)
+- [Engagements](/capabilities/reports/engagements)
+- [Branded reports & email settings](/capabilities/reports/branded-reports)
+- [Teams and roles](/capabilities/teams-and-roles)

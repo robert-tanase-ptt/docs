@@ -1,0 +1,231 @@
+---
+title: "Finding templates"
+description: "Create and manage reusable templates for findings to standardize vulnerability documentation"
+---
+
+<Info>
+Finding templates are available on the **Pentest Suite** plan. [View plans](/account-billing/plans-and-limits/plan-overview)
+</Info>
+
+Finding templates let you create reusable vulnerability definitions. Save one for any vulnerability type and apply it when creating new findings, without entering the same details each time.
+
+Templates can be shared with team members. See [Sharing templates](#sharing-templates) for details.
+
+## Template types
+
+Two template types are available:
+
+| Type | Description |
+|------|-------------|
+| **Default** | Pre-built templates provided by Pentest-Tools.com covering common vulnerabilities |
+| **Custom** | Templates you create for your organization's specific needs |
+
+## Template fields
+
+Each finding template contains the following information:
+
+### Core details
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Name** | Yes | Descriptive name for the vulnerability |
+| **Risk Level** | Yes | Severity rating (Critical, High, Medium, Low, Info) |
+| **Description** | No | Detailed explanation of the vulnerability |
+| **Risk Description** | No | Why this vulnerability poses a security concern |
+| **Recommendation** | No | How to fix or mitigate the issue |
+
+### Standards and scoring
+
+| Field | Description |
+|-------|-------------|
+| **CVE** | Common Vulnerabilities and Exposures identifier (e.g., CVE-2024-1234) |
+| **CWE** | Common Weakness Enumeration identifier (e.g., CWE-79) |
+| **CVSS v2** | Common Vulnerability Scoring System v2 score (0-10) |
+| **CVSS v3** | Common Vulnerability Scoring System v3 score (0-10) |
+| **OWASP 2017** | OWASP Top 10 2017 classification |
+| **OWASP 2021** | OWASP Top 10 2021 classification |
+
+### Threat intelligence
+
+| Field | Description |
+|-------|-------------|
+| **EPSS Score** | Exploit Prediction Scoring System score (0-1) |
+| **EPSS Percentile** | Percentile ranking compared to other vulnerabilities |
+| **In CISA KEV** | Whether the vulnerability is in CISA's Known Exploited Vulnerabilities catalog |
+
+### Evidence and reproduction
+
+| Field | Description |
+|-------|-------------|
+| **Evidence** | Proof of the vulnerability (request/response data, screenshots) |
+| **How to Reproduce** | Steps to reproduce the vulnerability |
+| **References** | Links to additional documentation and resources |
+
+## Creating a template
+
+<Steps>
+  <Step title="Navigate to Templates">
+    Go to **Findings** and click the **Templates** tab.
+  </Step>
+  <Step title="Click Add">
+    Click the **Add** button.
+  </Step>
+  <Step title="Fill in template details">
+    Enter the vulnerability information you want to save:
+    - Provide a descriptive name
+    - Set the appropriate risk level
+    - Add description, recommendation, and other relevant fields
+  </Step>
+  <Step title="Save the template">
+    Click **Save** to create your template.
+  </Step>
+</Steps>
+
+<Tip>
+When creating a finding, check the **Add to templates** option to automatically create a template from that finding's details.
+</Tip>
+
+## Using a template
+
+When you create a new finding, you can select a template to pre-populate the form:
+
+<Steps>
+  <Step title="Start creating a finding">
+    Go to **Findings** and click **Add**.
+  </Step>
+  <Step title="Click Use template">
+    Click the **Use template** button, or navigate to the Templates tab and click **Use Template** on a template card.
+  </Step>
+  <Step title="Select a template">
+    Choose from your custom templates, shared templates, or default templates. Use the search to filter by name.
+  </Step>
+  <Step title="Review and customize">
+    The form pre-fills with the template data. Modify any fields as needed for this specific finding.
+  </Step>
+  <Step title="Add target-specific details">
+    Fill in target-specific information like the affected target, port, and specific evidence.
+  </Step>
+  <Step title="Save the finding">
+    Click **Save** to create the finding.
+  </Step>
+</Steps>
+
+## Managing templates
+
+### Filtering templates
+
+Filter your template list by:
+- **Type**: Show all templates, only custom templates, or only default templates
+- **Name**: Search for templates by keyword
+
+### Viewing templates
+
+Click on any template card to view its full details in a modal. The card displays:
+- Template name
+- Description preview
+- Owner (for shared templates)
+- Your permission level (Owner, Edit, or View)
+
+### Editing templates
+
+To edit a custom template:
+
+1. Navigate to **Findings > Templates** tab
+2. Find the template you want to edit
+3. Click the options menu (three dots) and select **Edit**
+4. Make your changes
+5. Click **Save**
+
+<Note>
+Default templates provided by Pentest-Tools.com cannot be edited. You can only edit templates you own or templates shared with you with Edit permission.
+</Note>
+
+### Deleting templates
+
+To delete a custom template:
+
+1. Navigate to **Findings > Templates** tab
+2. Find the template you want to delete
+3. Click the options menu (three dots) and select **Delete**
+4. Confirm the deletion
+
+<Warning>
+Deleting a template does not affect findings that were created using that template. The deletion is permanent and cannot be undone.
+</Warning>
+
+## Sharing templates
+
+You can share finding templates with team members.
+
+### Permission levels
+
+| Permission | What they can do |
+|------------|------------------|
+| **No access** | Cannot see or use your templates |
+| **View** | Can view and use templates to create findings, but cannot edit or delete |
+| **Edit** | Full access to view, use, edit, and delete templates |
+
+### How to share templates
+
+1. Go to **Settings > Team**
+2. Select the team members you want to configure sharing for
+3. Click **Share**
+4. Set the **Finding Templates** permission level
+5. Click **Save**
+
+Templates you share will appear in your team members' template list with a sharing indicator showing your name as the owner.
+
+<Tip>
+Create a library of templates for common findings and share them with team members.
+</Tip>
+
+For team management and sharing, see [Teams and roles](/capabilities/teams-and-roles).
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Standardize naming conventions">
+    Use consistent naming patterns for your templates. Include the vulnerability type and any relevant context (e.g., "SQL Injection - Blind Boolean-based").
+  </Accordion>
+  <Accordion title="Include complete references">
+    Add CVE, CWE, and OWASP classifications to help with compliance reporting and vulnerability tracking.
+  </Accordion>
+  <Accordion title="Document reproduction steps">
+    Include clear, step-by-step instructions in the "How to Reproduce" field. This helps team members validate findings and demonstrates impact to stakeholders.
+  </Accordion>
+  <Accordion title="Use templates for recurring vulnerabilities">
+    Create templates for vulnerabilities you encounter frequently during pentests to save time and ensure consistent documentation.
+  </Accordion>
+  <Accordion title="Keep recommendations actionable">
+    Write specific, actionable remediation guidance rather than generic advice.
+  </Accordion>
+</AccordionGroup>
+
+## Use cases
+
+### Penetration testing teams
+
+Create templates for vulnerabilities commonly found during engagements:
+- Authentication bypass techniques
+- Injection vulnerabilities
+- Misconfigurations
+- Business logic flaws
+
+### Compliance reporting
+
+Standardize how compliance-related findings are documented:
+- Include relevant compliance framework references
+- Ensure consistent severity ratings
+- Add standard remediation guidance
+
+### Knowledge sharing
+
+Build an organizational knowledge base of vulnerability templates:
+- Share templates with team members for consistent documentation
+- Document company-specific security policies
+- Maintain consistent reporting quality across team members
+
+## Related topics
+
+- [Findings](/core/findings/findings)
+- [Teams and roles](/capabilities/teams-and-roles)

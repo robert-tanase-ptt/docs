@@ -5,9 +5,9 @@ description: "Automatically exploit known vulnerabilities and extract evidence f
 
 ## Overview
 
-Sniper is an automated exploitation tool that identifies and exploits known vulnerabilities in high-profile software. After successful exploitation, it automatically extracts artifacts (system information, users, network data) as proof of compromise.
+Sniper is an automated exploitation tool that identifies and exploits known vulnerabilities in widely-deployed software. After a successful exploit, it automatically extracts artifacts (system information, users, network data) as evidence of compromise.
 
-Sniper is an **exploitation tool**: it actively attempts to exploit vulnerabilities to gain remote command execution. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings). Instead, it produces detailed reports with extracted artifacts as evidence.
+Sniper is an **exploitation tool**: it actively attempts to exploit vulnerabilities to gain remote command execution. It does not add data to your [Attack Surface](/capabilities/attack-surface) or generate [findings](/core/findings/findings). Instead, it produces detailed reports with extracted artifacts as evidence.
 
 ## Supported targets
 
@@ -46,7 +46,7 @@ Sniper uses provided credentials to establish a legitimate session and extracts 
 | **Port range** | Variable | Specify start and end port (e.g., 1-1024) |
 | **Port list** | Variable | Comma-separated list (e.g., 22,80,443,3389) |
 
-See [Port lists](/using/scans/portlists) for the exact ports covered by each preset.
+See [Port lists](/core/scans/portlists) for the exact ports covered by each preset.
 
 ### Scan options
 

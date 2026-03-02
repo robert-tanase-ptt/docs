@@ -5,9 +5,9 @@ description: "Discover virtual hosts configured on a given IP address"
 
 ## Overview
 
-The Virtual Hosts Finder discovers websites hosted on the same server using virtual hosting. A single web server can run multiple websites under different domain names, these are called virtual hosts (vhosts) and are commonly found in shared hosting environments.
+The Virtual Hosts Finder discovers websites hosted on the same server. A single server can run multiple websites under different domain names. These are called virtual hosts (vhosts) and are common in shared hosting environments.
 
-Virtual Hosts Finder is a **discovery tool**: it identifies websites sharing the same server but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
+Virtual Hosts Finder is a **discovery tool**: it identifies websites sharing the same server but does not test for vulnerabilities. It does not add data to your [Attack Surface](/capabilities/attack-surface) or generate [findings](/core/findings/findings).
 
 **Example**: Multiple websites pointing to the same IP:
 
@@ -17,7 +17,7 @@ test.company2.com → 109.11.231.5
 sales.company3.com → 109.11.231.5
 ```
 
-Finding all virtual hosts on a server is important because each website may contain vulnerabilities that affect the same server. If one website is compromised, the attacker may gain access to other websites running on the same server.
+Each site on a shared server is a potential entry point. If one site is compromised, an attacker may be able to reach others on the same machine.
 
 ## Parameters
 

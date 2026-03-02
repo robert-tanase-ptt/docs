@@ -5,9 +5,9 @@ description: "Identify web application firewalls protecting target websites"
 
 ## Overview
 
-The WAF Detector identifies whether a target website is protected by a Web Application Firewall (WAF) and attempts to determine which WAF product is in use. It can detect **97 different WAF products** and attempts to find the origin IP address to bypass the WAF.
+The WAF Detector identifies whether a target website is protected by a Web Application Firewall (WAF) and attempts to determine which WAF product is in use. It can detect **98 different WAF products** and attempts to find the origin IP address to bypass the WAF.
 
-The WAF Detector is a **discovery tool**: it identifies protection mechanisms but does not test for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
+The WAF Detector is a **discovery tool**: it identifies protection mechanisms but does not test for vulnerabilities. It does not add data to your [Attack Surface](/capabilities/attack-surface) or generate [findings](/core/findings/findings).
 
 ## Parameters
 
@@ -24,7 +24,7 @@ The tool uses a multi-stage approach to detect WAF presence:
     Sends a request containing a combined payload that simulates multiple attack types (XSS, SQLi, directory traversal, RCE, XXE). This is designed to trigger WAF responses.
   </Step>
   <Step title="Response analysis">
-    Analyzes the response using pattern matching against 97 known WAF signatures. Checks HTTP headers, response body, and status codes.
+    Analyzes the response using pattern matching against 98 known WAF signatures. Checks HTTP headers, response body, and status codes.
   </Step>
   <Step title="Generic detection">
     If no specific WAF is identified, performs additional tests to detect WAF behavior:
@@ -51,7 +51,7 @@ The tool analyzes multiple signals to identify WAF presence:
 
 ### Supported WAFs
 
-The tool can identify 97 WAF products, including Cloudflare, AWS WAF, Akamai Kona, Imperva Incapsula, F5 BIG-IP ASM, Fortinet FortiWeb, Barracuda, Sucuri, ModSecurity, and Wordfence.
+The tool can identify 98 WAF products, including Cloudflare, AWS WAF, Akamai Kona, Imperva Incapsula, F5 BIG-IP ASM, Fortinet FortiWeb, Barracuda, Sucuri, ModSecurity, and Wordfence.
 
 <Note>
 Detection is based on [identYwaf](https://github.com/stamparm/identYwaf) signatures.
@@ -59,7 +59,7 @@ Detection is based on [identYwaf](https://github.com/stamparm/identYwaf) signatu
 
 ### Origin IP discovery
 
-When a WAF is detected, the tool attempts to find the origin IP address. The server's real IP that might be accessible directly, bypassing the WAF:
+When a WAF is detected, the tool attempts to find the origin IP address, which may be accessible directly without WAF protection:
 
 | Method | Description |
 |--------|-------------|

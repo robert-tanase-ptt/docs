@@ -1,0 +1,68 @@
+---
+title: "Scan groups"
+description: "Group multiple scans into one unit and get one aggregated PDF report instead of a separate report per scan"
+---
+
+A scan group collects multiple scans into a single unit. When all scans finish, you get one aggregated PDF report instead of individual reports for each scan.
+
+## When the option appears
+
+The scan group option appears on the tool form when you launch a scan with two or more targets from the Assets page. With a single target, the option is hidden.
+
+## Creating a scan group
+
+<Steps>
+  <Step title="Select targets">
+    Go to the **Assets** page and select two or more targets using the checkboxes. A floating action bar appears at the bottom of the page.
+  </Step>
+  <Step title="Choose a tool">
+    In the action bar, click **Scan with tool** and select the tool you want to use.
+  </Step>
+  <Step title="Enable scan grouping">
+    On the tool form, toggle on the **Scan group** option. It is off by default.
+  </Step>
+  <Step title="Name the group (optional)">
+    Enter a name for the group. If you leave it blank, the platform generates one automatically, for example: "3 targets scanned with Website Scanner".
+  </Step>
+  <Step title="Start the scans">
+    Start the scan. All selected targets are scanned and their results are grouped together.
+  </Step>
+</Steps>
+
+## Viewing scan groups
+
+On the **Scans** page, each scan that belongs to a group shows the group name below the scan name. This is how you tell group scans apart from individual ones.
+
+## When the group finishes
+
+When all scans in the group complete, you get one email notification with an aggregated PDF report attached. The report is also saved to the **Reports** page, where it appears with a name like `Aggregated_Scan_Results-Website Scanner-MyGroup-2025-01-15.pdf`.
+
+Without scan grouping, each scan sends its own notification and report.
+
+Configure notification rules on the [Notifications](/capabilities/notifications) page.
+
+## Deleting a scan from a group
+
+Deleting a scan removes it from the group. If it was the last scan in the group, the group itself is also deleted. The platform does not warn you before this happens.
+
+## Scan groups with scheduled scans
+
+Scan groups work with both immediate and [scheduled scans](/core/scans/scheduled-scans). With scheduled scans, the group re-runs on its schedule and each run produces one aggregated report.
+
+If you delete one scheduled scan from a group, only that scan is removed. If it was the last member, the group is also deleted.
+
+If you edit a scheduled scan's time or frequency so it no longer matches the other scans in the group, it is silently removed from the group. The group is deleted if it becomes empty.
+
+## Robots and scan groups
+
+Every robot run automatically creates a scan group. There is no toggle or name field. The group takes the robot's name and cannot be customized. If you rename a robot, all its existing scan groups are renamed to match.
+
+On the **Scans** page, only the parent robot scan appears, one entry per run. Child scans are hidden. Deleting a robot scan also deletes all its child scans and the group. No warning is shown before this happens.
+
+If the robot configuration has been deleted, past runs remain on the Scans page but show "[Robot deleted]" as their name.
+
+## Related topics
+
+- [Scheduled scans](/core/scans/scheduled-scans): run scans on a recurring schedule
+- [Notifications](/capabilities/notifications): configure when and how you receive scan alerts
+- [Scans and statuses](/core/scans/scans-and-statuses)

@@ -1,0 +1,127 @@
+---
+title: "Jira integration"
+description: "Create Jira tickets from security findings"
+---
+
+The Jira integration lets you create tickets from your security findings and hand them off to development teams for remediation.
+
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Setting up Jira
+
+<Steps>
+  <Step title="Access integration settings">
+    Go to Settings > Integrations > Jira.
+  </Step>
+  <Step title="Enter Jira URL">
+    Add your Jira instance URL (e.g., `https://yourcompany.atlassian.net`).
+  </Step>
+  <Step title="Add credentials">
+    Enter your Jira email and API token.
+  </Step>
+  <Step title="Specify project">
+    Enter the project key where tickets will be created.
+  </Step>
+</Steps>
+
+## Getting your API token
+
+For Jira Cloud:
+
+1. Go to [Atlassian Account Settings](https://id.atlassian.com/manage/api-tokens)
+2. Click **Create API token**
+3. Name the token (e.g., "Pentest-Tools.com")
+4. Copy the token and save it securely
+
+<Warning>
+API tokens cannot be viewed again after creation. Store your token securely.
+</Warning>
+
+## Creating Jira tickets
+
+Once configured, you can send findings to Jira from the [findings list](/core/findings/findings) in two ways:
+
+**Single finding:** open a finding and click **Send to Jira**, or use the row action menu.
+
+**Multiple findings at once:** select findings from the list, then click **Send to Jira** in the toolbar. One ticket is created per finding.
+
+When sending in bulk, you can filter which findings to include:
+
+- Include or exclude false positives
+- Include or exclude informational findings
+- Include or exclude unverified findings
+- Include or exclude duplicates
+
+### Ticket contents
+
+Each Jira ticket includes:
+
+| Field | Content |
+|-------|---------|
+| **Summary** | Finding name and target |
+| **Description** | Full finding details, evidence, and remediation steps |
+| **Issue type** | Task |
+| **Labels** | `pentest-tools.com` |
+
+## Tracking tickets
+
+Once a finding is sent to Jira:
+
+- The finding shows a link to the Jira ticket
+- You can track which findings have associated tickets
+- Click the link to jump directly to Jira
+
+## Best practices
+
+<Tip>
+Use Jira labels and components to organize security tickets separately from regular development work.
+</Tip>
+
+### Prioritizing tickets
+
+- Send critical and high findings immediately
+- Batch medium and low findings for regular triage
+- Use finding severity to set Jira priority
+
+### Team workflow
+
+- Assign tickets to appropriate team members in Jira
+- Use Jira automation for routing and notifications
+- Link related tickets to track remediation across issues
+
+## Configuration reference
+
+| Setting | Description |
+|---------|-------------|
+| **Jira URL** | Your Jira instance URL |
+| **Email** | Your Jira account email |
+| **API Key** | Your Jira API token |
+| **Project Key** | The project key for ticket creation (e.g., SEC, VULN) |
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tickets not creating">
+    - Verify your Jira URL is correct
+    - Check that the API token is valid
+    - Ensure the project key exists
+    - Verify your account has permission to create issues
+  </Accordion>
+  <Accordion title="Permission denied">
+    - Check your Jira account permissions
+    - Verify you can create issues in the target project
+    - Ensure the API token hasn't been revoked
+  </Accordion>
+  <Accordion title="Connection errors">
+    - Verify the Jira URL format
+    - Check that your Jira instance is accessible
+    - Try regenerating the API token
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Findings](/core/findings/findings)
+- [Notifications](/capabilities/notifications)

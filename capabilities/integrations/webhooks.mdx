@@ -1,0 +1,172 @@
+---
+title: "Webhooks"
+description: "Send scan results to custom HTTP endpoints"
+---
+
+Webhooks let you send scan results to any HTTP endpoint when notifications trigger. Use them to integrate Pentest-Tools.com with your own systems, SIEM, ticketing, or automation platforms.
+
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Use cases
+
+<CardGroup cols={2}>
+  <Card title="Custom integrations" icon="plug">
+    Connect to any system with an HTTP API.
+  </Card>
+  <Card title="SIEM integration" icon="shield">
+    Send findings to your security information system.
+  </Card>
+  <Card title="Ticketing systems" icon="ticket">
+    Create tickets in custom ticketing platforms.
+  </Card>
+  <Card title="Automation" icon="robot">
+    Trigger external workflows and pipelines.
+  </Card>
+</CardGroup>
+
+## Setting up webhooks
+
+<Steps>
+  <Step title="Create your endpoint">
+    Set up an HTTP endpoint to receive webhook requests.
+  </Step>
+  <Step title="Add webhook in platform">
+    Go to Settings > Integrations > Webhooks and add your URL.
+  </Step>
+  <Step title="Select payload format">
+    Choose how you want to receive the data.
+  </Step>
+  <Step title="Use in notifications">
+    Select the webhook as a destination when creating notifications.
+  </Step>
+</Steps>
+
+## Payload formats
+
+When creating a webhook, choose the format that best suits your needs:
+
+| Format | Description |
+|--------|-------------|
+| **Scan Output (JSON)** | Raw scan results in JSON format |
+| **Scan Summary (JSON)** | Condensed summary of scan status and findings |
+| **Full Scan (JSON)** | Complete scan data including all details |
+| **Scan Output (PDF)** | PDF report attached to the request |
+
+### Scan summary example
+
+```json
+{
+  "task_id": 12345,
+  "target": "example.com",
+  "tool": "Website Scanner",
+  "status": "finished",
+  "findings_count": 3,
+  "critical": 0,
+  "high": 1,
+  "medium": 2,
+  "low": 0,
+  "info": 0,
+  "scan_url": "https://app.pentest-tools.com/scans/12345"
+}
+```
+
+### Full scan JSON
+
+The full JSON format includes:
+
+- Scan metadata (target, tool, status, timing)
+- All findings with full details
+- Evidence and remediation recommendations
+- CVSS scores and CVE references
+
+## Creating a webhook
+
+1. Go to **Settings > Integrations > Webhooks**
+2. Click **Add webhook**
+3. Enter a **name** for identification
+4. Enter the **URL** of your endpoint
+5. Select the **payload format**
+6. Save the webhook
+
+## Using webhooks in notifications
+
+Once created, webhooks appear as destination options when creating notifications:
+
+1. Go to **Notifications**
+2. Create or edit a notification
+3. Enable **Webhook** as a destination
+4. Select your webhook from the dropdown
+
+## Endpoint requirements
+
+Your endpoint should:
+
+- Accept HTTP POST requests
+- Return a 2xx status code on success
+- Handle the JSON or multipart/form-data (for PDF) content type
+- Respond within 10 seconds
+
+## Headers
+
+Webhook requests include these headers:
+
+| Header | Description |
+|--------|-------------|
+| `Content-Type` | `application/json` or `multipart/form-data` |
+| `User-Agent` | Pentest-Tools.com user agent |
+| `PTT-SCAN-ID` | The scan ID(s) that triggered the webhook |
+
+## Error handling
+
+If your endpoint fails to respond:
+
+- The request is retried up to 5 times
+- There is a 3-second pause between each attempt
+- If failures persist, you'll get an email notification (at most once every 24 hours)
+
+<Warning>
+If webhooks consistently fail, they may be disabled. Check your endpoint is accessible and returning successful responses.
+</Warning>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Use HTTPS">
+    Always use HTTPS endpoints to encrypt data in transit.
+  </Accordion>
+  <Accordion title="Validate the source">
+    Verify requests come from Pentest-Tools.com by checking headers or IP ranges.
+  </Accordion>
+  <Accordion title="Handle duplicates">
+    Implement idempotency in case of retries.
+  </Accordion>
+  <Accordion title="Return quickly">
+    Process webhook data asynchronously if needed. Return a 200 response immediately.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Webhook not firing">
+    - Verify the notification is enabled
+    - Check that conditions are being matched
+    - Review the notification settings
+  </Accordion>
+  <Accordion title="Receiving errors">
+    - Check your endpoint is accessible from the internet
+    - Verify the URL is correct
+    - Check server logs for errors
+  </Accordion>
+  <Accordion title="Missing data">
+    - Try a different payload format
+    - Check if the scan type includes the expected data
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Notifications](/capabilities/notifications)
+- [Slack integration](/capabilities/integrations/slack)

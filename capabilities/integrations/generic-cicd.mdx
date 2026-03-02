@@ -1,0 +1,161 @@
+---
+title: "Generic CI/CD"
+description: "Integrate security scanning into any CI/CD pipeline"
+---
+
+The Generic CI/CD integration lets you run Pentest-Tools.com scans from any CI/CD platform, including GitLab CI, Jenkins, CircleCI, Azure DevOps, and more.
+
+<Info>
+Available on **WebNetSec** and **Pentest Suite** plans.
+</Info>
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="Platform agnostic" icon="plug">
+    Works with any CI/CD system that can make HTTP requests.
+  </Card>
+  <Card title="Automated security" icon="shield-check">
+    Run scans as part of your deployment pipeline.
+  </Card>
+  <Card title="Fail conditions" icon="circle-xmark">
+    Stop deployments when vulnerabilities are detected.
+  </Card>
+  <Card title="Flexible output" icon="file-export">
+    Get results in text or JSON format.
+  </Card>
+</CardGroup>
+
+## Setting up CI/CD integration
+
+<Steps>
+  <Step title="Create a pipeline action">
+    Go to Settings > Integrations > Generic CI/CD and click Create action.
+  </Step>
+  <Step title="Configure settings">
+    Set the target URL, scan type, output format, and fail condition.
+  </Step>
+  <Step title="Get your API key">
+    The Docker command takes your Pentest-Tools API key as the `--key` argument. Store it as a secret in your CI/CD system, not directly in pipeline files.
+  </Step>
+  <Step title="Run the Docker command">
+    Copy the generated Docker command and add it to your pipeline. It runs in any CI/CD system that supports Docker.
+  </Step>
+</Steps>
+
+
+## Configuration options
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | Identifier for the pipeline action |
+| **Target** | URL or IP address to scan |
+| **Scan type** | `light` or `deep` |
+| **Output format** | `text` or `json` |
+| **Fail condition** | Severity threshold to fail |
+
+### Fail conditions
+
+| Condition | Pipeline fails when... |
+|-----------|------------------------|
+| None | Never fails based on findings |
+| Low | Low or higher severity found |
+| Medium | Medium or higher severity found |
+| High | High or higher severity found |
+| Critical | Critical severity found |
+
+## Running the scan
+
+The integration generates a Docker command using the `pentesttoolscom/ptt-scan` image. Run it from any pipeline that supports Docker: GitLab CI, Jenkins, CircleCI, Azure DevOps, or anything else.
+
+```bash
+docker run --rm pentesttoolscom/ptt-scan:latest \
+  --key <API_KEY> \
+  --fail high \
+  run website_scanner \
+  --format text \
+  --scan_type deep \
+  https://your-website.com
+```
+
+Use the API key stored in your CI/CD secrets for `<API_KEY>`. The other values come from your action configuration in Pentest-Tools.com.
+
+## Output handling
+
+### Text format
+
+Suitable for console output and log review:
+
+```
+Scan completed for example.com
+Found 3 findings:
+  - HIGH: SQL Injection in /login
+  - MEDIUM: Missing security headers
+  - LOW: Information disclosure
+```
+
+### JSON format
+
+Parse programmatically for custom handling:
+
+```json
+{
+  "scan_id": 12345,
+  "target": "example.com",
+  "status": "completed",
+  "findings": [
+    {
+      "title": "SQL Injection",
+      "severity": "high",
+      "cvss_score": 8.6,
+      "description": "SQL injection vulnerability found in the login parameter.",
+      "url": "https://example.com/login"
+    }
+  ]
+}
+```
+
+<Note>
+This is a simplified example. See the [API reference](/api-reference/overview) for the complete finding schema.
+</Note>
+
+## Best practices
+
+<Tip>
+Use environment variables or secrets management for your action secret. Never hardcode credentials in pipeline files.
+</Tip>
+
+<Tip>
+Make sure your CI/CD runner can reach app.pentest-tools.com. Check firewall rules if scans fail to start.
+</Tip>
+
+- Run Light scans for quick validation, Deep scans for thorough testing
+- Set fail conditions based on your pipeline stage (stricter for production)
+- Store scan results as artifacts for later review
+- Set appropriate timeouts for scan completion
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication failed">
+    - Verify the secret is correctly configured
+    - Check that the secret hasn't expired
+    - Check that the environment variable is accessible
+  </Accordion>
+  <Accordion title="Scan timeout">
+    - Deep scans may take longer; adjust pipeline timeout
+    - Verify the target is accessible from the internet
+    - Check for network restrictions
+  </Accordion>
+  <Accordion title="Pipeline fails unexpectedly">
+    - Review the fail condition setting
+    - Check scan results for findings above threshold
+    - Verify the action name is correct
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [GitHub Actions](/capabilities/integrations/github-actions)
+- [API overview](/api-reference/overview)
+- [Notifications](/capabilities/notifications)

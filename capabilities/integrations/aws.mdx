@@ -1,0 +1,157 @@
+---
+title: "AWS integration"
+description: "Import targets from your AWS infrastructure"
+---
+
+The AWS integration lets you import targets directly from your AWS infrastructure.
+
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="Automatic discovery" icon="magnifying-glass">
+    Discover EC2 instances and S3 buckets automatically.
+  </Card>
+  <Card title="Stay current" icon="arrows-rotate">
+    Re-import at any time to pick up new instances and buckets.
+  </Card>
+  <Card title="Multi-region" icon="globe">
+    Import from multiple AWS regions at once.
+  </Card>
+  <Card title="Private networks" icon="lock">
+    Option to import private EC2 IP addresses.
+  </Card>
+</CardGroup>
+
+## Setting up AWS integration
+
+<Steps>
+  <Step title="Create IAM credentials">
+    In AWS, create an IAM user with read-only permissions.
+  </Step>
+  <Step title="Configure integration">
+    In Pentest-Tools.com, go to Settings > Integrations > AWS.
+  </Step>
+  <Step title="Enter credentials">
+    Add your AWS Access Key ID and Secret Access Key.
+  </Step>
+  <Step title="Import targets">
+    Select services and regions, then import.
+  </Step>
+</Steps>
+
+## IAM Configuration
+
+Create an IAM user with minimal read-only permissions:
+
+### EC2 Permissions
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeInstances",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+### S3 Permissions
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListAllMyBuckets",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+<Warning>
+Use the principle of least privilege. Only grant the permissions needed for the services you want to import.
+</Warning>
+
+## Supported services
+
+| Service | What's Imported |
+|---------|-----------------|
+| **EC2** | Running instance IP addresses (public or private) |
+| **S3** | S3 bucket URLs |
+
+## Import options
+
+### EC2 Options
+
+| Option | Description |
+|--------|-------------|
+| **Public IP** | Import the public IP address of instances |
+| **Private IP** | Import the private IP address (requires VPN) |
+
+Only running EC2 instances are imported. Stopped and terminated instances are skipped.
+
+<Tip>
+Use private IP import with VPN if you need to scan instances that aren't publicly accessible.
+</Tip>
+
+### Region selection
+
+Select which AWS regions to import from. EC2 instances are discovered in the selected regions. S3 buckets are global; the `s3:ListAllMyBuckets` API returns all buckets regardless of region selection.
+
+## Imported targets
+
+When targets are imported:
+
+- EC2 instances appear as targets with the instance name and ID
+- S3 buckets appear as HTTPS URLs
+- Targets are added to your current workspace
+- You can scan them immediately after import
+
+### Example imported targets
+
+| Source | Target Name |
+|--------|-------------|
+| EC2 | `10.0.1.50` (AWS EC2 - WebServer i-1234567890abcdef0) |
+| S3 | `https://my-bucket.s3.amazonaws.com` |
+
+## Best practices
+
+- Create a dedicated IAM user for Pentest-Tools.com
+- Use read-only permissions only
+- Rotate access keys periodically
+- Import targets before major security assessments
+- Use workspaces to organize imported targets by environment
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="No targets found">
+    - Verify IAM permissions are correct
+    - Check that instances are in running state
+    - Verify you selected the correct regions
+  </Accordion>
+  <Accordion title="Authentication failed">
+    - Check Access Key ID and Secret are correct
+    - Verify the IAM user is active
+    - Check for copy/paste issues with credentials
+  </Accordion>
+  <Accordion title="Some regions failed">
+    - Verify IAM permissions apply to all regions
+    - Check for region-specific restrictions
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Assets](/core/assets)
+- [VPN Profiles](/capabilities/vpn/overview)
+- [Notifications](/capabilities/notifications)

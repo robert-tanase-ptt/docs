@@ -1,6 +1,6 @@
 ---
 title: "API examples"
-description: "Python examples for all API endpoints and common workflows"
+description: "Python examples for common API workflows"
 ---
 
 These examples use Python and the `requests` library to cover the most common workflows: managing targets, running scans, retrieving findings, and generating reports. Each section builds on the setup below, so start there before copying individual snippets.
@@ -13,7 +13,7 @@ import time
 import requests
 from enum import IntEnum
 
-API_KEY = "YOUR_API_KEY"  # Get from Account Settings > API
+API_KEY = "YOUR_API_KEY"  # Get from My account > API
 API_URL = "https://app.pentest-tools.com/api/v2"
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
@@ -429,7 +429,7 @@ def get_findings(
 # Usage: Get findings from a specific scan
 findings = get_findings(task_id=12345)
 for finding in findings:
-    print(f"[{finding['cvss_score']}] {finding['name']}")
+    print(f"[{finding['cvss']}] {finding['name']}")
 ```
 
 ### Get finding details
@@ -448,8 +448,8 @@ def get_finding(finding_id: int) -> dict:
 # Usage
 finding = get_finding(12345)
 print(f"Name: {finding['name']}")
-print(f"Severity: {finding['risk']}")
-print(f"Description: {finding['description']}")
+print(f"Severity: {finding['risk_level']}")
+print(f"Description: {finding['vuln_description']}")
 ```
 
 ---
@@ -472,8 +472,8 @@ def create_report(
     Args:
         source: "scans" or "findings"
         resource_ids: List of scan IDs or finding IDs
-        format: "pdf", "docx", or "html"
-        group_by: "target", "severity", or "tool"
+        format: "pdf", "docx", "html", "json", "csv", or "xlsx"
+        group_by: "target" or "vulnerability"
         webhook_url: Optional URL to receive notification when ready
 
     Returns:
@@ -502,7 +502,7 @@ report_id = create_report(
     source="scans",
     resource_ids=[123, 124, 125],
     format="pdf",
-    group_by="severity"
+    group_by="vulnerability"
 )
 print(f"Report {report_id} is being generated")
 ```
@@ -602,13 +602,13 @@ def get_http_logger_data(logger_id: int) -> list:
         headers=HEADERS
     )
     response.raise_for_status()
-    return response.json()["data"]
+    return response.json()["data"]["requests"]
 
 
 # Usage: Check for SSRF callbacks
 data = get_http_logger_data(12345)
 for request in data:
-    print(f"{request['method']} from {request['source_ip']}")
+    print(f"{request['request_method']} from {request['ip_address']}")
 ```
 
 ### Clear logger data
@@ -643,7 +643,7 @@ def get_vpn_profiles() -> list:
 # Usage
 profiles = get_vpn_profiles()
 for profile in profiles:
-    print(f"{profile['name']}: {profile['vpn_uuid']}")
+    print(f"{profile['name']}: {profile['id']}")
 ```
 
 ---
@@ -696,7 +696,8 @@ def run_scan_and_wait(
 
         if status == "finished":
             return get_scan_output(scan_id)
-        elif status in ("stopped", "failed"):
+        elif status in ("stopped", "failed to start", "timed out", "aborted",
+                        "VPN connection error", "auth failed", "connection error"):
             raise RuntimeError(f"Scan {status}")
 
         time.sleep(poll_interval)
@@ -782,7 +783,8 @@ def wait_for_scans(scan_ids: list, poll_interval: int = 30) -> dict:
             scan = get_scan(scan_id)
             status = scan["status_name"]
 
-            if status in ("finished", "stopped", "failed"):
+            if status in ("finished", "stopped", "failed to start", "timed out",
+                          "aborted", "VPN connection error", "auth failed", "connection error"):
                 results[scan_id] = status
                 pending.remove(scan_id)
                 print(f"Scan {scan_id}: {status}")
@@ -829,7 +831,7 @@ def scan_and_report(
         source="scans",
         resource_ids=completed,
         format=report_format,
-        group_by="severity"
+        group_by="vulnerability"
     )
 
     # Wait for report
@@ -837,8 +839,8 @@ def scan_and_report(
         report = get_report(report_id)
         if report["status"] == "finished":
             break
-        elif report["status"] == "failed":
-            raise RuntimeError("Report generation failed")
+        elif report["status"] in ("failed", "unauthorized"):
+            raise RuntimeError(f"Report generation failed: {report['status']}")
         time.sleep(5)
 
     # Download

@@ -7,7 +7,7 @@ description: "Security testing for WordPress websites using WPScan"
 
 The WordPress Scanner identifies vulnerabilities in WordPress installations, including the core platform, plugins, and themes. It uses WPScan technology to detect security issues specific to the WordPress ecosystem.
 
-The WordPress Scanner is a **vulnerability scanner**: it actively tests WordPress sites for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+The WordPress Scanner is a **vulnerability scanner**: it actively tests WordPress sites for security weaknesses. It does not add data to your [Attack Surface](/capabilities/attack-surface). Identified vulnerabilities are reported as [findings](/core/findings/findings).
 
 ## Supported targets
 
@@ -152,7 +152,7 @@ The WordPress Scanner supports HTTP Basic Authentication in **Custom** scan mode
 Basic Authentication is different from WordPress login credentials. It's typically configured at the server level (Apache/Nginx) to restrict access to the entire site or wp-admin area.
 </Note>
 
-For detailed authentication configuration, see [Authenticated scanning](/using/scans/authenticated-scanning#wordpress-scanner).
+For detailed authentication configuration, see [Authenticated scanning](/core/scans/authenticated-scanning#wordpress-scanner).
 
 ## How it works
 
@@ -178,5 +178,5 @@ After identifying vulnerabilities:
 - **Remove unused plugins**: Delete plugins that are not actively used
 - **Disable XML-RPC**: If not needed, disable xmlrpc.php to prevent brute-force attacks
 - **Hide version information**: Remove readme.html and version meta tags
-- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for additional testing
-- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
+- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for full web application testing
+- **Schedule regular scans**: Set up [Scheduled scans](/core/scans/scheduled-scans) for continuous monitoring

@@ -1,0 +1,139 @@
+---
+title: "Scan types"
+description: "Understand Light, Deep, and Custom scan types and when to use each"
+---
+
+Most scanning tools offer three scan types that balance speed, thoroughness, and customization.
+
+## Light
+
+Light scans are fast, surface-level assessments designed for quick results with minimal impact on the target.
+
+| Aspect | Details |
+|--------|---------|
+| **Speed** | Fast, typically completes in seconds to minutes |
+| **Coverage** | Common ports only (typically top 100) for network tools; shallow crawling and fewer checks for web tools |
+| **Detection** | Version-based detection, compares service versions against known vulnerability databases |
+| **Impact** | Low traffic, less likely to trigger IDS/IPS alerts |
+
+### When to use Light scans
+
+- Quick reconnaissance of a new target
+- Initial health checks before deeper testing
+- Time-sensitive assessments
+- Testing scan configurations before committing to a full scan
+- Targets where you want to minimize traffic
+
+<Note>
+Light scans rely primarily on service version fingerprinting, which can produce false positives if services report inaccurate versions. We don't generate critical findings based solely on version detection. Always validate version-based findings.
+</Note>
+
+## Deep
+
+Deep scans run full assessments across a broader range of ports, checks, and detection engines.
+
+| Aspect | Details |
+|--------|---------|
+| **Speed** | Slower, can take minutes to hours depending on target |
+| **Coverage** | Extended port ranges for network tools; deeper spidering and more tests for web tools |
+| **Detection** | Multiple engines including version-based, Sniper, Nuclei, active vulnerability checks, and full enumeration |
+| **Impact** | Higher traffic volume, may be detected by security monitoring |
+
+### When to use Deep scans
+
+- Full security audits and assessments
+- Compliance requirements
+- Pre-release security testing
+- Annual security reviews
+- When you need full coverage
+
+<Note>
+Deep scans generate more network traffic and may create noise in target logs. Coordinate with system owners when scanning production environments.
+</Note>
+
+### Risks and considerations
+
+Deep scans generate a lot of traffic. Before running one against a production system, consider the following:
+
+**WAF and IDS/IPS detection.** The payload volume will trigger most web application firewalls and intrusion detection systems. Security monitoring tools will alert, and some will block the scanner. Whitelisting the [scanner's source IPs](/core/scans/source-ip-addresses) before scanning prevents this.
+
+**Request volume.** The Website Scanner in Deep mode sends 10,000+ HTTP requests. The Network Scanner probes thousands of ports across multiple engines. This traffic shows up in application logs, access logs, and network monitoring.
+
+**Server load.** High request rates increase server load and can slow response times for real users. Schedule deep scans during maintenance windows or low-traffic periods.
+
+**Rate limiting.** Some applications throttle or block IPs that send too many requests. If a deep scan stops mid-way, switch to Custom scan type and reduce the requests-per-second setting.
+
+## Custom
+
+Custom scans give you full control over scan parameters, including tests, engines, and detection options.
+
+| Aspect | Details |
+|--------|---------|
+| **Speed** | Varies based on configuration |
+| **Coverage** | User-defined scope (ports for network tools, spidering settings for web tools) |
+| **Detection** | User-selected tests and engines |
+| **Impact** | Depends on configuration choices |
+
+### When to use Custom scans
+
+- Targeting specific ports or services
+- Focusing on particular vulnerability types
+- Fine-tuning scan behavior for specific environments
+- Advanced users who understand the trade-offs
+
+### Custom options
+
+Depending on the tool, Custom mode may let you configure:
+
+- **Scanning engines**: Select which detection engines or tests to run
+- **Port selection**: Specify exact ports, ranges, or predefined lists (network tools)
+- **Protocol**: TCP or UDP scanning (network tools)
+- **Spidering settings**: Configure crawl depth, approach, and time limits (web tools)
+- **URL inclusions/exclusions**: Control which paths to scan or skip (web tools)
+- **Authentication**: Configure credentials for protected areas (web tools)
+- **Rate limiting**: Control requests per second to reduce impact
+
+<Info>
+Custom scan options vary by tool. Check the specific tool's documentation for available parameters.
+</Info>
+
+## Comparison summary
+
+| | Light | Deep | Custom |
+|---|-------|------|--------|
+| **Speed** | Fast | Slow | Varies |
+| **Coverage** | Basic | Full | User-defined |
+| **False positives** | More likely | Less likely | Depends on config |
+| **Target impact** | Low | High | User-controlled |
+| **Best for** | Quick checks | Full audits | Specific needs |
+
+<Tip>
+Start with a Light scan to get a quick read on the target, then follow up with Deep or Custom scans on areas of concern.
+</Tip>
+
+## How long do scans take?
+
+Scan duration depends on the tool, mode, and target.
+
+### Network and port scans
+
+| Mode | Typical duration per host |
+|------|--------------------------|
+| Light | A few minutes |
+| Deep | 20–60 minutes |
+| Custom (with OpenVAS) | Up to several hours |
+
+Scanning a network range (such as a /24 CIDR block) multiplies per-host times by the number of live hosts discovered.
+
+### Web scans
+
+| Mode | Typical duration |
+|------|-----------------|
+| Light | A few minutes |
+| Deep | 20–60 minutes |
+
+Some Website Scanner tests run much longer than the totals above. Find Interesting Files and Information Disclosure each test a large number of potential paths and parameters, and either can take several hours on a Deep scan. If you need faster results, use Custom mode and deselect those tests.
+
+## Related topics
+
+- [Plan overview](/account-billing/plans-and-limits/plan-overview): Compare subscription plans

@@ -3,7 +3,7 @@ title: "MCP server"
 description: "Connect AI assistants to Pentest-Tools.com using the Model Context Protocol"
 ---
 
-The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server provides a standardized interface that allows any compatible AI model or agent to access your Pentest-Tools.com account, running scans, managing targets, retrieving findings, and generating reports.
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server provides a standardized interface that lets any compatible AI model or agent access your Pentest-Tools.com account, running scans, managing targets, retrieving findings, and generating reports.
 
 Connect to our MCP server in Claude, Cursor, VS Code, and other clients using either the local server or our hosted remote server.
 
@@ -21,7 +21,7 @@ Our MCP server supports both local (stdio) and remote (HTTP) transports:
 Authentication requires your Pentest-Tools.com API key. Get it from **My Account > API** in the web application.
 
 <Info>
-API access requires a plan that includes it. See [Authentication](/api-reference/authentication) for details.
+API access requires a paid plan that includes it. See [Authentication](/api-reference/authentication) for details.
 </Info>
 
 ### Claude Code
@@ -210,7 +210,7 @@ Pre-built prompts for common workflows:
 
 | Prompt | Description |
 |--------|-------------|
-| `pentest` | Comprehensive pentesting workflow for a target |
+| `pentest` | Full pentesting workflow for a target |
 | `subdomains` | Discover all subdomains for a domain |
 | `is_up` | Check if a target is accessible |
 | `summary` | Executive summary for scans in a workspace |
@@ -262,7 +262,7 @@ For developers using agentic IDEs like Cursor or Copilot. Run a scan on your loc
 
 <AccordionGroup>
   <Accordion title="What plans support API/MCP access?">
-    API access requires a plan that includes it. Check your plan details in **My Account > Subscription** or contact support if you receive a 403 error.
+    API access is available on paid plans. MCP integration is currently available on WebNetSec and Pentest Suite. Check your plan details in **Plan details & billing > Active plan** or contact support if you receive a 403 error.
   </Accordion>
 
   <Accordion title="Local vs remote server, which should I use?">
