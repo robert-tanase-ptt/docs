@@ -7,7 +7,7 @@ description: "Discover open TCP and UDP ports and running services on target hos
 
 The Port Scanner identifies open TCP and UDP ports on target hosts using [Nmap](https://nmap.org/), the industry-standard port scanning tool. Knowing which network services are exposed to the Internet is a key step in network security assessments.
 
-The Port Scanner is a **discovery tool**: it maps your network's exposed services but does not test them for vulnerabilities. Discovered ports, services, and OS information are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). It does not generate [findings](/using/findings/findings).
+The Port Scanner is a **discovery tool**: it maps your network's exposed services but does not test them for vulnerabilities. Discovered ports, services, and OS information are added to your [Attack Surface](/capabilities/attack-surface). It does not generate [findings](/core/findings/findings).
 
 ## Parameters
 
@@ -16,7 +16,7 @@ The Port Scanner is a **discovery tool**: it maps your network's exposed service
 | Target | The hostname or IP address to scan. |
 | Protocol | Choose between **TCP** (default) or **UDP** scanning. |
 | Scan type | **Light**, **Deep** (default), or **Custom** mode. See [Scan types](#scan-types) below. |
-| Check alive | When enabled (default), the scanner checks if the host is up before scanning. Disable this if the host doesn't respond to ICMP but you know it's online. Learn more about [Check alive](/using/assets/assets#check-alive). |
+| Check alive | When enabled (default), the scanner checks if the host is up before scanning. Disable this if the host doesn't respond to ICMP but you know it's online. Learn more about [Check alive](/core/assets#check-alive). |
 
 ### Custom scan options
 
@@ -46,7 +46,7 @@ You can also specify a **port range** (e.g., `1-1024` for privileged ports) or a
 The "Top X ports" presets use **different, curated port lists for TCP and UDP** based on which ports are most commonly open for each protocol. TCP lists emphasize web (80, 443, 8080), SSH (22), and database ports, while UDP lists focus on DNS (53), DHCP (67-68), SNMP (161-162), and NTP (123) ports.
 </Note>
 
-See [Port lists](/using/scans/portlists) for the exact ports covered by each preset.
+See [Port lists](/core/scans/portlists) for the exact ports covered by each preset.
 
 #### Scan techniques
 
@@ -124,5 +124,5 @@ From the results, you can launch additional scans directly:
 | Any service | Run [Network Scanner](/tools/network-scanner) to test for vulnerabilities |
 
 <Tip>
-Use [VPN profiles](/using/vpn/overview) to scan internal networks behind firewalls.
+Use [VPN profiles](/capabilities/vpn/overview) to scan internal networks behind firewalls.
 </Tip>

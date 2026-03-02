@@ -25,7 +25,7 @@ Use it to integrate security scanning into your existing tools and workflows.
     Access vulnerability findings and their details.
   </Card>
   <Card title="Reports" icon="file-pdf">
-    Generate and download PDF, DOCX, or HTML reports.
+    Generate and download reports in PDF, DOCX, HTML, JSON, CSV, or XLSX format.
   </Card>
   <Card title="And More" icon="ellipsis">
     HTTP loggers, VPN profiles, wordlists, and finding templates.
@@ -42,7 +42,7 @@ https://app.pentest-tools.com/api/v2
 
 ### 1. Get your API key
 
-Generate an API key from **My Account > API** in the web application.
+Generate an API key from **My account > API** in the web application.
 
 <Info>
 API access requires a plan that includes it. Check your plan details if you receive a 403 error.
@@ -82,7 +82,7 @@ curl -X POST "https://app.pentest-tools.com/api/v2/scans" \
 
 ## Response format
 
-All successful responses return JSON with data wrapped in a `data` field:
+Most successful responses return JSON with data wrapped in a `data` field:
 
 ```json
 {
@@ -104,6 +104,10 @@ For list endpoints, the response includes an array:
   ]
 }
 ```
+
+<Note>
+Three endpoints skip the `data` wrapper and return raw content: `GET /reports/{id}/download` streams the report file, `GET /scans/{id}/output` with `Accept: application/pdf` returns a PDF, and `GET /scans/{id}/raw` with `Accept: text/plain` returns plain text.
+</Note>
 
 <Note>
 Error responses use a different format. See [Limits and Errors](/api-reference/limits-and-errors) for details.
@@ -131,6 +135,10 @@ https://app.pentest-tools.com/api-schema.yml
 
 You can use this schema with tools like Postman, Insomnia, or code generators.
 
+<Note>
+The schema omits the `data` wrapper. Every actual JSON response includes it, so `{"data": {...}}` or `{"data": [...]}` is what you'll get, regardless of what the schema declares.
+</Note>
+
 ## Support
 
 If you have questions about the API, contact us at [support@pentest-tools.com](mailto:support@pentest-tools.com).
@@ -138,5 +146,5 @@ If you have questions about the API, contact us at [support@pentest-tools.com](m
 ## Next steps
 
 - [Authentication](/api-reference/authentication): Get your API key and authenticate requests
-- [API examples](/api-reference/examples): Python examples for all endpoints
+- [API examples](/api-reference/examples): Python examples for common workflows
 - [Limits and errors](/api-reference/limits-and-errors): Rate limits and error handling

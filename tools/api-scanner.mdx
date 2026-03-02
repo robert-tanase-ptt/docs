@@ -7,7 +7,7 @@ description: "Security testing for REST and GraphQL APIs"
 
 The API Scanner tests REST and GraphQL APIs for security vulnerabilities. It understands API specifications (OpenAPI/Swagger, Postman collections) and uses GraphQL introspection to test your API endpoints for security issues.
 
-The API Scanner is a **vulnerability scanner**: it actively tests APIs for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+The API Scanner is a **vulnerability scanner**: it actively tests APIs for security weaknesses. It does not add data to your [Attack Surface](/capabilities/attack-surface). Identified vulnerabilities are reported as [findings](/core/findings/findings).
 
 ## Supported targets
 
@@ -255,7 +255,7 @@ X-API-Key: your-api-key-here
 If your API uses multiple authentication mechanisms (e.g., both a Bearer token and an API key), include all required headers on separate lines.
 </Tip>
 
-For more details, see [Authenticated scanning > API Scanner](/using/scans/authenticated-scanning#api-scanner).
+For more details, see [Authenticated scanning > API Scanner](/core/scans/authenticated-scanning#api-scanner).
 
 ## How it works
 
@@ -278,4 +278,4 @@ After identifying vulnerabilities:
 - **Test web application**: Run [Website Scanner](/tools/website-scanner) for the frontend
 - **Review authentication**: Strengthen API authentication mechanisms
 - **Implement rate limiting**: Add rate limiting to prevent abuse
-- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
+- **Schedule regular scans**: Set up [Scheduled scans](/core/scans/scheduled-scans) for continuous monitoring

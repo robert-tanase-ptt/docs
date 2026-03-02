@@ -7,7 +7,7 @@ description: "Detect subdomains vulnerable to takeover attacks"
 
 The Subdomain Takeover scanner discovers subdomains pointing to unclaimed cloud resources that attackers could claim to serve malicious content from your domain. It combines subdomain discovery with takeover vulnerability detection.
 
-The Subdomain Takeover scanner is an **offensive tool**: it identifies exploitable misconfigurations in DNS records. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) and does not generate [findings](/using/findings/findings). Results are displayed as a report listing vulnerable and safe subdomains.
+The Subdomain Takeover scanner is an **offensive tool**: it identifies exploitable misconfigurations in DNS records. It does not add data to your [Attack Surface](/capabilities/attack-surface) and does not generate [findings](/core/findings/findings). Results are displayed as a report listing vulnerable and safe subdomains.
 
 ## Supported targets
 
@@ -111,4 +111,4 @@ After identifying vulnerable subdomains:
 - **Audit all DNS**: Review complete DNS configuration for similar issues
 - **Run [Subdomain Finder](/tools/subdomain-finder)**: Comprehensive subdomain enumeration
 - **Check related domains**: Use [Domain Finder](/tools/domain-finder) to find other domains to test
-- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) to detect new vulnerabilities
+- **Schedule regular scans**: Set up [Scheduled scans](/core/scans/scheduled-scans) to detect new vulnerabilities

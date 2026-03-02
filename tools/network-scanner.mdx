@@ -7,7 +7,7 @@ description: "Discover vulnerabilities in network infrastructure and services"
 
 The Network Scanner identifies security weaknesses in network infrastructure, including servers, services, and network devices. It tests for known CVEs, misconfigurations, and security issues across network services.
 
-The Network Scanner is a **vulnerability scanner**: it actively tests your network infrastructure for security weaknesses. Discovered ports, services, OS information, and technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+The Network Scanner is a **vulnerability scanner**: it actively tests your network infrastructure for security weaknesses. Discovered ports, services, OS information, and technologies are added to your [Attack Surface](/capabilities/attack-surface). Identified vulnerabilities are reported as [findings](/core/findings/findings).
 
 ## Supported targets
 
@@ -17,7 +17,7 @@ The Network Scanner is a **vulnerability scanner**: it actively tests your netwo
 | **Hostname** | `server.example.com`, `mail.example.com` |
 
 <Note>
-To scan multiple hosts, add IP ranges (CIDR notation like `192.168.1.0/24`) or IP ranges (like `10.10.0.1-255`) from the [Assets page](/using/assets/assets#supported-target-formats). You can also [import multiple targets](/using/assets/assets#importing-multiple-targets) from a file.
+To scan multiple hosts, add IP ranges (CIDR notation like `192.168.1.0/24`) or IP ranges (like `10.10.0.1-255`) from the [Assets page](/core/assets#supported-target-formats). You can also [import multiple targets](/core/assets#importing-multiple-targets) from a file.
 </Note>
 
 ## Scan types
@@ -32,7 +32,7 @@ To scan multiple hosts, add IP ranges (CIDR notation like `192.168.1.0/24`) or I
 
 | Parameter | Light | Deep | Custom |
 |-----------|:-----:|:----:|:------:|
-| **TCP ports** | ~187 | ~3,845 | User-defined |
+| **TCP ports** | ~187 | ~3,847 | User-defined |
 | **UDP ports** | ~101 | ~1,000 | User-defined |
 | **Check alive** | ✓ | ✓ | Configurable |
 | **Extensive modules** | ✗ | ✓ | Configurable |
@@ -102,7 +102,7 @@ You can also specify a **port range** (e.g., `1-1024`) or a **port list** (comma
 The "Top X ports" options use **different, curated port lists for TCP and UDP** based on which ports are most commonly open for each protocol. TCP lists emphasize web (80, 443, 8080), SSH (22), and database ports, while UDP lists focus on DNS (53), DHCP (67-68), SNMP (161-162), and NTP (123) ports.
 </Note>
 
-See [Port lists](/using/scans/portlists) for the exact ports covered by each preset.
+See [Port lists](/core/scans/portlists) for the exact ports covered by each preset.
 
 ### Protocol
 
@@ -154,3 +154,4 @@ After running a network scan:
 6. **Audit credentials**: Use the [Password Auditor](/tools/password-auditor) to test for weak passwords.
 7. **Exploit verified vulnerabilities**: Use [Sniper](/tools/sniper) to validate exploitability.
 8. **Generate reports**: Export findings for remediation tracking and compliance documentation.
+

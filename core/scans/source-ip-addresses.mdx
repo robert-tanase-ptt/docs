@@ -1,0 +1,213 @@
+---
+title: "Source IP addresses"
+description: "IP addresses used by Pentest-Tools.com scanners, for firewall whitelisting"
+---
+
+Pentest-Tools.com scans originate from a fixed pool of IP addresses. If your firewall, WAF, or IDS/IPS blocks these IPs, scans will fail or return incomplete results. You can whitelist by FQDN (recommended) or by explicit IP address.
+
+## When to whitelist
+
+Whitelist the scanner IPs if you're seeing:
+
+- "Website / URL is not accessible" errors when the site works normally
+- Port scans that return no open ports on a host you know is live
+- Scans that stop before completing without a clear error
+
+## Whitelist by FQDN (recommended)
+
+Add `scanners.pentest-tools.com` to your allowlist. This hostname resolves to the current pool of scanner IPs, so it stays accurate as the pool changes.
+
+## Scanner locations
+
+Scanners operate from data centers in Germany, Italy, and the United Kingdom. If your target enforces geolocation-based access controls, allow traffic from these regions.
+
+## IP address list
+
+<Note>
+This list changes as scanner capacity expands. Whitelisting `scanners.pentest-tools.com` is more reliable than a static IP list.
+</Note>
+
+```text
+139.162.221.245
+172.237.108.186
+172.236.14.110
+172.236.3.74
+172.236.8.227
+172.237.108.9
+172.237.109.43
+172.236.13.243
+172.236.30.132
+172.237.100.185
+172.236.15.114
+172.238.108.97
+172.236.200.23
+172.236.195.214
+172.236.195.212
+172.236.195.253
+172.236.195.23
+172.236.195.202
+172.236.195.210
+172.236.195.218
+172.236.195.199
+172.236.195.119
+172.236.195.173
+172.236.195.8
+172.236.195.21
+172.236.195.180
+172.236.195.181
+172.236.195.177
+172.236.195.204
+172.236.195.216
+172.236.195.143
+172.236.195.138
+172.236.195.221
+172.235.224.29
+172.235.224.154
+172.232.197.70
+172.232.197.240
+172.232.211.44
+172.232.211.183
+172.232.197.136
+172.232.197.234
+172.232.197.58
+172.232.197.246
+172.232.211.111
+172.232.197.59
+172.232.211.211
+172.232.197.56
+172.232.197.161
+172.232.197.177
+172.232.197.55
+172.232.211.168
+172.232.197.61
+172.232.213.23
+172.232.197.83
+172.232.197.163
+172.237.125.221
+172.237.125.216
+172.236.25.46
+172.236.25.55
+172.236.25.103
+172.239.105.245
+172.236.25.196
+172.237.114.29
+172.239.105.250
+172.236.25.26
+172.236.25.150
+172.236.25.98
+172.237.125.231
+172.236.25.56
+172.236.25.32
+172.236.25.83
+172.237.125.55
+172.236.25.65
+172.236.25.216
+172.239.105.59
+172.236.25.206
+172.236.25.241
+172.236.25.85
+172.236.25.185
+172.239.105.127
+172.236.25.217
+172.236.25.62
+172.236.25.30
+172.236.25.136
+172.239.105.249
+172.236.25.82
+172.236.25.248
+172.239.105.246
+172.236.25.254
+172.236.25.176
+172.239.105.111
+172.236.25.49
+172.239.105.88
+172.236.25.86
+172.236.25.208
+172.236.25.68
+172.236.25.75
+172.238.110.194
+172.238.110.180
+172.236.201.225
+172.236.195.185
+172.236.201.224
+172.236.201.126
+172.238.126.222
+172.238.126.119
+172.238.122.66
+172.236.201.240
+172.236.201.215
+172.236.201.220
+172.236.201.228
+172.236.201.181
+172.237.121.103
+172.237.125.193
+172.238.118.24
+172.236.221.177
+172.238.119.68
+172.236.221.169
+172.236.200.250
+172.238.96.222
+172.238.111.149
+172.238.118.169
+172.236.221.47
+172.238.111.197
+172.239.114.68
+172.237.120.156
+172.239.109.57
+172.237.96.104
+172.237.119.90
+```
+
+## VPN profile
+
+When using a [VPN profile](/capabilities/vpn/overview) to scan internal targets, the agent tunnel connects from a separate IP:
+
+| | |
+|---|---|
+| **FQDN** | `vpn2.pentest-tools.com` |
+| **IP** | `109.74.200.91` |
+
+The agent needs outbound TCP port 22 to `vpn2.pentest-tools.com`. See [VPN profiles overview](/capabilities/vpn/overview) for setup instructions.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Website or URL is not accessible">
+    This error can appear in two places: as a notification before the scan starts (the platform tried to reach the target and failed) or as a finding inside the scan results (the scanner container started but could not connect during testing).
+
+    Common causes:
+
+    - The target is temporarily down
+    - A firewall, WAF, or IP allowlist is blocking the scanner's source IPs
+    - The target restricts traffic by geography (the scanners operate from Germany, Italy, and the UK)
+    - The target is on a private network and needs a VPN profile
+
+    What to try:
+
+    - Confirm the URL is reachable from a browser
+    - Whitelist `scanners.pentest-tools.com` in your firewall or WAF
+    - For internal targets, configure a [VPN profile](/capabilities/vpn/openvpn) and attach it to the scan
+  </Accordion>
+
+  <Accordion title="No open ports found on a live host">
+    If the scanner reports no open ports on a host you know is running services, firewall filtering is the most common cause. The firewall drops probe packets before they reach any open port, so the scanner sees nothing.
+
+    Other things to check:
+
+    - Whitelist `scanners.pentest-tools.com` so probe packets are not dropped before they arrive.
+    - If Check alive is enabled and the host does not respond to ICMP or TCP SYN probes, the scan stops before testing ports. Disable Check alive in Custom mode to proceed regardless.
+    - The open ports may be outside the default range. Try the Full port range option in Custom mode.
+    - Confirm the target IP or hostname is correct.
+  </Accordion>
+
+  <Accordion title="Host appears unreachable / check alive failed">
+    The alive check sends ICMP echo, TCP SYN/ACK, and UDP probes before scanning. If the host drops all of them, the scanner marks it unreachable and stops.
+
+    To scan it anyway, disable Check alive in Custom mode. The scanner will attempt port detection without a positive alive signal, and any open ports it finds will still be reported.
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [VPN profiles overview](/capabilities/vpn/overview): scanning internal networks through a VPN agent
+- [Scan types](/core/scans/scan-types-and-depth): understanding scan depth and traffic volume

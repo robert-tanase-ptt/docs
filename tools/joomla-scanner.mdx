@@ -7,7 +7,7 @@ description: "Security testing for Joomla websites using JoomlaVS"
 
 The Joomla Scanner identifies vulnerabilities in Joomla installations, including core, components, modules, and templates. It uses JoomlaVS technology to detect security issues specific to the Joomla CMS.
 
-The Joomla Scanner is a **vulnerability scanner**: it tests Joomla sites for security weaknesses. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview). Scan results are presented as raw output showing discovered vulnerabilities and their details.
+The Joomla Scanner is a **vulnerability scanner**: it tests Joomla sites for security weaknesses. It does not add data to your [Attack Surface](/capabilities/attack-surface). Scan results are presented as raw output showing discovered vulnerabilities and their details.
 
 ## Supported targets
 
@@ -113,8 +113,8 @@ After identifying vulnerabilities:
 - **Remove unused extensions**: Delete extensions that are not actively used
 - **Review discovered vulnerabilities**: Check the reference URLs for exploitation details and fixes
 - **Restrict admin access**: Consider IP-based restrictions on the /administrator path
-- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for additional testing
-- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
+- **Scan the web application**: Run [Website Scanner](/tools/website-scanner) for full web application testing
+- **Schedule regular scans**: Set up [Scheduled scans](/core/scans/scheduled-scans) for continuous monitoring
 
 <Tip>
 Regularly update Joomla core and all extensions. Many attacks target known vulnerabilities in outdated installations.

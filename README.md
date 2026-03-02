@@ -6,29 +6,35 @@ This folder contains the official documentation for [Pentest-Tools.com](https://
 
 ```
 docs/
-├── tools/                  # Security tool documentation
-│   ├── website-vulnerability-scanner.mdx
-│   ├── api-scanner.mdx
-│   ├── port-scanner.mdx
-│   └── ...
-├── using/                  # How-to guides
-│   ├── scans/              # Scanning guides
-│   ├── assets/             # Asset management
-│   ├── findings/           # Working with findings
-│   ├── reporting/          # Reports and exports
-│   └── vpn/                # VPN configuration
-├── ai/                     # AI features
-│   ├── authentication.mdx  # AI-enhanced login detection
-│   ├── soft404detector.mdx # AI-powered 404 detection
-│   └── mcp/                # MCP integration
-├── api-reference/          # REST API documentation
-├── concepts/               # Core concepts and glossary
-├── automation/             # Pentest robots
-├── notifications/          # Integrations (Slack, Jira, etc.)
-├── plans-and-limits/       # Pricing and quotas
-├── account/                # Account management
-├── billing/                # Billing and subscriptions
-└── docs.json               # Site navigation config
+├── index.mdx               # Introduction
+├── core-concepts.mdx        # Core concepts overview
+├── core/                    # Core platform concepts
+│   ├── workspaces.mdx
+│   ├── assets.mdx
+│   ├── tools.mdx
+│   ├── scans/               # Scanning guides
+│   └── findings/            # Working with findings
+├── tools/                   # Security tool reference (28 files)
+├── capabilities/            # Platform capabilities
+│   ├── attack-surface.mdx
+│   ├── reports/             # Reports and exports
+│   ├── pentest-robots.mdx
+│   ├── teams-and-roles.mdx
+│   ├── notifications.mdx
+│   ├── integrations/        # Slack, Jira, CI/CD, etc.
+│   ├── vpn/                 # VPN configuration
+│   └── wordlists.mdx
+├── ai/                      # AI features
+│   ├── mcp/                 # MCP integration
+│   ├── soft404detector.mdx
+│   ├── authentication.mdx
+│   └── endpoint-discovery.mdx
+├── account-billing/         # Account and billing
+│   ├── plans-and-limits/    # Pricing and quotas
+│   ├── billing/             # Billing and subscriptions
+│   └── security/            # Account and data security
+├── api-reference/           # REST API documentation
+└── docs.json                # Site navigation config
 ```
 
 ## Local development
@@ -56,7 +62,16 @@ Follow the conventions in `.cursor/rules`:
 - Write in second person ("you")
 - Use active voice
 - Include cross-references between related pages
-- Add `## Related tools` and `## Related topics` sections
+- Add `## Related topics` at the end of concept, API, and capability pages
+- Tool pages (`docs/tools/`) use `## Follow-up actions` as their navigation convention instead, which links to related tools in context
+
+## Style conventions
+
+- Sentence case for all headings: capitalize the first word only; proper nouns stay capitalized
+- Proper nouns always capitalized: tool names (Website Scanner, Network Scanner, Password Auditor, etc.), Jira, Slack, Docker, GitHub, Azure, AWS, GCP
+- Acronyms always uppercase: API, VPN, DNS, SSL/TLS, CVE, HTTP, HTTPS, CIDR, RPS
+- No em dashes (—): use a comma, colon, period, or parentheses instead
+- Run all prose through the `/humanizer` skill before writing to any file (catches inflated language, em dashes, rule-of-three, -ing phrases, and other AI writing patterns)
 
 ## Key files
 
@@ -66,7 +81,7 @@ Follow the conventions in `.cursor/rules`:
 | `style.css` | Global Mintlify style overrides for Pentest-Tools branding |
 | `brand.js` | Lightweight UI behavior enhancements for docs branding |
 | `tools/index.mdx` | Tools overview page |
-| `using/scans/authenticated-scanning.mdx` | Authentication guide for all tools |
+| `core/scans/authenticated-scanning.mdx` | Authentication guide for all tools |
 | `ai/authentication.mdx` | AI-enhanced authentication feature |
 
 ## Publishing

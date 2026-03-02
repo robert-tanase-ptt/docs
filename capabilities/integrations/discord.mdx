@@ -1,0 +1,105 @@
+---
+title: "Discord integration"
+description: "Receive scan notifications and alerts in your Discord server"
+---
+
+The Discord integration delivers scan results and findings to your Discord channels.
+
+<Info>
+Available on **NetSec**, **WebNetSec**, and **Pentest Suite** plans.
+</Info>
+
+## Setting up Discord
+
+<Steps>
+  <Step title="Create webhook in Discord">
+    In your Discord server, go to Server Settings > Integrations > Webhooks > New Webhook.
+  </Step>
+  <Step title="Copy the webhook URL">
+    Click "Copy Webhook URL" to copy it to your clipboard.
+  </Step>
+  <Step title="Configure in Pentest-Tools.com">
+    Go to Settings > Integrations > Discord.
+  </Step>
+  <Step title="Add the webhook">
+    Enter a name and paste the Discord webhook URL, then save.
+  </Step>
+</Steps>
+
+## Available notifications
+
+This integration receives all notification types configured in your workspace. See [Notifications overview](/capabilities/notifications) for trigger types and conditions.
+
+## Message format
+
+Discord notifications include:
+
+- Event type and timestamp
+- Target information
+- Tool used for the scan
+- Direct links to view results
+
+### Example message
+
+```
+🔴 Critical Finding Detected
+
+Target: example.com
+Tool: Website Scanner
+Finding: SQL Injection in login form
+
+View results: https://pentest-tools.com/...
+```
+
+## Channel strategies
+
+<CardGroup cols={2}>
+  <Card title="Dedicated channel" icon="hashtag">
+    Create a dedicated #security-alerts channel for all notifications.
+  </Card>
+  <Card title="Multiple channels" icon="folder">
+    Route by severity or project for better organization.
+  </Card>
+</CardGroup>
+
+### Recommended setup
+
+| Channel | Notifications |
+|---------|---------------|
+| #security-critical | Critical and high findings only |
+| #security-activity | All scan completions |
+| #project-specific | Project-related alerts |
+
+## Best practices
+
+<Tip>
+Create a dedicated channel for security notifications to avoid noise in general channels.
+</Tip>
+
+<Warning>
+Keep your webhook URL confidential. Anyone with the URL can send messages to your channel.
+</Warning>
+
+- Use channel permissions to control who can see notifications
+- Consider muting the channel and checking periodically for non-critical alerts
+- Enable notifications for critical findings only
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Messages not appearing">
+    - Verify the webhook URL is correct
+    - Check that the webhook hasn't been deleted in Discord
+    - Ensure the channel still exists
+  </Accordion>
+  <Accordion title="Webhook not saving">
+    - Verify the URL format is valid
+    - Check that a webhook with the same name doesn't already exist
+  </Accordion>
+</AccordionGroup>
+
+## Related topics
+
+- [Slack integration](/capabilities/integrations/slack)
+- [Microsoft Teams integration](/capabilities/integrations/microsoft-teams)
+- [Notifications](/capabilities/notifications)

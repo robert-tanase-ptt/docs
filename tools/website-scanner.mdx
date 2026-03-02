@@ -7,7 +7,9 @@ description: "Web application security testing with active and passive vulnerabi
 
 The Website Scanner performs security testing of web applications. It crawls your application, identifies technologies, and tests for vulnerabilities through active payload injection and passive response analysis.
 
-The Website Scanner is a **vulnerability scanner**: it actively tests web applications for security weaknesses. Discovered technologies are added to your [Attack Surface](/using/attack-surface/attack-surface-overview). Identified vulnerabilities are reported as [findings](/using/findings/findings).
+The Website Scanner is a **vulnerability scanner**: it actively tests web applications for security weaknesses. Discovered technologies are added to your [Attack Surface](/capabilities/attack-surface). Identified vulnerabilities are reported as [findings](/core/findings/findings).
+
+The Website Scanner is a DAST (Dynamic Application Security Testing) tool: it tests your running application from the outside, without access to source code. If you need source code analysis, that requires a separate SAST tool.
 
 ## Supported targets
 
@@ -16,7 +18,7 @@ The Website Scanner is a **vulnerability scanner**: it actively tests web applic
 | **URL** | `https://example.com`, `https://app.example.com/admin` |
 
 <Note>
-By default, the scanner follows redirects within the same domain (e.g., `example.com` to `www.example.com`). Configure this with [Follow redirects](/using/scans/follow-redirects). To scan a specific directory, include the path in the URL (e.g., `https://example.com/app/`).
+By default, the scanner follows redirects within the same domain (e.g., `example.com` to `www.example.com`). Configure this with [Follow redirects](/core/scans/follow-redirects). To scan a specific directory, include the path in the URL (e.g., `https://example.com/app/`).
 </Note>
 
 ## Scan types
@@ -80,7 +82,6 @@ By default, the scanner follows redirects within the same domain (e.g., `example
 | **Sensitive Data Crawl** | ✓ | ✓ |
 | **Find Login Interfaces** | ✓ | ✓ |
 | **Find File Upload** | ✓ | ✓ |
-| **Find OpenAPI Documents** | ✓ | ✓ |
 | **Path Disclosure** | ✓ | ✓ |
 | **SQL Statement in Request Parameter** | ✓ | ✓ |
 | **Password Returned in Later Response** | ✓ | ✓ |
@@ -107,7 +108,7 @@ By default, the scanner follows redirects within the same domain (e.g., `example
 | **Server-Side Template Injection (SSTI)** | ✗ | ✓ |
 | **XML External Entity Injection (XXE)** | ✗ | ✓ |
 | **ViewState Remote Code Execution** | ✗ | ✓ |
-| **Prototype Pollution** | ✗ | ✓ |
+| **Client-Side Prototype Pollution** | ✗ | ✓ |
 | **Exposed Backup Files** | ✗ | ✓ |
 | **Request URL Override** | ✗ | ✓ |
 | **HTTP Request Smuggling** | ✗ | ✓ |
@@ -181,7 +182,6 @@ Passive checks analyze server responses without sending attack payloads. These a
 | **Sensitive Data Crawl** | Identifies sensitive information like emails, phone numbers, and API keys in page content |
 | **Find Login Interfaces** | Discovers login pages, authentication forms, and password reset functionality |
 | **Find File Upload** | Identifies file upload functionality that could be exploited for malware upload |
-| **Find OpenAPI Documents** | Discovers exposed OpenAPI/Swagger specification files in responses |
 | **Path Disclosure** | Detects exposed filesystem paths in error messages and responses |
 | **SQL Statement in Request Parameter** | Detects SQL queries passed in URL parameters, indicating potential misconfiguration |
 | **Password Returned in Later Response** | Checks if submitted passwords appear in subsequent server responses |
@@ -214,7 +214,7 @@ Active checks send attack payloads to your application. Only run these against s
 | **Server-Side Template Injection (SSTI)** | Tests for template engine exploitation in Jinja2, Twig, Freemarker, Velocity, etc. |
 | **XML External Entity Injection (XXE)** | Tests for XXE attacks that can read local files or perform SSRF via XML parsers |
 | **ViewState Remote Code Execution** | Tests for .NET ViewState deserialization leading to remote code execution |
-| **Prototype Pollution** | Tests for JavaScript prototype pollution that can lead to XSS or RCE |
+| **Client-Side Prototype Pollution** | Tests for JavaScript prototype pollution that can lead to XSS or RCE |
 | **Exposed Backup Files** | Actively searches for backup files (.bak, ~, .swp) with sensitive content |
 | **Request URL Override** | Tests for host header injection and X-Forwarded-Host override attacks |
 | **HTTP Request Smuggling** | Tests for CL.TE and TE.CL request smuggling between front-end and back-end servers |
@@ -225,6 +225,27 @@ Active checks send attack payloads to your application. Only run these against s
 | **Enumerable Parameter (IDOR)** | Tests for insecure direct object references by manipulating ID parameters |
 | **JWT Weaknesses** | Tests for JWT algorithm confusion (none, HS256/RS256), weak secrets, and expiration issues |
 | **Response Header Injection** | Tests for CRLF injection in HTTP headers that can lead to cache poisoning or XSS |
+
+## OWASP Top 10 coverage
+
+The Website Scanner's active and passive checks cover most OWASP Top 10 (2021) categories. The table below maps each category to the relevant tests.
+
+| OWASP Top 10 (2021) | Coverage | Relevant tests |
+|---|---|---|
+| **A01: Broken Access Control** | Partial | IDOR, CSRF, Session Fixation, Broken Authentication |
+| **A02: Cryptographic Failures** | Partial | Secure Communication, Cookie Security, Clear Text Submission of Credentials, Mixed Content, SSL/TLS Certificates |
+| **A03: Injection** | Broad | SQL Injection, NoSQL Injection, OS Command Injection, XSS, PHP/JS/Ruby/Python/Perl Code Injection, XXE, SSTI, Log4j RCE |
+| **A04: Insecure Design** | No | Business logic flaws require manual testing |
+| **A05: Security Misconfiguration** | Broad | Security Headers, CORS Misconfiguration, HTTP Debug Methods, Directory Listing, Information Disclosure, Misconfigurations |
+| **A06: Vulnerable and Outdated Components** | Yes | Server Software Vulnerabilities, JavaScript Libraries |
+| **A07: Identification and Authentication Failures** | Partial | Broken Authentication, JWT Weaknesses, Session Token in URL, Weak Password Submission, Session Fixation |
+| **A08: Software and Data Integrity Failures** | Partial | Insecure Deserialization, ViewState RCE, Client-Side Prototype Pollution |
+| **A09: Security Logging and Monitoring Failures** | No | Requires manual review of server and application logging configuration |
+| **A10: SSRF** | Yes | SSRF, Request URL Override |
+
+<Note>
+Automated scanning cannot fully cover A01 or A04. Broken access control issues based on business context (such as one user accessing another user's data) need manual testing. Insecure design flaws are not detectable by scanners. A09 requires inspecting server and application logging configuration directly.
+</Note>
 
 ## Engine options
 
@@ -288,7 +309,7 @@ Configure authentication to test protected areas of your application. Authentica
 | **Header authentication** | Send custom headers (JWT, API keys) | API and token-based auth |
 
 <Note>
-For detailed authentication configuration, see [Authenticated scanning](/using/scans/authenticated-scanning#website-scanner).
+For detailed authentication configuration, see [Authenticated scanning](/core/scans/authenticated-scanning#website-scanner).
 </Note>
 
 ## How it works
@@ -311,4 +332,5 @@ After identifying vulnerabilities:
 - **Test APIs**: Run [API Scanner](/tools/api-scanner) for REST and GraphQL endpoints
 - **Check CMS**: Use [WordPress Scanner](/tools/wordpress-scanner) for WordPress sites
 - **Find hidden content**: Run [URL Fuzzer](/tools/url-fuzzer) for additional discovery
-- **Schedule regular scans**: Set up [Scheduled scans](/using/scans/scheduled-scans) for continuous monitoring
+- **Schedule regular scans**: Set up [Scheduled scans](/core/scans/scheduled-scans) for continuous monitoring
+

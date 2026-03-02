@@ -7,14 +7,14 @@ description: "Discover hidden files, directories, and endpoints on web servers"
 
 The URL Fuzzer discovers hidden content on web servers by testing file and directory names from wordlists. It finds backup files, admin panels, configuration files, and other resources not linked from the main application.
 
-The URL Fuzzer is a **discovery tool**: it identifies hidden resources but does not test them for vulnerabilities. It does not add data to your [Attack Surface](/using/attack-surface/attack-surface-overview) or generate [findings](/using/findings/findings).
+The URL Fuzzer is a **discovery tool**: it identifies hidden resources but does not test them for vulnerabilities. It does not add data to your [Attack Surface](/capabilities/attack-surface) or generate [findings](/core/findings/findings).
 
 ## Scan types
 
 | Scan type | Wordlist size | Features |
 |-----------|--------------|----------|
 | **Light** | 146 words | Quick scan with mutation enabled, no dynamic wordlist |
-| **Deep** | 43,004 words | Comprehensive scan with dynamic wordlist and mutation enabled |
+| **Deep** | 43,005 words | Comprehensive scan with dynamic wordlist and mutation enabled |
 | **Custom** | Variable | Full control over all parameters |
 
 ## Parameters
@@ -157,7 +157,7 @@ X-API-Key: your-api-key-here
 For session-based authentication, capture the session cookie from your browser's developer tools after logging in.
 </Tip>
 
-See the [authenticated scanning guide](/using/scans/authenticated-scanning#url-fuzzer) for detailed instructions.
+See the [authenticated scanning guide](/core/scans/authenticated-scanning#url-fuzzer) for detailed instructions.
 
 ## Follow-up actions
 
